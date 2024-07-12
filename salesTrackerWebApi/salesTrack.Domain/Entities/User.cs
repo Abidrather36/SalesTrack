@@ -9,11 +9,8 @@ namespace SalesTrack.Domain.Entities
 {
     public  class User:BaseModel
     {
-        public int UserName { get; set; }
-
-        public string Email { get; set; }
-
-
-        public string ContactNo { get; set; }
+        public string? UserName { get; set; }
+        public string? Email { get; set; }
+        public string? ContactNo { get; set; }
     }
 }
