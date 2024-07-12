@@ -1,4 +1,5 @@
-﻿using SalesTrack.Application.Abstraction.IRepository;
+﻿using Microsoft.EntityFrameworkCore;
+using SalesTrack.Application.Abstraction.IRepository;
 using SalesTrack.Domain.Shared;
 using SalesTrack.Persistence.Data;
 using System.Linq.Expressions;
@@ -13,44 +14,48 @@ namespace SalesTrack.Persistence.Repository
         {
             this.context = context;
         }
-        public Task<int> DeleteAsync(T model)
+        public async Task<int> DeleteAsync(T model)
         {
-            throw new NotImplementedException();
+           await Task.Run(() => context.Set<T>().Remove(model));
+            return await context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<T>> FindByAsync(Expression<Func<T, bool>> expression)
+        public async Task<IEnumerable<T>> FindByAsync(Expression<Func<T, bool>> expression)
         {
-            throw new NotImplementedException();
+          return  await Task.Run(()=> context.Set<T>().Where(expression));
         }
 
-        public Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> expression)
+        public async  Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> expression)
         {
-            throw new NotImplementedException();
+            return await context.Set<T>().FirstOrDefaultAsync(expression);
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await Task.Run(() => context.Set<T>());
         }
 
-        public Task<T?> GetByIdAsync(Expression<Func<T, bool>> expression)
+        public async Task<T?> GetByIdAsync(Expression<Func<T, bool>> expression)
         {
-            throw new NotImplementedException();
+            return await context.Set<T>().FindAsync(expression);
         }
 
-        public Task<int> InsertAsync(T model)
+        public async Task<int> InsertAsync(T model)
         {
-            throw new NotImplementedException();
+            await context.Set<T>().AddAsync(model);
+            return await  context.SaveChangesAsync();
         }
 
-        public Task<int> InsertRangeAsync(List<T> model)
+        public async Task<int> InsertRangeAsync(List<T> model)
         {
-            throw new NotImplementedException();
+           await context.Set<T>().AddRangeAsync(model);
+           return await context.SaveChangesAsync();
         }
 
-        public Task<int> UpdateAsync(T model)
+        public async  Task<int> UpdateAsync(T model)
         {
-            throw new NotImplementedException();
+            await Task.Run(() =>context.Set<T>().Update(model));
+            return await context.SaveChangesAsync();    
         }
     }
 }
