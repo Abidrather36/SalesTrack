@@ -1,4 +1,5 @@
-﻿using SalesTrack.Application.Common;
+﻿using salesTrack.Domain.Models;
+using SalesTrack.Application.Common;
 using SalesTrack.Domain.Entities.Models.Request;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace SalesTrack.Application.Abstraction.IService
 {
     public interface IUserService
     {
-        Task<ApiResponse<UserResponse>> Add(UserRequest model);
+        Task<ApiResponse<UserResponseModel>> Add(UserRequestModel model);
     }
 }
