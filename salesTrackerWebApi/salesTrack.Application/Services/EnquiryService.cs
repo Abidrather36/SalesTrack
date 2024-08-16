@@ -1,4 +1,5 @@
-﻿using salesTrack.Application.Abstraction.IRepository;
+﻿using salesTrack.Application.Abstraction.IEmailService;
+using salesTrack.Application.Abstraction.IRepository;
 using salesTrack.Application.Abstraction.IService;
 using salesTrack.Domain.Entities;
 using salesTrack.Domain.Models.Request;
@@ -11,14 +12,20 @@ namespace salesTrack.Application.Services
     public class EnquiryService : IEnquiryService
     {
         private readonly IEnquiryRepository enquiryRepository;
+        private readonly IEmailHelperService emailHelperService;
 
-        public EnquiryService(IEnquiryRepository enquiryRepository)
+        public EnquiryService(IEnquiryRepository enquiryRepository,
+                              IEmailHelperService emailHelperService)
         {
             this.enquiryRepository = enquiryRepository;
+            this.emailHelperService = emailHelperService;
         }
 
         public async Task<ApiResponse<EnquiryResponseModel>> AddEnquiry(EnquiryRequestModel model)
         {
+            if (await enquiryRepository.IsExistsAsync(x => x.Email == model.Email))
+                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.EnquiryManagement.EnquiryEmailExist, HttpStatusCodes.Conflict);
+
             Enquiry enquiry = new()
             {
                 Id = Guid.NewGuid(),
@@ -34,22 +41,26 @@ namespace salesTrack.Application.Services
                 DeletedBy = Guid.Empty,
             };
 
-            if (await enquiryRepository.IsExistsAsync(x => x.Email == model.Email))
-                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.EnquiryManagement.EnquiryEmailExist, HttpStatusCodes.Conflict);
-
-            int returnVal = await enquiryRepository.InsertAsync(enquiry);
-
+             var returnVal=await enquiryRepository.InsertAsync(enquiry);
             if (returnVal > 0)
-                return ApiResponse<EnquiryResponseModel>.SuccessResponse(new EnquiryResponseModel
+            {
+                var emailSent=await emailHelperService.SendEnquiryEmail(model.Name!,model.PhoneNumber!,model.Email!);
+                if (emailSent)
                 {
-                    Id = enquiry.Id,
-                    Name = model.Name,
-                    PhoneNumber = model.PhoneNumber,
-                    Email = model.Email,
-                    IsActive = true,
+                    return ApiResponse<EnquiryResponseModel>.SuccessResponse(new EnquiryResponseModel
+                    {
+                        Id = enquiry.Id,
+                        Name = model.Name,
+                        PhoneNumber = model.PhoneNumber,
+                        Email = model.Email,
+                        IsActive = true,
 
-                }, ApiMessages.EnquiryManagement.EnquiryAdded, HttpStatusCodes.Accepted);
-
+                    }, ApiMessages.EnquiryManagement.EnquiryAdded, HttpStatusCodes.Accepted);
+                }
+                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.TechnicalError);
+            
+            }
+                
             return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.Error, HttpStatusCodes.BadRequest);
         }
 
