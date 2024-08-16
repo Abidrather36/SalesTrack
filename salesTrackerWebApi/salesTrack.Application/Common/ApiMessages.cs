@@ -65,6 +65,8 @@ public static  class ApiMessages
         public static readonly string EnquiryNameExist = "Name already Exist.";
         public static readonly string EnquiryEmailExist = "Enquiry on this Email Already Registered.";
         public static readonly string InvalidCredential = "Invalid Credentials.";
+        public static readonly string EnquiryFound = "One Enquiry Found.";
+
     }
 
 

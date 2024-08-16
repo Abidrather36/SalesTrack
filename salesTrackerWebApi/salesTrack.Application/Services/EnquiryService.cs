@@ -53,9 +53,16 @@ namespace salesTrack.Application.Services
             return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.Error, HttpStatusCodes.BadRequest);
         }
 
-        public Task<ApiResponse<EnquiryResponseModel>> DeleteEnquiry(Guid Id)
+        public async  Task<ApiResponse<EnquiryResponseModel>> DeleteEnquiry(Guid Id)
         {
-            throw new NotImplementedException();
+            var user= await enquiryRepository.GetByIdAsync(Id);
+            if (user is null)
+                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.EnquiryManagement.EnquiryNotFound, HttpStatusCodes.BadGateway);
+            user.IsActive = false;
+            var UpdatedUser=await enquiryRepository.UpdateAsync(user);
+            if (UpdatedUser > 0)
+                return ApiResponse<EnquiryResponseModel>.SuccessResponse(new EnquiryResponseModel {Id=user.Id,Name=user.Name,Email=user.Email,IsActive=false}, ApiMessages.EnquiryManagement.EnquiryDeleted, HttpStatusCodes.Accepted);
+            return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadGateway);
         }
 
         public async Task<ApiResponse<IEnumerable<EnquiryResponseModel>>> GetAllEnquiries()
@@ -94,7 +101,7 @@ namespace salesTrack.Application.Services
                 Email = enquiry.Email,
                 IsActive = true,
                 PhoneNumber = enquiry.PhoneNumber
-            }, ApiMessages.EnquiryManagement.EnquiryNameExist, HttpStatusCodes.OK);
+            },ApiMessages.EnquiryManagement.EnquiryFound, HttpStatusCodes.OK);
         }
     }
     }
