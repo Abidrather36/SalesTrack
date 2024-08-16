@@ -6,8 +6,10 @@ using salesTrack.Domain.Models.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace salesTrack.Application.Services
 {
@@ -20,9 +22,19 @@ namespace salesTrack.Application.Services
         {
             this.configuration = configuration;
         }
-        public Task<bool> SendEnquiryEmail(string emailAdrees)
+        public async Task<bool> SendEnquiryEmail(string name, string phoneNumber, string emailAddress)
         {
-            throw new NotImplementedException();
+            var subject = "New Enquiry Posted";
+            var body = $"Hi Ram,<br /><br />" +
+                       $"You have received a new enquiry. Here are the details:<br /><br />" +
+                       $"<strong>Name:</strong> {name}<br />" +
+                       $"<strong>Phone Number:</strong> {phoneNumber}<br />" +
+                       $"<strong>Email:</strong> {emailAddress}<br /><br />" +
+                       "Please check the admin panel for more details.<br /><br />" +
+                       "Thanks,<br />"; 
+
+            var emailMessage = CreateMailMessage("ramk@anterntech.com", subject, body); 
+            return await SendRegistrationEmail(emailMessage);
         }
         public async Task<bool> SendRegistrationEmail(MimeMessage emailMessage)
         {

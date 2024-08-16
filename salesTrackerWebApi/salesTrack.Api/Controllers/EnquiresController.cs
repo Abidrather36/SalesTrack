@@ -19,7 +19,6 @@ namespace salesTrack.Api.Controllers
         }
 
         [HttpPost]
-
         public async Task<ApiResponse<EnquiryResponseModel>> PostEnquiry(EnquiryRequestModel model) =>await enquiryService.AddEnquiry(model); 
     }
 }
