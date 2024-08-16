@@ -5,11 +5,6 @@ using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Common;
 using SalesTrack.Application.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace salesTrack.Application.Services
 {
@@ -21,6 +16,7 @@ namespace salesTrack.Application.Services
         {
             this.enquiryRepository = enquiryRepository;
         }
+
         public async Task<ApiResponse<EnquiryResponseModel>> AddEnquiry(EnquiryRequestModel model)
         {
             Enquiry enquiry = new()
@@ -39,9 +35,9 @@ namespace salesTrack.Application.Services
             };
 
             if (await enquiryRepository.IsExistsAsync(x => x.Email == model.Email))
-                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.EnquiryManagement.EnquiryEmailExist,HttpStatusCodes.Conflict);
+                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.EnquiryManagement.EnquiryEmailExist, HttpStatusCodes.Conflict);
 
-              int returnVal=await enquiryRepository.InsertAsync(enquiry);
+            int returnVal = await enquiryRepository.InsertAsync(enquiry);
 
             if (returnVal > 0)
                 return ApiResponse<EnquiryResponseModel>.SuccessResponse(new EnquiryResponseModel
@@ -56,5 +52,50 @@ namespace salesTrack.Application.Services
 
             return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.Error, HttpStatusCodes.BadRequest);
         }
+
+        public Task<ApiResponse<EnquiryResponseModel>> DeleteEnquiry(Guid Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ApiResponse<IEnumerable<EnquiryResponseModel>>> GetAllEnquiries()
+        {
+            var enquiries = await enquiryRepository.GetAllAsync();
+
+            if (enquiries.Any())
+            {
+                var enquiryResponseModels = enquiries.Select(x => new EnquiryResponseModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Email = x.Email,
+                    IsActive = true,
+                    PhoneNumber = x.PhoneNumber
+                });
+
+                return ApiResponse<IEnumerable<EnquiryResponseModel>>.SuccessResponse(enquiryResponseModels, $"{enquiryResponseModels.Count()}Enquiries Found ",HttpStatusCodes.OK);
+            }
+
+            return ApiResponse<IEnumerable<EnquiryResponseModel>>.ErrorResponse("No enquiries found", HttpStatusCodes.NotFound);
+        }
+
+
+        public async Task<ApiResponse<EnquiryResponseModel>> GetEnquiryById(Guid Id)
+        {
+           var enquiry=await enquiryRepository.GetByIdAsync(Id);
+
+            if (enquiry is null)
+                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.EnquiryManagement.EnquiryNotFound, HttpStatusCodes.BadRequest);
+
+            return ApiResponse<EnquiryResponseModel>.SuccessResponse(new EnquiryResponseModel
+            {
+                Id = enquiry.Id,
+                Name = enquiry.Name,
+                Email = enquiry.Email,
+                IsActive = true,
+                PhoneNumber = enquiry.PhoneNumber
+            }, ApiMessages.EnquiryManagement.EnquiryNameExist, HttpStatusCodes.OK);
+        }
     }
-}
+    }
+

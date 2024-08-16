@@ -12,7 +12,7 @@ namespace SalesTrack.Application.Abstraction.IRepository
         Task<int> DeleteAsync(T model);
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> FindByAsync(Expression<Func<T, bool>> expression);
-        Task<T?> GetByIdAsync(Expression<Func<T, bool>> expression);
+        Task<T?> GetByIdAsync(Guid Id);
         Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> expression);
         Task<bool> IsExistsAsync(Expression<Func<T, bool>> expression);
 
