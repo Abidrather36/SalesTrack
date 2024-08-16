@@ -20,7 +20,7 @@ namespace salesTrack.Api
             builder.Services.AddApiService(builder.Configuration)
                             .AddApplicationService()
                             .AddInfrastructureService()
-                            .AddPersistenceService();
+                            .AddPersistenceService(builder.Configuration);
                            
             var app = builder.Build();
 

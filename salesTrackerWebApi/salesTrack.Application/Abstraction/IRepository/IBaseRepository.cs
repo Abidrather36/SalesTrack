@@ -14,6 +14,8 @@ namespace SalesTrack.Application.Abstraction.IRepository
         Task<IEnumerable<T>> FindByAsync(Expression<Func<T, bool>> expression);
         Task<T?> GetByIdAsync(Expression<Func<T, bool>> expression);
         Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> expression);
+        Task<bool> IsExistsAsync(Expression<Func<T, bool>> expression);
+
 
         #endregion
     }

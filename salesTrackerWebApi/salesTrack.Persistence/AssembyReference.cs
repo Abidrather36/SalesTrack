@@ -1,16 +1,20 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using salesTrack.Application.Abstraction.IRepository;
+using salesTrack.Persistence.Repository;
+using SalesTrack.Application.Abstraction.IRepository;
+using SalesTrack.Persistence.Data;
 
 namespace salesTrack.Persistence
 {
     public static  class AssembyReference
     {
-        public static IServiceCollection AddPersistenceService(this IServiceCollection services)
+        public static IServiceCollection AddPersistenceService(this IServiceCollection services,IConfiguration configuration)
         {
+            services.AddScoped<IEnquiryRepository, EnquiryRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddDbContextPool<SalesTrackDBContext>(options => options.UseSqlServer(configuration.GetConnectionString(nameof(SalesTrackDBContext))));
             return services;
         }
     }
