@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using salesTrack.Application.Abstraction.IEmailService;
+using salesTrack.Application.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,7 @@ namespace salesTrack.Application
     {
         public static IServiceCollection AddApplicationService(this IServiceCollection services)
         {
-
+            services.AddScoped<IEmailHelperService, EmailHelperService>();
             return services;
         }
 
