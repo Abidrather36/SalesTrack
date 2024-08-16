@@ -6,10 +6,5 @@ using System.Threading.Tasks;
 
 namespace salesTrack.Domain.Models
 {
-    public  class UserResponseModel
-    {
-        public Guid  Id { get; set; }
-
-        public string? UserName { get; set; }
-    }
+   
 }
