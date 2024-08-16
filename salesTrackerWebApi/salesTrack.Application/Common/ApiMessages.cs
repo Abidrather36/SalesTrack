@@ -46,6 +46,26 @@ public static  class ApiMessages
         public const string InValidResetCode = "Invalid Reset Code";
 
     }
+    public static class User
+    {
+        /* public const string NameAlreadyTaken = "Name is already taken.";*/
+        public const string UserAddedSuccessfully = "User Added Successfully";
+        public static readonly string Error = "Error.";
+
+
+
+
+    }
+    public static class EnquiryManagement
+    {
+        public static readonly string EnquiryNotFound = "Enquiry not found.";
+        public static readonly string EnquiryAdded = "Thanks for Contacting Us.We will reach you soon";
+        public static readonly string EnquiryUpdated = "Enquiry Updated Successfully.";
+        public static readonly string EnquiryDeleted = "Enquiry Deleted Successfully.";
+        public static readonly string EnquiryNameExist = "Name already Exist.";
+        public static readonly string EnquiryEmailExist = "Enquiry on this Email Already Registered.";
+        public static readonly string InvalidCredential = "Invalid Credentials.";
+    }
 
 
 

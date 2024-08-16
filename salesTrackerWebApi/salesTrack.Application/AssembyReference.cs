@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using salesTrack.Application.Abstraction.IRepository;
+using salesTrack.Application.Abstraction.IService;
+using salesTrack.Application.Services;
+using SalesTrack.Application.Abstraction.IService;
 
 namespace salesTrack.Application
 {
@@ -11,7 +10,8 @@ namespace salesTrack.Application
     {
         public static IServiceCollection AddApplicationService(this IServiceCollection services)
         {
-
+            services.AddScoped<IEnquiryService, EnquiryService>();
+            services.AddScoped<IUserService, UserService>();
             return services;
         }
 

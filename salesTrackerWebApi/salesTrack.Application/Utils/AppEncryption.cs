@@ -5,26 +5,26 @@ namespace salesTrack.Application.Utils
     public class AppEncryption
     {
         public static string GenerateSalt()
-        {/*
-            RNGCryptoServiceProvider rng = new();*/
-            byte[] salt=RandomNumberGenerator.GetBytes(32);
-           /* byte[] salt = new byte[32];
-            rng.GetBytes(salt);*/
-
-          return   Convert.ToBase64String(salt);   
-        }
-        public static string CreatePasswordHash(string password ,string salt)
         {
-            var saltedpassword= string.Concat(password,salt);
-            HMACSHA256 sha = new();
-             byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(saltedpassword));
-            return Convert.ToBase64String(hash);
-
+            var randomNum = RandomNumberGenerator.GetBytes(16);
+            return Convert.ToBase64String(randomNum);
+        }
+        public static string CreatePassword(string password, string salt)
+        {
+            var PasswordWithSalt = string.Concat(password, salt);
+            var sha = SHA256.Create();
+            var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(PasswordWithSalt!));
+            return Convert.ToBase64String(bytes);
+        }
+        public static bool ComparePassword(string hashPassword, string password, string salt)
+        {
+            string hashedInputPassword = CreatePassword(password, salt);
+            return hashPassword == hashedInputPassword;
         }
 
-        public static bool ComparePassword(string dbPassword ,string newPassword ,string dbSalt)
+        public static string GetRandomConfirmationCode()
         {
-            return dbPassword==CreatePasswordHash(newPassword,dbSalt);  
+            return RandomNumberGenerator.GetInt32(1111, 9999).ToString();
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using salesTrack.Domain.Entities;
+using SalesTrack.Domain.Entities;
 
 namespace SalesTrack.Persistence.Data
 {
@@ -8,5 +10,9 @@ namespace SalesTrack.Persistence.Data
         {
                 
         }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<Enquiry> Enquires { get; set; }
+
     }
 }

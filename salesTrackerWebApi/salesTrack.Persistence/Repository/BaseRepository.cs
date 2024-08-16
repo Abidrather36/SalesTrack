@@ -52,6 +52,12 @@ namespace SalesTrack.Persistence.Repository
            return await context.SaveChangesAsync();
         }
 
+        public async  Task<bool> IsExistsAsync(Expression<Func<T, bool>> expression)
+        {
+             return await context.Set<T>().AnyAsync(expression);
+            
+        }
+
         public async  Task<int> UpdateAsync(T model)
         {
             await Task.Run(() =>context.Set<T>().Update(model));
