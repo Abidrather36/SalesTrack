@@ -32,9 +32,9 @@ namespace salesTrack.Application.Services
                 if (user == null)
                     return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
 
-               if(! AppEncryption.ComparePassword(model.Password, user.Password, user.Salt))
+               if(! AppEncryption.ComparePassword(user.Password, model.Password, user.Salt))
                 {
-                    return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InVaildEmailAddress, HttpStatusCodes.BadRequest);
+                    return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
 
                 }
                 LoginResponseModel login = new()
