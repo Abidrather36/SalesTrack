@@ -14,8 +14,7 @@ namespace salesTrack.Infrastructure
     {
         public static IServiceCollection AddInfrastructureService(this IServiceCollection services,IConfiguration configuration)
         {
-            services.AddSingleton<IJwtProvider>(new JwtProvider(configuration));
-
+            services.AddSingleton<IJwtProvider,JwtProvider>();
             return services;
 
         }
