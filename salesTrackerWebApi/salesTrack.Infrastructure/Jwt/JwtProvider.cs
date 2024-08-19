@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using salesTrack.Application.Abstraction.Jwt;
 using salesTrack.Domain.Models.JWT;
+using salesTrack.Infrastructure.Identity;
 using SalesTrack.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -42,7 +44,7 @@ namespace salesTrack.Infrastructure.Jwt
 
                 var claims = new List<Claim>
             {
-                new Claim(AppClaimTypes.UserId, user.Id.ToString()!),
+                new Claim(AppClaims.UserId, user.Id.ToString()!),
                 new Claim(JwtRegisteredClaimNames.Name, user.Name!),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email!),
                 new Claim(ClaimTypes.Role, user.UserRole.ToString())
@@ -60,7 +62,7 @@ namespace salesTrack.Infrastructure.Jwt
                 userToken.Token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
                 userToken.UserName = user.Name;
                 userToken.Id = user.Id;
-                userToken.Role = user.UserRole;
+                userToken.UserRole = user.UserRole;
 
                 return userToken;
             }
