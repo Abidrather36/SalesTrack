@@ -20,7 +20,7 @@ namespace salesTrack.Api.Controllers
             this.enquiryService = enquiryService;
         }
 
-        [HttpPost]
+        [HttpPost("register")]
 
         public async Task<ApiResponse<EnquiryResponseModel>> PostEnquiry(EnquiryRequestModel model)
         {
@@ -35,8 +35,7 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-        [HttpGet]
-
+        [HttpGet("getAll-enquiries")]
         public async Task<ApiResponse<IEnumerable<EnquiryResponseModel>>> GetAllEnquiries()
         {
             try
@@ -49,7 +48,7 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-        [HttpGet("EnquiryById")]
+        [HttpGet("getById{id:guid}")]
 
         public async Task<ApiResponse<EnquiryResponseModel>> GetEnquiryById(Guid Id)
         {
