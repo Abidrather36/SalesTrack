@@ -31,7 +31,7 @@ namespace salesTrack.Application.Services
                        $"<strong>Phone Number:</strong> {phoneNumber}<br />" +
                        $"<strong>Email:</strong> {emailAddress}<br /><br />" +
                        "Please check the admin panel for more details.<br /><br />" +
-                       "Thanks,<br />"; 
+                       "Thanks,Team Antern Sales <br />"; 
 
             var emailMessage = CreateMailMessage("ramk@anterntech.com", subject, body); 
             return await SendRegistrationEmail(emailMessage);
