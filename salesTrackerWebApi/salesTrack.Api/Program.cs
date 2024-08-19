@@ -19,7 +19,7 @@ namespace salesTrack.Api
             builder.Services.AddSwaggerGen();
             builder.Services.AddApiService(builder.Configuration)
                             .AddApplicationService()
-                            .AddInfrastructureService()
+                            .AddInfrastructureService(builder.Configuration)
                             .AddPersistenceService(builder.Configuration);
                            
             var app = builder.Build();
