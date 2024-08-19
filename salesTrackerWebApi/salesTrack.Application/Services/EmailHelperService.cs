@@ -33,7 +33,7 @@ namespace salesTrack.Application.Services
                        "Please check the admin panel for more details.<br /><br />" +
                        "Thanks,Team Antern Sales <br />"; 
 
-            var emailMessage = CreateMailMessage("ramk@anterntech.com", subject, body); 
+            var emailMessage = CreateMailMessage("abidrather36@gmail.com", subject, body); 
             return await SendRegistrationEmail(emailMessage);
         }
         public async Task<bool> SendRegistrationEmail(MimeMessage emailMessage)
