@@ -24,7 +24,7 @@ namespace salesTrack.Api.Controllers
   /*      [HttpPost]
         public async Task<ApiResponse<UserResponse>> Post(UserRequest model) => await service.Add(model);*/
 
-        [HttpPost]
+        [HttpPost("login")]
 
         public async Task<ApiResponse<LoginResponseModel>> Login(LoginRequestModel model)
         {

@@ -15,6 +15,6 @@ namespace salesTrack.Domain.Models.Response
             public Guid? UserId { get; set; }
             public string? Token { get; set; }
             public bool IsPasswordTemporary { get; set; }
-            public string? FilePath { get; set; }
+            //public string? FilePath { get; set; }
         }
     }

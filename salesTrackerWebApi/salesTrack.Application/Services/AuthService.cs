@@ -2,6 +2,7 @@
 using salesTrack.Application.Abstraction.IService;
 using salesTrack.Application.Abstraction.Jwt;
 using salesTrack.Application.Utils;
+using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Common;
@@ -32,18 +33,17 @@ namespace salesTrack.Application.Services
                 if (user == null)
                     return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
 
-               if(! AppEncryption.ComparePassword(user.Password, model.Password, user.Salt))
-                {
+               if(!AppEncryption.ComparePassword(user.Password!, model.Password!, user.Salt!))
                     return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
 
-                }
+                var userTokens = jwtProvider.GenerateToken(user);
                 LoginResponseModel login = new()
                 {
                     UserId = user.Id,
                     FullName = user.Name,
-                    Token = jwtProvider.GenerateToken(user).Token,
+                    Token = userTokens.Token,
                     IsPasswordTemporary=user.IsPasswordTemporary,
-
+                    UserRole= userTokens.UserRole?? UserRole.Admin 
                 };
                 return ApiResponse<LoginResponseModel>.SuccessResponse(login, ApiMessages.Auth.LoggedIn, HttpStatusCodes.Accepted);
             }
