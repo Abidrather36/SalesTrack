@@ -20,9 +20,10 @@ namespace salesTrack.Api
                 {
                     ValidateAudience = true,
                     ValidateIssuer = true,
+                    ValidateLifetime = true,
+
                     ValidAudience = configuration["Jwt:Audience"],
                     ValidIssuer = configuration["Jwt:Issuer"],
-                    ValidateLifetime=true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
                 };
             });

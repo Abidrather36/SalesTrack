@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using salesTrack.Application.Abstraction.IRepository;
 using salesTrack.Application.Abstraction.IService;
-using salesTrack.Application.Services;
 using SalesTrack.Application.Abstraction.IService;
 
 namespace salesTrack.Application
@@ -17,6 +16,7 @@ namespace salesTrack.Application
     {
         public static IServiceCollection AddApplicationService(this IServiceCollection services)
         {
+
             services.AddScoped<IEmailHelperService, EmailHelperService>();
             services.AddScoped<IEnquiryService, EnquiryService>();
             services.AddScoped<IUserService, UserService>();

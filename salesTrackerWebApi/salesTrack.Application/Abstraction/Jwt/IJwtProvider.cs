@@ -1,4 +1,5 @@
-﻿using SalesTrack.Domain.Entities;
+﻿using salesTrack.Domain.Models.JWT;
+using SalesTrack.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace salesTrack.Application.Abstraction.Jwt
 {
     public  interface IJwtProvider
     {
-        public string GenrateToken(User user);
+        public UserTokens GenerateToken(User user);
     }
 }
