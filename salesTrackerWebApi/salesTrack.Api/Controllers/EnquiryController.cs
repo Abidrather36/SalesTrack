@@ -20,14 +20,45 @@ namespace salesTrack.Api.Controllers
 
         [HttpPost]
 
-        public async Task<ApiResponse<EnquiryResponseModel>> PostEnquiry(EnquiryRequestModel model) =>await enquiryService.AddEnquiry(model);
+        public async Task<ApiResponse<EnquiryResponseModel>> PostEnquiry(EnquiryRequestModel model)
+        {
+            try
+            {
+                return await enquiryService.AddEnquiry(model);
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
         [HttpGet]
 
-        public async Task<ApiResponse<IEnumerable<EnquiryResponseModel>>> GetAllEnquiries() => await enquiryService.GetAllEnquiries();
+        public async Task<ApiResponse<IEnumerable<EnquiryResponseModel>>> GetAllEnquiries()
+        {
+            try
+            {
+                return await enquiryService.GetAllEnquiries();
+            }
+            catch(Exception ex)
+            {
+                throw;  
+            }
+        }
 
         [HttpGet("EnquiryById")]
 
-        public async Task<ApiResponse<EnquiryResponseModel>> GetEnquiryById(Guid Id)=> await enquiryService.GetEnquiryById(Id); 
+        public async Task<ApiResponse<EnquiryResponseModel>> GetEnquiryById(Guid Id)
+        {
+            try
+            {
+                return  await enquiryService.GetEnquiryById(Id);
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

@@ -10,6 +10,22 @@ namespace salesTrack.Api
     {
         public static IServiceCollection AddApiService(this IServiceCollection services,IConfiguration configuration)
         {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options => 
+            {
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidAudience = configuration["Jwt:Audience"],
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidateLifetime=true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
+                };
+            });
             return services;
 
         }
