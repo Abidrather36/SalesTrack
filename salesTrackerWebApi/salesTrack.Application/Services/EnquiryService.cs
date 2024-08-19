@@ -23,45 +23,51 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<EnquiryResponseModel>> AddEnquiry(EnquiryRequestModel model)
         {
-            if (await enquiryRepository.IsExistsAsync(x => x.Email == model.Email))
-                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.EnquiryManagement.EnquiryEmailExist, HttpStatusCodes.Conflict);
-
-            Enquiry enquiry = new()
+            try
             {
-                Id = Guid.NewGuid(),
-                Name = model.Name,
-                PhoneNumber = model.PhoneNumber,
-                Email = model.Email,
-                IsActive = true,
-                CreatedBy = Guid.Empty,
-                CreatedDate = DateTimeOffset.Now,
-                ModifiedDate = DateTimeOffset.Now,
-                ModifiedBy = Guid.Empty,
-                DeletedDate = DateTimeOffset.Now,
-                DeletedBy = Guid.Empty,
-            };
+                if (await enquiryRepository.IsExistsAsync(x => x.Email == model.Email))
+                    return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.EnquiryManagement.EnquiryEmailExist, HttpStatusCodes.Conflict);
 
-             var returnVal=await enquiryRepository.InsertAsync(enquiry);
-            if (returnVal > 0)
-            {
-                var emailSent=await emailHelperService.SendEnquiryEmail(model.Name!,model.PhoneNumber!,model.Email!);
-                if (emailSent)
+                Enquiry enquiry = new()
                 {
-                    return ApiResponse<EnquiryResponseModel>.SuccessResponse(new EnquiryResponseModel
-                    {
-                        Id = enquiry.Id,
-                        Name = model.Name,
-                        PhoneNumber = model.PhoneNumber,
-                        Email = model.Email,
-                        IsActive = true,
+                    Id = Guid.NewGuid(),
+                    Name = model.Name,
+                    PhoneNumber = model.PhoneNumber,
+                    Email = model.Email,
+                    IsActive = true,
+                    CreatedBy = Guid.Empty,
+                    CreatedDate = DateTimeOffset.Now,
+                    ModifiedDate = DateTimeOffset.Now,
+                    ModifiedBy = Guid.Empty,
+                    DeletedDate = DateTimeOffset.Now,
+                    DeletedBy = Guid.Empty,
+                };
 
-                    }, ApiMessages.EnquiryManagement.EnquiryAdded, HttpStatusCodes.Accepted);
+                var returnVal = await enquiryRepository.InsertAsync(enquiry);
+                if (returnVal > 0)
+                {
+                    var emailSent = await emailHelperService.SendEnquiryEmail(model.Name!, model.PhoneNumber!, model.Email!);
+                    if (emailSent)
+                    {
+                        return ApiResponse<EnquiryResponseModel>.SuccessResponse(new EnquiryResponseModel
+                        {
+                            Id = enquiry.Id,
+                            Name = model.Name,
+                            PhoneNumber = model.PhoneNumber,
+                            Email = model.Email,
+                            IsActive = true,
+                        }, ApiMessages.EnquiryManagement.EnquiryAdded, HttpStatusCodes.Accepted);
+                    }
+                    return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.TechnicalError);
                 }
-                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.TechnicalError);
-            
+
+                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.Error, HttpStatusCodes.BadRequest);
             }
+            catch (Exception ex)
+            {
                 
-            return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.Error, HttpStatusCodes.BadRequest);
+                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.InternalServerError);
+            }
         }
 
         public async  Task<ApiResponse<EnquiryResponseModel>> DeleteEnquiry(Guid Id)
