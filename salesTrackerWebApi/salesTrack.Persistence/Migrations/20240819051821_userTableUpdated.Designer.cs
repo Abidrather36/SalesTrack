@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SalesTrack.Persistence.Data;
 
@@ -11,9 +12,11 @@ using SalesTrack.Persistence.Data;
 namespace salesTrack.Persistence.Migrations
 {
     [DbContext(typeof(SalesTrackDBContext))]
-    partial class SalesTrackDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240819051821_userTableUpdated")]
+    partial class userTableUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,24 +88,6 @@ namespace salesTrack.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("57b4ebc3-8b8e-4ae6-be42-0da2fafa3917"),
-                            Address = "123 Main St hebbal",
-                            ContactNo = "6545454543",
-                            Email = "ramrk@anterntech.com",
-                            IsActive = false,
-                            IsPasswordTemporary = true,
-                            Name = "Ram",
-                            Password = "qNnW+G75JThnZgKEJZEYNknIvTFFODlMzoi4ulW1I6U=",
-                            PostalCode = "12345",
-                            ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 19, 6, 35, 14, 15, DateTimeKind.Unspecified).AddTicks(2321), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "Uqs30XK9XloNEmrPcupUcA==",
-                            UserRole = (byte)1
-                        });
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.Enquiry", b =>

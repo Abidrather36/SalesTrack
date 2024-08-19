@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using salesTrack.Domain.Entities;
+using salesTrack.Persistence.Data;
 using SalesTrack.Domain.Entities;
 
 namespace SalesTrack.Persistence.Data
@@ -14,5 +15,11 @@ namespace SalesTrack.Persistence.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Enquiry> Enquiries { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.SeedUsers();
+        }
     }
 }
