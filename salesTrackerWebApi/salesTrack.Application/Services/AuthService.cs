@@ -34,7 +34,7 @@ namespace salesTrack.Application.Services
                     return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
 
                if(!AppEncryption.ComparePassword(user.Password!, model.Password!, user.Salt!))
-                    return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
+               return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
 
                 var userTokens = jwtProvider.GenerateToken(user);
                 LoginResponseModel login = new()
