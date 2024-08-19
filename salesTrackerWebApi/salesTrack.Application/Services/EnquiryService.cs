@@ -66,7 +66,7 @@ namespace salesTrack.Application.Services
             catch (Exception ex)
             {
                 
-                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.InternalServerError);
+                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ex.Message, HttpStatusCodes.InternalServerError);
             }
         }
 

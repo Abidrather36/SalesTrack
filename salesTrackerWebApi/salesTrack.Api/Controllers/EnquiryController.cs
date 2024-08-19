@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using salesTrack.Application.Abstraction.IService;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Common;
+using SalesTrack.Application.Shared;
+using Microsoft.Extensions.Logging;
 
 namespace salesTrack.Api.Controllers
 {
@@ -43,7 +45,7 @@ namespace salesTrack.Api.Controllers
             }
             catch(Exception ex)
             {
-                throw;  
+                return ApiResponse<IEnumerable<EnquiryResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.InternalServerError);
             }
         }
 
