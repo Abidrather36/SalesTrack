@@ -12,7 +12,7 @@ namespace salesTrack.Application.Abstraction.IService
 
         Task<ApiResponse<EnquiryResponseModel>> GetEnquiryById(Guid Id);
 
-        public Task<ApiResponse<EnquiryResponseModel>> DeleteEnquiry(Guid Id);
+        Task<ApiResponse<EnquiryResponseModel>> DeleteEnquiry(Guid Id);
 
 
      /*   Task<ApiResponse<>> UpdateEnquiry( model);*/
