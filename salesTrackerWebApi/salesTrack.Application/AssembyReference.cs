@@ -18,6 +18,8 @@ namespace salesTrack.Application
         public static IServiceCollection AddApplicationService(this IServiceCollection services)
         {
             services.AddScoped<IEmailHelperService, EmailHelperService>();
+            services.AddScoped<IAuthService, AuthService>();
+
             services.AddScoped<IEnquiryService, EnquiryService>();
             services.AddScoped<IUserService, UserService>();
             return services;

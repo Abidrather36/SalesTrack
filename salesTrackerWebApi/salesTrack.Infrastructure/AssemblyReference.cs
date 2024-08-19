@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using salesTrack.Application.Abstraction.Jwt;
+using salesTrack.Infrastructure.Jwt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +12,10 @@ namespace salesTrack.Infrastructure
 {
     public static class AssemblyReference
     {
-        public static IServiceCollection AddInfrastructureService(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureService(this IServiceCollection services,IConfiguration configuration)
         {
+            services.AddSingleton<IJwtProvider>(new JwtProvider(configuration));
+
             return services;
 
         }

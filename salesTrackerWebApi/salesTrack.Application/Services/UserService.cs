@@ -1,16 +1,10 @@
-﻿using salesTrack.Application.Utils;
-using salesTrack.Domain.Models;
+﻿using salesTrack.Domain.Models;
 using SalesTrack.Application.Abstraction.IRepository;
 using SalesTrack.Application.Abstraction.IService;
 using SalesTrack.Application.Common;
 using SalesTrack.Application.Shared;
 using SalesTrack.Domain.Entities;
 using SalesTrack.Domain.Entities.Models.Request;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace salesTrack.Application.Services
 {

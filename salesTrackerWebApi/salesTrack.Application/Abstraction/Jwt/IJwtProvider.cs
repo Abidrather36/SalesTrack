@@ -1,14 +1,10 @@
-﻿using SalesTrack.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using salesTrack.Domain.Models.JWT;
+using SalesTrack.Domain.Entities;
 
 namespace salesTrack.Application.Abstraction.Jwt
 {
     public  interface IJwtProvider
     {
-        public string GenrateToken(User user);
+        public UserTokens GenerateToken(User user);
     }
 }

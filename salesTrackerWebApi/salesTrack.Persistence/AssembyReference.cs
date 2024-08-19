@@ -13,6 +13,7 @@ namespace salesTrack.Persistence
         public static IServiceCollection AddPersistenceService(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddScoped<IEnquiryRepository, EnquiryRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddDbContextPool<SalesTrackDBContext>(options => options.UseSqlServer(configuration.GetConnectionString(nameof(SalesTrackDBContext))));
             return services;
