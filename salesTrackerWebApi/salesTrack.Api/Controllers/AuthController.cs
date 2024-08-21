@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using salesTrack.Application.Abstraction.IService;
 using salesTrack.Domain.Models;
 using salesTrack.Domain.Models.Request;
@@ -24,7 +23,7 @@ namespace salesTrack.Api.Controllers
             this.userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("User")]
         public async Task<ApiResponse<UserResponse>> Post(UserRequest model)
         {
             try
@@ -51,5 +50,45 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
+        [HttpPost("ChangePassword")]
+
+        public async Task<ApiResponse<string>> ChangePassword(ChangePasswordModel model)
+        {
+            try
+            {
+                return await authService.ChangePassword(model);
+            }
+            catch (Exception ex) 
+            {
+                throw;
+            }
+        }
+        [HttpPost("Forgetpassword")]
+
+        public async Task<ApiResponse<string>> ForgetPassword(string email)
+        {
+            try
+            {
+                return await authService.ForgotPassword(email); 
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        [HttpPost("Reset-Password")]
+
+        public async Task<ApiResponse<string>> ResetPassword(ResetPasswordModel model)
+        {
+            try
+            {
+                return await authService.ResetPassword(model);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+    
     }
 }

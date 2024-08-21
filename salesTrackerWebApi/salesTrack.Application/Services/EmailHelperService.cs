@@ -1,4 +1,5 @@
 ﻿using MailKit.Security;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using salesTrack.Application.Abstraction.IEmailService;
@@ -9,11 +10,13 @@ namespace salesTrack.Application.Services
     public class EmailHelperService : IEmailHelperService
     {
         private readonly IConfiguration configuration;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public EmailHelperService(IConfiguration configuration
+        public EmailHelperService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor
                                    )
         {
             this.configuration = configuration;
+            this.httpContextAccessor = httpContextAccessor;
         }
         public async Task<bool> SendEnquiryEmail(string name, string phoneNumber, string emailAddress)
         {
@@ -82,7 +85,7 @@ namespace salesTrack.Application.Services
                            $"<strong>Password:</strong> {password}<br /><br />" +
                            "Please check the admin panel for more details.<br /><br />" +
                            "Thanks, Team Antern Sales Track <br />";
-
+                
                 try
                 {
 
@@ -94,7 +97,57 @@ namespace salesTrack.Application.Services
                 throw;
                 }
             }
+        /*   public async Task<bool> SendForgotPasswordEmail(string email, int resetCode)
+           {
+               var subject = "Reset Password";
+               var link = GetAppUrl() + $"/users/resetPassword?resetCode={resetCode}";
+               var body = $"Hi,<br /><br />" +
+                          $"We received a request to reset your password.<br /><br />" +
+                          $"Please use the following code to reset your password:<br /><br />" +
+                          $"<strong>Reset Code:</strong> {resetCode}<br /><br />" +
+                          $"<a href='{link}' style='background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Reset Password</a><br /><br />" +
+                          "This code will expire in 5 minutes.<br /><br />" +
+                          "Thanks, Team Antern Sales Track <br />";
 
+               try
+               {
+                   var mailMessage = CreateMailMessage(email, subject, body);
+                   return await SendRegistrationEmail(mailMessage);
+               }
+               catch (Exception ex)
+               {
+                   throw;
+               }
+           }*/
+        public async Task<bool> SendForgotPasswordEmail(string email, int resetCode)
+        {
+            var subject = "Reset Password";
+            var link = $"http://localhost:4200/api/auth/Reset-Password?resetCode={resetCode}";
+            var body = $"Hi,<br /><br />" +
+                       $"We received a request to reset your password.<br /><br />" +
+                       $"Please click on the below link to reset your password:<br /><br />" +
+                       $"<a href='{link}' style='background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Reset Password</a><br /><br />" +
+                       "This code will expire in 5 minutes.<br /><br />" +
+                       "Thanks, Team Antern Sales Track <br />";
+
+            try
+            {
+                var mailMessage = CreateMailMessage(email, subject, body);
+                return await SendRegistrationEmail(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+
+        public string GetAppUrl()
+        {
+            var request = httpContextAccessor.HttpContext?.Request;
+            return request?.Scheme + "//" + request?.Host + "/" + "api/";
+           
         }
     }
+}
 
