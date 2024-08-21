@@ -15,14 +15,27 @@ namespace salesTrack.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService authService;
+        private readonly IUserService userService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService,
+                               IUserService userService)
         {
             this.authService = authService;
+            this.userService = userService;
         }
 
-  /*      [HttpPost]
-        public async Task<ApiResponse<UserResponse>> Post(UserRequest model) => await service.Add(model);*/
+        [HttpPost]
+        public async Task<ApiResponse<UserResponse>> Post(UserRequest model)
+        {
+            try
+            {
+                return await userService.AddUser(model);
+            }
+            catch (Exception ex)
+            {
+                throw ;
+            }
+        }
 
         [HttpPost("login")]
 

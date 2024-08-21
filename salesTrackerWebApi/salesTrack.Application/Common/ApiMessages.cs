@@ -7,7 +7,7 @@ public static  class ApiMessages
     // Common Errors
     public static readonly string TechnicalError = "There is some technical error, please try again later.";
     public static readonly string ProjectName = "Streamline Academies";
-    public static readonly string AlreadyAvailable = "Already Registered";
+    public static readonly string AlreadyAvailable = "Email Already Registered";
     public static readonly string NotFound = "Not found.";
     public static readonly string InvaildStatusCode = "Invalid status code.";
     public static readonly string UpdatedSuccessfully = "Updated Successfully.";

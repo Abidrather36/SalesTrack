@@ -28,12 +28,6 @@ namespace salesTrack.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ContactNo")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -67,8 +61,11 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PostalCode")
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ReportsTo")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ResetCode")
                         .HasColumnType("int");
@@ -82,6 +79,9 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<byte>("UserRole")
                         .HasColumnType("tinyint");
 
+                    b.Property<byte>("UserType")
+                        .HasColumnType("tinyint");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -89,19 +89,18 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("57b4ebc3-8b8e-4ae6-be42-0da2fafa3917"),
-                            Address = "123 Main St hebbal",
-                            ContactNo = "6545454543",
+                            Id = new Guid("053f0406-7db8-4058-b3b8-299937e922af"),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "qNnW+G75JThnZgKEJZEYNknIvTFFODlMzoi4ulW1I6U=",
-                            PostalCode = "12345",
+                            Password = "cYQRKcefNUOHwSo7pG+g3l17cEkvRZKXE+fCkvogOcI=",
+                            PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 19, 6, 35, 14, 15, DateTimeKind.Unspecified).AddTicks(2321), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "Uqs30XK9XloNEmrPcupUcA==",
-                            UserRole = (byte)1
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 20, 8, 42, 26, 382, DateTimeKind.Unspecified).AddTicks(3742), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "nDgHOhPeJHQ7YiQ3VU0PHQ==",
+                            UserRole = (byte)1,
+                            UserType = (byte)0
                         });
                 });
 

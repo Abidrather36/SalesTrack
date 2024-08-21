@@ -3,13 +3,6 @@ using Microsoft.Extensions.Configuration;
 using MimeKit;
 using salesTrack.Application.Abstraction.IEmailService;
 using salesTrack.Domain.Models.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace salesTrack.Application.Services
 {
@@ -77,5 +70,31 @@ namespace salesTrack.Application.Services
             return email;
         }
 
+        public async Task<bool> AddRegistrationEmail(string email, string password,string name)
+        {
+         
+           
+                var subject = "Successfully Registered";
+                var body = $"Hi {name},<br /><br />" +
+                           $"You are successfully registered.<br /><br />" +
+                           $"Please find your login credentials below:<br /><br />" +
+                           $"<strong>Email:</strong> {email}<br /><br />" +
+                           $"<strong>Password:</strong> {password}<br /><br />" +
+                           "Please check the admin panel for more details.<br /><br />" +
+                           "Thanks, Team Antern Sales Track <br />";
+
+                try
+                {
+
+                   var mailMessage= CreateMailMessage(email, subject, body);
+                   return await SendRegistrationEmail(mailMessage);
+                }
+            catch (Exception ex)
+                {
+                throw;
+                }
+            }
+
+        }
     }
-}
+
