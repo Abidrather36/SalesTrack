@@ -10,6 +10,7 @@ namespace salesTrack.Api
     {
         public static IServiceCollection AddApiService(this IServiceCollection services,IConfiguration configuration)
         {
+            services.AddHttpContextAccessor();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

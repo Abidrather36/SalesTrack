@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using salesTrack.Application.Abstraction.IService;
 using salesTrack.Domain.Models;
 using salesTrack.Domain.Models.Request;
@@ -15,14 +14,27 @@ namespace salesTrack.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService authService;
+        private readonly IUserService userService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService,
+                               IUserService userService)
         {
             this.authService = authService;
+            this.userService = userService;
         }
 
-  /*      [HttpPost]
-        public async Task<ApiResponse<UserResponse>> Post(UserRequest model) => await service.Add(model);*/
+        [HttpPost("User")]
+        public async Task<ApiResponse<UserResponse>> Post(UserRequest model)
+        {
+            try
+            {
+                return await userService.AddUser(model);
+            }
+            catch (Exception ex)
+            {
+                throw ;
+            }
+        }
 
         [HttpPost("login")]
         public async Task<ApiResponse<LoginResponseModel>> Login(LoginRequestModel model)
@@ -37,5 +49,45 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
+        [HttpPost("ChangePassword")]
+
+        public async Task<ApiResponse<string>> ChangePassword(ChangePasswordModel model)
+        {
+            try
+            {
+                return await authService.ChangePassword(model);
+            }
+            catch (Exception ex) 
+            {
+                throw;
+            }
+        }
+        [HttpPost("Forgetpassword")]
+
+        public async Task<ApiResponse<string>> ForgetPassword(string email)
+        {
+            try
+            {
+                return await authService.ForgotPassword(email); 
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        [HttpPost("Reset-Password")]
+
+        public async Task<ApiResponse<string>> ResetPassword(ResetPasswordModel model)
+        {
+            try
+            {
+                return await authService.ResetPassword(model);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+    
     }
 }

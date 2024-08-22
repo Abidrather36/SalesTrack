@@ -70,16 +70,40 @@ namespace salesTrack.Application.Services
             }
         }
 
-        public async  Task<ApiResponse<EnquiryResponseModel>> DeleteEnquiry(Guid Id)
+        /*   public async  Task<ApiResponse<EnquiryResponseModel>> DeleteEnquiry(Guid Id)
+           {
+               var user= await enquiryRepository.GetByIdAsync(Id);
+               if (user is null)
+                   return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.EnquiryManagement.EnquiryNotFound, HttpStatusCodes.BadGateway);
+               user.IsActive = false;
+               var UpdatedUser=await enquiryRepository.UpdateAsync(user);
+               if (UpdatedUser > 0)
+                   return ApiResponse<EnquiryResponseModel>.SuccessResponse(new EnquiryResponseModel {Id=user.Id,Name=user.Name,Email=user.Email,IsActive=false}, ApiMessages.EnquiryManagement.EnquiryDeleted, HttpStatusCodes.Accepted);
+               return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadGateway);
+           }
+   */
+        public async Task<ApiResponse<EnquiryResponseModel>> DeleteEnquiry(Guid Id)
         {
-            var user= await enquiryRepository.GetByIdAsync(Id);
-            if (user is null)
-                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.EnquiryManagement.EnquiryNotFound, HttpStatusCodes.BadGateway);
-            user.IsActive = false;
-            var UpdatedUser=await enquiryRepository.UpdateAsync(user);
-            if (UpdatedUser > 0)
-                return ApiResponse<EnquiryResponseModel>.SuccessResponse(new EnquiryResponseModel {Id=user.Id,Name=user.Name,Email=user.Email,IsActive=false}, ApiMessages.EnquiryManagement.EnquiryDeleted, HttpStatusCodes.Accepted);
-            return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadGateway);
+            var enquiry = await enquiryRepository.GetByIdAsync(Id);
+            if (enquiry == null)
+                return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.EnquiryManagement.EnquiryNotFound, HttpStatusCodes.NotFound);
+
+            enquiry.IsActive = false;
+            var updateResult = await enquiryRepository.UpdateAsync(enquiry);
+            if (updateResult > 0)
+                return ApiResponse<EnquiryResponseModel>.SuccessResponse(
+                    new EnquiryResponseModel
+                    {
+                        Id = enquiry.Id,
+                        Name = enquiry.Name,
+                        Email = enquiry.Email,
+                        IsActive = false
+                    },
+                    ApiMessages.EnquiryManagement.EnquiryDeleted,
+                    HttpStatusCodes.Accepted
+                );
+
+            return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.InternalServerError);
         }
 
         public async Task<ApiResponse<IEnumerable<EnquiryResponseModel>>> GetAllEnquiries()

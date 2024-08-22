@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace salesTrack.Application.Abstraction.IEmailService
+﻿namespace salesTrack.Application.Abstraction.IEmailService
 {
     public interface IEmailHelperService
     {
         Task<bool> SendEnquiryEmail(string name, string phoneNumber, string emailAddress);
+        Task<bool> AddRegistrationEmail(string email,string password,string name);
+
+        Task<bool> SendForgotPasswordEmail(string email, int resetCode);
+
     }
 }
