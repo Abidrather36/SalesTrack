@@ -23,6 +23,12 @@ namespace salesTrack.Api
                             .AddPersistenceService(builder.Configuration);
                            
             var app = builder.Build();
+            app.UseCors(options =>
+            {
+                options.AllowAnyOrigin() // Allows any origin
+                       .AllowAnyHeader() // Allows any header
+                       .AllowAnyMethod(); // Allows any HTTP method
+            });
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
