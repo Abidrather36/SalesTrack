@@ -72,5 +72,18 @@ namespace salesTrack.Api.Controllers
                 throw;  
             }
         }
+
+        [HttpPut("UpdateEnquiry")]
+        public async Task<ApiResponse<EnquiryUpdateResponse>> EnquiryUpdate(EnquiryUpdateRequest model)
+        {
+            try
+            {
+                return await enquiryService.UpdateEnquiry(model);
+            }
+            catch (Exception ex)
+            {
+                 throw;
+            }
+        }
     }
 }

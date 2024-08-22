@@ -11,5 +11,6 @@ namespace salesTrack.Application.Abstraction.Iidentity
         Guid UserId();
         string GetUserName();
         string GetEmail();
+
     }
 }

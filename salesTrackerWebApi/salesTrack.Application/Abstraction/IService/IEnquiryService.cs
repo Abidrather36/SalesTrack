@@ -14,7 +14,6 @@ namespace salesTrack.Application.Abstraction.IService
 
         Task<ApiResponse<EnquiryResponseModel>> DeleteEnquiry(Guid Id);
 
-
-     /*   Task<ApiResponse<>> UpdateEnquiry( model);*/
+        Task<ApiResponse<EnquiryUpdateResponse>> UpdateEnquiry(EnquiryUpdateRequest model);
     }
 }

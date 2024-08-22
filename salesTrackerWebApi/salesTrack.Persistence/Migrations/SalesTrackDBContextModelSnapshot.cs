@@ -89,16 +89,16 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("053f0406-7db8-4058-b3b8-299937e922af"),
+                            Id = new Guid("a8f82dfe-4f49-4654-96e8-10607d7225f6"),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "cYQRKcefNUOHwSo7pG+g3l17cEkvRZKXE+fCkvogOcI=",
+                            Password = "4IFlhagl2mWcM9082iOeGjocUUEybUeu6NeSGtZ6PUc=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 20, 8, 42, 26, 382, DateTimeKind.Unspecified).AddTicks(3742), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "nDgHOhPeJHQ7YiQ3VU0PHQ==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 22, 7, 27, 25, 508, DateTimeKind.Unspecified).AddTicks(9430), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "DkryhTN50pebllg0aTD6mA==",
                             UserRole = (byte)1,
                             UserType = (byte)0
                         });
@@ -143,6 +143,44 @@ namespace salesTrack.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Enquiries");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.ProcessSteps", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("StepDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StepName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProcessSteps");
                 });
 #pragma warning restore 612, 618
         }
