@@ -13,7 +13,7 @@ namespace salesTrack.Application
 
             services.AddScoped<IEmailHelperService, EmailHelperService>();
             services.AddScoped<IAuthService, AuthService>();
-
+            services.AddScoped<IProcessService, ProcessService>();
             services.AddScoped<IEnquiryService, EnquiryService>();
             services.AddScoped<IUserService, UserService>();
             return services;

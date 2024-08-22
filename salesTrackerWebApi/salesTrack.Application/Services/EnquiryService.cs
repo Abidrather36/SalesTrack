@@ -70,18 +70,7 @@ namespace salesTrack.Application.Services
             }
         }
 
-        /*   public async  Task<ApiResponse<EnquiryResponseModel>> DeleteEnquiry(Guid Id)
-           {
-               var user= await enquiryRepository.GetByIdAsync(Id);
-               if (user is null)
-                   return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.EnquiryManagement.EnquiryNotFound, HttpStatusCodes.BadGateway);
-               user.IsActive = false;
-               var UpdatedUser=await enquiryRepository.UpdateAsync(user);
-               if (UpdatedUser > 0)
-                   return ApiResponse<EnquiryResponseModel>.SuccessResponse(new EnquiryResponseModel {Id=user.Id,Name=user.Name,Email=user.Email,IsActive=false}, ApiMessages.EnquiryManagement.EnquiryDeleted, HttpStatusCodes.Accepted);
-               return ApiResponse<EnquiryResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadGateway);
-           }
-   */
+    
         public async Task<ApiResponse<EnquiryResponseModel>> DeleteEnquiry(Guid Id)
         {
             var enquiry = await enquiryRepository.GetByIdAsync(Id);
@@ -143,6 +132,41 @@ namespace salesTrack.Application.Services
                 IsActive = true,
                 PhoneNumber = enquiry.PhoneNumber
             },ApiMessages.EnquiryManagement.EnquiryFound, HttpStatusCodes.OK);
+        }
+
+        public async Task<ApiResponse<EnquiryUpdateResponse>> UpdateEnquiry(EnquiryUpdateRequest model)
+        {
+          var enquiry= await enquiryRepository.FirstOrDefaultAsync(x => x.Id == model.Id);
+
+            if(enquiry is null)
+            {
+                ApiResponse<EnquiryUpdateResponse>.ErrorResponse(ApiMessages.EnquiryManagement.EnquiryNotFound, HttpStatusCodes.BadRequest);
+            }
+            
+                enquiry!.Name = model.Name;
+                enquiry.Email = model.Email;
+                enquiry.PhoneNumber = model.PhoneNumber;
+                enquiry.IsActive=model.IsActive;
+                var updatedEnquiry=await enquiryRepository.UpdateAsync(enquiry);
+
+            if(updatedEnquiry > 0)
+            {
+                EnquiryUpdateResponse enquiryUpdate = new()
+                {
+                    Id = enquiry.Id,
+                    Name = enquiry.Name,
+                    Email = enquiry.Email,
+                    PhoneNumber = enquiry.PhoneNumber,
+                    IsActive=enquiry.IsActive
+                };
+                return ApiResponse<EnquiryUpdateResponse>.SuccessResponse(enquiryUpdate, ApiMessages.EnquiryManagement.EnquiryUpdated, HttpStatusCodes.Accepted);
+            }
+            else
+            {
+                return ApiResponse<EnquiryUpdateResponse>.ErrorResponse(ApiMessages.EnquiryManagement.InvalidCredential, HttpStatusCodes.BadRequest);
+            }
+            
+
         }
     }
     }
