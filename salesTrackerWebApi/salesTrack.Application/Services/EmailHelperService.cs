@@ -97,28 +97,7 @@ namespace salesTrack.Application.Services
                 throw;
                 }
             }
-        /*   public async Task<bool> SendForgotPasswordEmail(string email, int resetCode)
-           {
-               var subject = "Reset Password";
-               var link = GetAppUrl() + $"/users/resetPassword?resetCode={resetCode}";
-               var body = $"Hi,<br /><br />" +
-                          $"We received a request to reset your password.<br /><br />" +
-                          $"Please use the following code to reset your password:<br /><br />" +
-                          $"<strong>Reset Code:</strong> {resetCode}<br /><br />" +
-                          $"<a href='{link}' style='background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Reset Password</a><br /><br />" +
-                          "This code will expire in 5 minutes.<br /><br />" +
-                          "Thanks, Team Antern Sales Track <br />";
 
-               try
-               {
-                   var mailMessage = CreateMailMessage(email, subject, body);
-                   return await SendRegistrationEmail(mailMessage);
-               }
-               catch (Exception ex)
-               {
-                   throw;
-               }
-           }*/
         public async Task<bool> SendForgotPasswordEmail(string email, int resetCode)
         {
             var subject = "Reset Password";

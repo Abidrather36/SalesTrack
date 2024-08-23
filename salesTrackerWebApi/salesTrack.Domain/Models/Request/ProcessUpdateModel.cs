@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace salesTrack.Domain.Entities
+namespace salesTrack.Domain.Models.Request
 {
-    public  class SalesExecutive
+    public class ProcessUpdateModel:ProcessRequestModel
     {
-
+        public Guid Id { get; set; }
     }
 }

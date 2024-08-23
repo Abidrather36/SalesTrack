@@ -80,6 +80,8 @@ public static  class ApiMessages
         public static readonly string ProcessIdRequired = "Process ID is required.";
         public static readonly string UnauthorizedProcessAccess = "You do not have permission to access this process.";
         public static readonly string ProcessUpdateSuccess = "Process updated successfully.";
+        public static readonly string ProcessListRetrievedSuccessfully = "Process list retrieved successfully.";
+        public static readonly string ProcessFound = "Process found successfully.";
     }
 
 

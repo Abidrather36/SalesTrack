@@ -62,5 +62,104 @@ namespace salesTrack.Application.Services
             
             
         }
+
+        public async Task<ApiResponse<ProcessResponseModel>> DeleteProcess(Guid id)
+        {
+            var user=await ProcessRepository.GetByIdAsync(id);
+
+            if(user is null)
+            {
+                return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.ProcessManagement.ProcessNotFound, HttpStatusCodes.NotFound);
+            }
+            user.IsActive = false;
+            user.ModifiedDate = DateTime.Now;
+            var deletedUser=await ProcessRepository.UpdateAsync(user);
+            if(deletedUser > 0)
+            {
+                ProcessResponseModel processResponseModel = new()
+                {
+                    Id = user.Id,
+                    StepName = user.StepName,
+                    StepDescription = user.StepDescription,
+                    IsActive=false,
+                };
+                return ApiResponse<ProcessResponseModel>.SuccessResponse(processResponseModel, ApiMessages.ProcessManagement.ProcessDeletedSuccessfully, HttpStatusCodes.Accepted);
+            }
+            else
+            {
+                return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.TechnicalError,HttpStatusCodes.BadRequest);
+            }
+        }
+
+        public async Task<ApiResponse<ProcessResponseModel>> GetProcessById(Guid id)
+        {
+           var process= await ProcessRepository.GetByIdAsync(id);
+            if (process is null)
+            {
+                return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.ProcessManagement.ProcessNotFound, HttpStatusCodes.BadRequest);
+            }
+
+            else
+            {
+                ProcessResponseModel processResponseModel = new()
+                {
+                    Id = process.Id,
+                    StepName = process.StepName,
+                    StepDescription = process.StepDescription,
+                    IsActive=process.IsActive,
+                };
+
+                return ApiResponse<ProcessResponseModel>.SuccessResponse(processResponseModel, ApiMessages.ProcessManagement.ProcessFound, HttpStatusCodes.OK);
+
+            }
+
+
+        }
+
+        public async Task<ApiResponse<IEnumerable<ProcessResponseModel>>> GetProcessList()
+        {
+           var processes= await ProcessRepository.GetAllAsync();
+            if(processes.Any())
+            {
+               var processList= processes.Select(x => new ProcessResponseModel
+                {
+                    Id = x.Id,
+                    StepName = x.StepName,
+                    StepDescription = x.StepDescription,
+                });
+                return ApiResponse<IEnumerable<ProcessResponseModel>>.SuccessResponse(processList, ApiMessages.ProcessManagement.ProcessListRetrievedSuccessfully, HttpStatusCodes.OK);
+            }
+            else
+            {
+                return ApiResponse<IEnumerable<ProcessResponseModel>>.ErrorResponse(ApiMessages.ProcessManagement.ProcessNotFound, HttpStatusCodes.BadRequest);
+            }
+        }
+
+        public async Task<ApiResponse<ProcessResponseModel>> UpdateProcess(ProcessUpdateModel model)
+        {
+            var process = await ProcessRepository.FirstOrDefaultAsync(x => x.Id == model.Id);
+            if(process is null)
+            {
+                return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.ProcessManagement.ProcessNotFound, HttpStatusCodes.BadRequest);
+            }
+           process.StepName = model.StepName;
+           process.StepDescription = model.StepDescription;
+           var updatedProcess=await ProcessRepository.UpdateAsync(process);
+            
+            if(updatedProcess > 0)
+            {
+                ProcessResponseModel processResponseModel = new()
+                {
+                    Id = process.Id,
+                    StepName = model.StepName,
+                    StepDescription = model.StepDescription,
+                };
+                return ApiResponse<ProcessResponseModel>.SuccessResponse(processResponseModel, ApiMessages.ProcessManagement.ProcessUpdateSuccess, HttpStatusCodes.Accepted);
+            }
+            else
+            {
+                return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.ProcessManagement.ProcessUpdateFailed, HttpStatusCodes.NotAcceptable);
+            }
+        }
     }
 }
