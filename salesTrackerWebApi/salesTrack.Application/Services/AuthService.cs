@@ -75,6 +75,7 @@ namespace salesTrack.Application.Services
                 return ApiResponse<string>.ErrorResponse("Failed to send reset code. Please try again.", HttpStatusCodes.InternalServerError);
             }
         }
+        
 
         public async Task<ApiResponse<LoginResponseModel>> Login(LoginRequestModel model)
         {

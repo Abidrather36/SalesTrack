@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace salesTrack.Domain.Entities
+namespace salesTrack.Domain.Enums
 {
-    public  class SalesExecutive
+    public enum FinalStatus
     {
-
+        Open =1, 
+        Close =2,
+        Success =3,  
     }
 }

@@ -83,6 +83,34 @@ public static  class ApiMessages
         public static readonly string ProcessListRetrievedSuccessfully = "Process list retrieved successfully.";
         public static readonly string ProcessFound = "Process found successfully.";
     }
+    public static class LeadManagement
+    {
+        // General Lead Messages
+        public static readonly string LeadNotFound = "Lead not found.";
+        public static readonly string LeadAddedSuccessfully = "Lead added successfully.";
+        public static readonly string LeadEmailExist = "Lead on this Email Already Registered.";
+        public static readonly string LeadUpdateFailed = "Failed to update the lead.";
+        public static readonly string InvalidLeadData = "Invalid lead data provided.";
+        public static readonly string LeadDeletedSuccessfully = "Lead deleted successfully.";
+        public static readonly string LeadDeletionFailed = "Failed to delete the lead.";
+        public static readonly string DuplicateLeadEmail = "A lead with this email already exists.";
+        public static readonly string LeadIdRequired = "Lead ID is required.";
+        public static readonly string UnauthorizedLeadAccess = "You do not have permission to access this lead.";
+        public static readonly string LeadUpdateSuccess = "Lead updated successfully.";
+        public static readonly string LeadListRetrievedSuccessfully = "Lead list retrieved successfully.";
+        public static readonly string LeadFound = "Lead found successfully.";
+
+        // Follow-Up Messages
+        public static readonly string FollowUpAddedSuccessfully = "Follow-up added successfully.";
+        public static readonly string FollowUpUpdateFailed = "Failed to update the follow-up.";
+        public static readonly string FollowUpHistoryLoaded = "Follow-up history loaded successfully.";
+        public static readonly string FollowUpNotFound = "Follow-up not found.";
+
+        // Process Steps Messages
+        public static readonly string ProcessStepsAddedSuccessfully = "Process steps added successfully.";
+        public static readonly string ProcessStepsUpdateFailed = "Failed to update the process steps.";
+        public static readonly string ProcessStepsNotFound = "Process steps not found.";
+    }
 
 
 

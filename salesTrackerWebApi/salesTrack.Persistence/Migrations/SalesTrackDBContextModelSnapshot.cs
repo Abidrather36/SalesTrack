@@ -89,16 +89,16 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a8f82dfe-4f49-4654-96e8-10607d7225f6"),
+                            Id = new Guid("7bec2942-d189-4bc9-9312-917799bf0024"),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "4IFlhagl2mWcM9082iOeGjocUUEybUeu6NeSGtZ6PUc=",
+                            Password = "sQTfJCx5Kdc9OftW/syXcBCCGlBOc8i9RIcmoc94F6Y=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 22, 7, 27, 25, 508, DateTimeKind.Unspecified).AddTicks(9430), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "DkryhTN50pebllg0aTD6mA==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 23, 10, 40, 3, 320, DateTimeKind.Unspecified).AddTicks(4786), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "xaHGgXujl1dhvNUIOmTonA==",
                             UserRole = (byte)1,
                             UserType = (byte)0
                         });
@@ -143,6 +143,59 @@ namespace salesTrack.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Enquiries");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.Lead", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AssignTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FinalStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LeadSource")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Leads");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.ProcessSteps", b =>
