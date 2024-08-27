@@ -1,4 +1,5 @@
-﻿using salesTrack.Domain.Enums;
+﻿using salesTrack.Domain.Entities;
+using salesTrack.Domain.Enums;
 using SalesTrack.Domain.Shared;
 using System;
 using System.Collections.Generic;
@@ -21,5 +22,13 @@ namespace SalesTrack.Domain.Entities
         public bool IsPasswordTemporary { get; set; } = true;
         public Guid? ReportsTo { get; set; }
         public UserType UserType { get; set; }
+
+        #region navigation
+        public ICollection<Lead>? Leads { get; set; }
+        /*  public ICollection<Lead>? AssignedLeads{ get; set; }*/
+/*
+        public ICollection<Lead>?AssignedLeads { get; set; }*/
+
+        #endregion
     }
 }

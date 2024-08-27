@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace salesTrack.Domain.Enums
+﻿namespace salesTrack.Domain.Enums
 {
     public enum UserRole:byte
     {
         Admin=1,
         SalesExecutive=2,
-        SalesManager=3
-    }
+        SalesManager=3,
+        Lead=4,
+    }   
 
 }

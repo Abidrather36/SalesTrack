@@ -89,16 +89,16 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7bec2942-d189-4bc9-9312-917799bf0024"),
+                            Id = new Guid("93de942e-e4e3-40c7-97a7-0428d770ca54"),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "sQTfJCx5Kdc9OftW/syXcBCCGlBOc8i9RIcmoc94F6Y=",
+                            Password = "gogSRQkBljjzH7MUE1C9vYyZiTRf98otPQayCWLtn38=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 23, 10, 40, 3, 320, DateTimeKind.Unspecified).AddTicks(4786), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "xaHGgXujl1dhvNUIOmTonA==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 27, 7, 14, 44, 856, DateTimeKind.Unspecified).AddTicks(1251), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "59umvQT0hwdePKStu+CceA==",
                             UserRole = (byte)1,
                             UserType = (byte)0
                         });
@@ -148,11 +148,10 @@ namespace salesTrack.Persistence.Migrations
             modelBuilder.Entity("salesTrack.Domain.Entities.Lead", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AssignTo")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("AssignTo")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
@@ -169,16 +168,53 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<DateTimeOffset?>("DeletedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("FinalStatus")
-                        .HasColumnType("int");
+                    b.Property<byte>("FinalStatus")
+                        .HasColumnType("tinyint");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("LeadSource")
+                    b.Property<Guid>("LeadSourceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeadSourceId");
+
+                    b.ToTable("Leads");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.LeadSource", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LeadSourceName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -187,15 +223,9 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<DateTimeOffset?>("ModifiedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Leads");
+                    b.ToTable("LeadSources");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.ProcessSteps", b =>
@@ -234,6 +264,35 @@ namespace salesTrack.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProcessSteps");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.Lead", b =>
+                {
+                    b.HasOne("SalesTrack.Domain.Entities.User", "User")
+                        .WithMany("Leads")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("salesTrack.Domain.Entities.LeadSource", "LeadSource")
+                        .WithMany("Leads")
+                        .HasForeignKey("LeadSourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LeadSource");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SalesTrack.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Leads");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.LeadSource", b =>
+                {
+                    b.Navigation("Leads");
                 });
 #pragma warning restore 612, 618
         }

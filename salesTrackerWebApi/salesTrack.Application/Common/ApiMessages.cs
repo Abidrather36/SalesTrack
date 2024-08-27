@@ -51,6 +51,9 @@ public static  class ApiMessages
         /* public const string NameAlreadyTaken = "Name is already taken.";*/
         public const string UserAddedSuccessfully = "User Added Successfully";
         public static readonly string Error = "Error.";
+        public static readonly string UsersFetchedSuccessfully = "Users Found Successfully";
+        public static readonly string UserFound = "User Found Successfully";
+
 
 
 
@@ -110,6 +113,21 @@ public static  class ApiMessages
         public static readonly string ProcessStepsAddedSuccessfully = "Process steps added successfully.";
         public static readonly string ProcessStepsUpdateFailed = "Failed to update the process steps.";
         public static readonly string ProcessStepsNotFound = "Process steps not found.";
+    }
+    public static class LeadSourceManagement
+    {
+        public static readonly string LeadSourceNotFound = "Lead source not found.";
+        public static readonly string LeadSourceAddedSuccessfully = "Lead source added successfully.";
+        public static readonly string LeadSourceUpdateFailed = "Failed to update the lead source.";
+        public static readonly string InvalidLeadSourceData = "Invalid lead source data provided.";
+        public static readonly string LeadSourceDeletedSuccessfully = "Lead source deleted successfully.";
+        public static readonly string LeadSourceDeletionFailed = "Failed to delete the lead source.";
+        public static readonly string DuplicateLeadSourceName = "A lead source with this name already exists.";
+        public static readonly string LeadSourceIdRequired = "Lead source ID is required.";
+        public static readonly string UnauthorizedLeadSourceAccess = "You do not have permission to access this lead source.";
+        public static readonly string LeadSourceUpdateSuccess = "Lead source updated successfully.";
+        public static readonly string LeadSourceListRetrievedSuccessfully = "Lead source list retrieved successfully.";
+        public static readonly string LeadSourceFound = "Lead source found successfully.";
     }
 
 

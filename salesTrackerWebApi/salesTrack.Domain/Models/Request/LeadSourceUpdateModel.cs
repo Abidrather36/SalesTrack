@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace salesTrack.Domain.Enums
+namespace salesTrack.Domain.Models.Request
 {
-    public enum FinalStatus:byte
+    internal class LeadSourceUpdateModel:LeadRequestModel
     {
-        Open =1, 
-        Close =2,
-        Success =3,  
     }
 }

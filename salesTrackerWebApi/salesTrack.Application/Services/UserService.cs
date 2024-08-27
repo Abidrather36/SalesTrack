@@ -21,13 +21,13 @@ namespace salesTrack.Application.Services
             this.userRepository = userRepository;
             this.emailHelperService = emailHelperService;
         }
-        public async Task<ApiResponse<UserResponse>> AddUser(UserRequest model)
+        public async Task<ApiResponse<UserResponseModel>> AddUser(UserRequest model)
         {
 
             try
             {
                 if (await userRepository.IsExistsAsync(x => x.Email == model.Email))
-                    return ApiResponse<UserResponse>.ErrorResponse(ApiMessages.AlreadyAvailable, HttpStatusCodes.BadRequest);
+                    return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.AlreadyAvailable, HttpStatusCodes.BadRequest);
 
                 var newPassword = AppEncryption.GenerateRandomPassword(model.Email!);
                 User user = new User()
@@ -50,7 +50,7 @@ namespace salesTrack.Application.Services
                    var isEmailSent= await emailHelperService.AddRegistrationEmail(user.Email!, newPassword, user.Name!);
                     if (isEmailSent)
                     {
-                        return ApiResponse<UserResponse>.SuccessResponse(new UserResponse
+                        return ApiResponse<UserResponseModel>.SuccessResponse(new UserResponseModel
                         {
                             Id = user.Id,
                             Name = user.Name,
@@ -65,11 +65,11 @@ namespace salesTrack.Application.Services
                     }
                     else
                     {
-                        return ApiResponse<UserResponse>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);                    }
+                        return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);                    }
                 }
                 else
                 {
-                    return ApiResponse<UserResponse>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                    return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
                 }
 
             }

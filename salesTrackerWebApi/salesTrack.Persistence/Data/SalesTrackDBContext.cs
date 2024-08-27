@@ -16,6 +16,7 @@ namespace SalesTrack.Persistence.Data
         public DbSet<Enquiry> Enquiries { get; set; }
         public DbSet<ProcessSteps> ProcessSteps { get; set; }
         public DbSet<Lead> Leads { get; set; }
+        public DbSet<LeadSource> LeadSources { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

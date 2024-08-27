@@ -24,7 +24,7 @@ namespace salesTrack.Api.Controllers
         }
 
         [HttpPost("User")]
-        public async Task<ApiResponse<UserResponse>> Post(UserRequest model)
+        public async Task<ApiResponse<UserResponseModel>> Post(UserRequest model)
         {
             try
             {
@@ -89,6 +89,31 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
-    
+
+        [HttpGet("GetAllUsers")]
+        public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsers( )
+        {
+            try
+            {
+                return await authService.GetAllUsers();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        [HttpGet("GetUserById{id:guid}")]
+        public async Task<ApiResponse<UserResponseModel>> GetUserById(Guid id)
+        {
+            try
+            {
+                return await authService.GetUserById(id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
     }
 }
