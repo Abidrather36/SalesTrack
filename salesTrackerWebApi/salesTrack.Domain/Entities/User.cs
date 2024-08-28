@@ -24,10 +24,7 @@ namespace SalesTrack.Domain.Entities
         public UserType UserType { get; set; }
 
         #region navigation
-        public ICollection<Lead>? Leads { get; set; }
-        /*  public ICollection<Lead>? AssignedLeads{ get; set; }*/
-/*
-        public ICollection<Lead>?AssignedLeads { get; set; }*/
+        public Lead? Lead { get; set; }
 
         #endregion
     }

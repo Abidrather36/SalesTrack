@@ -89,16 +89,16 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("93de942e-e4e3-40c7-97a7-0428d770ca54"),
+                            Id = new Guid("df061bfa-74b5-4e6f-b2fd-982286031120"),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "gogSRQkBljjzH7MUE1C9vYyZiTRf98otPQayCWLtn38=",
+                            Password = "R2pqGFFa8NmrxfOoumZxu2M4w2PHILQgLR00iwUI4B8=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 27, 7, 14, 44, 856, DateTimeKind.Unspecified).AddTicks(1251), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "59umvQT0hwdePKStu+CceA==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 28, 8, 45, 58, 23, DateTimeKind.Unspecified).AddTicks(6976), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "dcB+6gilFcyVARbbM4o4ug==",
                             UserRole = (byte)1,
                             UserType = (byte)0
                         });
@@ -269,8 +269,8 @@ namespace salesTrack.Persistence.Migrations
             modelBuilder.Entity("salesTrack.Domain.Entities.Lead", b =>
                 {
                     b.HasOne("SalesTrack.Domain.Entities.User", "User")
-                        .WithMany("Leads")
-                        .HasForeignKey("Id")
+                        .WithOne("Lead")
+                        .HasForeignKey("salesTrack.Domain.Entities.Lead", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -287,7 +287,7 @@ namespace salesTrack.Persistence.Migrations
 
             modelBuilder.Entity("SalesTrack.Domain.Entities.User", b =>
                 {
-                    b.Navigation("Leads");
+                    b.Navigation("Lead");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.LeadSource", b =>

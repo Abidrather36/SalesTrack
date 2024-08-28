@@ -53,6 +53,8 @@ public static  class ApiMessages
         public static readonly string Error = "Error.";
         public static readonly string UsersFetchedSuccessfully = "Users Found Successfully";
         public static readonly string UserFound = "User Found Successfully";
+        public static readonly string UserNotFound = "User not found.";
+
 
 
 

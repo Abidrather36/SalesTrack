@@ -7,8 +7,6 @@ namespace salesTrack.Domain.Entities
 {
     public  class Lead:BaseModel
     {
-        [ForeignKey(nameof(Id))]
-        public User? User { get; set; }
         public string? Comments { get; set; }
         public Guid AssignTo { get; set; }
         public Guid LeadSourceId { get; set; }
@@ -18,10 +16,8 @@ namespace salesTrack.Domain.Entities
         [ForeignKey(nameof(LeadSourceId))]
         public LeadSource? LeadSource { get; set; }
 
-/*
-        [ForeignKey(nameof(AssignTo))]
-        public User? AssignedToUser { get; set; }
-*/
+        [ForeignKey(nameof(Id))]
+        public User? User { get; set; }
 
 
     }

@@ -33,7 +33,7 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        [HttpGet("GetLeadById{id:guid}")]
+        [HttpGet("GetLeadById/{id:guid}")]
 
         public async Task<ApiResponse<LeadResponseModel>> AddLead(Guid id)
         {
@@ -60,7 +60,7 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("Delete-Lead/{id:guid}")]
         public async Task<ApiResponse<LeadResponseModel>> DeleteLead(Guid id)
         {
             try
@@ -72,5 +72,19 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
+        [HttpPut("Update-Lead")]
+        public async Task<ApiResponse<LeadResponseModel>> UpdateLead(LeadUpdateModel model)
+        {
+            try 
+            {
+                return await leadService.UpdateLead(model);
+            }
+            catch( Exception ex)
+            {
+                throw;
+            }
+
+        }
+        
     }
 }

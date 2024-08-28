@@ -51,7 +51,8 @@ namespace salesTrack.Persistence.Repository
                 LeadSourceId=x.LeadSourceId,
                 LeadSourceName=x.LeadSource!.LeadSourceName,
                 AssignToId=x.AssignTo,
-                IsActive=x.User.IsActive
+                IsActive=x.User.IsActive,
+              
                 
                 
                 
