@@ -15,7 +15,6 @@ namespace salesTrack.Persistence
             services.AddScoped<IEnquiryRepository, EnquiryRepository>();
             services.AddScoped<ILeadRepository, LeadRepository>();
             services.AddScoped<ILeadSourceRepository, LeadSourceRepository>();
-            services.AddScoped<IProcessRepository, ProcessRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddDbContextPool<SalesTrackDBContext>(options => options.UseSqlServer(configuration.GetConnectionString(nameof(SalesTrackDBContext))));

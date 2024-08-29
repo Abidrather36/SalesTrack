@@ -38,7 +38,10 @@ namespace salesTrack.Application.Services
                     PhoneNumber = model.PhoneNumber,
                     UserType = model.UserType,
                     ReportsTo = model.ReportsTo,
+                    CreatedDate=DateTime.Now,
+                    IsActive=true,
                     UserRole = model.UserType == UserType.SalesExecutive ? UserRole.SalesExecutive : UserRole.SalesManager,
+                    
 
                     
                 };

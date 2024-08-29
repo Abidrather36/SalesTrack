@@ -17,7 +17,7 @@ namespace salesTrack.Domain.Models.Response
         public string? PhoneNumber { get; set; }
         public Guid LeadSourceId { get; set; }
         public string? LeadSourceName { get; set; }
-        public string? Comments { get; set; }
+        public string? Comment { get; set; }
         public string? AssignedTo { get; set; }
         public Guid AssignToId { get; set; }
         public UserRole UserRole { get; set; }

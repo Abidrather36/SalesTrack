@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using salesTrack.Application.Abstraction.IService;
+using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
@@ -23,7 +25,7 @@ namespace salesTrack.Api.Controllers
             this.userService = userService;
         }
 
-        [HttpPost("User")]
+        [HttpPost("User-SignUp")]
         public async Task<ApiResponse<UserResponseModel>> Post(UserRequest model)
         {
             try
@@ -37,7 +39,6 @@ namespace salesTrack.Api.Controllers
         }
 
         [HttpPost("login")]
-
         public async Task<ApiResponse<LoginResponseModel>> Login(LoginRequestModel model)
         {
             try

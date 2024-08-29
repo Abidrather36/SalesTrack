@@ -2,9 +2,10 @@
 
 namespace salesTrack.Domain.Entities
 {
-    public class ProcessSteps:BaseModel
+    public class AdminProcessStep:BaseModel
     {
         public string? StepName { get; set; }
-        public string? StepDescription { get; set;}
+
+      /*  ICollection<ProcessSteps>*/
     }
 }

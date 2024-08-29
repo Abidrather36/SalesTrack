@@ -5,6 +5,7 @@ using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Common;
+using System.Net;
 
 namespace salesTrack.Api.Controllers
 {
@@ -35,7 +36,7 @@ namespace salesTrack.Api.Controllers
         }
         [HttpGet("GetLeadById/{id:guid}")]
 
-        public async Task<ApiResponse<LeadResponseModel>> AddLead(Guid id)
+        public async Task<ApiResponse<LeadResponseModel>> GetLeadById(Guid id)
         {
             try
             {
@@ -84,6 +85,33 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
 
+        }
+        /*   [Authorize(Roles = nameof(UserRole.Admin))]*/
+        [HttpPost("Add-LeadProcess")]
+        public async Task<ApiResponse<ProcessResponseModel>> AddProcessStep(ProcessRequestModel model)
+        {
+            try
+            {
+                return await leadService.AddProcessSteps(model);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        
+        [HttpPut("Update-LeadProcess")]
+        public async Task<ApiResponse<ProcessResponseModel>> UpdateProcessStep(ProcessUpdateModel model)
+        {
+            try
+            {
+                return await leadService.UpdateProcessSteps(model);
+            }
+
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
         
     }

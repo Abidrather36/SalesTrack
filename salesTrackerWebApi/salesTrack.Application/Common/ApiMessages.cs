@@ -55,11 +55,6 @@ public static  class ApiMessages
         public static readonly string UserFound = "User Found Successfully";
         public static readonly string UserNotFound = "User not found.";
 
-
-
-
-
-
     }
     public static class EnquiryManagement
     {
@@ -134,6 +129,17 @@ public static  class ApiMessages
 
 
 
+    public static class Process
+    {
+        /* public const string NameAlreadyTaken = "Name is already taken.";*/
+        public const string ProcessAddedSuccessfully = "Process Added Successfully";
+        public static readonly string Error = "Error.";
+        public static readonly string ProcessFetchedSuccessfully = "Processes Found Successfully";
+        public static readonly string ProcessFound = "Process Found Successfully";
+        public static readonly string ProcessNotFound = "Process not found.";
+        public static readonly string ProcessUpdatedSuccessfully = "Process Updated Successfully.";
 
+
+    }
 
 }

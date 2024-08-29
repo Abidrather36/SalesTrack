@@ -89,16 +89,16 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("df061bfa-74b5-4e6f-b2fd-982286031120"),
+                            Id = new Guid("f332e340-ef71-4e33-b6e4-297fbb781a09"),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "R2pqGFFa8NmrxfOoumZxu2M4w2PHILQgLR00iwUI4B8=",
+                            Password = "aowonKl2qFbWqvS1yPBs/XGm5kPtmehmsNQNMe+5pxo=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 28, 8, 45, 58, 23, DateTimeKind.Unspecified).AddTicks(6976), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "dcB+6gilFcyVARbbM4o4ug==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 29, 7, 29, 47, 485, DateTimeKind.Unspecified).AddTicks(8478), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "QXv3ho1DDSSU+fspQpkOJQ==",
                             UserRole = (byte)1,
                             UserType = (byte)0
                         });
@@ -143,6 +143,49 @@ namespace salesTrack.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Enquiries");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.FollowUpDate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("LeadId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeadId");
+
+                    b.ToTable("FollowUpDates");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.Lead", b =>
@@ -249,6 +292,9 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("LeadId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -263,7 +309,20 @@ namespace salesTrack.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LeadId");
+
                     b.ToTable("ProcessSteps");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.FollowUpDate", b =>
+                {
+                    b.HasOne("salesTrack.Domain.Entities.Lead", "Lead")
+                        .WithMany()
+                        .HasForeignKey("LeadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lead");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.Lead", b =>
@@ -283,6 +342,17 @@ namespace salesTrack.Persistence.Migrations
                     b.Navigation("LeadSource");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.ProcessSteps", b =>
+                {
+                    b.HasOne("salesTrack.Domain.Entities.Lead", "Lead")
+                        .WithMany()
+                        .HasForeignKey("LeadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lead");
                 });
 
             modelBuilder.Entity("SalesTrack.Domain.Entities.User", b =>
