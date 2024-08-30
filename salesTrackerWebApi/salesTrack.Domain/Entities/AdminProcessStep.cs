@@ -6,6 +6,5 @@ namespace salesTrack.Domain.Entities
     {
         public string? StepName { get; set; }
 
-      /*  ICollection<ProcessSteps>*/
     }
 }

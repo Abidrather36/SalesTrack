@@ -19,7 +19,7 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<int> AddProcess(LeadProcessSteps model)
         {
-           await context.ProcessSteps.AddAsync(model);
+           await context.LeadProcessSteps.AddAsync(model);
            return await context.SaveChangesAsync();
             
            
@@ -27,18 +27,18 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<IEnumerable<LeadResponseModel>> GetAllLeadsAsync()
         {
-            var Leads = await context.Leads.Select(x => new LeadResponseModel
+            var Leads = await context.Leads.Select(lead => new LeadResponseModel
             {
-                Id = x.Id,
-                Name = x.User!.Name,
-                Email = x.User!.Email,
-                PhoneNumber = x.User!.PhoneNumber,
-                Comment = x.Comment,
-                FinalStatus = x.FinalStatus,
-                UserRole = x.User.UserRole,
-                LeadSourceId = x.LeadSourceId,
-                LeadSourceName = x.LeadSource!.LeadSourceName,
-                AssignToId = x.AssignTo
+                Id = lead.Id,
+                Name = lead.User!.Name,
+                Email = lead.User!.Email,
+                PhoneNumber = lead.User!.PhoneNumber,
+                Comment = lead.Comment,
+                FinalStatus = lead.FinalStatus,
+                UserRole = lead.User.UserRole,
+                LeadSourceId = lead.LeadSourceId,
+                LeadSourceName = lead.LeadSource!.LeadSourceName,
+                AssignToId = lead.AssignTo
             }).ToListAsync();
 
             return Leads;
@@ -69,13 +69,13 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<LeadProcessSteps?> GetProcessStepById(Guid id)
         {
-           var procStep= context.ProcessSteps.FindAsync(id);
+           var procStep= context.LeadProcessSteps.FindAsync(id);
             return await procStep;
         }
 
         public async Task<int> UpdateProcess(LeadProcessSteps model)
         {
-            var processResponse=  await Task.Run(()=>  context.ProcessSteps.Update(model));
+            var processResponse=  await Task.Run(()=>  context.LeadProcessSteps.Update(model));
             return await context.SaveChangesAsync();
         }
     }

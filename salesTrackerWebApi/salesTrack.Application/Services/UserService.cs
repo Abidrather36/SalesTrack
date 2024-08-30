@@ -21,7 +21,7 @@ namespace salesTrack.Application.Services
             this.userRepository = userRepository;
             this.emailHelperService = emailHelperService;
         }
-        public async Task<ApiResponse<UserResponseModel>> AddUser(UserRequest model)
+        public async Task<ApiResponse<UserResponseModel>> AddUser(UserRequestModel model)
         {
 
             try

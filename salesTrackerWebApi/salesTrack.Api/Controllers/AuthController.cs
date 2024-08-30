@@ -26,7 +26,7 @@ namespace salesTrack.Api.Controllers
         }
 
         [HttpPost("User-SignUp")]
-        public async Task<ApiResponse<UserResponseModel>> Post(UserRequest model)
+        public async Task<ApiResponse<UserResponseModel>> Post(UserRequestModel model)
         {
             try
             {

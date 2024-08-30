@@ -20,7 +20,7 @@ public static  class ApiMessages
     public static readonly string Success = "Success.";
     public static readonly string Error = "Error.";
     public static readonly string InvaildAPIStatusCodes = "Invalid status code.";
-    public static readonly string Admin = "Admin";
+/*  public static readonly string Admin = "Admin";*/
     public static readonly string EmailTemplates = "EmailTemplates";
     public static readonly string Templates = "D:\\Repository\\KashmirService\\API\\KashmirServices-Api\\KashmirService.Infrastructure\\EmailTemplates";
     public static readonly string ConfirmEmailSubject = "Verify Your Email And Complete Registration";
@@ -54,6 +54,19 @@ public static  class ApiMessages
         public static readonly string UsersFetchedSuccessfully = "Users Found Successfully";
         public static readonly string UserFound = "User Found Successfully";
         public static readonly string UserNotFound = "User not found.";
+
+    }
+    public static class Admin
+    {
+        /* public const string NameAlreadyTaken = "Name is already taken.";*/
+        public const string AdminAddedSuccessfully = "Admin Added Successfully";
+        public static readonly string Error = "Error.";
+        public static readonly string AdminFetchedSuccessfully = "Processes Found Successfully";
+        public static readonly string AdminFound = "Process Found Successfully";
+        public static readonly string AdminAlreadyExists = "An admin with the provided details already exists.";
+        public static readonly string AdminNotFound = "Process not found.";
+        public static readonly string AdminUpdatedSuccessfully = "Process Updated Successfully.";
+
 
     }
     public static class EnquiryManagement
@@ -138,6 +151,8 @@ public static  class ApiMessages
         public static readonly string ProcessFound = "Process Found Successfully";
         public static readonly string ProcessNotFound = "Process not found.";
         public static readonly string ProcessUpdatedSuccessfully = "Process Updated Successfully.";
+        public static readonly string ProcessStepAlreadyExists = "this Process step Already Exists.";
+
 
 
     }

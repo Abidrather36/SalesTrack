@@ -312,7 +312,7 @@ namespace salesTrack.Application.Services
 
                 if (AdminId == Guid.Empty)
                 {
-                    return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.Admin, HttpStatusCodes.BadRequest);
+                    return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.Admin.AdminNotFound, HttpStatusCodes.BadRequest);
                 }
                 else
                 {
