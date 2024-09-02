@@ -81,20 +81,20 @@ public static  class ApiMessages
         public static readonly string EnquiryFound = "One Enquiry Found.";
 
     }
-    public static class ProcessManagement
+    public static class ProcessManagement 
     {
-        public static readonly string ProcessNotFound = "Process not found.";
-        public static readonly string ProcessAddedSuccessfully = "Process added successfully.";
-        public static readonly string ProcessUpdateFailed = "Failed to update the process.";
-        public static readonly string InvalidProcessData = "Invalid process data provided.";
-        public static readonly string ProcessDeletedSuccessfully = "Process deleted successfully.";
-        public static readonly string ProcessDeletionFailed = "Failed to delete the process.";
-        public static readonly string DuplicateProcessName = "A process with this name already exists.";
-        public static readonly string ProcessIdRequired = "Process ID is required.";
-        public static readonly string UnauthorizedProcessAccess = "You do not have permission to access this process.";
-        public static readonly string ProcessUpdateSuccess = "Process updated successfully.";
-        public static readonly string ProcessListRetrievedSuccessfully = "Process list retrieved successfully.";
-        public static readonly string ProcessFound = "Process found successfully.";
+        public static readonly string StepProcessNotFound = "Process not found.";
+        public static readonly string StepProcessAddedSuccessfully = "Process added successfully.";
+        public static readonly string StepProcessUpdateFailed = "Failed to update the process.";
+        public static readonly string StepInvalidProcessData = "Invalid process data provided.";
+        public static readonly string StepProcessDeletedSuccessfully = "Process deleted successfully.";
+        public static readonly string StepProcessDeletionFailed = "Failed to delete the process.";
+        public static readonly string StepDuplicateProcessName = "A process with this name already exists.";
+        public static readonly string StepProcessIdRequired = "Process ID is required.";
+        public static readonly string StepUnauthorizedProcessAccess = "You do not have permission to access this process.";
+        public static readonly string StepProcessUpdateSuccess = "Process updated successfully.";
+        public static readonly string StepProcessListRetrievedSuccessfully = "Process list retrieved successfully.";
+        public static readonly string StepProcessFound = "Process found successfully.";
     }
     public static class LeadManagement
     {

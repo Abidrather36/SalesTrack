@@ -36,7 +36,7 @@ namespace salesTrack.Api.Controllers
         }
 
         [HttpPost("add-process-steps")]
-        public async Task<ApiResponse<AdminProcessStepResponseModel>> AddProcessSteps(AdminProcessStepRequestModel model)
+        public async Task<ApiResponse<AdminProcessStepResponseModel>> AddProcessStep(AdminProcessStepRequestModel model)
         {
             try
             {
@@ -46,6 +46,59 @@ namespace salesTrack.Api.Controllers
             {
                 throw;
             }
+        }
+
+        [HttpPut("update-process-steps")]
+        public async Task<ApiResponse<AdminProcessStepResponseModel>> UpdateProcessStep(UpdateAdminProcessStepModel model)
+        {
+            try
+            {
+                return await adminService.UpdateAdminProcessStep(model);
+            }
+            catch (Exception ex)
+            {
+                throw ;  
+            }
+        }
+
+        [HttpGet("getAll-process-steps")]
+        public async Task<ApiResponse<IEnumerable<AdminProcessStepResponseModel>>> GetAllProcessSteps()
+        {
+            try
+            {
+               return await adminService.GetAllAdminProcessSteps();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet("GetById-process-step/{id:guid}")]
+        public async Task<ApiResponse<AdminProcessStepResponseModel>> GetProcessStepById(Guid Id)
+        {
+            try
+            {
+                return await adminService.GetAdminProcessStepById(Id);
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<ApiResponse<DeleteAdminProcessStepResponseModel>> DeleteAdminProcessStepById(Guid Id)
+        {
+            try
+            {
+                return await adminService.DeleteAdminProcessStep(Id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
         }
     }
 }

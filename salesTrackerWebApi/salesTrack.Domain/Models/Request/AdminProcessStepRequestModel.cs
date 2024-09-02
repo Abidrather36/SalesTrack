@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace salesTrack.Domain.Models.Request
 {
     public class AdminProcessStepRequestModel
     {
+        [Required]
         public string? StepName { get; set; }
+        
     }
 }

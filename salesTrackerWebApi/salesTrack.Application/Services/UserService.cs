@@ -41,9 +41,6 @@ namespace salesTrack.Application.Services
                     CreatedDate=DateTime.Now,
                     IsActive=true,
                     UserRole = model.UserType == UserType.SalesExecutive ? UserRole.SalesExecutive : UserRole.SalesManager,
-                    
-
-                    
                 };
                 user.Salt = AppEncryption.GenerateSalt();
                 user.Password = AppEncryption.CreatePassword(newPassword, user.Salt);
