@@ -2,7 +2,7 @@
 
 namespace salesTrack.Domain.Models.Response
 {
-    public class ProcessResponseModel:ProcessRequestModel
+    public class ProcessResponseModel:LeadProcessRequestModel
     {
         public Guid Id { get; set; }
         public bool IsActive { get; set; }

@@ -7,8 +7,9 @@ namespace salesTrack.Domain.Entities
     public class LeadProcessSteps:BaseModel
     {
         public string? StepDescription { get; set;}
-        public Guid ProcessStepId { get; set; }
-        [ForeignKey(nameof(ProcessStepId))]
+        public Guid AdminProcessStepId { get; set; }
+
+        [ForeignKey(nameof(AdminProcessStepId))]
         public AdminProcessStep? ProcessStepAdmin { get; set; }
 
         public Guid LeadId { get; set; }

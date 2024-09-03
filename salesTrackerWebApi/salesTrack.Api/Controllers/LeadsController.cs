@@ -87,8 +87,8 @@ namespace salesTrack.Api.Controllers
 
         }
         /*   [Authorize(Roles = nameof(UserRole.Admin))]*/
-        [HttpPost("Add-LeadProcess")]
-        public async Task<ApiResponse<ProcessResponseModel>> AddProcessStep(ProcessRequestModel model)
+       /* [HttpPost("Add-LeadProcess")]
+        public async Task<ApiResponse<ProcessResponseModel>> AddProcessStep(LeadProcessRequestModel model)
         {
             try
             {
@@ -98,20 +98,34 @@ namespace salesTrack.Api.Controllers
             {
                 throw;
             }
-        }
+        }*/
         
-        [HttpPut("Update-LeadProcess")]
-        public async Task<ApiResponse<ProcessResponseModel>> UpdateProcessStep(ProcessUpdateModel model)
+        [HttpPut("updateLeadProcessStep")]
+        public async Task<ApiResponse<LeadProcessResponseModel>> UpdateLeadProcessStep(LeadProcessUpdateModel model)
         {
             try
             {
-                return await leadService.UpdateProcessSteps(model);
+                return await leadService.UpdateLeadProcessSteps(model);
             }
 
             catch (Exception ex)
             {
                 throw;
             }
+        }
+
+        [HttpPost("addLeadProcessStep")]
+        public async Task<ApiResponse<LeadProcessResponseModel>> AddLeadProcessStep(LeadProcessRequestModel model)
+        {
+            try
+            {
+                return await leadService.AddLeadProcessStep(model);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
         }
         
     }

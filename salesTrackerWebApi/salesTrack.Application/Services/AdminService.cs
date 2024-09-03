@@ -194,7 +194,7 @@ namespace salesTrack.Application.Services
                             StepName = adminProcessStep.StepName,
                             IsActive = false
                         };
-                        return ApiResponse<DeleteAdminProcessStepResponseModel>.SuccessResponse(model, ApiMessages.ProcessManagement.ProcessDeletedSuccessfully, HttpStatusCodes.OK);
+                        return ApiResponse<DeleteAdminProcessStepResponseModel>.SuccessResponse(model, ApiMessages.ProcessManagement.StepProcessDeletedSuccessfully, HttpStatusCodes.OK);
                     }
                     else
                     {

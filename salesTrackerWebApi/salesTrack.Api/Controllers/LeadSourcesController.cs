@@ -21,7 +21,7 @@ namespace salesTrack.Api.Controllers
             this.leadSourceService = leadSourceService;
         }
 
-        [HttpPost]
+        [HttpPost("addLeadSource")]
         public async Task<ApiResponse<LeadSourceResponseModel>> AddLeadSource(LeadSourceRequestModel model)
         {
             try
@@ -47,7 +47,7 @@ namespace salesTrack.Api.Controllers
             }
 
         }
-        [HttpGet("GetLeadSourceById{id:guid}")]
+        [HttpGet("GetLeadSourceById/{id:guid}")]
         public async Task<ApiResponse<LeadSourceResponseModel>> GetLeadSourceById(Guid id)
         {
             try

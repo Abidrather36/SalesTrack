@@ -2,12 +2,12 @@
 
 namespace salesTrack.Domain.Models.Request
 {
-    public class ProcessRequestModel
+    public class LeadProcessRequestModel
     {
         [Required]
         public Guid LeadId { get; set; }
         [Required]
-        public string? StepName { get; set; }
+        public Guid AdminProcessStepId { get; set; } 
         [Required]
         public string? StepDescription { get; set; }
     }

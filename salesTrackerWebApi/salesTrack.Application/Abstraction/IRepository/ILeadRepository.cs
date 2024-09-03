@@ -8,9 +8,9 @@ namespace salesTrack.Application.Abstraction.IRepository
     {
         Task<LeadResponseModel> GetLeadById(Guid leadId);
         Task<IEnumerable<LeadResponseModel>> GetAllLeadsAsync();
-        Task<int> AddProcess(LeadProcessSteps model);
-        Task<int> UpdateProcess(LeadProcessSteps model);
-        Task<LeadProcessSteps> GetProcessStepById(Guid id);
+        Task<int> AddLeadProcessStep(LeadProcessSteps model);
+        Task<int> UpdateLeadProcessStep(LeadProcessSteps model);
+        Task<LeadProcessSteps> GetLeadProcessStepById(Guid id);
 
     }
 }

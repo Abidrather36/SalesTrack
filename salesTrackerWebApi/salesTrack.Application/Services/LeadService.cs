@@ -304,66 +304,13 @@ namespace salesTrack.Application.Services
 
             }
         }
-        public async Task<ApiResponse<ProcessResponseModel>> AddProcessSteps(ProcessRequestModel model)
+
+
+     /*   public async Task<ApiResponse<ProcessResponseModel>> UpdateLeadProcessSteps(LeadProcessUpdateModel model)
         {
             try
             {
-                var AdminId = contextService.UserId();
-
-                if (AdminId == Guid.Empty)
-                {
-                    return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.Admin.AdminNotFound, HttpStatusCodes.BadRequest);
-                }
-                else
-                {
-                    LeadProcessSteps processSteps = new()
-                    {
-                        Id = Guid.NewGuid(),
-                        StepDescription = model.StepDescription,
-                        CreatedBy = AdminId,
-                        CreatedDate = DateTime.UtcNow,
-                        IsActive = true,
-                        ModifiedDate = DateTime.UtcNow,
-                        ModifiedBy = AdminId,
-                        LeadId = model.LeadId,
-                        DeletedBy = Guid.Empty,
-                        DeletedDate = DateTime.Now,
-
-                    };
-
-                    var processAdded = await leadRepository.AddProcess(processSteps);
-
-                    if (processAdded <= 0)
-                    {
-                        return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
-                    }
-                    else
-                    {
-
-                        return ApiResponse<ProcessResponseModel>.SuccessResponse(new ProcessResponseModel
-                        {
-                            Id = processSteps.Id,
-                            StepDescription = processSteps.StepDescription,
-                            LeadId = processSteps.LeadId,
-
-                        }, ApiMessages.Process.ProcessAddedSuccessfully, HttpStatusCodes.OK);
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
-            }
-
-
-        }
-
-        public async Task<ApiResponse<ProcessResponseModel>> UpdateProcessSteps(ProcessUpdateModel model)
-        {
-            try
-            {
-                var processStep = await leadRepository.GetProcessStepById(model.Id);
+                var processStep = await leadRepository.GetLeadProcessStepById(model.Id);
                 if (processStep is null)
                 {
                     return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.Process.ProcessNotFound, HttpStatusCodes.BadRequest);
@@ -372,7 +319,7 @@ namespace salesTrack.Application.Services
                 {
                     processStep.StepDescription = model.StepDescription;
 
-                    var result = await leadRepository.UpdateProcess(processStep);
+                    var result = await leadRepository.UpdateLeadProcessStep(processStep);
                     if (result > 0)
                     {
                         return ApiResponse<ProcessResponseModel>.SuccessResponse(new ProcessResponseModel
@@ -395,6 +342,107 @@ namespace salesTrack.Application.Services
 
             }
 
+        }*/
+
+        public async Task<ApiResponse<LeadProcessResponseModel>> AddLeadProcessStep(LeadProcessRequestModel model)
+        {
+            try
+            {
+                var loggedInUser = contextService.UserId();
+
+                if (loggedInUser == Guid.Empty)
+                {
+                    return ApiResponse<LeadProcessResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                }
+                else
+                {
+                    LeadProcessSteps leadSteps = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        StepDescription = model.StepDescription,
+                        AdminProcessStepId = model.AdminProcessStepId,
+                        LeadId = model.LeadId,
+                        CreatedBy = loggedInUser,
+                        ModifiedBy = Guid.Empty,
+                        ModifiedDate = DateTime.Now,
+                        CreatedDate = DateTime.Now,
+                        IsActive = true,
+                        DeletedBy = Guid.Empty,
+
+                    };
+                    var leadProcessAdded = await leadRepository.AddLeadProcessStep(leadSteps);
+                    if (leadProcessAdded > 0)
+                    {
+                        LeadProcessResponseModel leadProcessResponseModel = new()
+                        {
+                            Id = leadSteps.Id,
+                            StepDescription = leadSteps.StepDescription,
+                            AdminProcessStepId = leadSteps.AdminProcessStepId,
+                            LeadId = leadSteps.LeadId,
+                        };
+                        return ApiResponse<LeadProcessResponseModel>.SuccessResponse(leadProcessResponseModel, ApiMessages.Process.ProcessAddedSuccessfully, HttpStatusCodes.Created);
+                    }
+                    else
+                    {
+                        return ApiResponse<LeadProcessResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                return ApiResponse<LeadProcessResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+        }
+
+        public async  Task<ApiResponse<LeadProcessResponseModel>> UpdateLeadProcessSteps(LeadProcessUpdateModel model)
+        {
+            try
+            {
+                var loggedInUser = contextService.UserId();
+                if (loggedInUser == Guid.Empty)
+                {
+                    return ApiResponse<LeadProcessResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                }
+                var leadProcessStep = await leadRepository.GetLeadProcessStepById(model.Id);
+                if (leadProcessStep is null)
+                {
+                    return ApiResponse<LeadProcessResponseModel>.ErrorResponse(ApiMessages.Process.ProcessNotFound, HttpStatusCodes.BadRequest);
+
+                }
+                else
+                {  
+                   
+                    leadProcessStep.StepDescription = model.StepDescription;
+                    leadProcessStep.AdminProcessStepId = model.AdminProcessStepId;
+                    leadProcessStep.LeadId = model.LeadId;
+                    leadProcessStep.ModifiedBy = loggedInUser;
+                    leadProcessStep.ModifiedDate = DateTime.Now;
+
+
+                    var leadProcessResponse = await leadRepository.UpdateLeadProcessStep(leadProcessStep);
+                    if (leadProcessResponse > 0)
+                    {
+                        LeadProcessResponseModel leadProcessResponseModel = new()
+                        {
+                            Id = leadProcessStep.Id,
+                            AdminProcessStepId = leadProcessStep.AdminProcessStepId,
+                            LeadId = leadProcessStep.LeadId,
+                        };
+                        return ApiResponse<LeadProcessResponseModel>.SuccessResponse(leadProcessResponseModel, ApiMessages.Process.ProcessUpdatedSuccessfully, HttpStatusCodes.OK);
+                    }
+                    else
+                    {
+                        return ApiResponse<LeadProcessResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<LeadProcessResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
         }
     }
 }

@@ -103,7 +103,7 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
-        [HttpGet("GetUserById{id:guid}")]
+        [HttpGet("GetUserById/{id:guid}")]
         public async Task<ApiResponse<UserResponseModel>> GetUserById(Guid id)
         {
             try

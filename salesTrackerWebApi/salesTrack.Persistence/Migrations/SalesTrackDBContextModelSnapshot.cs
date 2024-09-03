@@ -89,16 +89,16 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2c8b90c0-d5ee-40de-8557-ef146b53d763"),
+                            Id = new Guid("8d09171c-9cd4-4766-8d4d-04f77e9856e1"),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "MjLl1GAHfNa467vOHVezMRRMCyGFkHd1l+KyJ5GzGD8=",
+                            Password = "g8cU2sReTyVSg+qxAmf3rflWyhJBk8c23bVlngvl8kg=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 30, 5, 46, 47, 23, DateTimeKind.Unspecified).AddTicks(3812), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "S9X2dMsuG7i5MzDYcqhx1w==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 9, 3, 7, 12, 16, 79, DateTimeKind.Unspecified).AddTicks(3206), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "aNvr18p5KsUIMZR77JO/pg==",
                             UserRole = (byte)1,
                             UserType = (byte)0
                         });
@@ -314,6 +314,9 @@ namespace salesTrack.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("AdminProcessStepId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -338,17 +341,14 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<DateTimeOffset?>("ModifiedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("ProcessStepId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("StepDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LeadId");
+                    b.HasIndex("AdminProcessStepId");
 
-                    b.HasIndex("ProcessStepId");
+                    b.HasIndex("LeadId");
 
                     b.ToTable("LeadProcessSteps");
                 });
@@ -434,15 +434,15 @@ namespace salesTrack.Persistence.Migrations
 
             modelBuilder.Entity("salesTrack.Domain.Entities.LeadProcessSteps", b =>
                 {
-                    b.HasOne("salesTrack.Domain.Entities.Lead", "Lead")
+                    b.HasOne("salesTrack.Domain.Entities.AdminProcessStep", "ProcessStepAdmin")
                         .WithMany()
-                        .HasForeignKey("LeadId")
+                        .HasForeignKey("AdminProcessStepId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("salesTrack.Domain.Entities.AdminProcessStep", "ProcessStepAdmin")
+                    b.HasOne("salesTrack.Domain.Entities.Lead", "Lead")
                         .WithMany()
-                        .HasForeignKey("ProcessStepId")
+                        .HasForeignKey("LeadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

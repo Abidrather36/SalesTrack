@@ -1,5 +1,4 @@
-﻿using salesTrack.Domain.Entities;
-using salesTrack.Domain.Enums;
+﻿using salesTrack.Domain.Enums;
 using SalesTrack.Domain.Entities;
 using SalesTrack.Domain.Shared;
 using System.ComponentModel.DataAnnotations.Schema;

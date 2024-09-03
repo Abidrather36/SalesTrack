@@ -17,7 +17,7 @@ namespace salesTrack.Persistence.Repository
             this.context = context;
         }
 
-        public async Task<int> AddProcess(LeadProcessSteps model)
+        public async Task<int> AddLeadProcessStep(LeadProcessSteps model)
         {
            await context.LeadProcessSteps.AddAsync(model);
            return await context.SaveChangesAsync();
@@ -67,13 +67,13 @@ namespace salesTrack.Persistence.Repository
 
         }
 
-        public async Task<LeadProcessSteps?> GetProcessStepById(Guid id)
+        public async Task<LeadProcessSteps?> GetLeadProcessStepById(Guid id)
         {
            var procStep= context.LeadProcessSteps.FindAsync(id);
             return await procStep;
         }
 
-        public async Task<int> UpdateProcess(LeadProcessSteps model)
+        public async Task<int> UpdateLeadProcessStep(LeadProcessSteps model)
         {
             var processResponse=  await Task.Run(()=>  context.LeadProcessSteps.Update(model));
             return await context.SaveChangesAsync();
