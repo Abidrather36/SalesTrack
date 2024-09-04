@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace salesTrack.Domain.Models
 {
-   public class UserResponse
+   public class UserResponseModel
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }

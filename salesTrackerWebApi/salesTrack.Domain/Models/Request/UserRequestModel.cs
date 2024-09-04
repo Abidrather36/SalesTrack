@@ -3,7 +3,7 @@
 namespace SalesTrack.Domain.Entities.Models.Request
 {
   
-    public class UserRequest
+    public class UserRequestModel
     {
         public string? Name { get; set; }
         public string? Email { get; set; }

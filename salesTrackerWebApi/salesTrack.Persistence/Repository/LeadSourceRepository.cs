@@ -5,11 +5,11 @@ using SalesTrack.Persistence.Repository;
 
 namespace salesTrack.Persistence.Repository
 {
-    public class ProcessRepository:BaseRepository<ProcessSteps>,IProcessRepository
+    public class LeadSourceRepository:BaseRepository<LeadSource>,ILeadSourceRepository
     {
-        public ProcessRepository(SalesTrackDBContext context):base(context)
+        public LeadSourceRepository(SalesTrackDBContext context):base(context)
         {
-            
+                
         }
     }
 }

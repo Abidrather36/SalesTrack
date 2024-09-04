@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using salesTrack.Application.Abstraction.IService;
+using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
@@ -23,8 +25,8 @@ namespace salesTrack.Api.Controllers
             this.userService = userService;
         }
 
-        [HttpPost("User")]
-        public async Task<ApiResponse<UserResponse>> Post(UserRequest model)
+        [HttpPost("User-SignUp")]
+        public async Task<ApiResponse<UserResponseModel>> Post(UserRequestModel model)
         {
             try
             {
@@ -88,6 +90,31 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
-    
+
+        [HttpGet("GetAllUsers")]
+        public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsers( )
+        {
+            try
+            {
+                return await authService.GetAllUsers();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        [HttpGet("GetUserById/{id:guid}")]
+        public async Task<ApiResponse<UserResponseModel>> GetUserById(Guid id)
+        {
+            try
+            {
+                return await authService.GetUserById(id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
     }
 }

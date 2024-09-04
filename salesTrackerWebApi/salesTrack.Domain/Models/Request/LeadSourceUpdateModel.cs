@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace salesTrack.Domain.Entities
+namespace salesTrack.Domain.Models.Request
 {
-    public  class SalesExecutive
+    internal class LeadSourceUpdateModel:LeadRequestModel
     {
     }
 }

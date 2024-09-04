@@ -36,7 +36,11 @@ namespace salesTrack.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+          /*  app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "PostAPI");
+                c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
+            });*/
             app.UseAuthorization();
 
 

@@ -6,6 +6,7 @@ using salesTrack.Application.Abstraction.IService;
 using salesTrack.Application.Abstraction.Jwt;
 using salesTrack.Application.Utils;
 using salesTrack.Domain.Enums;
+using salesTrack.Domain.Models;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Common;
@@ -73,6 +74,60 @@ namespace salesTrack.Application.Services
             catch (Exception ex)
             {
                 return ApiResponse<string>.ErrorResponse("Failed to send reset code. Please try again.", HttpStatusCodes.InternalServerError);
+            }
+        }
+
+        public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsers()
+        {
+           var users=await authRepository.GetAllAsync();
+            if (users.Any())
+            {
+               var user= users.Select(x => new UserResponseModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Email = x.Email,
+                    IsPasswordTemporary = x.IsPasswordTemporary,
+                    PhoneNumber = x.PhoneNumber,
+                    UserRole = x.UserRole,
+                    UserType = x.UserType,
+                    ReportsTo = x.ReportsTo,
+
+                });
+
+                return ApiResponse<IEnumerable<UserResponseModel>>.SuccessResponse(user, ApiMessages.User.UsersFetchedSuccessfully, HttpStatusCodes.OK);
+
+            }
+            else
+            {
+                return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse( ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+            }
+        }
+
+        public async Task<ApiResponse<UserResponseModel>> GetUserById(Guid id)
+        {
+          var user= await authRepository.GetByIdAsync(id);
+            if(user is null)
+            {
+                return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.Auth.UserNotFound, HttpStatusCodes.BadRequest);
+
+            }
+            else
+            {
+                UserResponseModel userResponseModel = new()
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Email = user.Email,
+                    IsPasswordTemporary = user.IsPasswordTemporary,
+                    PhoneNumber = user.PhoneNumber,
+                    UserRole = user.UserRole,
+                    UserType = user.UserType,
+                    ReportsTo = user.ReportsTo,
+
+                };
+                return ApiResponse<UserResponseModel>.SuccessResponse(userResponseModel,ApiMessages.User.UserFound, HttpStatusCodes.OK);
+
             }
         }
 

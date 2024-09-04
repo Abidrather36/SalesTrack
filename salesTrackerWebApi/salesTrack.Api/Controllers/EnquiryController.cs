@@ -46,7 +46,7 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-        [HttpGet("getById{id:guid}")]
+        [HttpGet("getById/{id:guid}")]
 
         public async Task<ApiResponse<EnquiryResponseModel>> GetEnquiryById(Guid Id)
         {
