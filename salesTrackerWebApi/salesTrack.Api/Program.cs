@@ -25,7 +25,7 @@ namespace salesTrack.Api
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.WithOrigins()
+                    policy.WithOrigins("http://localhost:3000")
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();
@@ -40,11 +40,12 @@ namespace salesTrack.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-          /*  app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v2/swagger.json", "PostAPI");
-                c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
-            });*/
+            /*  app.UseSwaggerUI(c =>
+              {
+                  c.SwaggerEndpoint("/swagger/v2/swagger.json", "PostAPI");
+                  c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
+              });*/
+            app.UseCors();
             app.UseAuthorization();
 
 
