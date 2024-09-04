@@ -2,12 +2,11 @@
 
 namespace salesTrack.Domain.Models.Request
 {
-    public class LeadSourceRequestModel
+    public class LeadCommentsRequestModel
     {
         [Required]
-        public string? LeadSourceName { get; set; }
+        public string? Text { get; set; }
         [Required]
-        public string? Description { get; set; }
-
+        public Guid LeadId { get; set; }
     }
 }

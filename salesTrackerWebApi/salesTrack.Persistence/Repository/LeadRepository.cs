@@ -17,6 +17,18 @@ namespace salesTrack.Persistence.Repository
             this.context = context;
         }
 
+        public async Task<int> AddComment(Comments model)
+        {
+          await context.LeadComments.AddAsync(model);
+            return await context.SaveChangesAsync();
+        }
+
+        public async Task<int> AddfollowUpdate(FollowUpDate model)
+        {
+          await  context.FollowUpDates.AddAsync(model);
+          return  await context.SaveChangesAsync();
+        }
+
         public async Task<int> AddLeadProcessStep(LeadProcessSteps model)
         {
            await context.LeadProcessSteps.AddAsync(model);
@@ -47,6 +59,7 @@ namespace salesTrack.Persistence.Repository
 
         public async  Task<LeadResponseModel> GetLeadById(Guid leadId)
         {
+            
            var detailsModel =await context.Leads.Where(x => x.Id == leadId).Select(x => new LeadResponseModel
             {
                 Id = x.Id,

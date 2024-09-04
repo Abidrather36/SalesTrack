@@ -1,10 +1,12 @@
 ﻿using SalesTrack.Domain.Shared;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace salesTrack.Domain.Entities
 {
     public class FollowUpDate:BaseModel
     {
+      
         public DateTime Date { get; set; }
         public DateTime Time { get; set; }
 

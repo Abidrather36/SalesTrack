@@ -444,5 +444,104 @@ namespace salesTrack.Application.Services
 
             }
         }
+
+        public async Task<ApiResponse<LeadCommentsResponseModel>> AddComment(LeadCommentsRequestModel model)
+        {
+            try
+            {
+                var loggedInUser = contextService.UserId();
+                if (loggedInUser == Guid.Empty)
+                {
+                    return ApiResponse<LeadCommentsResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                }
+                else
+                {
+                    Comments comments = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        LeadId = model.LeadId,
+                        Text = model.Text,
+                        CreatedBy=loggedInUser,
+                        CreatedDate=DateTime.Now,
+                        ModifiedBy=Guid.Empty,
+                        ModifiedDate=null,
+                        IsActive=true,
+                        DeletedBy=Guid.Empty,
+                        DeletedDate=null,
+
+                    };
+                    var commentAdded = await leadRepository.AddComment(comments);
+                    if (commentAdded > 0)
+                    {
+                        LeadCommentsResponseModel leadCommentsResponseModel = new()
+                        {
+                            Id = comments.Id,
+                            Text = comments.Text,
+                            LeadId = comments.LeadId,
+                        };
+                        return ApiResponse<LeadCommentsResponseModel>.SuccessResponse(leadCommentsResponseModel, "Comment added Successfully", HttpStatusCodes.Created);
+                    }
+                    else
+                    {
+                        return ApiResponse<LeadCommentsResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<LeadCommentsResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+        }
+
+        public async Task<ApiResponse<LeadFollowUpdateResponse>> AddLeadFollowUpdate(LeadFollowUpdateRequest model)
+        {
+            try
+            {
+                var loggedInUser = contextService.UserId();
+                if (loggedInUser.Equals(Guid.Empty))
+                {
+                    return ApiResponse<LeadFollowUpdateResponse>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                }
+                else
+                {
+                    FollowUpDate followUpDate = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Date = model.Date,
+                        Time = model.Time,
+                        LeadId = model.LeadId,
+                        CreatedBy = loggedInUser,
+                        CreatedDate = DateTime.Now,
+                        DeletedBy = Guid.Empty,
+                        DeletedDate = null,
+                        ModifiedBy = Guid.Empty,
+                        ModifiedDate = null
+                    };
+                    var followUpdateAdded = await leadRepository.AddfollowUpdate(followUpDate);
+                    if (followUpdateAdded > 0)
+                    {
+                        LeadFollowUpdateResponse response = new()
+                        {
+                            Id = followUpDate.Id,
+                            Date = followUpDate.Date,
+                            Time = followUpDate.Time,
+                            LeadId = followUpDate.LeadId,
+                        };
+                        return ApiResponse<LeadFollowUpdateResponse>.SuccessResponse(response, "FollowUpdate added Successfully", HttpStatusCodes.Created);
+                    }
+                    else
+                    {
+                        return ApiResponse<LeadFollowUpdateResponse>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<LeadFollowUpdateResponse>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+        }
     }
 }
