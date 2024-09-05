@@ -6,6 +6,8 @@ import Login from './Public/Components/Auth/Login';
 import './App.css'; // Import global styles if needed
 import Navbar from './Public/Components/Navbar';
 import RegisterEnquiry from './Public/Components/Auth/RegisterEnquiry';
+import Contact from './Public/Components/Contact';
+import About from './Public/Components/About';
 const App = () => {
     return (
        <>
@@ -17,7 +19,12 @@ const App = () => {
              <Route path="/" element={<HomePage />} />
              <Route path="/signin" element={<Login />} />
              <Route path="/enquiry" element ={<RegisterEnquiry/>}/>
+             <Route path="/contact" element={<Contact/>} />
+             <Route path="/about" element={<About/>}/>
           </Routes>
+          <div >
+          <About/>
+          </div>
           <div >
           <Footer/>
           </div>

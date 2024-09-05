@@ -2,9 +2,10 @@ import { useState } from "react";
 import InputField from "../InputField";
 import Spin from "../Spin";
 import { signUpUser } from "../../../Services/AuthService";
-import { toast, ToastContainer } from "react-toastify";
+import {  ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { HttpStatusCode } from "axios";
+import myToaster from "../../../utils/toaster";
 
 function RegisterEnquiry() {
   const [name, setName] = useState("");
@@ -26,16 +27,17 @@ function RegisterEnquiry() {
       const response = await signUpUser(signUpObj);
       console.log(response);
       if (response.isSuccess) {
-        toast.success(response.message);
+        myToaster.showSuccessToast(response.message)
       } else {
-        toast.error(response.message);
+      myToaster.showErrorToast(response.message)
       }
     } catch (error) {
       if(error.message===HttpStatusCode.BadRequest){
-        toast.error("incorrect payload!");
+        myToaster.showErrorToast("incorrect payload!");
       }
       else{
-        toast.error(error.message)
+        
+        myToaster.showErrorToast(error.message)
       }
     } finally {
       setLoading(false);
@@ -73,6 +75,7 @@ function RegisterEnquiry() {
                   type="email"
                   placeholder="Your email address"
                   value={email}
+                  pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <InputField

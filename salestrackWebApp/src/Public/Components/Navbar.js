@@ -1,18 +1,18 @@
-import { PrimeIcons } from 'primereact/api';
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { PrimeIcons } from "primereact/api";
+import React from "react";
+import { Link } from "react-router-dom";
 let projectLogoName = "Sales Track";
 
 function Navbar() {
   return (
     <div>
-       <header
+      <header
         id="header"
         className="header d-flex align-items-center fixed-top"
         style={{
-          backgroundColor: "#ffffff", 
+          backgroundColor: "#ffffff",
           padding: "10px 0",
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", 
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         }}
       >
         <div className="container-fluid container-xl position-relative d-flex align-items-center">
@@ -25,7 +25,7 @@ function Navbar() {
               style={{
                 fontSize: "24px",
                 fontWeight: "bold",
-                color: "#333", 
+                color: "#333",
                 margin: 0,
               }}
             >
@@ -63,7 +63,7 @@ function Navbar() {
                   to="/enquiry"
                   style={{ textDecoration: "none", color: "#333" }}
                 >
-             ENQUIRY
+                  ENQUIRY
                 </Link>
               </li>
               <li>
@@ -71,7 +71,15 @@ function Navbar() {
                   to="/contact"
                   style={{ textDecoration: "none", color: "#333" }}
                 >
-            CONTACT
+                  CONTACT
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/about"
+                  style={{ textDecoration: "none", color: "#333" }}
+                >
+                  ABOUT
                 </Link>
               </li>
             </ul>
@@ -96,13 +104,16 @@ function Navbar() {
               alignItems: "center",
             }}
           >
-           <i className={PrimeIcons.SIGN_IN} style={{marginRight:"10px"}}></i>
-           Log In
+            <i
+              className={PrimeIcons.SIGN_IN}
+              style={{ marginRight: "10px" }}
+            ></i>
+            Log In
           </Link>
         </div>
       </header>
     </div>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;
