@@ -20,12 +20,12 @@ body {
 }
 
 .login-container {
-  margin-top: 89px;
+  margin-top: 37px;
   margin-right: 100px;
   padding: 2rem 1.5rem;
   border-radius: 0.5rem;
   background: #fff;
-  height: 60%;
+  height: 65%;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -48,7 +48,6 @@ body {
   font-size: 1.125rem;
   font-weight: 500;
   cursor: pointer;
-  margin-top: 2.19rem;
   border-radius: 0.31rem;
   background: var(--accent-color) !important;
 
@@ -177,7 +176,6 @@ body {
   font-size: 1.125rem;
   font-weight: 500;
   cursor: pointer;
-  margin-top: 2.19rem;
   border-radius: 0.31rem;
   background: #5f41e4;
   transition: 0.3s ease;
@@ -202,3 +200,9 @@ body {
 .login-container a:hover {
   text-decoration: underline;
 }
+
+
+
+
+/* Enquiry registry */
+

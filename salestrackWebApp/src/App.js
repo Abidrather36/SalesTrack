@@ -18,7 +18,7 @@ const App = () => {
              <Route path="/signin" element={<Login />} />
              <Route path="/enquiry" element ={<RegisterEnquiry/>}/>
           </Routes>
-          <div style={{marginTop:"30px"}}>
+          <div >
           <Footer/>
           </div>
          
