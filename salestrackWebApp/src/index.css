@@ -12,11 +12,13 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  
 }
 
 #root {
   width: 100%;
-  padding: 0.6rem;
+  /* padding: 0.6rem; */
+  
 }
 
 .login-container {
@@ -27,6 +29,7 @@ body {
   background: #fff;
   height: 65%;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  
 }
 
 .login-container .form-title {
@@ -200,9 +203,12 @@ body {
 .login-container a:hover {
   text-decoration: underline;
 }
+.navmenu >ul{
+  font-Weight: "bolder",
+}
 
 
 
 
-/* Enquiry registry */
+
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function Footer() {
   return (
@@ -21,40 +22,41 @@ function Footer() {
                         <div className="col-lg-2 col-md-3 footer-links">
                             <h4>Useful Links</h4>
                             <ul>
-                                <li><i className="bi bi-chevron-right"></i> <a href="#">Home</a></li>
-                                <li><i className="bi bi-chevron-right"></i> <a href="#">About us</a></li>
-                                <li><i className="bi bi-chevron-right"></i> <a href="#">Services</a></li>
-                                <li><i className="bi bi-chevron-right"></i> <a href="#">Privacy policy</a></li>
-                                <li><i className="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
+                                <li><i className="bi bi-chevron-right"></i> <Link to="/">Home</Link></li>
+                                <li><i className="bi bi-chevron-right"></i> <Link to="/about">About us</Link></li>
+                                <li><i className="bi bi-chevron-right"></i> <Link to="/Enquiry">Enquiry</Link></li>
+                                <li><i className="bi bi-chevron-right"></i> <Link to="#">Services</Link></li>
+                                <li><i className="bi bi-chevron-right"></i> <Link to="#">Privacy policy</Link></li>
+                                <li><i className="bi bi-chevron-right"></i> <Link to="#">Terms of service</Link></li>
                             </ul>
                         </div>
                         <div className="col-lg-3 col-md-4 footer-links">
                             <h4>Our Services</h4>
                             <ul>
-                                <li><i className="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
-                                <li><i className="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
-                                <li><i className="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
-                                <li><i className="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
-                                <li><i className="bi bi-chevron-right"></i> <a href="#">Graphic Design</a></li>
+                                <li><i className="bi bi-chevron-right"></i> <Link to="#">Web Design</Link></li>
+                                <li><i className="bi bi-chevron-right"></i> <Link to="#">Web Development</Link></li>
+                                <li><i className="bi bi-chevron-right"></i> <Link to="#">Product Management</Link></li>
+                                <li><i className="bi bi-chevron-right"></i> <Link to="#">Marketing</Link></li>
+                                <li><i className="bi bi-chevron-right"></i> <Link to="#">Graphic Design</Link></li>
                             </ul>
                         </div>
                         <div className="col-lg-3 col-md-4 footer-links">
                             <h4>Follow Us</h4>
                             <div className="social-links d-flex mt-2">
-                                <a href="#" className="twitter"><i className="bi bi-twitter"></i></a>
-                                <a href="#" className="facebook"><i className="bi bi-facebook"></i></a>
-                                <a href="#" className="instagram"><i className="bi bi-instagram"></i></a>
-                                <a href="#" className="linkedin"><i className="bi bi-linkedin"></i></a>
+                                <a href="https://www.twitter.com"  target='blank' className="twitter"><i className="bi bi-twitter"></i></a>
+                                <a href="https://www.facebook.com/" target='blank' className="facebook"><i className="bi bi-facebook"></i></a>
+                                <a href="https://www.instagram.com"  target='blank' className="instagram"><i className="bi bi-instagram"></i></a>
+                                <a href="https://www.linkedin.com"  target='blank' className="linkedin"><i className="bi bi-linkedin"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="container mt-4">
                     <div className="copyright">
-                        &copy; <strong><span>Arsha</span></strong>. All Rights Reserved
+                        &copy; <strong><span>Sales track</span></strong>. All Rights Reserved
                     </div>
                     <div className="credits">
-                        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                        Designed by <Link to="https://anterntech.com/" target='blank'>Antern Technologies</Link>
                     </div>
                 </div>
             </footer>

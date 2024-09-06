@@ -1,65 +1,248 @@
-import React from 'react';
-import './Contact.css'; 
+// import React from 'react';
+// import './Contact.css';
+
+// const Contact = () => {
+//   return (
+//    <>
+
+// <section id="contact" class="contact section light-background">
+
+// <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+//   <h2>Contact</h2>
+//   <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+// </div>
+
+// <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+
+//   <div class="row gy-4">
+//     <div class="col-lg-6 ">
+//       <div class="row gy-4">
+
+//         <div class="col-lg-12">
+//           <div class="info-item d-flex flex-column justify-content-center align-items-center aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+//             <i class="bi bi-geo-alt"></i>
+//             <h3>Address</h3>
+//             <p>A108 Adam Street, New York, NY 535022</p>
+//           </div>
+//         </div>
+
+//         <div class="col-md-6">
+//           <div class="info-item d-flex flex-column justify-content-center align-items-center aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+//             <i class="bi bi-telephone"></i>
+//             <h3>Call Us</h3>
+//             <p>+1 5589 55488 55</p>
+//           </div>
+//         </div>
+
+//         <div class="col-md-6">
+//           <div class="info-item d-flex flex-column justify-content-center align-items-center aos-init aos-animate" data-aos="fade-up" data-aos-delay="400">
+//             <i class="bi bi-envelope"></i>
+//             <h3>Email Us</h3>
+//             <p>info@example.com</p>
+//           </div>
+//         </div>
+//         <div class="col-md-6">
+//                 <div class="info-item d-flex flex-column justify-content-center align-items-center aos-init aos-animate" data-aos="fade" data-aos-delay="500">
+//                   <i class="bi bi-clock"></i>
+//                   <h3>Open Hours</h3>
+//                   <p>Monday - Friday</p>
+//                   <p>9:00AM - 05:00PM</p>
+//                 </div>
+//               </div>
+
+//       </div>
+//     </div>
+
+//     <div class="col-lg-6">
+//       <form action="forms/contact.php" method="post" class="php-email-form aos-init aos-animate" data-aos="fade-up" data-aos-delay="500">
+//         <div class="row gy-4">
+
+//           <div class="col-md-6">
+//             <input type="text" name="name" class="form-control" placeholder="Your Name" required=""/>
+//           </div>
+
+//           <div class="col-md-6 ">
+//             <input type="email" class="form-control" name="email" placeholder="Your Email" required=""/>
+//           </div>
+
+//           <div class="col-md-12">
+//             <input type="text" class="form-control" name="subject" placeholder="Subject" required="" spellcheck="false" data-ms-editor="true"/>
+//           </div>
+
+//           <div class="col-md-12">
+//             <textarea class="form-control" name="message" rows="4" placeholder="Message" required="" spellcheck="false" data-ms-editor="true"></textarea>
+//           </div>
+
+//           <div class="col-md-12 text-center">
+//             <div class="loading">Loading</div>
+//             <div class="error-message"></div>
+//             <div class="sent-message">Your message has been sent. Thank you!</div>
+
+//             <button type="submit">Send Message</button>
+//           </div>
+
+//         </div>
+//       </form>
+//     </div>
+
+//   </div>
+
+// </div>
+
+// </section>
+//    </>
+//   );
+// }
+
+// export default Contact;
+
+import React from "react";
+import "./Contact.css";
 
 const Contact = () => {
   return (
-    <div className="contact_us_6">
-      <div className="responsive-container-block container">
-        <form className="form-box">
-          <div className="container-block form-wrapper">
-            <div className="mob-text">
-              <p className="text-blk contactus-head">Get in Touch</p>
-              <p className="text-blk contactus-subhead">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Felis diam lectus sapien.
-              </p>
+    <>
+      <section id="contact" class="contact section">
+        <div
+          class="container section-title aos-init aos-animate"
+          data-aos="fade-up"
+        >
+          <h2>Contact</h2>
+          <p>Contact Us</p>
+        </div>
+
+        <div
+          class="container aos-init aos-animate"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
+          <div class="row gy-4">
+            <div class="col-lg-6">
+              <div class="row gy-4">
+                <div class="col-md-6">
+                  <div
+                    class="info-item aos-init aos-animate"
+                    data-aos="fade"
+                    data-aos-delay="200"
+                  >
+                    <i class="bi bi-geo-alt"></i>
+                    <h3>Address</h3>
+                    <p>A108 Adam Street</p>
+                    <p>New York, NY 535022</p>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div
+                    class="info-item aos-init aos-animate"
+                    data-aos="fade"
+                    data-aos-delay="300"
+                  >
+                    <i class="bi bi-telephone"></i>
+                    <h3>Call Us</h3>
+                    <p>+1 5589 55488 55</p>
+                    <p>+1 6678 254445 41</p>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div
+                    class="info-item aos-init aos-animate"
+                    data-aos="fade"
+                    data-aos-delay="400"
+                  >
+                    <i class="bi bi-envelope"></i>
+                    <h3>Email Us</h3>
+                    <p>info@example.com</p>
+                    <p>contact@example.com</p>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div
+                    class="info-item aos-init aos-animate"
+                    data-aos="fade"
+                    data-aos-delay="500"
+                  >
+                    <i class="bi bi-clock"></i>
+                    <h3>Open Hours</h3>
+                    <p>Monday - Friday</p>
+                    <p>9:00AM - 05:00PM</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="responsive-container-block" id="i2cbk">
-              <div className="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-12 wk-ipadp-12" id="i10mt-3">
-                <p className="text-blk input-title">FIRST NAME</p>
-                <input className="input" id="ijowk-3" name="FirstName" placeholder="Please enter first name..." />
-              </div>
-              <div className="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-12 wk-ipadp-12" id="ip1yp">
-                <p className="text-blk input-title">EMAIL</p>
-                <input className="input" id="ipmgh-3" name="Email" placeholder="Please enter email..." />
-              </div>
-              <div className="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-12 wk-ipadp-12" id="ih9wi">
-                <p className="text-blk input-title">PHONE NUMBER</p>
-                <input className="input" id="imgis-3" name="PhoneNumber" placeholder="Please enter phone number..." />
-              </div>
-              <div className="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-12 wk-ipadp-12" id="i634i-3">
-                <p className="text-blk input-title">WHAT DO YOU HAVE IN MIND ?</p>
-                <textarea className="textinput" id="i5vyy-3" placeholder="Please enter query..." />
-              </div>
+
+            <div class="col-lg-6">
+              <form 
+                action="forms/contact.php"
+                method="post"
+                className="php-email-form aos-init aos-animate"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <div class="row gy-4">
+                  <div class="col-md-6">
+                    <input
+                      type="text"
+                      name="name"
+                      class="form-control"
+                      placeholder="Your Name"
+                      required=""
+                    />
+                  </div>
+
+                  <div class="col-md-6 ">
+                    <input
+                      type="email"
+                      class="form-control"
+                      name="email"
+                      placeholder="Your Email"
+                      required=""
+                    />
+                  </div>
+
+                  <div class="col-12">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="subject"
+                      placeholder="Subject"
+                      required=""
+                      spellcheck="false"
+                      data-ms-editor="true"
+                    />
+                  </div>
+
+                  <div class="col-12">
+                    <textarea
+                      class="form-control"
+                      name="message"
+                      rows="6"
+                      placeholder="Message"
+                      required=""
+                      spellcheck="false"
+                      data-ms-editor="true"
+                    ></textarea>
+                  </div>
+
+                  <div class="col-12 text-center">
+                    <div class="loading">Loading</div>
+                    <div class="error-message"></div>
+                    <div class="sent-message">
+                      Your message has been sent. Thank you!
+                    </div>
+
+                    <button type="submit">Send Message</button>
+                  </div>
+                </div>
+              </form>
             </div>
-            <button className="submit-btn" id="w-c-s-bgc_p-1-dm-id-2">Submit</button>
-          </div>
-        </form>
-        <div className="responsive-cell-block wk-desk-7 wk-ipadp-12 wk-tab-12 wk-mobile-12" id="i772w">
-          <div className="map-part" style={{marginTop:"0px"}}>
-            <p className="text-blk map-contactus-head" id="w-c-s-fc_p-1-dm-id">Reach us at</p>
-            <p className="text-blk map-contactus-subhead">
-             1st Block, 226 2nd Floor, 100 Feet Rd, HRBR Layout, Kalyan Nagar, Bengaluru, Karnataka 560043
-            </p>
-            <div className="social-media-links mob">
-              <a className="social-icon-link" href="#" id="ix94i-2-2">
-                <img className="link-img image-block" src="https://workik-widget-assets.s3.amazonaws.com/Footer1-83/v1/images/Icon-twitter.png" alt="Twitter" />
-              </a>
-              <a className="social-icon-link" href="#" id="itixd">
-                <img className="link-img image-block" src="https://workik-widget-assets.s3.amazonaws.com/Footer1-83/v1/images/Icon-facebook.png" alt="Facebook" />
-              </a>
-              <a className="social-icon-link" href="#" id="izxvt">
-                <img className="link-img image-block" src="https://workik-widget-assets.s3.amazonaws.com/Footer1-83/v1/images/Icon-google.png" alt="Google" />
-              </a>
-              <a className="social-icon-link" href="#" id="izldf-2-2">
-                <img className="link-img image-block" src="https://workik-widget-assets.s3.amazonaws.com/Footer1-83/v1/images/Icon-instagram.png" alt="Instagram" />
-              </a>
-            </div>
-            <div className="map-box container-block"></div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
-}
+};
 
 export default Contact;

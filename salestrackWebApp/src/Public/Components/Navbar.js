@@ -11,8 +11,8 @@ function Navbar() {
         className="header d-flex align-items-center fixed-top"
         style={{
           backgroundColor: "#ffffff",
-          padding: "10px 0",
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+          
+         
         }}
       >
         <div className="container-fluid container-xl position-relative d-flex align-items-center">
@@ -20,6 +20,8 @@ function Navbar() {
             href="index.html"
             className="logo d-flex align-items-center me-auto"
           >
+           
+            <Link to="/">
             <h1
               className="sitename"
               style={{
@@ -31,6 +33,7 @@ function Navbar() {
             >
               {projectLogoName.toLocaleLowerCase()}
             </h1>
+            </Link>
           </a>
           <nav
             id="navmenu"
@@ -46,14 +49,14 @@ function Navbar() {
                 margin: 0,
                 display: "flex",
                 gap: "10px",
-                fontWeight: "bolder",
+             
               }}
             >
               <li>
                 <Link
                   to="/"
                   className="active"
-                  style={{ textDecoration: "none", color: "#333" }}
+                  style={{ textDecoration: "none", color: "#333", fontWeight:"600",}}
                 >
                   HOME
                 </Link>
@@ -61,7 +64,7 @@ function Navbar() {
               <li>
                 <Link
                   to="/enquiry"
-                  style={{ textDecoration: "none", color: "#333" }}
+                  style={{ textDecoration: "none", color: "#333", fontWeight:"600" }}
                 >
                   ENQUIRY
                 </Link>
@@ -69,7 +72,7 @@ function Navbar() {
               <li>
                 <Link
                   to="/contact"
-                  style={{ textDecoration: "none", color: "#333" }}
+                  style={{ textDecoration: "none", color: "#333", fontWeight:"600" }}
                 >
                   CONTACT
                 </Link>
@@ -77,7 +80,7 @@ function Navbar() {
               <li>
                 <Link
                   to="/about"
-                  style={{ textDecoration: "none", color: "#333" }}
+                  style={{ textDecoration: "none", color: "#333",  fontWeight:"600" }}
                 >
                   ABOUT
                 </Link>

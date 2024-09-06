@@ -9,6 +9,7 @@ const HomePage = () => {
         className="main"
         style={{
           backgroundColor: "#f0f0f0", // Light background color
+          
         }}
       >
         <section
@@ -19,6 +20,8 @@ const HomePage = () => {
             alignItems: "center",
             padding: "60px 20px",
             backgroundColor: "#ffffff", // White background for the hero section
+            backgroundColor: "#9bd9f6",
+
           }}
         >
           <div
@@ -29,6 +32,7 @@ const HomePage = () => {
               justifyContent: "center",
               padding: "20px",
               color: "#333", // Dark text color
+
             }}
           >
             <h1
@@ -43,6 +47,12 @@ const HomePage = () => {
               style={{
                 fontSize: "1.2rem",
                 marginBottom: "30px",
+                fontFamily: "'Montserrat', sans-serif", 
+                lineHeight: "1.6",      
+                fontWeight: "500",      
+                color: "#333",          
+                maxWidth: "800px",      
+                margin: "0 auto 20px",  
               }}
             >
               Efficiently manage and track your sales leads, follow-ups, and client interactions with our comprehensive sales tracking system.

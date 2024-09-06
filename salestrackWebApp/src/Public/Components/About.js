@@ -2,8 +2,8 @@ import React from 'react';
 
 const About = () => {
   return (
-    <section className="py-3 py-md-5">
-      <div className="container">
+    <section className="py-3 py-md-5" >
+      <div className="container" >
         <div className="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
           <div className="col-12 col-lg-6 col-xl-5">
             <img

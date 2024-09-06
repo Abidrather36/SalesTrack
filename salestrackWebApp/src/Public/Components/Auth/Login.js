@@ -21,16 +21,9 @@ const Login = () => {
     event.preventDefault();
     setLoading(true);
     setLoginError(null);
-    // setLoginData({
-    //   email: email,
-    //   password: password,
-    // });
-    const mylogin = {
-      email,
-      password,
-    };
+    const loginData=new LoginRequestModel(email,password)
     try {
-      const response = await loginUser(mylogin);
+      const response = await loginUser(loginData);
       console.log(response);
       if (response.isSuccess) {
         console.log(response.result);
@@ -59,12 +52,12 @@ const Login = () => {
   return (
     <>
       <ToastContainer />
-      <div className="row">
+      <div className="row" style={{marginTop:"100px"}}>
         <div className="col-lg-6 mb-4 mb-lg-0 loginImage">
           <img
             src="https://img.freepik.com/premium-photo/guardian-digital-realm-mans-vigilance-login-gate_1134661-21407.jpg?w=740"
             alt=""
-            style={{ maxWidth: "100%", height: "75%", marginLeft: "100px" ,borderRadius:"30px"}}
+            style={{ maxWidth: "100%", height: "70%", marginLeft: "100px" ,borderRadius:"30px"}}
 
           />
         </div>
