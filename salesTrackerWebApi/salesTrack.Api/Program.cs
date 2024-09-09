@@ -21,14 +21,18 @@ namespace salesTrack.Api
                             .AddApplicationService()
                             .AddInfrastructureService(builder.Configuration)
                             .AddPersistenceService(builder.Configuration);
-                           
-            var app = builder.Build();
-            app.UseCors(options =>
+            builder.Services.AddCors(options =>
             {
-                options.AllowAnyOrigin() // Allows any origin
-                       .AllowAnyHeader() // Allows any header
-                       .AllowAnyMethod(); // Allows any HTTP method
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.WithOrigins("http://localhost:3000")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                });
             });
+
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -36,11 +40,12 @@ namespace salesTrack.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-          /*  app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v2/swagger.json", "PostAPI");
-                c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
-            });*/
+            /*  app.UseSwaggerUI(c =>
+              {
+                  c.SwaggerEndpoint("/swagger/v2/swagger.json", "PostAPI");
+                  c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
+              });*/
+            app.UseCors();
             app.UseAuthorization();
 
 

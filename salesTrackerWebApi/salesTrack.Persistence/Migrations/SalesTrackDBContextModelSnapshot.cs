@@ -89,16 +89,16 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8d09171c-9cd4-4766-8d4d-04f77e9856e1"),
+                            Id = new Guid("54440006-062c-4c5c-8da3-b7126f98a704"),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "g8cU2sReTyVSg+qxAmf3rflWyhJBk8c23bVlngvl8kg=",
+                            Password = "wMVMBCWBAnEwpWWvXSjDSfXCiUxC5+wog2tGdnTi/8M=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 9, 3, 7, 12, 16, 79, DateTimeKind.Unspecified).AddTicks(3206), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "aNvr18p5KsUIMZR77JO/pg==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 9, 4, 6, 33, 8, 850, DateTimeKind.Unspecified).AddTicks(1123), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "WEBu8fAg5rk+GSqdZaPHOQ==",
                             UserRole = (byte)1,
                             UserType = (byte)0
                         });
@@ -176,7 +176,7 @@ namespace salesTrack.Persistence.Migrations
 
                     b.HasIndex("LeadId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("LeadComments");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.Enquiry", b =>
