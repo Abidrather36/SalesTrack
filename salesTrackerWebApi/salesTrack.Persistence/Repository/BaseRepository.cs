@@ -32,7 +32,7 @@ namespace SalesTrack.Persistence.Repository
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await Task.Run(() => context.Set<T>());
+            return await Task.Run(() => context.Set<T>().ToList());
         }
 
         public async Task<T?> GetByIdAsync(Guid Id)

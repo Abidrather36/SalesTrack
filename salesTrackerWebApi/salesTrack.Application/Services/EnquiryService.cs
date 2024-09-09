@@ -99,7 +99,7 @@ namespace salesTrack.Application.Services
         {
             var enquiries = await enquiryRepository.GetAllAsync();
 
-            if (enquiries.Any())
+            if (enquiries.Any() || enquiries is not null)
             {
                 var enquiryResponseModels = enquiries.Select(x => new EnquiryResponseModel
                 {
