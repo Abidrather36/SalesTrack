@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import HomePage from "./Public/Components/Home";
 import Footer from "./Public/Components/Footer";
 import Login from "./Public/Components/Auth/Login";
@@ -8,12 +8,16 @@ import Navbar from "./Public/Components/Navbar";
 import RegisterEnquiry from "./Public/Components/Auth/RegisterEnquiry";
 import Contact from "./Public/Components/Contact";
 import About from "./Public/Components/About";
+
 const App = () => {
+  const location = useLocation();
+
   return (
     <>
-      <div style={{marginBottom:"80px"}}>
+      <div style={{ marginBottom: "80px" }}>
         <Navbar />
       </div>
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<Login />} />
@@ -21,12 +25,18 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
       </Routes>
-      <div>
-        <About />
-      </div>
-      <div>
-        <Contact />
-      </div>
+
+      {location.pathname === "/" && (
+        <>
+          <div>
+            <About />
+          </div>
+          <div>
+            <Contact />
+          </div>
+        </>
+      )}
+
       <div>
         <Footer />
       </div>
