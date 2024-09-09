@@ -43,10 +43,10 @@ function Footer() {
                         <div className="col-lg-3 col-md-4 footer-links">
                             <h4>Follow Us</h4>
                             <div className="social-links d-flex mt-2">
-                                <a href="https://www.twitter.com"  target='blank' className="twitter"><i className="bi bi-twitter"></i></a>
-                                <a href="https://www.facebook.com/" target='blank' className="facebook"><i className="bi bi-facebook"></i></a>
-                                <a href="https://www.instagram.com"  target='blank' className="instagram"><i className="bi bi-instagram"></i></a>
-                                <a href="https://www.linkedin.com"  target='blank' className="linkedin"><i className="bi bi-linkedin"></i></a>
+                                <Link to="https://www.twitter.com"  target='blank' className="twitter"><i className="bi bi-twitter"></i></Link>
+                                <Link to="https://www.facebook.com/" target='blank' className="facebook"><i className="bi bi-facebook"></i></Link>
+                                <Link to="https://www.instagram.com"  target='blank' className="instagram"><i className="bi bi-instagram"></i></Link>
+                                <Link to="https://www.linkedin.com"  target='blank' className="linkedin"><i className="bi bi-linkedin"></i></Link>
                             </div>
                         </div>
                     </div>
