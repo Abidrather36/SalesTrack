@@ -104,7 +104,7 @@ const HomePage = () => {
             }}
           >
             <img
-              src="/assets/img/hero-img.png"
+              src="https://i.ibb.co/D4KHwQm/hero-img.png"
               className="img-fluid animated"
               alt="Sales Tracking Illustration"
               style={{

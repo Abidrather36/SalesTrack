@@ -7,6 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { json, useNavigate } from "react-router-dom";
 import storage from "../../../utils/storages";
 import { StorageHelper } from "../../../utils/storages";
+import { UserRole } from "../../../Models/Enums/userRole";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -31,6 +32,20 @@ const Login = () => {
         storage.setItem("userObj", response.result);
 
         toast.success(response.message);
+        const role=response.result.userRole
+        if(role===UserRole.Admin){
+          navigate("/AdminDashboard")
+        }
+        else if(role===UserRole.SalesExecutive){
+          navigate("/SalesExecutiveDashboard")
+        }
+        else if (role===UserRole.SalesManager){
+          navigate("/SalesManagerDashboard")
+
+        }
+        else{
+          toast.error(response.message)
+        }
         setTimeout(() => {
           navigate("/");
         });
