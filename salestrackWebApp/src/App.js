@@ -15,41 +15,40 @@ import Contact from "./Public/Components/Contact";
 import About from "./Public/Components/About";
 import AdminSignUp from "./Admin/Component/adminSignUp";
 import AdminDashboard from "./Admin/Component/adminDashboard";
+import PublicRoutes from "./Public/Components/PublicRoutes";
+import AdminRoutes from "./Models/Admin/AdminRoutes";
+import EnquiryList from "./Admin/Component/EnquiryList";
 
 const App = () => {
   const location = useLocation();
 
   return (
-    <>
-      <div style={{ marginBottom: "80px" }}>
-        <Navbar />
-      </div>
+    // <>
+    //   <div style={{ marginBottom: "80px" }}>
+    //     <Navbar />
+    //   </div>
 
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/signin" element={<Login />} />
-        <Route path="/enquiry" element={<RegisterEnquiry />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/adminSignUp" element={<AdminSignUp />} />
-        <Route path="/adminDashboard" element={<AdminDashboard />} />
-      </Routes>
+    //   <Routes>
+    //     <Route path="/*" element={<PublicRoutes/>}/>
+    //     <Route path="/admin/*" element={<AdminRoutes />} /> 
+    //   </Routes>
 
-      {location.pathname === "/" && (
-        <>
-          <div>
-            <About />
-          </div>
-          <div>
-            <Contact />
-          </div>
-        </>
-      )}
+    //   {location.pathname === "/" && (
+    //     <>
+    //       <div>
+    //         <About />
+    //       </div>
+    //       <div>
+    //         <Contact />
+    //       </div>
+    //     </>
+    //   )}
 
-      <div>
-        <Footer />
-      </div>
-    </>
+    //   <div>
+    //     <Footer />
+    //   </div>
+    // </>
+<EnquiryList/>
   );
 };
 
