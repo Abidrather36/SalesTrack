@@ -1,6 +1,7 @@
 import React from 'react';
 import { ApiUrl } from './Shared';
 import axios from 'axios';
+import storage from '../utils/storages';
 
 
 export const loginUser=async (LoginRequestModel)=>{
@@ -16,8 +17,13 @@ export const signUpAdmin=async (adminSignUpRequestModel) =>{
 export const getAllEnquiries=async()=>{
     return await axios.get(`${ApiUrl}Enquiry/getAllEnquiries`).then(res=>res.data)
 }
-export const changePassword = async (changePasswordModel) => {
-    return await axios.post(`${ApiUrl}Auth/ChangePassword`,changePasswordModel).then(res=>res.data)
+export const changePassword = async (changePasswordModel,bearerToken) => {
+    return await axios.post(`${ApiUrl}Auth/ChangePassword`, changePasswordModel, {
+      headers: {
+        Authorization: bearerToken, 
+      }
+    }).then(res => res.data);
+  }
 
-}
+
   

@@ -52,6 +52,7 @@ namespace salesTrack.Api.Controllers
             }
         }
         [HttpPost("ChangePassword")]
+        [Authorize]
 
         public async Task<ApiResponse<string>> ChangePassword(ChangePasswordModel model)
         {

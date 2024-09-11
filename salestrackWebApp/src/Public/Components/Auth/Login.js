@@ -1,134 +1,134 @@
-import React, { useState } from "react";
-import InputField from "../InputField";
+import { React, useState } from "react";
 import Spin from "../Spin";
 import { loginUser } from "../../../Services/AuthService";
-import LoginRequestModel from "../../../Models/Common/Login";
-import { toast, ToastContainer } from "react-toastify";
-import { json, useNavigate } from "react-router-dom";
-import storage from "../../../utils/storages";
-import { UserRole } from "../../../Models/Enums/userRole";
-import "./ChangePassword.css";
-import PasswordChangeModal from "../../../Shared/PasswordChangeModel";
+import ChangePasswordModal from "../../../Models/Common/ModelPopup";
+import { useForm } from "react-hook-form";
+import myToaster from "../../../utils/toaster";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [loginError, setLoginError] = useState(null);
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [isPasswordTemporary, setIsPasswordTemporary] = useState(false);
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
 
-  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const logInUser = async (event) => {
-    event.preventDefault();
+  const logInUser = async (data) => {
     setLoading(true);
-    setLoginError(null);
-
-    const loginData = new LoginRequestModel(email, password);
     try {
-      const response = await loginUser(loginData);
-      console.log(response);
-
+      const response = await loginUser(data);
+      console.log(response)
       if (response.isSuccess) {
-        console.log(response.result);
-        storage.setItem("salesTrack", response.result.token);
-        storage.setItem("userObj", response.result);
-
-        // toast.success(response.message);
-        const role = response.result.userRole;
-        const isPasswordTemporary = response.result.isPasswordTemporary;
-
-        if (isPasswordTemporary) {
-          setShowPasswordModal(true); // Show password change modal
+        if (response.result.isPasswordTemporary) {
+          setIsPasswordTemporary(true);
+          setShowChangePasswordModal(true);
         } else {
-          if (role === UserRole.Admin) {
-            navigate("/AdminDashboard");
-          } else if (role === UserRole.SalesExecutive) {
-            navigate("/SalesExecutiveDashboard");
-          } else if (role === UserRole.SalesManager) {
-            navigate("/SalesManagerDashboard");
-          } else {
-            toast.error("Unknown role, cannot navigate");
-          }
+          alert(`Welcome, ${response.response.fullName}!`);
         }
       } else {
-        toast.error(response.message);
+        // alert("Login failed: " + response.message);
+        myToaster.showErrorToast(response.message)
       }
-    } catch (error) {
-      setLoginError(
-        "Error during login: " + (error.response?.data || error.message)
-      );
+    } catch (err) {
+      console.log(err);
+      alert("Error during login: " + (err.response?.data || err.message));
     } finally {
       setLoading(false);
     }
   };
 
+  const handleCloseModal = () => {
+    setShowChangePasswordModal(false);
+  };
+
   return (
     <>
-      <ToastContainer />
-      {!showPasswordModal && (
-        <div className="row" style={{ marginTop: "100px" }}>
-          <div className="col-lg-6 mb-4 mb-lg-0 loginImage">
-            <img
-              src="https://img.freepik.com/premium-photo/guardian-digital-realm-mans-vigilance-login-gate_1134661-21407.jpg?w=740"
-              alt=""
-              style={{
-                maxWidth: "100%",
-                height: "70%",
-                marginLeft: "100px",
-                borderRadius: "30px",
-              }}
-            />
-          </div>
-          <div className="col-lg-6">
-            <div className="login-container" style={{ marginTop: "8px" }}>
-              <div>
-                <h2 className="form-title">Sign in to your account</h2>
-                <form className="login-form" onSubmit={logInUser}>
-                  <InputField
-                    type="email"
-                    placeholder="your email address"
-                    value={email}
-                    pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <InputField
-                    type="password"
-                    placeholder="your password"
-                    value={password}
-                    pattern="/^[a-zA-Z0-9!@#\$%\^\&*_=+-]{8,12}$/g"
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+      {showChangePasswordModal && <div className="modal-overlay"></div>}
 
-                  <a href="#" className="forgot-password-link">
-                    Forgot password?
-                  </a>
+      <div className={`row ${showChangePasswordModal ? "modal-open" : ""}`}>
+        {!showChangePasswordModal && (
+          <>
+            <div className="col-lg-6 mb-4 mb-lg-0 loginImage">
+              <img
+                src="https://img.freepik.com/free-vector/computer-login-concept-illustration_114360-7962.jpg?w=740&t=st=1725352130~exp=1725352730~hmac=e3288c591d26c27da35161da8ddb5b0edb0c7e9524e5b8838138c4f8eb4e058d"
+                alt="Login Illustration"
+              />
+            </div>
+            <div className="col-lg-6">
+              <div className="login-container">
+                <div>
+                  <h2 className="form-title">Sign in to your account</h2>
+                  <form
+                    className="login-form"
+                    onSubmit={handleSubmit(logInUser)}
+                  >
+                    <div>
+                      <input
+                        type="email"
+                        name="email"
+                        autoComplete="off"
+                        {...register("email", {
+                          required: "Email is required",
+                        })}
+                        placeholder="Your email address"
+                      />
+                      {errors.email && (
+                        <span className="error-message">
+                          {errors.email.message}
+                        </span>
+                      )}
+                    </div>
 
-                  {loading ? (
-                    <button type="submit" className="login-button" disabled>
-                      <Spin />
-                    </button>
-                  ) : (
-                    <button type="submit" className="login-button">
-                      Log In
-                    </button>
-                  )}
+                    <input
+                      type="password"
+                      name="password"
+                      autoComplete="off"
+                      placeholder="Your password"
+                      {...register("password", {
+                        required: "Password is required",
+                      })}
+                    />
+                    {errors.password && (
+                      <div className="error-message">
+                        {errors.password.message}
+                      </div>
+                    )}
 
-                  {loginError && <p className="login-error">{loginError}</p>}
-                </form>
+                    <a href="#" className="forgot-password-link">
+                      Forgot password?
+                    </a>
 
-                <p className="signup-prompt">
-                  Don&apos;t have an account?{" "}
-                  <a href="#" className="signup-link">
-                    Sign up
-                  </a>
-                </p>
+                    {loading ? (
+                      <button type="submit" className="login-button" disabled>
+                        <Spin />
+                      </button>
+                    ) : (
+                      <button type="submit" className="login-button">
+                        Log In
+                      </button>
+                    )}
+                  </form>
+
+                  <p className="signup-prompt">
+                    Don&apos;t have an account?{" "}
+                    <a href="#" className="signup-link">
+                      Sign up
+                    </a>
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-      {showPasswordModal && <PasswordChangeModal />}
+          </>
+        )}
+
+        <ChangePasswordModal
+          open={showChangePasswordModal}
+          handleClose={handleCloseModal}
+        />
+      </div>
     </>
   );
 };
