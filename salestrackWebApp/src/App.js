@@ -23,32 +23,31 @@ const App = () => {
   const location = useLocation();
 
   return (
-    // <>
-    //   <div style={{ marginBottom: "80px" }}>
-    //     <Navbar />
-    //   </div>
+    <>
+      <div style={{ marginBottom: "80px" }}>
+        <Navbar />
+      </div>
 
-    //   <Routes>
-    //     <Route path="/*" element={<PublicRoutes/>}/>
-    //     <Route path="/admin/*" element={<AdminRoutes />} /> 
-    //   </Routes>
+      <Routes>
+        <Route path="/*" element={<PublicRoutes/>}/>
+        <Route path="/admin/*" element={<AdminRoutes />} />
+      </Routes>
 
-    //   {location.pathname === "/" && (
-    //     <>
-    //       <div>
-    //         <About />
-    //       </div>
-    //       <div>
-    //         <Contact />
-    //       </div>
-    //     </>
-    //   )}
+      {location.pathname === "/" && (
+        <>
+          <div>
+            <About />
+          </div>
+          <div>
+            <Contact />
+          </div>
+        </>
+      )}
 
-    //   <div>
-    //     <Footer />
-    //   </div>
-    // </>
-<EnquiryList/>
+      <div>
+        <Footer />
+      </div>
+    </>
   );
 };
 

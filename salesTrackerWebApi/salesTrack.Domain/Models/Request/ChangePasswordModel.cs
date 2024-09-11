@@ -6,7 +6,7 @@ namespace salesTrack.Domain.Models.Request
     {
         [Required(ErrorMessage = "Enter Old Password")]
 
-        public string OldPassowrd { get; set; } = string.Empty;
+        public string OldPassword { get; set; } = string.Empty;
 
 
         [Required(ErrorMessage = "Enter New password")]

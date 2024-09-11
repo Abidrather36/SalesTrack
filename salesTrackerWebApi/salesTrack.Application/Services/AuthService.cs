@@ -37,7 +37,7 @@ namespace salesTrack.Application.Services
             {
                 return ApiResponse<string>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
             }
-            if (!AppEncryption.ComparePassword(user.Password, model.OldPassowrd, user.Salt))
+            if (!AppEncryption.ComparePassword(user.Password, model.OldPassword, user.Salt))
             {
                 return ApiResponse<string>.ErrorResponse(ApiMessages.Auth.IncorrectOldPassword, HttpStatusCodes.BadRequest);
             }

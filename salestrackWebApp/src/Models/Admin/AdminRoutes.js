@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import AdminDashboard from "../../Admin/Component/adminDashboard";
 
 import { Navigate } from "react-router-dom";
+import ChangePassword from "../../Shared/ChangePassword";
 
 function AdminRoutes() {
   return (
