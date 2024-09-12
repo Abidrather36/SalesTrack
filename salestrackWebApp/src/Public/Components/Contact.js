@@ -29,8 +29,8 @@ const Contact = () => {
                   >
                     <i class="bi bi-geo-alt"></i>
                     <h3>Address</h3>
-                    <p>A108 Adam Street</p>
-                    <p>New York, NY 535022</p>
+                    <p>Wooden Street</p>
+                    <p>Hrbr Layout, KN 560043</p>
                   </div>
                 </div>
 

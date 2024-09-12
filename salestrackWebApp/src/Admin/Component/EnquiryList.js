@@ -1,26 +1,42 @@
-import {React,useState} from "react";
+import React, { useState, useEffect } from "react";
 import { getAllEnquiries } from "../../Services/AuthService";
-
+import Grid from "./Grid";
 
 function EnquiryList() {
-  const [enquiry, setEnquiry] = useState([]);
+  const [enquiries, setEnquiries] = useState([]);
+  const headers = [
+    { key: "name", label: "Name" },
+    { key: "email", label: "Email" },
+    { key: "phoneNumber", label: "PhoneNumber" },
+    { key: "isActive", label: "IsActive" },
+  ];
+  const btnList = [
+    { key: "edit", label: "Edit", className: "btn btn-primary", onClick: (data) => console.log(data) },
+    { key: "delete", label: "Delete", className: "btn btn-danger", onClick: (data) => console.log(data) },
+  ];
 
-  const getEnquiryList = async () => {
+  const fetchEnquiries = async () => {
     try {
       const response = await getAllEnquiries();
-      setEnquiry(response.result);
-      console.log(enquiry);
+      setEnquiries(response.result);
+      console.log(response.result);
     } catch (err) {
-      console.log(err);
+      console.error("Failed to fetch enquiries", err);
     }
   };
-  return(
+
+  useEffect(() => {
+    fetchEnquiries();
+  }, []);
+
+  return (
     <>
-    <div>
-        <button className="btn btn-primary" onClick={getEnquiryList}>Show Enquiries</button>
-    </div>
+      <Grid 
+      headers={headers} 
+      buttons={btnList}
+      data={enquiries}/>
     </>
-  )
+  );
 }
 
 export default EnquiryList;

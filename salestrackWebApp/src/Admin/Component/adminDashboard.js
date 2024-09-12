@@ -1,5 +1,6 @@
 import React from 'react'
 import "./AdminDashboard.css"
+import { Link } from 'react-router-dom';
 export default function AdminDashboard() {
     return (
         <>
@@ -86,9 +87,10 @@ export default function AdminDashboard() {
                       </a>
                     </li>
                     <li className="nav-item">
-                      <a className="nav-link" href="#">
+                      <Link to="/admin/enquirylist" className="nav-link" href="#" >
                         <i className="bi bi-bar-chart" /> Enquiries
-                      </a>
+                        
+                      </Link>
                     </li>
                     <li className="nav-item">
                       <a className="nav-link" href="#">

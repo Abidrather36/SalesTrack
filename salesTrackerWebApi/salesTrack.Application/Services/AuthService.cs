@@ -47,6 +47,8 @@ namespace salesTrack.Application.Services
             
             if(updatedUser > 0)
             {
+                user.IsPasswordTemporary = false;
+                authRepository.UpdateAsync(user);
                 return ApiResponse<string>.SuccessResponse(default,ApiMessages.Auth.PasswordChangedSuccess, HttpStatusCodes.Created);
             }
             else

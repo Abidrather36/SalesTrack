@@ -18,18 +18,23 @@ import AdminDashboard from "./Admin/Component/adminDashboard";
 import PublicRoutes from "./Public/Components/PublicRoutes";
 import AdminRoutes from "./Models/Admin/AdminRoutes";
 import EnquiryList from "./Admin/Component/EnquiryList";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const location = useLocation();
+  const pathSet = ["/", "/login", "/about", "/contact", "/enquiry", "/home"];
 
   return (
     <>
-      <div style={{ marginBottom: "80px" }}>
+      <ToastContainer />
+    {pathSet.includes(location.pathname) && (
+      <div className={{marginTop:"80px"}}>
         <Navbar />
       </div>
+    )}
 
       <Routes>
-        <Route path="/*" element={<PublicRoutes/>}/>
+        <Route path="/*" element={<PublicRoutes />} />
         <Route path="/admin/*" element={<AdminRoutes />} />
       </Routes>
 
@@ -44,9 +49,11 @@ const App = () => {
         </>
       )}
 
-      <div>
-        <Footer />
-      </div>
+     {pathSet.includes(location.pathname) && (
+       <div style={{ marginBottom: "80px" }}>
+       <Footer />
+     </div>
+     )}
     </>
   );
 };
