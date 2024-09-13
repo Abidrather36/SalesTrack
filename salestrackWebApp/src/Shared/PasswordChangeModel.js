@@ -80,6 +80,7 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { changePassword } from '../Services/AuthService';
 import { useForm } from 'react-hook-form';
+import storage from '../utils/storages';
 
 function ChangePasswordModal({ open, handleClose }) {
   const [show, setShow] = useState(open);

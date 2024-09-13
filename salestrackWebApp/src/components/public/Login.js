@@ -1,12 +1,12 @@
 import { React, useState } from "react";
-import Spin from "../Spin";
-import { loginUser } from "../../../Services/AuthService";
-import ChangePasswordModal from "../../../Models/Common/ModelPopup";
 import { useForm } from "react-hook-form";
-import myToaster from "../../../utils/toaster";
-import storage from "../../../utils/storages";
-import InputField from "../InputField";
 import { Navigate, useNavigate } from "react-router-dom";
+import Spin from "./Spin";
+import InputField from "./InputField";
+import myToaster from "../../utils/toaster";
+import ChangePasswordModal from "../../Shared/PasswordChangeModel";
+import storage from "../../utils/storages";
+import { loginUser } from "../../Services/AuthService";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);

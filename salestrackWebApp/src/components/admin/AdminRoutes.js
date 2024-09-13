@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import AdminDashboard from "../../Admin/Component/adminDashboard";
 
 import { Navigate } from "react-router-dom";
-import EnquiryList from "../../Admin/Component/EnquiryList";
+import AdminDashboard from "./adminDashboard";
+import EnquiryList from "./EnquiryList";
 
 function AdminRoutes() {
   return (

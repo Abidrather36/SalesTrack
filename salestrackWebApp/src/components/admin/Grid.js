@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 function Grid({ headers = [], data = [], buttons = [] }) {
   return (
@@ -17,15 +17,21 @@ function Grid({ headers = [], data = [], buttons = [] }) {
             {data.map((item, index) => (
               <tr key={index}>
                 {headers.map((header) => (
-                  <td key={header.key}>{item[header.key]}</td> 
+                  <td key={header.key}>
+                    {header.key === "isActive"
+                      ? item[header.key]
+                        ? "Active"
+                        : "Inactive"
+                      : item[header.key]}
+                  </td>
                 ))}
-
                 <td>
                   {buttons.map((btn, idx) => (
                     <button
                       key={idx}
                       className={btn.className}
                       onClick={() => btn.onClick(item)}
+                      style={{ margin: "5px" }}
                     >
                       {btn.label}
                     </button>

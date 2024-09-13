@@ -30,7 +30,7 @@ const Contact = () => {
                     <i class="bi bi-geo-alt"></i>
                     <h3>Address</h3>
                     <p>Wooden Street</p>
-                    <p>Hrbr Layout, KN 560043</p>
+                    <p>Kalyan Nagar 560043</p>
                   </div>
                 </div>
 
@@ -55,8 +55,8 @@ const Contact = () => {
                   >
                     <i class="bi bi-envelope"></i>
                     <h3>Email Us</h3>
-                    <p>info@example.com</p>
-                    <p>contact@example.com</p>
+                    <p>info@iaminterviewed.com</p>
+                    <p>antennsales@gmail.com</p>
                   </div>
                 </div>
 

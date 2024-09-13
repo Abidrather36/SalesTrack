@@ -8,7 +8,7 @@ function EnquiryList() {
     { key: "name", label: "Name" },
     { key: "email", label: "Email" },
     { key: "phoneNumber", label: "PhoneNumber" },
-    { key: "isActive", label: "IsActive" },
+    { key: "isActive", label: "isActive" },
   ];
   const btnList = [
     { key: "edit", label: "Edit", className: "btn btn-primary", onClick: (data) => console.log(data) },
@@ -19,10 +19,11 @@ function EnquiryList() {
     try {
       const response = await getAllEnquiries();
       setEnquiries(response.result);
-      console.log(response.result);
-    } catch (err) {
-      console.error("Failed to fetch enquiries", err);
     }
+     catch (err)
+      {
+      console.error("Failed to fetch enquiries", err);
+     }
   };
 
   useEffect(() => {

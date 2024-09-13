@@ -5,20 +5,15 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import HomePage from "./Public/Components/Home";
-import Footer from "./Public/Components/Footer";
-import Login from "./Public/Components/Auth/Login";
 import "./App.css"; // Import global styles if needed
-import Navbar from "./Public/Components/Navbar";
-import RegisterEnquiry from "./Public/Components/Auth/RegisterEnquiry";
-import Contact from "./Public/Components/Contact";
-import About from "./Public/Components/About";
-import AdminSignUp from "./Admin/Component/adminSignUp";
-import AdminDashboard from "./Admin/Component/adminDashboard";
-import PublicRoutes from "./Public/Components/PublicRoutes";
-import AdminRoutes from "./Models/Admin/AdminRoutes";
-import EnquiryList from "./Admin/Component/EnquiryList";
+
 import { ToastContainer } from "react-toastify";
+import PublicRoutes from "./components/public/PublicRoutes";
+import About from "./components/public/About";
+import Contact from "./components/public/Contact";
+import AdminRoutes from "./components/admin/AdminRoutes";
+import Footer from "./components/public/Footer";
+import Navbar from "./components/public/Navbar";
 
 const App = () => {
   const location = useLocation();

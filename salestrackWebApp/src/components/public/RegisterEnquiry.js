@@ -1,11 +1,11 @@
 import { useState } from "react";
-import InputField from "../InputField";
-import Spin from "../Spin";
-import { signUpUser } from "../../../Services/AuthService";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { HttpStatusCode } from "axios";
-import myToaster from "../../../utils/toaster";
+import myToaster from "../../utils/toaster";
+import Spin from "./Spin";
+import InputField from "./InputField";
+import { signUpUser } from "../../Services/AuthService";
 
 function RegisterEnquiry() {
   const [name, setName] = useState("");

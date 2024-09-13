@@ -12,6 +12,7 @@ const HomePage = () => {
           
         }}
       >
+        
         <section
           id="hero"
           style={{
