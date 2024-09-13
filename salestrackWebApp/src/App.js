@@ -5,15 +5,16 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import "./App.css"; // Import global styles if needed
+import "./App.css";
 
 import { ToastContainer } from "react-toastify";
-import PublicRoutes from "./components/public/PublicRoutes";
 import About from "./components/public/About";
 import Contact from "./components/public/Contact";
 import AdminRoutes from "./components/admin/AdminRoutes";
-import Footer from "./components/public/Footer";
-import Navbar from "./components/public/Navbar";
+import PublicLayout from "./components/shared/PublicLayout";
+import HomePage from "./components/public/Home";
+import Login from "./components/public/Login";
+import RegisterEnquiry from "./components/public/RegisterEnquiry";
 
 const App = () => {
   const location = useLocation();
@@ -22,33 +23,22 @@ const App = () => {
   return (
     <>
       <ToastContainer />
-    {pathSet.includes(location.pathname) && (
-      <div className={{marginTop:"80px"}}>
-        <Navbar />
-      </div>
-    )}
 
-      <Routes>
-        <Route path="/*" element={<PublicRoutes />} />
-        <Route path="/admin/*" element={<AdminRoutes />} />
-      </Routes>
+      {pathSet.includes(location.pathname) ? (
+        <PublicLayout>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/signin" element={<Login />} />
+            <Route path="/enquiry" element={<RegisterEnquiry />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </PublicLayout>
+      ) : (
+        <AdminRoutes/>
 
-      {location.pathname === "/" && (
-        <>
-          <div>
-            <About />
-          </div>
-          <div>
-            <Contact />
-          </div>
-        </>
       )}
-
-     {pathSet.includes(location.pathname) && (
-       <div style={{ marginBottom: "80px" }}>
-       <Footer />
-     </div>
-     )}
     </>
   );
 };

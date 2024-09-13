@@ -1,16 +1,23 @@
 import React from "react";
 
-function Grid({ headers = [], data = [], buttons = [] }) {
+function Grid({ headers = [], data = [] ,buttons=[]}) {
+  if (!Array.isArray(headers)) {
+    console.log("no data in headers");
+  }
+
   return (
-    <div>
-      {data.length > 0 ? (
-        <table className="table table-hover">
-          <thead>
+    <div className="card shadow border-0 mb-7">
+      <div className="card-header">
+        <h5 className="mb-0">Enquiries</h5>
+      </div>
+      <div className="table-responsive">
+        <table className="table  table-nowrap">
+          <thead className="thead-light">
             <tr>
-              {headers.map((header) => (
-                <th key={header.key}>{header.label}</th>
-              ))}
-              <th>Actions</th>
+              {headers.map((item) => {
+                return <th key={item.key}>{item.label}</th>;
+              })}
+              {buttons.length>0 && <th>Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -25,25 +32,17 @@ function Grid({ headers = [], data = [], buttons = [] }) {
                       : item[header.key]}
                   </td>
                 ))}
-                <td>
-                  {buttons.map((btn, idx) => (
-                    <button
-                      key={idx}
-                      className={btn.className}
-                      onClick={() => btn.onClick(item)}
-                      style={{ margin: "5px" }}
-                    >
-                      {btn.label}
-                    </button>
-                  ))}
-                </td>
+                <td></td>
               </tr>
             ))}
           </tbody>
         </table>
-      ) : (
-        <p>No data found.</p>
-      )}
+      </div>
+      <div className="card-footer border-0 py-5">
+        <span className="text-muted text-sm">
+          Showing 10 items out of 250 results found
+        </span>
+      </div>
     </div>
   );
 }
