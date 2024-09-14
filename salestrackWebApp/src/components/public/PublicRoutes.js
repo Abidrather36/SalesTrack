@@ -11,7 +11,7 @@ function PublicRoutes() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/signin" element={<Login />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/enquiry" element={<RegisterEnquiry />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/about" element={<About />} />

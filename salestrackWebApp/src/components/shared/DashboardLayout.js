@@ -26,7 +26,7 @@ import React from "react";
 import Header from "./Header";
 import Sidebar from "./sidebar";
 import DashboardFooter from "./DashboardFooter";
-import { Outlet } from "react-router-dom"; // Import Outlet
+import { Outlet } from "react-router-dom"; 
 
 function DashboardLayout({ labelList }) {
   return (
@@ -36,7 +36,7 @@ function DashboardLayout({ labelList }) {
         <Header />
         <main className="py-6 bg-surface-secondary">
           <div className="container-fluid">
-            <Outlet /> {/* This renders the child routes, such as EnquiryList */}
+            <Outlet /> 
           </div>
         </main>
         <DashboardFooter />

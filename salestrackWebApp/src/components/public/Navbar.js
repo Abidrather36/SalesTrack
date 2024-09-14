@@ -92,7 +92,7 @@ function Navbar() {
             ></i>
           </nav>
           <Link
-            to="/signin"
+            to="/login"
             className="btn-getstarted"
             style={{
               color: "var(--contrast-color)",

@@ -13,8 +13,8 @@ import Contact from "./components/public/Contact";
 import AdminRoutes from "./components/admin/AdminRoutes";
 import PublicLayout from "./components/shared/PublicLayout";
 import HomePage from "./components/public/Home";
-import Login from "./components/public/Login";
 import RegisterEnquiry from "./components/public/RegisterEnquiry";
+import Login from "./components/public/Login";
 
 const App = () => {
   const location = useLocation();
@@ -30,7 +30,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/signin" element={<Login />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/enquiry" element={<RegisterEnquiry />} />
             <Route path="/about" element={<About />} />
           </Routes>

@@ -1,0 +1,85 @@
+.dropdown {
+    position: relative;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 0;
+    list-style: none;
+    margin: 0;
+  }
+  
+  .dropdown-menu.show {
+    display: block;
+  }
+  
+  .dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f1f1f1;
+  }
+
+  /*ScrollBar Appeared*/
+
+  body {
+    overflow-y: auto; /* Ensure vertical scrolling is enabled */
+  }
+  
+  body.no-scroll {
+    overflow: hidden; /* Disable scrolling when dropdown is open */
+  }
+
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: auto;
+    right: 0; /* Align the dropdown to the right */
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 0;
+    list-style: none;
+    margin: 0;
+    min-width: 150px; /* Ensure a minimum width */
+    max-width: 250px; /* Prevent the dropdown from being too wide */
+    z-index: 1000; /* Ensure it stays on top */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visuals */
+  }
+  
+  .dropdown-menu.show {
+    display: block;
+    max-height: 300px; /* Limit the dropdown height */
+    overflow-y: auto;  /* Enable scrolling inside the dropdown if content overflows */
+  }
+
+  
+  .dropdown {
+    position: relative;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 9999;
+    background: white;
+    border: 1px solid #ccc;
+    min-width: 150px;
+    max-height: 300px;
+    overflow-y: auto;  /* Add scroll within the dropdown menu */
+    white-space: nowrap; /* Prevent the text from wrapping */
+  }
+  
+  .dropdown-menu.show {
+    display: block;
+  }
+  
+  

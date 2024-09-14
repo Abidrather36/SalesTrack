@@ -13,6 +13,7 @@ namespace salesTrack.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+   /* [Authorize(Roles =nameof(UserRole.Admin))]*/
     public class AuthController : ControllerBase
     {
         private readonly IAuthService authService;

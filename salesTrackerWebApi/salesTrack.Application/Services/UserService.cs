@@ -1,4 +1,5 @@
 ﻿using salesTrack.Application.Abstraction.IEmailService;
+using salesTrack.Application.Abstraction.Iidentity;
 using salesTrack.Application.Utils;
 using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models;
@@ -15,17 +16,21 @@ namespace salesTrack.Application.Services
     {
         private readonly IUserRepository userRepository;
         private readonly IEmailHelperService emailHelperService;
+        private readonly IContextService contextService;
 
-        public UserService(IUserRepository userRepository,IEmailHelperService emailHelperService)
+        public UserService(IUserRepository userRepository,IEmailHelperService emailHelperService,IContextService contextService)
         {
             this.userRepository = userRepository;
             this.emailHelperService = emailHelperService;
+            this.contextService = contextService;
         }
         public async Task<ApiResponse<UserResponseModel>> AddUser(UserRequestModel model)
         {
 
             try
             {
+
+               var adminId= contextService.UserId();
                 if (await userRepository.IsExistsAsync(x => x.Email == model.Email))
                     return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.AlreadyAvailable, HttpStatusCodes.BadRequest);
 
@@ -38,7 +43,10 @@ namespace salesTrack.Application.Services
                     PhoneNumber = model.PhoneNumber,
                     UserType = model.UserType,
                     ReportsTo = model.ReportsTo,
+                    CreatedBy=adminId,
+                    ModifiedBy=Guid.Empty,
                     CreatedDate=DateTime.Now,
+                    DeletedBy=Guid.Empty,
                     IsActive=true,
                     UserRole = model.UserType == UserType.SalesExecutive ? UserRole.SalesExecutive : UserRole.SalesManager,
                 };

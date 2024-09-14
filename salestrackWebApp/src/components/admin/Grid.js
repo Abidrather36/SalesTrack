@@ -1,4 +1,5 @@
 import React from "react";
+import ThreeDotMenu from "../shared/ConextMenu";
 
 function Grid({ headers = [], data = [] ,buttons=[]}) {
   if (!Array.isArray(headers)) {
@@ -32,7 +33,10 @@ function Grid({ headers = [], data = [] ,buttons=[]}) {
                       : item[header.key]}
                   </td>
                 ))}
-                <td></td>
+                <td>
+            <ThreeDotMenu  props={["Edit","Delete","Add"]}/>
+                  
+                </td>
               </tr>
             ))}
           </tbody>
@@ -48,3 +52,11 @@ function Grid({ headers = [], data = [] ,buttons=[]}) {
 }
 
 export default Grid;
+
+
+
+
+
+
+
+

@@ -25,7 +25,7 @@ function AdminRoutes() {
   const labelsList = [
     { label: "Dashboard", link: "/admin/dashboard" },
     { label: "Enquiries", link: "/admin/enquirylist" },
-    { label: "Abid", link: "/admin/abid" },
+    { label: "AddUser", link: "/admin/adduser" },
   ];
 
   return (
