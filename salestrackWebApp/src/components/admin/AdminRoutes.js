@@ -20,6 +20,7 @@ import { Route, Routes } from "react-router-dom";
 import DashboardLayout from "../shared/DashboardLayout";
 import EnquiryList from "./EnquiryList";
 import AdminDashboard from "./adminDashboard";
+import AddUserForm from "./AddUser";
 
 function AdminRoutes() {
   const labelsList = [
@@ -36,6 +37,7 @@ function AdminRoutes() {
       >
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="enquirylist" element={<EnquiryList />} />
+        <Route path="adduser" element={<AddUserForm/>}/>
       </Route>
     </Routes>
   );
