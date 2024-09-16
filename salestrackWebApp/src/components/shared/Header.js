@@ -1,5 +1,6 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ProfilePage from "./ProfileCard";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -8,6 +9,7 @@ const Header = () => {
     localStorage.clear();
     navigate("/login");
   };
+
 
   return (
     <header className="bg-surface-primary border-bottom pt-6">
@@ -50,16 +52,17 @@ const Header = () => {
                     aria-labelledby="sidebarAvatar"
                     className="dropdown-menu dropdown-menu-end"
                   >
-                    <a
+                    <Link to="/admin/profile"
                       className="nav-link"
                       style={{ cursor: "pointer" }} 
+
                     >
                       <i
                         className="bi bi-person-circle"
                         style={{ marginRight: "5px" }}
                       />{" "}
                       Profile
-                    </a>
+                    </Link>
 
                     <a
                       className="nav-link"

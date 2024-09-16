@@ -151,7 +151,9 @@ namespace salesTrack.Application.Services
                     FullName = user.Name,
                     Token = userTokens.Token,
                     IsPasswordTemporary=user.IsPasswordTemporary,
-                    UserRole= userTokens.UserRole?? UserRole.Admin 
+                    UserRole= userTokens.UserRole?? UserRole.Admin ,
+                    Email=user.Email,
+                    PhoneNumber=user.PhoneNumber,
                 };
                 return ApiResponse<LoginResponseModel>.SuccessResponse(login, ApiMessages.Auth.LoggedIn, HttpStatusCodes.Accepted);
             }
