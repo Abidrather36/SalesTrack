@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
-  
+
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
@@ -14,7 +14,6 @@ const Header = () => {
       <div className="container-fluid">
         <div className="mb-npx">
           <div className="row align-items-center">
-           
             <div>
               <div
                 className="navbar-user"
@@ -39,9 +38,9 @@ const Header = () => {
                         className="avatar avatar-rounded-circle"
                         src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
                         style={{
-                          width: '50px',
-                          height: '50px',
-                          borderRadius: '50%', 
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "50%",
                         }}
                       />
                       <span className="avatar-child avatar-badge bg-success" />
@@ -53,7 +52,7 @@ const Header = () => {
                   >
                     <a
                       className="nav-link"
-                      style={{ cursor: "pointer" }} // Add cursor pointer
+                      style={{ cursor: "pointer" }} 
                     >
                       <i
                         className="bi bi-person-circle"
@@ -65,7 +64,7 @@ const Header = () => {
                     <a
                       className="nav-link"
                       onClick={handleLogout}
-                      style={{ cursor: "pointer" }} // Add cursor pointer
+                      style={{ cursor: "pointer" }}
                     >
                       <i
                         className="bi bi-box-arrow-left"
