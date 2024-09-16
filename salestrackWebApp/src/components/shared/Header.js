@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
+  
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
@@ -13,9 +14,7 @@ const Header = () => {
       <div className="container-fluid">
         <div className="mb-npx">
           <div className="row align-items-center">
-            <div className="col-sm-6 col-12 mb-4 mb-sm-0">
-              <h1 className="h2 mb-0 ls-tight"></h1>
-            </div>
+           
             <div>
               <div
                 className="navbar-user"
@@ -36,9 +35,14 @@ const Header = () => {
                   >
                     <div className="avatar-parent-child">
                       <img
-                        alt="Image Placeholder"
+                        alt="User Avatar"
                         className="avatar avatar-rounded-circle"
                         src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
+                        style={{
+                          width: '50px',
+                          height: '50px',
+                          borderRadius: '50%', 
+                        }}
                       />
                       <span className="avatar-child avatar-badge bg-success" />
                     </div>
@@ -47,10 +51,13 @@ const Header = () => {
                     aria-labelledby="sidebarAvatar"
                     className="dropdown-menu dropdown-menu-end"
                   >
-                    <a className="nav-link">
+                    <a
+                      className="nav-link"
+                      style={{ cursor: "pointer" }} // Add cursor pointer
+                    >
                       <i
                         className="bi bi-person-circle"
-                        style={{ marginRight: "5px",cursor: "pointer" }} 
+                        style={{ marginRight: "5px" }}
                       />{" "}
                       Profile
                     </a>
@@ -58,11 +65,12 @@ const Header = () => {
                     <a
                       className="nav-link"
                       onClick={handleLogout}
+                      style={{ cursor: "pointer" }} // Add cursor pointer
                     >
-                      <i className="bi bi-box-arrow-left"
-                      style={{ marginRight: "10px",cursor:"pointer" }}
-
-                       />
+                      <i
+                        className="bi bi-box-arrow-left"
+                        style={{ marginRight: "10px" }}
+                      />
                       Logout
                     </a>
                   </div>
