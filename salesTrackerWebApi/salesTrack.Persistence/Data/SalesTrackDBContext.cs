@@ -20,6 +20,7 @@ namespace SalesTrack.Persistence.Data
         public DbSet<LeadSource> LeadSources { get; set; }
         public DbSet<FollowUpDate> FollowUpDates { get; set; }
         public DbSet<Comments> LeadComments { get; set; }
+        public DbSet<Company> Companies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

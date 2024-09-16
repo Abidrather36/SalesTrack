@@ -1,8 +1,14 @@
 import React from "react";
 import "./AdminDashboard.css";
+<<<<<<< Updated upstream
 import Card from "../shared/Card";
 import { FaEnvelope, FaUsers, FaBriefcase } from "react-icons/fa";
 
+=======
+import { Link } from "react-router-dom";
+import DashboardLayout from "../shared/DashboardLayout";
+import AddUserForm from "./AddUser";
+>>>>>>> Stashed changes
 export default function AdminDashboard() {
   const myProps = [
     {
@@ -23,7 +29,12 @@ export default function AdminDashboard() {
   ];
   return (
     <>
+<<<<<<< Updated upstream
       <Card props={myProps} />
+=======
+   {/* <AddUserForm/> */}
+      {/* <DashboardLayout labelList={labelsList} /> */}
+>>>>>>> Stashed changes
     </>
   );
 }

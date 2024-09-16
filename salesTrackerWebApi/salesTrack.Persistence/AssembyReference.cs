@@ -13,6 +13,7 @@ namespace salesTrack.Persistence
         public static IServiceCollection AddPersistenceService(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddScoped<IEnquiryRepository, EnquiryRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<ILeadRepository, LeadRepository>();
             services.AddScoped<ILeadSourceRepository, LeadSourceRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
