@@ -1,12 +1,13 @@
 import React from "react";
 import Navbar from "../public/Navbar";
 import Footer from "../public/Footer";
+import { Outlet } from "react-router-dom";
 
-function PublicLayout({ children }) {
+function PublicLayout() {
   return (
     <>
       <Navbar />
-      <main style={{marginTop:"100px"}}>{children}</main>
+      <main style={{marginTop:"100px"}}><Outlet/></main>
       <Footer />
     </>
   );

@@ -8,37 +8,31 @@ import {
 import "./App.css";
 
 import { ToastContainer } from "react-toastify";
-import About from "./components/public/About";
-import Contact from "./components/public/Contact";
-import AdminRoutes from "./components/admin/AdminRoutes";
-import PublicLayout from "./components/shared/PublicLayout";
-import HomePage from "./components/public/Home";
-import RegisterEnquiry from "./components/public/RegisterEnquiry";
-import Login from "./components/public/Login";
+import PublicLayout from "./Components/shared/PublicLayout";
+import DashboardLayout from "./Components/shared/DashboardLayout";
+import { routerConfiguration } from "./route-config";
+import { sidebarLabels } from "./Components/shared/SidebarLabels";
 
 const App = () => {
-  const location = useLocation();
-  const pathSet = ["/", "/login", "/about", "/contact", "/enquiry", "/home"];
-
+console.log(sidebarLabels)
   return (
     <>
       <ToastContainer />
-
-      {pathSet.includes(location.pathname) ? (
-        <PublicLayout>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/enquiry" element={<RegisterEnquiry />} />
-            <Route path="/about" element={<About />} />
-          </Routes>
-        </PublicLayout>
-      ) : (
-        <AdminRoutes/>
-
-      )}
+      <Routes>
+        <Route path="/" element={<PublicLayout />}>
+          {routerConfiguration.PublicRoutes.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element} />
+          ))}
+        </Route>
+        <Route
+          path="/admin"
+          element={<DashboardLayout labelList={sidebarLabels} />}
+        >
+          {routerConfiguration.AdminRoutes.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element} />
+          ))}
+        </Route>
+      </Routes>
     </>
   );
 };

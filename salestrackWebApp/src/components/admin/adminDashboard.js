@@ -1,20 +1,29 @@
 import React from "react";
 import "./AdminDashboard.css";
-import { Link } from "react-router-dom";
-import DashboardLayout from "../shared/DashboardLayout";
-import ContexMenu from "../shared/ConextMenu";
-import ThreeDotMenu from "../shared/ConextMenu"
-import AddUserForm from "./AddUser";
+import Card from "../shared/Card";
+import { FaEnvelope, FaUsers, FaBriefcase } from "react-icons/fa";
+
 export default function AdminDashboard() {
-  const labelsList = [
-    { label: "Dashboard", link: "/admin/dashboard" },
-    { label: "Enquiries", link: "/admin/enquirylist" },
-    { label: "AddUser", link: "/admin/adduser" },
+  const myProps = [
+    {
+      title: "Total Enquiries",
+      number: 10,
+      icon: <FaEnvelope />,
+    },
+    {
+      title: "Total Sales Executives",
+      number: 20,
+      icon: <FaUsers />,
+    },
+    {
+      title: "Total Sales Managers",
+      number: 7,
+      icon: <FaBriefcase />,
+    },
   ];
   return (
     <>
-   <AddUserForm/>
-      {/* <DashboardLayout labelList={labelsList} /> */}
+      <Card props={myProps} />
     </>
   );
 }

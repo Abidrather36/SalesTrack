@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllEnquiries } from "../../Services/AuthService";
 import Grid from "./Grid";
-import Header from "../shared/Header";
 
 function EnquiryList() {
 

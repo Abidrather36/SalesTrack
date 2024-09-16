@@ -2,7 +2,7 @@ import React from 'react';
 
 const DashboardFooter = () => {
     return (
-        <footer className="bg-white text-dark text-center py-3 border-top">
+        <footer className="bg-white text-dark text-center py-3 border-top" style={{marginTop:"auto"}}>
             <div className="container">
                 <p className="mb-1">© {new Date().getFullYear()} Sales Track. All rights reserved.</p>
                 <p>

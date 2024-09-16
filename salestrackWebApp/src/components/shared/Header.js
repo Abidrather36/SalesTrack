@@ -1,6 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
   return (
     <header className="bg-surface-primary border-bottom pt-6">
       <div className="container-fluid">
@@ -40,18 +47,22 @@ const Header = () => {
                     aria-labelledby="sidebarAvatar"
                     className="dropdown-menu dropdown-menu-end"
                   >
-                    <a className="nav-link" href="#">
+                    <a className="nav-link">
                       <i
                         className="bi bi-person-circle"
-                        style={{ marginRight: "2px" }}
+                        style={{ marginRight: "5px",cursor: "pointer" }} 
                       />{" "}
                       Profile
                     </a>
-                    <a className="nav-link" href="#">
-                      <i
-                        className="bi bi-box-arrow-left"
-                        style={{ marginRight: "2px" }}
-                      />{" "}
+
+                    <a
+                      className="nav-link"
+                      onClick={handleLogout}
+                    >
+                      <i className="bi bi-box-arrow-left"
+                      style={{ marginRight: "10px",cursor:"pointer" }}
+
+                       />
                       Logout
                     </a>
                   </div>

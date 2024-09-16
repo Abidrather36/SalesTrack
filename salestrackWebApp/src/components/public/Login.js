@@ -26,9 +26,9 @@ const Login = () => {
     try {
       const response = await loginUser(data);
       console.log(response);
-
       if (response.isSuccess) {
         storage.setItem("salesTrack", response.result.token);
+        storage.setItem("user", response.result);
         if (response.result.isPasswordTemporary) {
           setIsPasswordTemporary(true);
           setShowChangePasswordModal(true);
@@ -56,7 +56,7 @@ const Login = () => {
   return (
     <>
       {showChangePasswordModal && <div className="modal-overlay"></div>}
-    <myToaster/>
+      <myToaster />
       <div
         className={`row ${showChangePasswordModal ? "modal-open" : ""}`}
         style={{ display: "flex", flexDirection: "row" }}

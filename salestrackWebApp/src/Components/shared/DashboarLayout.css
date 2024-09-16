@@ -1,0 +1,31 @@
+@import url(https://unpkg.com/@webpixels/css@1.1.5/dist/index.css);
+
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css");
+
+.d-flex {
+    display: flex;
+  }
+  
+  .h-lg-full {
+    height: 100vh;
+  }
+  
+  .bg-surface-secondary {
+    background-color: #f8f9fa; 
+  }
+  
+  .flex-grow-1 {
+    flex-grow: 1;
+  }
+  
+ 
+  .flex-grow-1 {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  footer {
+    margin-top: auto;
+  }
+  
