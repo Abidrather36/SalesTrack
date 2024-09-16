@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Spin from "./Spin";
 import InputField from "./InputField";
 import myToaster from "../../utils/toaster";
@@ -43,7 +43,7 @@ const Login = () => {
       }
     } catch (err) {
       console.log(err);
-      alert("Error during login: " + (err.response?.data || err.message));
+      myToaster.showErrorToast("Error during login: " + (err.response?.data || err.message));
     } finally {
       setLoading(false);
     }
@@ -59,78 +59,75 @@ const Login = () => {
       <myToaster />
       <div
         className={`row ${showChangePasswordModal ? "modal-open" : ""}`}
-        style={{ display: "flex", flexDirection: "row" }}
+        style={{ display: "flex", flexDirection: "row", height: "100vh" }}
       >
         {!showChangePasswordModal && (
           <>
-            <div className="flex col-lg-6 mb-4 mb-lg-0 loginImage " style={{}}>
+            <div className="col-lg-6 mb-4 mb-lg-0">
               <img
                 src="https://i.ibb.co/ystg5fH/guardian-digital-realm-mans-vigilance-login-gate-1134661-21407.jpg"
                 alt="Login Illustration"
+                className="img-fluid"
+                style={{ maxWidth: "100%", height: "80%", marginLeft: "50px" }}
               />
             </div>
             <div className="col-lg-6 mb-4-lg-0">
               <div className="login-container">
-                <div>
-                  <h2 className="form-title">Sign in to your account</h2>
-                  <form
-                    className="login-form"
-                    onSubmit={handleSubmit(logInUser)}
-                  >
-                    <div>
-                      <InputField
-                        type="email"
-                        name="email"
-                        autoComplete="off"
-                        {...register("email", {
-                          required: "Email is required",
-                        })}
-                        placeholder="Your email address"
-                      />
-                      {errors.email && (
-                        <span className="error-message">
-                          {errors.email.message}
-                        </span>
-                      )}
-                    </div>
-
+                <h2 className="form-title">Sign in to your account</h2>
+                <form className="login-form" onSubmit={handleSubmit(logInUser)}>
+                  <div>
                     <InputField
-                      type="password"
-                      name="password"
+                      type="email"
+                      name="email"
                       autoComplete="off"
-                      placeholder="Your password"
-                      {...register("password", {
-                        required: "Password is required",
+                      {...register("email", {
+                        required: "Email is required",
                       })}
+                      placeholder="Your email address"
                     />
-                    {errors.password && (
-                      <div className="error-message">
-                        {errors.password.message}
-                      </div>
+                    {errors.email && (
+                      <span className="error-message">
+                        {errors.email.message}
+                      </span>
                     )}
+                  </div>
 
-                    <a href="#" className="forgot-password-link">
-                      Forgot password?
-                    </a>
+                  <InputField
+                    type="password"
+                    name="password"
+                    autoComplete="off"
+                    placeholder="Your password"
+                    {...register("password", {
+                      required: "Password is required",
+                    })}
+                  />
+                  {errors.password && (
+                    <div className="error-message">
+                      {errors.password.message}
+                    </div>
+                  )}
 
-                    {loading ? (
-                      <button type="submit" className="login-button" disabled>
-                        <Spin />
-                      </button>
-                    ) : (
-                      <button type="submit" className="login-button">
-                        Log In
-                      </button>
-                    )}
-                  </form>
+                  <a href="#" className="forgot-password-link">
+                    Forgot password?
+                  </a>
 
-                  <p className="signup-prompt">
-                    Don&apos;t have an account?{" "}
-                    <a href="#" className="signup-link">
-                      Sign up
-                    </a>
-                  </p>
-                </div>
+                  {loading ? (
+                    <button type="submit" className="login-button" disabled>
+                      <Spin />
+                    </button>
+                  ) : (
+                    <button type="submit" className="login-button">
+                      Log In
+                    </button>
+                  )}
+                </form>
+
+                <p className="signup-prompt">
+                  Don&apos;t have an account?{" "}
+                  <a href="#" className="signup-link">
+                    Sign up
+                  </a>
+                </p>
               </div>
             </div>
           </>

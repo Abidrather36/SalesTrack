@@ -1,11 +1,11 @@
-import HomePage from "./components/public/Home"
-import About from "./components/public/About";
-import Contact from "./components/public/Contact";
-import RegisterEnquiry from "./components/public/RegisterEnquiry"
-import Login from "./components/public/Login"
-import AdminDashboard from "./components/admin/adminDashboard";
-import EnquiryList from "./components/admin/EnquiryList";
-import AddUserForm from "./components/admin/AddUser";
+import HomePage from "./Components/public/Home"
+import About from "./Components/public/About";
+import Contact from "./Components/public/Contact";
+import Login from "./Components/public/Login"
+import RegisterEnquiry from "./Components/public/RegisterEnquiry"
+import AddUserForm from "./Components/admin/AddUser";
+import AdminDashboard from "./Components/admin/AdminDashboard"
+import EnquiryList from "./Components/admin/EnquiryList"
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
