@@ -8,13 +8,12 @@ import {
 import "./App.css";
 
 import { ToastContainer } from "react-toastify";
-import PublicLayout from "./Components/shared/PublicLayout";
-import DashboardLayout from "./Components/shared/DashboardLayout";
+import PublicLayout from "./components/shared/PublicLayout";
+import DashboardLayout from "./components/shared/DashboardLayout"
 import { routerConfiguration } from "./route-config";
-import { sidebarLabels } from "./Components/shared/SidebarLabels";
+import {sidebarLabels} from "./components/shared/SidebarLabels"
 
 const App = () => {
-console.log(sidebarLabels)
   return (
     <>
       <ToastContainer />
