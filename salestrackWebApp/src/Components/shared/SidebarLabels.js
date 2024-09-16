@@ -14,8 +14,14 @@ export const sidebarLabels = [
     },
     {
         id: 3,
-        label: "Add User",
+        label: "Add New User",
         link: "/admin/add-new-user",
+        icon: <FaUser />,
+      },
+      {
+        id: 3,
+        label: "User List",
+        link: "/admin/users",
         icon: <FaUser />,
       },
   ];

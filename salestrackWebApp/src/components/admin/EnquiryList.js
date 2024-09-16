@@ -3,7 +3,6 @@ import { getAllEnquiries } from "../../Services/AuthService";
 import Grid from "./Grid";
 
 function EnquiryList() {
-
   const [enquiries, setEnquiries] = useState([]);
   const headers = [
     { key: "name", label: "Name" },
@@ -12,19 +11,27 @@ function EnquiryList() {
     { key: "isActive", label: "isActive" },
   ];
   const btnList = [
-    { key: "edit", label: "Edit", className: "btn btn-primary", onClick: (data) => console.log(data) },
-    { key: "delete", label: "Delete", className: "btn btn-danger", onClick: (data) => console.log(data) },
+    {
+      key: "edit",
+      label: "Edit",
+      className: "btn btn-primary",
+      onClick: (data) => console.log(data),
+    },
+    {
+      key: "delete",
+      label: "Delete",
+      className: "btn btn-danger",
+      onClick: (data) => console.log(data),
+    },
   ];
 
   const fetchEnquiries = async () => {
     try {
       const response = await getAllEnquiries();
       setEnquiries(response.result);
-    }
-     catch (err)
-      {
+    } catch (err) {
       console.error("Failed to fetch enquiries", err);
-     }
+    }
   };
 
   useEffect(() => {
@@ -33,10 +40,7 @@ function EnquiryList() {
 
   return (
     <>
-      <Grid 
-      headers={headers} 
-      buttons={btnList}
-      data={enquiries}/>
+      <Grid headers={headers} buttons={btnList} data={enquiries} />
     </>
   );
 }

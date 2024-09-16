@@ -1,7 +1,9 @@
 import React from "react";
 import ThreeDotMenu from "../shared/ConextMenu";
+import Badge from 'react-bootstrap/Badge';
+import Stack from 'react-bootstrap/Stack';
 
-function Grid({ headers = [], data = [] ,buttons=[]}) {
+function Grid({ headers = [], data = [], buttons = [] }) {
   if (!Array.isArray(headers)) {
     console.log("no data in headers");
   }
@@ -18,7 +20,7 @@ function Grid({ headers = [], data = [] ,buttons=[]}) {
               {headers.map((item) => {
                 return <th key={item.key}>{item.label}</th>;
               })}
-              {buttons.length>0 && <th>Actions</th>}
+              {buttons.length > 0 && <th>Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -28,35 +30,27 @@ function Grid({ headers = [], data = [] ,buttons=[]}) {
                   <td key={header.key}>
                     {header.key === "isActive"
                       ? item[header.key]
-                        ? "Active"
-                        : "Inactive"
+                        ?  <Badge bg="success">Active</Badge>
+                        :  <Badge bg="danger">InActive</Badge>
+                      : header.key === "userType"
+                      ? item[header.key] === 1
+                        ? "Sales Executive"
+                        : item[header.key] === 2
+                        ? "Sales Manager"
+                        : "Unknown"
                       : item[header.key]}
                   </td>
                 ))}
                 <td>
-            <ThreeDotMenu  props={["Edit","Delete","Add"]}/>
-                  
+                  <ThreeDotMenu props={["Edit", "Delete"]} />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <div className="card-footer border-0 py-5">
-        <span className="text-muted text-sm">
-          Showing 10 items out of 250 results found
-        </span>
-      </div>
     </div>
   );
 }
 
 export default Grid;
-
-
-
-
-
-
-
-
