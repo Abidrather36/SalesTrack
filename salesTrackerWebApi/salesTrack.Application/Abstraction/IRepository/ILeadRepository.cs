@@ -11,7 +11,7 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<int> AddLeadProcessStep(LeadProcessSteps model);
         Task<int> UpdateLeadProcessStep(LeadProcessSteps model);
         Task<LeadProcessSteps> GetLeadProcessStepById(Guid id);
-        Task<int> AddComment(Comments model);
+        Task<int> AddComment(LeadComments model);
         Task<int> AddfollowUpdate(FollowUpDate model);
 
     }

@@ -17,9 +17,9 @@ namespace salesTrack.Persistence.Repository
             this.context = context;
         }
 
-        public async Task<int> AddComment(Comments model)
+        public async Task<int> AddComment(LeadComments model)
         {
-          await context.LeadComments.AddAsync(model);
+            await context.LeadComments.AddAsync(model);
             return await context.SaveChangesAsync();
         }
 

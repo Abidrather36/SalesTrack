@@ -6,8 +6,10 @@ import { changePassword } from "../Services/AuthService";
 import { useForm } from "react-hook-form";
 import storage from "../utils/storages";
 import myToaster from "../utils/toaster";
+import { useNavigate } from "react-router-dom";
 
 function ChangePasswordModal({ open, handleClose }) {
+  const navigate=useNavigate()
   const [show, setShow] = useState(open);
   const {
     register,
@@ -29,6 +31,7 @@ function ChangePasswordModal({ open, handleClose }) {
     const response = await changePassword(data, bearerToken);
     if(response.isSuccess){
       myToaster.showSuccessToast(response.message)
+      navigate("/login")
     }
   };
 

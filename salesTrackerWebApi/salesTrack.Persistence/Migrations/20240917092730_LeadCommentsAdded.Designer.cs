@@ -12,8 +12,8 @@ using SalesTrack.Persistence.Data;
 namespace salesTrack.Persistence.Migrations
 {
     [DbContext(typeof(SalesTrackDBContext))]
-    [Migration("20240829070646_processStepAndFollowUpAdded")]
-    partial class processStepAndFollowUpAdded
+    [Migration("20240917092730_LeadCommentsAdded")]
+    partial class LeadCommentsAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,19 +92,54 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dbfabf5c-4f45-47d6-b18d-1238dcc35ff3"),
+                            Id = new Guid("84c3e094-7edb-4a88-b379-912ecfaf8c2d"),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "6WGwyUUnNCkedMS5uQxb8fGAzggf7Ae566NsC74jRYM=",
+                            Password = "wJNaxlyRDE4gyygTsZQgUu+DPewEU+u06ToNIcJJKzM=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 8, 29, 7, 21, 43, 802, DateTimeKind.Unspecified).AddTicks(3094), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "NsmptQJDErtQ3XoY8SQurQ==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 9, 17, 9, 42, 29, 391, DateTimeKind.Unspecified).AddTicks(9899), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "gT7AJAK+kb4NYVea4RL25g==",
                             UserRole = (byte)1,
                             UserType = (byte)0
                         });
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.AdminProcessStep", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("StepName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdminProcessSteps");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.Enquiry", b =>
@@ -199,7 +234,7 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<Guid>("AssignTo")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Comments")
+                    b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("CreatedBy")
@@ -234,6 +269,91 @@ namespace salesTrack.Persistence.Migrations
                     b.HasIndex("LeadSourceId");
 
                     b.ToTable("Leads");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.LeadComments", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("LeadId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeadId");
+
+                    b.ToTable("LeadComments");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.LeadProcessSteps", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AdminProcessStepId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("LeadId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("StepDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdminProcessStepId");
+
+                    b.HasIndex("LeadId");
+
+                    b.ToTable("LeadProcessSteps");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.LeadSource", b =>
@@ -274,49 +394,6 @@ namespace salesTrack.Persistence.Migrations
                     b.ToTable("LeadSources");
                 });
 
-            modelBuilder.Entity("salesTrack.Domain.Entities.ProcessSteps", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset?>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset?>("DeletedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("LeadId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset?>("ModifiedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("StepDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StepName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LeadId");
-
-                    b.ToTable("ProcessSteps");
-                });
-
             modelBuilder.Entity("salesTrack.Domain.Entities.FollowUpDate", b =>
                 {
                     b.HasOne("salesTrack.Domain.Entities.Lead", "Lead")
@@ -347,10 +424,10 @@ namespace salesTrack.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("salesTrack.Domain.Entities.ProcessSteps", b =>
+            modelBuilder.Entity("salesTrack.Domain.Entities.LeadComments", b =>
                 {
                     b.HasOne("salesTrack.Domain.Entities.Lead", "Lead")
-                        .WithMany()
+                        .WithMany("LeadComments")
                         .HasForeignKey("LeadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -358,9 +435,33 @@ namespace salesTrack.Persistence.Migrations
                     b.Navigation("Lead");
                 });
 
+            modelBuilder.Entity("salesTrack.Domain.Entities.LeadProcessSteps", b =>
+                {
+                    b.HasOne("salesTrack.Domain.Entities.AdminProcessStep", "ProcessStepAdmin")
+                        .WithMany()
+                        .HasForeignKey("AdminProcessStepId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("salesTrack.Domain.Entities.Lead", "Lead")
+                        .WithMany()
+                        .HasForeignKey("LeadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lead");
+
+                    b.Navigation("ProcessStepAdmin");
+                });
+
             modelBuilder.Entity("SalesTrack.Domain.Entities.User", b =>
                 {
                     b.Navigation("Lead");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.Lead", b =>
+                {
+                    b.Navigation("LeadComments");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.LeadSource", b =>

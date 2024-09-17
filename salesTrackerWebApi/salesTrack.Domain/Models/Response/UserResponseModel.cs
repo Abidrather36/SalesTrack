@@ -17,6 +17,7 @@ namespace salesTrack.Domain.Models
         public Guid? ReportsTo { get; set; }
         public UserType UserType { get; set; }
         public UserRole UserRole { get; set; }
+        public bool IsActive { get; set; }
 
 
     }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace salesTrack.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class ModifiedLeadAndUser : Migration
+    public partial class LeadCommentsAdded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,12 +14,12 @@ namespace salesTrack.Persistence.Migrations
             migrationBuilder.DeleteData(
                 table: "Users",
                 keyColumn: "Id",
-                keyValue: new Guid("b18c9201-1252-4b45-ae6f-e8743a5aaaee"));
+                keyValue: new Guid("866315bb-44fa-43a5-8012-40bf436d03dd"));
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedBy", "CreatedDate", "DeletedBy", "DeletedDate", "Email", "IsActive", "IsPasswordTemporary", "ModifiedBy", "ModifiedDate", "Name", "Password", "PhoneNumber", "ReportsTo", "ResetCode", "ResetExpiry", "Salt", "UserRole", "UserType" },
-                values: new object[] { new Guid("2535e498-876c-4cc5-9886-c734a3469aa1"), null, null, null, null, "ramrk@anterntech.com", false, true, null, null, "Ram", "7w6yj2AQ3lybTnl8dykS7irDWuA0ltzFBOjuyxmGUbU=", "6545454543", null, 12345, new DateTimeOffset(new DateTime(2024, 8, 27, 5, 54, 19, 136, DateTimeKind.Unspecified).AddTicks(7843), new TimeSpan(0, 0, 0, 0, 0)), "AveKWRI29Wj5HwEzHhJmIg==", (byte)1, (byte)0 });
+                values: new object[] { new Guid("84c3e094-7edb-4a88-b379-912ecfaf8c2d"), null, null, null, null, "ramrk@anterntech.com", false, true, null, null, "Ram", "wJNaxlyRDE4gyygTsZQgUu+DPewEU+u06ToNIcJJKzM=", "6545454543", null, 12345, new DateTimeOffset(new DateTime(2024, 9, 17, 9, 42, 29, 391, DateTimeKind.Unspecified).AddTicks(9899), new TimeSpan(0, 0, 0, 0, 0)), "gT7AJAK+kb4NYVea4RL25g==", (byte)1, (byte)0 });
         }
 
         /// <inheritdoc />
@@ -28,12 +28,12 @@ namespace salesTrack.Persistence.Migrations
             migrationBuilder.DeleteData(
                 table: "Users",
                 keyColumn: "Id",
-                keyValue: new Guid("2535e498-876c-4cc5-9886-c734a3469aa1"));
+                keyValue: new Guid("84c3e094-7edb-4a88-b379-912ecfaf8c2d"));
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedBy", "CreatedDate", "DeletedBy", "DeletedDate", "Email", "IsActive", "IsPasswordTemporary", "ModifiedBy", "ModifiedDate", "Name", "Password", "PhoneNumber", "ReportsTo", "ResetCode", "ResetExpiry", "Salt", "UserRole", "UserType" },
-                values: new object[] { new Guid("b18c9201-1252-4b45-ae6f-e8743a5aaaee"), null, null, null, null, "ramrk@anterntech.com", false, true, null, null, "Ram", "KLuKA3Rq4ALFmCN61F0oLL8GYU9jsItPtVj/SSPVd9c=", "6545454543", null, 12345, new DateTimeOffset(new DateTime(2024, 8, 27, 5, 23, 59, 97, DateTimeKind.Unspecified).AddTicks(5572), new TimeSpan(0, 0, 0, 0, 0)), "XRJhpGB0kK7jiW1vs4eqFA==", (byte)1, (byte)0 });
+                values: new object[] { new Guid("866315bb-44fa-43a5-8012-40bf436d03dd"), null, null, null, null, "ramrk@anterntech.com", false, true, null, null, "Ram", "flbJoS/q3X4OdeC9EdQBn6thORgVaW2Sme7XLaw/SaI=", "6545454543", null, 12345, new DateTimeOffset(new DateTime(2024, 9, 17, 8, 55, 29, 305, DateTimeKind.Unspecified).AddTicks(7563), new TimeSpan(0, 0, 0, 0, 0)), "amYE58d16C0IV7BzmSQlHQ==", (byte)1, (byte)0 });
         }
     }
 }

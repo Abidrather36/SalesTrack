@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { getAllEnquiries } from "../../Services/AuthService";
 import Grid from "./Grid";
+import BreadcrumbComponent from "../shared/Breadcrumb";
 
 function EnquiryList() {
 
   const [enquiries, setEnquiries] = useState([]);
+  
   const headers = [
     { key: "name", label: "Name" },
     { key: "email", label: "Email" },
@@ -15,6 +17,9 @@ function EnquiryList() {
     { key: "edit", label: "Edit", className: "btn btn-primary", onClick: (data) => console.log(data) },
     { key: "delete", label: "Delete", className: "btn btn-danger", onClick: (data) => console.log(data) },
   ];
+  const breadcrumLabels={
+    module:"Admin",currentRoute:"Enquiries"
+  }
 
   const fetchEnquiries = async () => {
     try {
@@ -33,6 +38,9 @@ function EnquiryList() {
 
   return (
     <>
+    <div>
+      <BreadcrumbComponent labels={breadcrumLabels}/>
+    </div>
       <Grid 
       headers={headers} 
       buttons={btnList}
