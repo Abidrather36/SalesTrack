@@ -1,30 +1,53 @@
-import React from "react";
-import ThreeDotMenu from "../shared/ConextMenu";
+import React, { useState } from "react";
 import Badge from "react-bootstrap/Badge";
-import Stack from "react-bootstrap/Stack";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import ThreeDotMenu from "../shared/ConextMenu";
+import TablePagination from "@mui/material/TablePagination";
 
-function Grid({ headers = [], data = [], buttons = [] }) {
-  if (!Array.isArray(headers)) {
-    console.log("no data in headers");
-  }
+function Grid({ headers = [], data = [], buttons = [], tableName = "" }) {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5); 
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); 
+  };
+
+  
+  const paginatedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <div className="card shadow border-0 mb-7">
       <div className="card-header">
-        <h5 className="mb-0">Enquiries</h5>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <h5 className="mb-0">{tableName}</h5>
+          <div>
+            <input
+              type="text"
+              placeholder={`Search ${tableName}`}
+              name="search"
+              id="search"
+              style={{ padding: "5px", borderRadius: "4px", border: "1px solid #ddd" }}
+            />
+          </div>
+        </div>
       </div>
       <div className="table-responsive">
-        <table className="table  table-nowrap">
+        <table className="table table-nowrap">
           <thead className="thead-light">
             <tr>
-              {headers.map((item) => {
-                return <th key={item.key}>{item.label}</th>;
-              })}
+              {headers.map((item) => (
+                <th key={item.key}>{item.label}</th>
+              ))}
               {buttons.length > 0 && <th>Actions</th>}
             </tr>
           </thead>
           <tbody>
-            {data.map((item, index) => (
+            {paginatedData.map((item, index) => (
               <tr key={index}>
                 {headers.map((header) => (
                   <td key={header.key}>
@@ -32,7 +55,7 @@ function Grid({ headers = [], data = [], buttons = [] }) {
                       item[header.key] ? (
                         <Badge bg="success">Active</Badge>
                       ) : (
-                        <Badge bg="danger">InActive</Badge>
+                        <Badge bg="danger">Inactive</Badge>
                       )
                     ) : header.key === "userType" ? (
                       item[header.key] === 1 ? (
@@ -48,13 +71,30 @@ function Grid({ headers = [], data = [], buttons = [] }) {
                   </td>
                 ))}
                 <td>
-                  <ThreeDotMenu props={["Edit", "Delete"]} />
+                  <ThreeDotMenu
+                    options={buttons}
+                    handleEdit={() =>
+                      buttons.find((btn) => btn.key === "edit")?.onEditHandler(item)
+                    }
+                    handleDelete={() =>
+                      buttons.find((btn) => btn.key === "delete")?.onDeleteHandler(item)
+                    }
+                  />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]} 
+        component="div"
+        count={data.length} 
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </div>
   );
 }

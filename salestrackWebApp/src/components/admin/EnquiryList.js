@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAllEnquiries } from "../../Services/AuthService";
 import Grid from "./Grid";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 function EnquiryList() {
   const [enquiries, setEnquiries] = useState([]);
@@ -13,15 +14,17 @@ function EnquiryList() {
   const btnList = [
     {
       key: "edit",
-      label: "Edit",
+      title: "Edit",
       className: "btn btn-primary",
-      onClick: (data) => console.log(data),
+      onEditHandler: (data) => console.log(data),
+      icon:<FaEdit/>
     },
     {
       key: "delete",
-      label: "Delete",
+      title: "Delete",
       className: "btn btn-danger",
-      onClick: (data) => console.log(data),
+      onDeleteHandler: (data) => console.log(data),
+      icon:<FaTrash/>
     },
   ];
 
@@ -40,7 +43,11 @@ function EnquiryList() {
 
   return (
     <>
-      <Grid headers={headers} buttons={btnList} data={enquiries} />
+      <Grid
+       headers={headers}
+        buttons={btnList}
+        data={enquiries}
+        tableName="Enquiries" />
     </>
   );
 }
