@@ -13,6 +13,7 @@ using SalesTrack.Application.Common;
 using SalesTrack.Application.Shared;
 using SalesTrack.Domain.Entities;
 using SalesTrack.Domain.Entities.Models.Request;
+using static SalesTrack.Application.Shared.ApiMessages;
 
 namespace salesTrack.Application.Services
 {
@@ -68,7 +69,7 @@ namespace salesTrack.Application.Services
                     {
                         if (model.UserType == UserType.SalesExecutive)
                         {
-                            User salesExecutive = new()
+                            var salesExecutive = new Domain.Entities.User()
                             {
                                 Id = user.Id,
                                 ReportsTo = model.ReportsTo,
@@ -86,7 +87,7 @@ namespace salesTrack.Application.Services
                         }
                         else
                         {
-                            User salesManager = new()
+                            var salesManager = new Domain.Entities.User()
                             {
                                 Id = user.Id,
                                 ReportsTo = model.ReportsTo,
@@ -310,30 +311,16 @@ namespace salesTrack.Application.Services
         }
         public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsers()
         {
-            var users = await userRepository.GetAllAsync();
-            var returnedUsers = users.Where(x => x.UserRole == UserRole.SalesExecutive || x.UserRole == UserRole.SalesManager);
-            if (returnedUsers.Any())
+          var users=await userRepository.GetAllUsersAsync();
+            if (users is null)
             {
-                var userList = returnedUsers.Select(x => new UserResponseModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Email = x.Email,
-                    IsPasswordTemporary = x.IsPasswordTemporary,
-                    PhoneNumber = x.PhoneNumber,
-                    UserRole = x.UserRole,
-                    IsActive = x.IsActive,
-
-                });
-
-                return ApiResponse<IEnumerable<UserResponseModel>>.SuccessResponse(userList, ApiMessages.User.UsersFetchedSuccessfully, HttpStatusCodes.OK);
+                return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse(ApiMessages.Auth.UserNotFound, HttpStatusCodes.BadRequest);
 
             }
             else
             {
-                return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                return ApiResponse<IEnumerable<UserResponseModel>>.SuccessResponse(users,"users found Successfully",HttpStatusCodes.OK);
             }
-            return default;
         }
 
         public async Task<ApiResponse<UserResponseModel>> GetUserById(Guid id)
