@@ -14,7 +14,8 @@ namespace salesTrack.Domain.Models
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public bool IsPasswordTemporary { get; set; } = true;
-        public Guid? ReportsTo { get; set; }
+        public Guid? ReportsToId { get; set; }
+        public string ReportsToName { get; set; }
         public UserType UserType { get; set; }
         public UserRole UserRole { get; set; }
         public bool IsActive { get; set; }

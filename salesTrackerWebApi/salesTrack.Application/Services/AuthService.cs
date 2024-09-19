@@ -79,61 +79,7 @@ namespace salesTrack.Application.Services
             }
         }
 
-        public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsers()
-        {
-           var users=await authRepository.GetAllAsync();
-            var returnedUsers = users.Where(x => x.UserType == UserType.SalesExecutive && x.UserType == UserType.SalesManager);
-            if (returnedUsers.Any())
-            {
-               var userList= returnedUsers.Select(x => new UserResponseModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Email = x.Email,
-                    IsPasswordTemporary = x.IsPasswordTemporary,
-                    PhoneNumber = x.PhoneNumber,
-                    UserRole = x.UserRole,
-                    UserType = x.UserType,
-                    ReportsTo = x.ReportsTo,
-                    IsActive=x.IsActive,
-
-                });
-
-                return ApiResponse<IEnumerable<UserResponseModel>>.SuccessResponse(userList, ApiMessages.User.UsersFetchedSuccessfully, HttpStatusCodes.OK);
-
-            }
-            else
-            {
-                return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse( ApiMessages.NotFound, HttpStatusCodes.BadRequest);
-            }
-        }
-
-        public async Task<ApiResponse<UserResponseModel>> GetUserById(Guid id)
-        {
-          var user= await authRepository.GetByIdAsync(id);
-            if(user is null)
-            {
-                return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.Auth.UserNotFound, HttpStatusCodes.BadRequest);
-
-            }
-            else
-            {
-                UserResponseModel userResponseModel = new()
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    Email = user.Email,
-                    IsPasswordTemporary = user.IsPasswordTemporary,
-                    PhoneNumber = user.PhoneNumber,
-                    UserRole = user.UserRole,
-                    UserType = user.UserType,
-                    ReportsTo = user.ReportsTo,
-
-                };
-                return ApiResponse<UserResponseModel>.SuccessResponse(userResponseModel,ApiMessages.User.UserFound, HttpStatusCodes.OK);
-
-            }
-        }
+  
 
         public async Task<ApiResponse<LoginResponseModel>> Login(LoginRequestModel model)
         {

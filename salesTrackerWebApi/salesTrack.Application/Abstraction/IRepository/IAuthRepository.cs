@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace salesTrack.Application.Abstraction.IRepository
 {
-    public interface IAuthRepository:IBaseRepository<User>
+    public interface IAuthRepository:IBaseRepository<MasterUser>
     {
     }
 }

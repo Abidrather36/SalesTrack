@@ -6,6 +6,5 @@ namespace SalesTrack.Application.Abstraction.IService
 {
     public interface IUserService
     {
-        Task<ApiResponse<UserResponseModel>> AddUser(UserRequestModel model);
     }
 }

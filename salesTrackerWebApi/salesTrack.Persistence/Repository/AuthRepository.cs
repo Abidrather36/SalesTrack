@@ -5,7 +5,7 @@ using SalesTrack.Persistence.Repository;
 
 namespace salesTrack.Persistence.Repository
 {
-    public  class AuthRepository:BaseRepository<User>,IAuthRepository
+    public  class AuthRepository:BaseRepository<MasterUser>,IAuthRepository
     {
         public AuthRepository(SalesTrackDBContext context):base(context)
         {

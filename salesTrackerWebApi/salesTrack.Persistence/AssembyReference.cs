@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using salesTrack.Application.Abstraction.IRepository;
+using salesTrack.Application.Abstraction.IService;
 using salesTrack.Persistence.Repository;
 using SalesTrack.Application.Abstraction.IRepository;
 using SalesTrack.Persistence.Data;
@@ -16,6 +17,7 @@ namespace salesTrack.Persistence
             services.AddScoped<ILeadRepository, LeadRepository>();
             services.AddScoped<ILeadSourceRepository, LeadSourceRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddDbContextPool<SalesTrackDBContext>(options => options.UseSqlServer(configuration.GetConnectionString(nameof(SalesTrackDBContext))));

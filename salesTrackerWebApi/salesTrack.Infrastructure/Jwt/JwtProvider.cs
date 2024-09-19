@@ -22,7 +22,7 @@ namespace salesTrack.Infrastructure.Jwt
         {
             this.configuration = configuration;
         }
-        public UserTokens GenerateToken(User user)
+        public UserTokens GenerateToken(MasterUser user)
         {
             try
             {

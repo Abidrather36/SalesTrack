@@ -18,7 +18,7 @@ namespace salesTrack.Domain.Entities
         public LeadSource? LeadSource { get; set; }
 
         [ForeignKey(nameof(Id))]
-        public User? User { get; set; }
+        public MasterUser? User { get; set; }
         ICollection<LeadProcessSteps>? ProcessSteps { get; set; }
         ICollection<FollowUpDate>? FollowUpDate { get; set; }
         public ICollection<LeadComments>? LeadComments { get; set; }

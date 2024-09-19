@@ -17,44 +17,12 @@ namespace salesTrack.Persistence.Repository
         {
             this.context = context;
         }
-        public Task<int> AddAdmin(User model)
+        public Task<int> AddAdmin(MasterUser model)
         {
             throw new NotImplementedException();
         }
-        public async Task<bool> IsExistsAsync(Expression<Func<Company, bool>> expression)
-        {
-            return await context.Companies.AnyAsync(expression);
-        }
-
-            public async Task<int> AddCompany(Company model)
-        {
-           await context.Companies.AddAsync(model);
-            return await context.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<CompanyResponseModel>> GetAllCompanies()
-        {
-            var companies =context.Companies.Select(x => new CompanyResponseModel
-            {
-                Id = x.Id,
-                CompanyName = x.CompanyName,
-                Email = x.Email,
-                PhoneNumber = x.PhoneNumber,
-
-            }).ToList();
-            return companies;
-        }
-
-        public async Task<Company> GetCompanyById(Guid id)
-        {
-           return await context.Companies.FindAsync(id);
-        }
-
-        public async Task<int> UpdateCompany(Company model)
-        {
-           await Task.Run(()=> context.Companies.Update(model));
-            return await context.SaveChangesAsync();
-        }
+  
+     
 
       
     }
