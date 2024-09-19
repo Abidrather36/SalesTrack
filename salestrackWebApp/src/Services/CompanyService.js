@@ -10,3 +10,7 @@ export const UserList=()=>{
     let res= axios.get(`${ApiUrl}Auth/GetAllUsers`).then(res=>res.data)
     return res;
 }
+export const addCompany=(companyRequestModel)=>{
+    let res= axios.post(`${ApiUrl}Company/Add`,companyRequestModel).then(res=>res.data)
+    return res;
+}

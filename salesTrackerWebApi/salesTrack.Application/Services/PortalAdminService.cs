@@ -21,7 +21,8 @@ namespace salesTrack.Application.Services
         private readonly ICompanyRepository companyRepository;
         private readonly IContextService contextService;
 
-        public PortalAdminService(ICompanyRepository companyRepository ,IContextService contextService)
+        public PortalAdminService(ICompanyRepository companyRepository
+                                 ,IContextService contextService)
         {
             this.companyRepository = companyRepository;
             this.contextService = contextService;
@@ -31,12 +32,7 @@ namespace salesTrack.Application.Services
             try
             {
                 var portalAdmin = contextService.UserId();
-                if (portalAdmin == Guid.Empty)
-                {
-                    return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
-                }
-                else
-                {
+             
                     var companyExists = await companyRepository.IsExistsAsync(x => x.CompanyName == model.CompanyName);
                     if (companyExists)
                     {
@@ -78,7 +74,6 @@ namespace salesTrack.Application.Services
                             return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
                         }
                     }
-                }
             }
             catch (Exception ex)
             {
