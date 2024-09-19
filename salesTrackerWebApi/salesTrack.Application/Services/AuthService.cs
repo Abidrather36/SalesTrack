@@ -81,10 +81,11 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsers()
         {
-           var users=await authRepository.GetAllAsync();
-            if (users.Any())
+            var users = await authRepository.GetAllAsync();
+            var returnedUsers = users.Where(x => x.UserType == UserType.SalesExecutive && x.UserType == UserType.SalesManager);
+            if (returnedUsers.Any())
             {
-               var user= users.Select(x => new UserResponseModel
+                var userList = returnedUsers.Select(x => new UserResponseModel
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -94,15 +95,16 @@ namespace salesTrack.Application.Services
                     UserRole = x.UserRole,
                     UserType = x.UserType,
                     ReportsTo = x.ReportsTo,
+                    IsActive = x.IsActive,
 
                 });
 
-                return ApiResponse<IEnumerable<UserResponseModel>>.SuccessResponse(user, ApiMessages.User.UsersFetchedSuccessfully, HttpStatusCodes.OK);
+                return ApiResponse<IEnumerable<UserResponseModel>>.SuccessResponse(userList, ApiMessages.User.UsersFetchedSuccessfully, HttpStatusCodes.OK);
 
             }
             else
             {
-                return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse( ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
             }
         }
 

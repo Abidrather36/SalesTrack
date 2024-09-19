@@ -1,7 +1,7 @@
 import React from "react";
 import ThreeDotMenu from "../shared/ConextMenu";
-import Badge from 'react-bootstrap/Badge';
-import Stack from 'react-bootstrap/Stack';
+import Badge from "react-bootstrap/Badge";
+import Stack from "react-bootstrap/Stack";
 
 function Grid({ headers = [], data = [], buttons = [] }) {
   if (!Array.isArray(headers)) {
@@ -28,17 +28,23 @@ function Grid({ headers = [], data = [], buttons = [] }) {
               <tr key={index}>
                 {headers.map((header) => (
                   <td key={header.key}>
-                    {header.key === "isActive"
-                      ? item[header.key]
-                        ?  <Badge bg="success">Active</Badge>
-                        :  <Badge bg="danger">InActive</Badge>
-                      : header.key === "userType"
-                      ? item[header.key] === 1
-                        ? "Sales Executive"
-                        : item[header.key] === 2
-                        ? "Sales Manager"
-                        : "Unknown"
-                      : item[header.key]}
+                    {header.key === "isActive" ? (
+                      item[header.key] ? (
+                        <Badge bg="success">Active</Badge>
+                      ) : (
+                        <Badge bg="danger">InActive</Badge>
+                      )
+                    ) : header.key === "userType" ? (
+                      item[header.key] === 1 ? (
+                        <Badge bg="secondary">Sales Executive</Badge>
+                      ) : item[header.key] === 2 ? (
+                        <Badge bg="info">Sales Manager</Badge>
+                      ) : (
+                        "Unknown"
+                      )
+                    ) : (
+                      item[header.key]
+                    )}
                   </td>
                 ))}
                 <td>
