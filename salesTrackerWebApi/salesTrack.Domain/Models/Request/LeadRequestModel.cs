@@ -19,6 +19,7 @@ namespace salesTrack.Domain.Models.Request
 
         public Guid LeadSourceId { get; set; }
 
+        [Required]
         public string? Comment { get; set; }
 
         [Required(ErrorMessage = "AssignTo is required.")]

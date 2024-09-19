@@ -21,7 +21,7 @@ namespace salesTrack.Domain.Entities
         public User? User { get; set; }
         ICollection<LeadProcessSteps>? ProcessSteps { get; set; }
         ICollection<FollowUpDate>? FollowUpDate { get; set; }
-        public ICollection<Comments>? Comments { get; set; }
+        public ICollection<LeadComments>? LeadComments { get; set; }
         #endregion
     }
 }

@@ -52,12 +52,9 @@ namespace salesTrack.Application.Services
                     Password = AppEncryption.GenerateRandomPassword(model.Email!),
                     Salt = AppEncryption.GenerateSalt(),
                     UserRole = UserRole.Lead,
-                    CreatedBy=salesExecutiveId,
                     CreatedDate = DateTime.UtcNow,
-                    DeletedBy=salesExecutiveId,
                     DeletedDate = DateTime.UtcNow,  
                     IsActive=true,
-                    ModifiedBy=salesExecutiveId,
                     ModifiedDate = DateTime.UtcNow, 
                 };
 
@@ -73,11 +70,10 @@ namespace salesTrack.Application.Services
                     AssignTo = model.AssignTo,
                     LeadSourceId = model.LeadSourceId,
                     IsActive = true,
-                    Comment = model.Comment,
+                    Comment=model.Comment,
+                    CreatedBy=salesExecutiveId,
+                    ModifiedBy=Guid.Empty,
                     FinalStatus = model.FinalStatus,
-                    CreatedBy = salesExecutiveId,
-                    ModifiedBy = salesExecutiveId,
-                    DeletedBy = salesExecutiveId,
                     CreatedDate = DateTime.Now,
                     DeletedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
@@ -93,8 +89,9 @@ namespace salesTrack.Application.Services
                 }
                 else
                 {
-                     var sourceLead = await leadRepository.GetLeadById(lead.Id);
-                     sourceLead.AssignedTo = (await userRepository.GetByIdAsync(lead.AssignTo))!.Name;
+                     var sourceLead = await leadRepository.GetLeadById(lead!.Id);
+                    var returnVal = await userRepository.GetByIdAsync(sourceLead.AssignToId);
+                    sourceLead.AssignedTo = returnVal!.Name;
 
 
                     return ApiResponse<LeadResponseModel>.SuccessResponse(sourceLead, ApiMessages.LeadManagement.LeadAddedSuccessfully, HttpStatusCodes.Created);
@@ -456,7 +453,7 @@ namespace salesTrack.Application.Services
                 }
                 else
                 {
-                    Comments comments = new()
+                    LeadComments comments = new()
                     {
                         Id = Guid.NewGuid(),
                         LeadId = model.LeadId,

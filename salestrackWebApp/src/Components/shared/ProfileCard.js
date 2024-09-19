@@ -10,8 +10,7 @@ import {
   MDBBreadcrumb,
   MDBBreadcrumbItem,
 } from "mdb-react-ui-kit";
-import { Link } from "react-router-dom";
-import { BreadCrumb } from "primereact/breadcrumb";
+
 import BreadcrumbComponent from "./Breadcrumb";
 
 export default function ProfilePage() {

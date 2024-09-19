@@ -67,7 +67,7 @@ namespace salesTrack.Application.Services
                             ReportsTo = Guid.Empty,
                             IsActive = true,
                             IsPasswordTemporary = true,
-                            UserRole = UserRole.Admin,
+                            UserRole = UserRole.PortalAdmin,
                          
 
                         };
@@ -85,7 +85,7 @@ namespace salesTrack.Application.Services
                                     Name = model.Name,
                                     Email = model.Email,
                                     PhoneNumber = model.PhoneNumber,
-                                    UserRole=UserRole.Admin,
+                                    UserRole=UserRole.PortalAdmin,
                                     ReportsTo=Guid.Empty
 
                                 }, ApiMessages.Admin.AdminAddedSuccessfully, HttpStatusCodes.Created);
@@ -167,6 +167,8 @@ namespace salesTrack.Application.Services
                 return ApiResponse<AdminProcessStepResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
             }
         }
+
+      
 
         public async Task<ApiResponse<DeleteAdminProcessStepResponseModel>> DeleteAdminProcessStep(Guid Id)
         {
@@ -277,6 +279,170 @@ namespace salesTrack.Application.Services
             catch (Exception ex)
             {
                 return ApiResponse<AdminProcessStepResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message} ", HttpStatusCodes.BadRequest);
+            }
+        }
+        public async Task<ApiResponse<CompanyResponseModel>> AddCompany(CompanyRequestModel model)
+        {
+            try
+            {
+                var portalAdmin = contextService.UserId();
+                if (portalAdmin == Guid.Empty)
+                {
+                    return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                }
+                else
+                {
+                    var companyExists = await adminRepository.IsExistsAsync(x => x.CompanyName == model.CompanyName);
+                    if (companyExists)
+                    {
+                        return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.AlreadyAvailable, HttpStatusCodes.BadRequest);
+                    }
+                    else
+                    {
+                        Company company = new()
+                        {
+                            Id = Guid.NewGuid(),
+                            Email = model.Email,
+                            CompanyName = model.CompanyName,
+                            PhoneNumber = model.PhoneNumber,
+                            CreatedBy = portalAdmin,
+                            ModifiedBy = Guid.Empty,
+                            CreatedDate = DateTime.Now,
+                            ModifiedDate = null,
+                            DeletedBy = Guid.Empty,
+                            IsActive = true,
+                            DeletedDate = null
+
+                        };
+                        var companyAdded = await adminRepository.AddCompany(company);
+                        if (companyAdded > 0)
+                        {
+                          
+                            CompanyResponseModel companyResponseModel = new()
+                            {
+                                Id = company.Id,
+                                CompanyName = company.CompanyName,
+                                Email = company.Email,
+                                PhoneNumber = company.PhoneNumber,
+                            };
+
+                            return ApiResponse<CompanyResponseModel>.SuccessResponse(companyResponseModel, "Company Added Successfully", HttpStatusCodes.OK);
+                        }
+                        else
+                        {
+                            return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<CompanyResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message} ", HttpStatusCodes.BadRequest);
+
+            }
+
+
+        }
+
+        public async Task<ApiResponse<IEnumerable<CompanyResponseModel>>> GetAllComapnies()
+        {
+            try
+            {
+                var companies = await adminRepository.GetAllCompanies();
+                if (companies.Any())
+                {
+                    return ApiResponse<IEnumerable<CompanyResponseModel>>.SuccessResponse(companies, "All Companies fetched are Available", HttpStatusCodes.OK);
+                }
+                else
+                {
+                    return ApiResponse<IEnumerable<CompanyResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.OK);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<CompanyResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message} ", HttpStatusCodes.BadRequest);
+
+            }
+        }
+
+        public async Task<ApiResponse<CompanyResponseModel>> DeleteCompany(Guid id)
+        {
+            var adminId = contextService.UserId();
+            var company= await adminRepository.GetCompanyById(id);
+
+            if(company is null)
+            {
+                return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+            }
+            else
+            {
+                    company.IsActive = false;
+                    company.DeletedBy = adminId;
+                    company.DeletedDate = DateTime.Now;
+                    company.ModifiedBy = adminId;
+                    company.ModifiedDate = DateTime.Now;
+
+                var isDeletedCompany = await adminRepository.UpdateCompany(company);
+
+                if (isDeletedCompany > 0)
+                {
+                    var deletedByAdmin = await userRepository.GetByIdAsync(company.DeletedBy);
+                    var retVal = await userRepository.GetByIdAsync(deletedByAdmin.Id);
+                    var deleteByName = retVal.Name;
+                    var   companyDeleted = await adminRepository.GetCompanyById(company.Id);
+                    var companyResponse = new CompanyResponseModel
+                    {
+                        Id = companyDeleted.Id,
+                        CompanyName = companyDeleted.CompanyName,
+                        ModifiedBy=adminId,
+                        CreatedBy=Guid.Empty,
+                        CreatedDate=companyDeleted.CreatedDate,
+                        ModifiedDate = DateTime.Now,
+                        DeletedBy=adminId,
+                        Email = companyDeleted.Email,
+                        PhoneNumber = companyDeleted.PhoneNumber,
+                        IsActive = companyDeleted.IsActive,
+                        DeletedDate = companyDeleted.DeletedDate,
+                        DeletedByName = deleteByName
+
+                    };
+                    return ApiResponse<CompanyResponseModel>.SuccessResponse(companyResponse, "Company Deleted Successfully", HttpStatusCodes.OK);
+                }
+                else
+                {
+                    return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                }
+
+            }
+        }
+
+        public async Task<ApiResponse<CompanyResponseModel>> GetCompanyById(Guid id)
+        {
+          var company= await adminRepository.GetCompanyById(id);
+            if(company is null)
+            {
+                return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+
+            }
+            else
+            {
+                CompanyResponseModel companyResponseModel = new()
+                {
+                    Id = company.Id,
+                    CompanyName = company.CompanyName,
+                    Email = company.Email,
+                    PhoneNumber = company.PhoneNumber,
+                    CreatedBy = company.CreatedBy,
+                    ModifiedBy = company.ModifiedBy,
+                    DeletedBy = company.DeletedBy,
+                    DeletedDate = company.DeletedDate,
+                    IsActive = company.IsActive,
+                    CreatedDate = company.CreatedDate,
+                    ModifiedDate = company.ModifiedDate,
+
+                };
+                return ApiResponse<CompanyResponseModel>.SuccessResponse(companyResponseModel, "Company Found", HttpStatusCodes.OK);
             }
         }
     }

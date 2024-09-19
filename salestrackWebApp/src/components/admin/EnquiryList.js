@@ -6,6 +6,7 @@ import BreadcrumbComponent from "../shared/Breadcrumb";
 
 function EnquiryList() {
   const [enquiries, setEnquiries] = useState([]);
+  
   const headers = [
     { key: "name", label: "Name" },
     { key: "email", label: "Email" },
@@ -34,6 +35,9 @@ function EnquiryList() {
       icon:<FaTrash/>
     },
   ];
+  const breadcrumLabels={
+    module:"Admin",currentRoute:"Enquiries"
+  }
 
   const addEnquiry = () => {
   
@@ -54,6 +58,7 @@ function EnquiryList() {
 
   return (
     <>
+
     <BreadcrumbComponent labels={breadcrumbLabels}/>
       <Grid
        headers={headers}
@@ -61,6 +66,7 @@ function EnquiryList() {
         data={enquiries}
         onAdd={addEnquiry}
         tableName="Enquiries" />
+
     </>
   );
 }

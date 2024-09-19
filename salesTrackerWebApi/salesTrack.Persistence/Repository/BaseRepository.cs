@@ -35,7 +35,7 @@ namespace SalesTrack.Persistence.Repository
             return await Task.Run(() => context.Set<T>().ToList());
         }
 
-        public async Task<T?> GetByIdAsync(Guid Id)
+        public async Task<T?> GetByIdAsync(Guid? Id)
         {
             return await context.Set<T>().FindAsync(Id);
         }

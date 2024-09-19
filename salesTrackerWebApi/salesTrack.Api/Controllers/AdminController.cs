@@ -6,6 +6,7 @@ using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
+using salesTrack.Persistence.Repository;
 using SalesTrack.Application.Common;
 using SalesTrack.Domain.Entities.Models.Request;
 
@@ -13,7 +14,7 @@ namespace salesTrack.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles =nameof(UserRole.Admin))]
+    [Authorize(Roles = nameof(UserRole.PortalAdmin))]
     public class AdminController : ControllerBase
     {
         private readonly IAdminService adminService;
@@ -27,7 +28,7 @@ namespace salesTrack.Api.Controllers
         {
             try
             {
-              return  await adminService.AddAdmin(model);
+                return await adminService.AddAdmin(model);
             }
             catch (Exception ex)
             {
@@ -57,7 +58,7 @@ namespace salesTrack.Api.Controllers
             }
             catch (Exception ex)
             {
-                throw ;  
+                throw;
             }
         }
 
@@ -66,7 +67,7 @@ namespace salesTrack.Api.Controllers
         {
             try
             {
-               return await adminService.GetAllAdminProcessSteps();
+                return await adminService.GetAllAdminProcessSteps();
             }
             catch (Exception ex)
             {
@@ -81,7 +82,7 @@ namespace salesTrack.Api.Controllers
             {
                 return await adminService.GetAdminProcessStepById(Id);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -99,6 +100,60 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
 
+        }
+
+        [HttpPost("AddCompany")]
+        public async Task<ApiResponse<CompanyResponseModel>> AddCompany(CompanyRequestModel model)
+        {
+            try
+            {
+                return await adminService.AddCompany(model);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet("Get-All-Companies")]
+        public async Task<ApiResponse<IEnumerable<CompanyResponseModel>>> GetAllCompanies()
+        {
+            try
+            {
+                return await adminService.GetAllComapnies();
+            }
+
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpDelete("Delete-Company/{id:guid}")]
+        public async Task<ApiResponse<CompanyResponseModel>> DeleteCompany(Guid id)
+        {
+            try
+            {
+                return await adminService.DeleteCompany(id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet("GetCompanyById/{id:guid}")]
+        public async Task<ApiResponse<CompanyResponseModel>> GetCompanyById(Guid id)
+        {
+            try
+            {
+                return await adminService.GetCompanyById(id);
+
+            }
+            catch (Exception ex)
+            {
+                 throw;
+            }
         }
     }
 }

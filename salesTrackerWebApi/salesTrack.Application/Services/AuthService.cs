@@ -81,11 +81,11 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsers()
         {
-            var users = await authRepository.GetAllAsync();
+           var users=await authRepository.GetAllAsync();
             var returnedUsers = users.Where(x => x.UserType == UserType.SalesExecutive && x.UserType == UserType.SalesManager);
             if (returnedUsers.Any())
             {
-                var userList = returnedUsers.Select(x => new UserResponseModel
+               var userList= returnedUsers.Select(x => new UserResponseModel
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -95,7 +95,7 @@ namespace salesTrack.Application.Services
                     UserRole = x.UserRole,
                     UserType = x.UserType,
                     ReportsTo = x.ReportsTo,
-                    IsActive = x.IsActive,
+                    IsActive=x.IsActive,
 
                 });
 
@@ -104,7 +104,7 @@ namespace salesTrack.Application.Services
             }
             else
             {
-                return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse( ApiMessages.NotFound, HttpStatusCodes.BadRequest);
             }
         }
 
@@ -153,7 +153,7 @@ namespace salesTrack.Application.Services
                     FullName = user.Name,
                     Token = userTokens.Token,
                     IsPasswordTemporary=user.IsPasswordTemporary,
-                    UserRole= userTokens.UserRole?? UserRole.Admin ,
+                    UserRole= userTokens.UserRole?? UserRole.PortalAdmin ,
                     Email=user.Email,
                     PhoneNumber=user.PhoneNumber,
                 };
