@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getAllEnquiries } from "../../Services/AuthService";
 import Grid from "../shared/Grid";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import BreadcrumbComponent from "../shared/Breadcrumb";
 
 function EnquiryList() {
   const [enquiries, setEnquiries] = useState([]);
@@ -11,6 +12,12 @@ function EnquiryList() {
     { key: "phoneNumber", label: "PhoneNumber" },
     { key: "isActive", label: "isActive" },
   ];
+
+  const breadcrumbLabels={
+    module:"Admin",
+    currentRoute:"Enquiries"
+  }
+
   const btnList = [
     {
       key: "edit",
@@ -28,6 +35,10 @@ function EnquiryList() {
     },
   ];
 
+  const addEnquiry = () => {
+  
+  };
+
   const fetchEnquiries = async () => {
     try {
       const response = await getAllEnquiries();
@@ -43,10 +54,12 @@ function EnquiryList() {
 
   return (
     <>
+    <BreadcrumbComponent labels={breadcrumbLabels}/>
       <Grid
        headers={headers}
         buttons={btnList}
         data={enquiries}
+        onAdd={addEnquiry}
         tableName="Enquiries" />
     </>
   );

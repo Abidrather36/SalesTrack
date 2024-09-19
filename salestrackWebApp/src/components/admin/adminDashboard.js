@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./AdminDashboard.css";
+import "../../Components/shared/Dashboard.css"
 import Card from "../shared/Card";
 import { FaEnvelope, FaUsers, FaBriefcase } from "react-icons/fa";
 import { getAllEnquiries as fetchAllEnquiries } from "../../Services/AuthService";

@@ -3,12 +3,12 @@ import Badge from "react-bootstrap/Badge";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import ThreeDotMenu from "./ConextMenu";
 import TablePagination from "@mui/material/TablePagination";
+import { Button } from 'primereact/button';
 
-function Grid({ headers = [], data = [], buttons = [], tableName = "" }) {
+function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5); 
   const [searchText, setSearchText] = useState("");
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -29,7 +29,7 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "" }) {
       String(value).toLowerCase().includes(searchText.toLowerCase())
     )
   );
- 
+
   const paginatedData = filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
@@ -37,7 +37,8 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "" }) {
       <div className="card-header">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <h5 className="mb-0">{tableName}</h5>
-          <div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+       
             <input
               type="text"
               placeholder={`Search ${tableName}`}

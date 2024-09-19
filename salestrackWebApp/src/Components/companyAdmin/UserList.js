@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Grid from "../shared/Grid";
-import { getAllUsers } from "../../Services/AuthService";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import BreadcrumbComponent from "../shared/Breadcrumb";
+import { UserList } from "../../Services/CompanyService";
 
 function UserList() {
   const [users, setUsers] = useState([]);
@@ -9,33 +10,39 @@ function UserList() {
     { key: "name", label: "Name" },
     { key: "email", label: "Email" },
     { key: "phoneNumber", label: "PhoneNumber" },
+    { key: "userType", label: "userType" },
+    { key: "repostsTo", label: "repostsTo" },
     { key: "isActive", label: "isActive" },
-    { key: "userTypr", label: "UserType" },
   ];
-  const breadcrumbLabels={
-    module:"Admin",
-    currentRoute:"users"
-  }
+
+  const breadcrumbLabels = {
+    module: "CmpanyAdmin",
+    currentRoute: "users",
+  };
+
   const btnList = [
     {
       key: "edit",
-      label: "Edit",
+      title: "Edit",
       className: "btn btn-primary",
-      onClick: (data) => console.log(data),
+      onEditHandler: (data) => console.log(data),
+      icon: <FaEdit />,
     },
     {
       key: "delete",
-      label: "Delete",
+      title: "Delete",
       className: "btn btn-danger",
-      onClick: (data) => console.log(data),
+      onDeleteHandler: (data) => console.log(data),
+      icon: <FaTrash />,
     },
   ];
 
+  const addUser = () => {};
+
   const fetchUsers = async () => {
     try {
-      const response = await getAllUsers();
-      setUsers(response.result);
-      console.log(users)
+      const response = await UserList();
+      setEnquiries(response.result);
     } catch (err) {
       console.error("Failed to fetch enquiries", err);
     }
@@ -44,11 +51,17 @@ function UserList() {
   useEffect(() => {
     fetchUsers();
   }, []);
-  
+
   return (
     <>
-     <BreadcrumbComponent labels={breadcrumbLabels}/>
-      <Grid headers={headers} buttons={btnList} data={users} />
+      <BreadcrumbComponent labels={breadcrumbLabels} />
+      <Grid
+        headers={headers}
+        buttons={btnList}
+        data={users}
+        onAdd={addUser}
+        tableName="Users"
+      />
     </>
   );
 }

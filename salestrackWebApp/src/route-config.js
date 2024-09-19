@@ -8,6 +8,7 @@ import AdminDashboard from "./Components/admin/adminDashboard";
 import EnquiryList from "./Components/admin/EnquiryList";
 import ProfilePage from "./Components/shared/ProfileCard";
 import UserList from "./Components/admin/UserList";
+import AddUser from "./Components/companyAdmin/AddUser";
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -24,5 +25,12 @@ export const routerConfiguration = {
     { path: "/admin/add-new-user", element: <AddUserForm /> },
     { path: "/admin/profile", element: <ProfilePage /> },
     { path: "/admin/users", element: <UserList /> },
+  ],
+  CompanyAdminRoutes: [
+    { path: "/companyAdmin", element: <AdminDashboard /> },
+    { path: "/companyAdmin/dashboard", element: <AdminDashboard /> },
+    { path: "/companyAdmin/userList", element: <UserList /> },
+    { path: "/companyAdmin/add-new-user", element: <AddUser /> },
+   
   ],
 };
