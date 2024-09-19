@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Grid from "./Grid";
+import Grid from "../shared/Grid";
 import { getAllUsers } from "../../Services/AuthService";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 

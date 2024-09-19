@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Badge from "react-bootstrap/Badge";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import ThreeDotMenu from "../shared/ConextMenu";
+import ThreeDotMenu from "./ConextMenu";
 import TablePagination from "@mui/material/TablePagination";
 
 function Grid({ headers = [], data = [], buttons = [], tableName = "" }) {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5); // Default to 5 rows per page
+  const [rowsPerPage, setRowsPerPage] = useState(5); 
   const [searchText, setSearchText] = useState("");
 
 

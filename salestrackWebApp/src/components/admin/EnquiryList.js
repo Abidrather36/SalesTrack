@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllEnquiries } from "../../Services/AuthService";
-import Grid from "./Grid";
+import Grid from "../shared/Grid";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 function EnquiryList() {
