@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../../Components/shared/Dashboard.css"
 import Card from "../shared/Card";
-import { FaEnvelope, FaUsers, FaBriefcase } from "react-icons/fa";
+import { FaEnvelope, FaUsers, FaBriefcase,FaBuilding  } from "react-icons/fa";
 import { getAllEnquiries as fetchAllEnquiries } from "../../Services/AuthService";
 
 export default function AdminDashboard() {
@@ -28,15 +28,11 @@ export default function AdminDashboard() {
       icon: <FaEnvelope />,
     },
     {
-      title: "Total Sales Executives",
-      number: 20,
-      icon: <FaUsers />,
+      title: "Total Companies",
+      number: 10,
+      icon: <FaBuilding />,
     },
-    {
-      title: "Total Sales Managers",
-      number: 7,
-      icon: <FaBriefcase />,
-    },
+   
   ];
 
   return (
