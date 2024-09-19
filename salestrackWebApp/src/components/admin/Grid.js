@@ -6,7 +6,9 @@ import TablePagination from "@mui/material/TablePagination";
 
 function Grid({ headers = [], data = [], buttons = [], tableName = "" }) {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5); 
+  const [rowsPerPage, setRowsPerPage] = useState(5); // Default to 5 rows per page
+  const [searchText, setSearchText] = useState("");
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -14,11 +16,21 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "" }) {
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); 
+    setPage(0);
   };
 
-  
-  const paginatedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const handleSearch = (e) => {
+    setSearchText(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const filteredData = data.filter((item) =>
+    Object.values(item).some((value) =>
+      String(value).toLowerCase().includes(searchText.toLowerCase())
+    )
+  );
+ 
+  const paginatedData = filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <div className="card shadow border-0 mb-7">
@@ -31,6 +43,8 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "" }) {
               placeholder={`Search ${tableName}`}
               name="search"
               id="search"
+              value={searchText}
+              onChange={handleSearch} 
               style={{ padding: "5px", borderRadius: "4px", border: "1px solid #ddd" }}
             />
           </div>
@@ -87,9 +101,9 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "" }) {
         </table>
       </div>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]} 
+        rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={data.length} 
+        count={filteredData.length} 
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
