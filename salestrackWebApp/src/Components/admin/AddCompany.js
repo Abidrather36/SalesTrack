@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { addUser } from "../../Services/AuthService";
 import myToaster from "../../utils/toaster";
 
-const AddUserForm = ({ props }) => {
+const AddCompany = ({ props }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -212,4 +212,4 @@ const AddUserForm = ({ props }) => {
   );
 };
 
-export default AddUserForm;
+export default AddCompany;
