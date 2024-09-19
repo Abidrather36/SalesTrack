@@ -27,7 +27,8 @@ namespace salesTrack.Application.Services
                        $"<strong>Phone Number:</strong> {phoneNumber}<br />" +
                        $"<strong>Email:</strong> {emailAddress}<br /><br />" +
                        "Please check the admin panel for more details.<br /><br />" +
-                       "Thanks,Team Antern Sales <br />"; 
+                       "Thanks,<br /><br />" +
+                       "Team Antern Sales <br />"; 
 
             var emailMessage = CreateMailMessage("abidrather36@gmail.com", subject, body); 
             return await SendRegistrationEmail(emailMessage);
@@ -84,7 +85,8 @@ namespace salesTrack.Application.Services
                            $"<strong>Email:</strong> {email}<br /><br />" +
                            $"<strong>Password:</strong> {password}<br /><br />" +
                            "Please check the admin panel for more details.<br /><br />" +
-                           "Thanks, Team Antern Sales Track <br />";
+                           "Thanks, <br /><br/ >" +
+                           "Team Antern Sales Track <br />";
                 
                 try
                 {
@@ -107,7 +109,8 @@ namespace salesTrack.Application.Services
                        $"Please click on the below link to reset your password:<br /><br />" +
                        $"<a href='{link}' style='background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Reset Password</a><br /><br />" +
                        "This code will expire in 5 minutes.<br /><br />" +
-                       "Thanks, Team Antern Sales Track <br />";
+                       "Thanks, <br /><br/ >" +
+                       "Team Antern Sales Track <br />";
 
             try
             {

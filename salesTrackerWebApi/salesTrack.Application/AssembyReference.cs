@@ -12,6 +12,7 @@ namespace salesTrack.Application
         {
 
             services.AddScoped<IEmailHelperService, EmailHelperService>();
+            services.AddScoped<IPortalAdminService, PortalAdminService>();
             services.AddScoped<ILeadService, LeadService>();
             services.AddScoped<ILeadSourceService, LeadSourceService>();
             services.AddScoped<IAdminService, AdminService>();

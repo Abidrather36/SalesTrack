@@ -9,11 +9,7 @@ namespace salesTrack.Application.Abstraction.IRepository
 {
     public interface IAdminRepository:IBaseRepository<AdminProcessStep>
     {
-        Task<int> AddAdmin(User model);
-        Task<int> AddCompany(Company model);
-        Task<bool> IsExistsAsync(Expression<Func<Company, bool>> expression);
-        Task<IEnumerable<CompanyResponseModel>> GetAllCompanies();
-        Task<Company> GetCompanyById(Guid id);
-        Task<int> UpdateCompany(Company model);
+        Task<int> AddAdmin(MasterUser model);
+
     }
 }

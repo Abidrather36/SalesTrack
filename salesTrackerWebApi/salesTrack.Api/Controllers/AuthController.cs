@@ -13,7 +13,7 @@ namespace salesTrack.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   /* [Authorize(Roles =nameof(UserRole.Admin))]*/
+/*    [Authorize(Roles = nameof(UserRole.CompanyAdmin))]*/
     public class AuthController : ControllerBase
     {
         private readonly IAuthService authService;
@@ -26,18 +26,7 @@ namespace salesTrack.Api.Controllers
             this.userService = userService;
         }
 
-        [HttpPost("User-SignUp")]
-        public async Task<ApiResponse<UserResponseModel>> Post(UserRequestModel model)
-        {
-            try
-            {
-                return await userService.AddUser(model);
-            }
-            catch (Exception ex)
-            {
-                throw ;
-            }
-        }
+    
 
         [HttpPost("login")]
         public async Task<ApiResponse<LoginResponseModel>> Login(LoginRequestModel model)
@@ -53,7 +42,6 @@ namespace salesTrack.Api.Controllers
             }
         }
         [HttpPost("ChangePassword")]
-        [Authorize]
 
         public async Task<ApiResponse<string>> ChangePassword(ChangePasswordModel model)
         {
@@ -93,30 +81,6 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-        [HttpGet("GetAllUsers")]
-        public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsers( )
-        {
-            try
-            {
-                return await authService.GetAllUsers();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-        [HttpGet("GetUserById/{id:guid}")]
-        public async Task<ApiResponse<UserResponseModel>> GetUserById(Guid id)
-        {
-            try
-            {
-                return await authService.GetUserById(id);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
 
     }
 }

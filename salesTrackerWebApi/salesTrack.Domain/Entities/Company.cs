@@ -14,7 +14,7 @@ namespace salesTrack.Domain.Entities
         #region  navigation  
 
         [ForeignKey(nameof(Id))]
-        public User? User { get; set; }
+        public MasterUser? User { get; set; }
         #endregion
     }
 }

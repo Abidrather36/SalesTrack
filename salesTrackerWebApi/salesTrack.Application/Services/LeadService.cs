@@ -43,7 +43,7 @@ namespace salesTrack.Application.Services
                     return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.LeadManagement.LeadEmailExist, HttpStatusCodes.BadRequest);
                 }
 
-                User user = new()
+                MasterUser user = new()
                 {
                     Id = Guid.NewGuid(),
                     Name = model.Name,

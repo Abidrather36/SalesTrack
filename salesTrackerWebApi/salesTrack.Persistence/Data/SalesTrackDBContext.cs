@@ -12,6 +12,7 @@ namespace SalesTrack.Persistence.Data
                 
         }
 
+        public DbSet<MasterUser> MasterUsers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Company> Companies { get; set; }   
         public DbSet<Enquiry> Enquiries { get; set; }

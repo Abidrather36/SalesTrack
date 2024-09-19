@@ -17,7 +17,7 @@ namespace salesTrack.Persistence.Data
             {
               var salt = AppEncryption.GenerateSalt();
             var dbPassword = AppEncryption.CreatePassword("ramrk@123", salt);
-                modelBuilder.Entity<User>().HasData(new User
+                modelBuilder.Entity<MasterUser>().HasData(new MasterUser
                 {
                     Id = Guid.NewGuid(), 
                     Name = "Ram",
