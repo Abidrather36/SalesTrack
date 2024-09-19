@@ -89,16 +89,16 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("84c3e094-7edb-4a88-b379-912ecfaf8c2d"),
+                            Id = new Guid("75f07caa-d12c-4a9c-9739-50af2056c1a2"),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "wJNaxlyRDE4gyygTsZQgUu+DPewEU+u06ToNIcJJKzM=",
+                            Password = "mr1FmWJtocJo1qWgpofLjuJAw3IUQCYxnY+GaaQRfok=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 9, 17, 9, 42, 29, 391, DateTimeKind.Unspecified).AddTicks(9899), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "gT7AJAK+kb4NYVea4RL25g==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 9, 18, 11, 44, 53, 499, DateTimeKind.Unspecified).AddTicks(5616), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "UgUQM0NyifArfaTldUtbZg==",
                             UserRole = (byte)1,
                             UserType = (byte)0
                         });
@@ -137,6 +137,46 @@ namespace salesTrack.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AdminProcessSteps");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.Company", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.Enquiry", b =>
@@ -391,6 +431,17 @@ namespace salesTrack.Persistence.Migrations
                     b.ToTable("LeadSources");
                 });
 
+            modelBuilder.Entity("salesTrack.Domain.Entities.Company", b =>
+                {
+                    b.HasOne("SalesTrack.Domain.Entities.User", "User")
+                        .WithOne("Company")
+                        .HasForeignKey("salesTrack.Domain.Entities.Company", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("salesTrack.Domain.Entities.FollowUpDate", b =>
                 {
                     b.HasOne("salesTrack.Domain.Entities.Lead", "Lead")
@@ -453,6 +504,8 @@ namespace salesTrack.Persistence.Migrations
 
             modelBuilder.Entity("SalesTrack.Domain.Entities.User", b =>
                 {
+                    b.Navigation("Company");
+
                     b.Navigation("Lead");
                 });
 

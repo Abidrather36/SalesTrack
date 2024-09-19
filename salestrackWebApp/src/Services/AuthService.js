@@ -24,6 +24,11 @@ export const getAllEnquiries = async () => {
     .get(`${ApiUrl}Enquiry/getAll-enquiries`)
     .then((res) => res.data);
 };
+export const getAllUsers = async () => {
+  return await axios
+    .get(`${ApiUrl}Auth/GetAllUsers`)
+    .then((res) => res.data);
+};
 export const changePassword = async (changePasswordModel, bearerToken) => {
   return await axios
     .post(`${ApiUrl}Auth/ChangePassword`, changePasswordModel, {

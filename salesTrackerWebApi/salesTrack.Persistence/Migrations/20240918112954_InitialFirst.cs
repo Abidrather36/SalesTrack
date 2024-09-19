@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace salesTrack.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class initialFirst : Migration
+    public partial class InitialFirst : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -98,6 +98,33 @@ namespace salesTrack.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Companies",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ModifiedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Companies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Companies_Users_Id",
+                        column: x => x.Id,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -223,7 +250,7 @@ namespace salesTrack.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedBy", "CreatedDate", "DeletedBy", "DeletedDate", "Email", "IsActive", "IsPasswordTemporary", "ModifiedBy", "ModifiedDate", "Name", "Password", "PhoneNumber", "ReportsTo", "ResetCode", "ResetExpiry", "Salt", "UserRole", "UserType" },
-                values: new object[] { new Guid("866315bb-44fa-43a5-8012-40bf436d03dd"), null, null, null, null, "ramrk@anterntech.com", false, true, null, null, "Ram", "flbJoS/q3X4OdeC9EdQBn6thORgVaW2Sme7XLaw/SaI=", "6545454543", null, 12345, new DateTimeOffset(new DateTime(2024, 9, 17, 8, 55, 29, 305, DateTimeKind.Unspecified).AddTicks(7563), new TimeSpan(0, 0, 0, 0, 0)), "amYE58d16C0IV7BzmSQlHQ==", (byte)1, (byte)0 });
+                values: new object[] { new Guid("75f07caa-d12c-4a9c-9739-50af2056c1a2"), null, null, null, null, "ramrk@anterntech.com", false, true, null, null, "Ram", "mr1FmWJtocJo1qWgpofLjuJAw3IUQCYxnY+GaaQRfok=", "6545454543", null, 12345, new DateTimeOffset(new DateTime(2024, 9, 18, 11, 44, 53, 499, DateTimeKind.Unspecified).AddTicks(5616), new TimeSpan(0, 0, 0, 0, 0)), "UgUQM0NyifArfaTldUtbZg==", (byte)1, (byte)0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_FollowUpDates_LeadId",
@@ -254,6 +281,9 @@ namespace salesTrack.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Companies");
+
             migrationBuilder.DropTable(
                 name: "Enquiries");
 

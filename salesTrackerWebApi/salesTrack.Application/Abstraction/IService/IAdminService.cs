@@ -14,5 +14,10 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<IEnumerable<AdminProcessStepResponseModel>>> GetAllAdminProcessSteps();
         Task<ApiResponse<AdminProcessStepResponseModel>> GetAdminProcessStepById(Guid Id);
         Task<ApiResponse<DeleteAdminProcessStepResponseModel>> DeleteAdminProcessStep(Guid Id);
+        Task<ApiResponse<CompanyResponseModel>> AddCompany(CompanyRequestModel model);
+        Task<ApiResponse<IEnumerable<CompanyResponseModel>>> GetAllComapnies();
+        Task<ApiResponse<CompanyResponseModel>> GetCompanyById(Guid id);
+        Task<ApiResponse<CompanyResponseModel>> DeleteCompany(Guid id);
+
     }
 }

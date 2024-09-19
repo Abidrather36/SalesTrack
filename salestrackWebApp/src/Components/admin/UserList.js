@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { getAllEnquiries } from "../../Services/AuthService";
 import Grid from "./Grid";
+import { getAllUsers } from "../../Services/AuthService";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 
-function EnquiryList() {
-  const [enquiries, setEnquiries] = useState([]);
-  
+function UserList() {
+  const [users, setUsers] = useState([]);
   const headers = [
     { key: "name", label: "Name" },
     { key: "email", label: "Email" },
     { key: "phoneNumber", label: "PhoneNumber" },
     { key: "isActive", label: "isActive" },
+    { key: "userTypr", label: "UserType" },
   ];
+  const breadcrumbLabels={
+    module:"Admin",
+    currentRoute:"users"
+  }
   const btnList = [
     {
       key: "edit",
@@ -26,38 +30,27 @@ function EnquiryList() {
       onClick: (data) => console.log(data),
     },
   ];
-  const breadcrumLabels={
-    module:"Admin",currentRoute:"Enquiries"
-  }
 
-  const fetchEnquiries = async () => {
+  const fetchUsers = async () => {
     try {
-      const response = await getAllEnquiries();
-      setEnquiries(response.result);
+      const response = await getAllUsers();
+      setUsers(response.result);
+      console.log(users)
     } catch (err) {
       console.error("Failed to fetch enquiries", err);
     }
   };
 
   useEffect(() => {
-    fetchEnquiries();
+    fetchUsers();
   }, []);
-
+  
   return (
     <>
-<<<<<<< HEAD
-    <div>
-      <BreadcrumbComponent labels={breadcrumLabels}/>
-    </div>
-      <Grid 
-      headers={headers} 
-      buttons={btnList}
-      data={enquiries}/>
-=======
-      <Grid headers={headers} buttons={btnList} data={enquiries} />
->>>>>>> origin/aamir
+    <BreadcrumbComponent labels={breadcrumbLabels}/>
+      <Grid headers={headers} buttons={btnList} data={users} />
     </>
   );
 }
 
-export default EnquiryList;
+export default UserList;

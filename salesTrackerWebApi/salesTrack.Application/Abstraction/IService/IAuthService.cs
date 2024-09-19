@@ -13,7 +13,6 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<string>> ForgotPassword(string email);
         Task<ApiResponse<string>> ResetPassword(ResetPasswordModel model);
         Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsers();
-
         Task<ApiResponse<UserResponseModel>> GetUserById(Guid id);
 
 

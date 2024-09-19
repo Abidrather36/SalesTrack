@@ -1,11 +1,6 @@
 ﻿using salesTrack.Domain.Entities;
 using salesTrack.Domain.Enums;
 using SalesTrack.Domain.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SalesTrack.Domain.Entities
 {
@@ -25,6 +20,8 @@ namespace SalesTrack.Domain.Entities
 
         #region navigation
         public Lead? Lead { get; set; }
+
+        public Company? Company { get; set; }
 
         #endregion
     }

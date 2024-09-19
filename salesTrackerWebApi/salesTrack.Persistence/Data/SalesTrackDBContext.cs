@@ -13,6 +13,7 @@ namespace SalesTrack.Persistence.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Company> Companies { get; set; }   
         public DbSet<Enquiry> Enquiries { get; set; }
         public DbSet<LeadProcessSteps> LeadProcessSteps { get; set; }
         public DbSet<Lead> Leads { get; set; }
