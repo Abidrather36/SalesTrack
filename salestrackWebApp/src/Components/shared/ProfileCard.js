@@ -24,7 +24,16 @@ export default function ProfilePage() {
     fullName: user.fullName || "",
     email: user.email || "",
     phoneNumber: user.phoneNumber || "",
-    userRole: user.userRole === 1 ? "Admin" : "Other",
+    userRole:
+    user.userRole === 1
+      ? "Admin"
+      : user.userRole === 2
+      ? "Company Admin"
+      : user.userRole === 3
+      ? "Sales Executive"
+      : user.userRole === 4
+      ? "Sales Manager"
+      : "Unknown", 
   };
 
 

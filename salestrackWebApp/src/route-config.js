@@ -39,6 +39,8 @@ export const routerConfiguration = {
     { path: "/companyAdmin/dashboard", element: <CompanyAdminDashboard /> },
     { path: "/companyAdmin/userList", element: <UserList /> },
     { path: "/companyAdmin/add-new-user", element: <AddUser /> },
+    { path: "/companyAdmin/profile", element: <ProfilePage /> },
+
    
   ],
 };
