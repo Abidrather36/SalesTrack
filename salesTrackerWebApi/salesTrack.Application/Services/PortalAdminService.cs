@@ -26,7 +26,7 @@ namespace salesTrack.Application.Services
         private readonly IEmailHelperService emailHelperService;
         private readonly IContextService contextService;
 
-        public PortalAdminService(ICompanyRepository companyRepository,IEmailHelperService emailHelperService,IUserRepository userRepository, IContextService contextService)
+        public PortalAdminService(ICompanyRepository companyRepository, IEmailHelperService emailHelperService, IUserRepository userRepository, IContextService contextService)
         {
             this.companyRepository = companyRepository;
             this.emailHelperService = emailHelperService;
@@ -57,15 +57,15 @@ namespace salesTrack.Application.Services
                         Name = model.Name,
                         CreatedBy = portalAdmin,
                         CreatedDate = DateTime.Now,
-                        PhoneNumber=model.PhoneNumber,
+                        PhoneNumber = model.PhoneNumber,
                         IsActive = true,
                         Email = model.Email,
-                        DeletedBy=Guid.Empty,
-                        DeletedDate=null,
-                        ModifiedBy=Guid.Empty
+                        DeletedBy = Guid.Empty,
+                        DeletedDate = null,
+                        ModifiedBy = Guid.Empty
                     };
-                     masterUser.Salt = AppEncryption.GenerateSalt();
-                     masterUser.Password = AppEncryption.CreatePassword(newPassword, masterUser.Salt);
+                    masterUser.Salt = AppEncryption.GenerateSalt();
+                    masterUser.Password = AppEncryption.CreatePassword(newPassword, masterUser.Salt);
                     var masterUserAdded = await userRepository.InsertAsync(masterUser);
                     if (masterUserAdded > 0)
                     {
@@ -85,8 +85,8 @@ namespace salesTrack.Application.Services
                         };
                         var companyAdded = await companyRepository.InsertAsync(company);
                         var isEmailSent = await emailHelperService.AddRegistrationEmail(company.Email!, newPassword, company.CompanyName!);
-                       
-                        if(companyAdded > 0)
+
+                        if (companyAdded > 0)
                         {
                             if (isEmailSent)
                             {
@@ -104,7 +104,7 @@ namespace salesTrack.Application.Services
                             }
                             else
                             {
-                                return ApiResponse<CompanyResponseModel>.ErrorResponse( "Something wronf went with email ", HttpStatusCodes.OK);
+                                return ApiResponse<CompanyResponseModel>.ErrorResponse("Something wronf went with email ", HttpStatusCodes.OK);
 
                             }
                         }
@@ -137,9 +137,26 @@ namespace salesTrack.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<ApiResponse<IEnumerable<CompanyResponseModel>>> GetAllComapnies()
+        public async Task<ApiResponse<IEnumerable<CompanyResponseModel>>> GetAllComapnies()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var companies = await companyRepository.GetAllCompaniesAsync();
+                if (companies.Any())
+                {
+                    return ApiResponse<IEnumerable<CompanyResponseModel>>.SuccessResponse(companies, $"{companies.Count()} Found", HttpStatusCodes.OK);
+                }
+                else
+                {
+                    return ApiResponse<IEnumerable<CompanyResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<CompanyResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message} ", HttpStatusCodes.BadRequest);
+
+            }
         }
 
         public Task<ApiResponse<CompanyResponseModel>> GetCompanyById(Guid id)

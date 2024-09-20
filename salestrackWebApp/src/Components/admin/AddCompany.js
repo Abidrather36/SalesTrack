@@ -17,8 +17,6 @@ const AddCompany = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      // Simulate API response for adding company
-      const response = { isSuccess: true, message: "Company registered successfully" };
 
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
@@ -55,7 +53,6 @@ const AddCompany = () => {
         <div className="login-container">
           <h2 className="form-title">Register New Company</h2>
           <form className="login-form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-            {/* Name Field */}
             <div>
               <InputField
                 type="text"
@@ -66,7 +63,6 @@ const AddCompany = () => {
               {errors.name && <span className="error-message">{errors.name.message}</span>}
             </div>
 
-            {/* Company Name Field */}
             <div>
               <InputField
                 type="text"
@@ -79,7 +75,6 @@ const AddCompany = () => {
               )}
             </div>
 
-            {/* Email Field */}
             <div>
               <InputField
                 type="email"
@@ -94,7 +89,6 @@ const AddCompany = () => {
               {errors.email && <span className="error-message">{errors.email.message}</span>}
             </div>
 
-            {/* Phone Number Field */}
             <div>
               <InputField
                 type="text"
