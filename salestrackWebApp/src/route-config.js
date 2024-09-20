@@ -13,6 +13,7 @@ import ProfilePage from "./Components/shared/ProfileCard";
 import UserList from "./Components/admin/UserList";
 
 import AddUser from "./Components/companyAdmin/AddUser";
+import CompanyList from "./Components/admin/CompanyList";
 
 
 export const routerConfiguration = {
@@ -30,7 +31,8 @@ export const routerConfiguration = {
     { path: "/admin/enquirylist", element: <EnquiryList /> },
     { path: "/admin/add-new-company", element: <AddCompany /> },
     { path: "/admin/profile", element: <ProfilePage /> },
-    { path: "/admin/users", element: <UserList /> },
+    { path: "/admin/companylist", element: <CompanyList /> },
+
   ],
   CompanyAdminRoutes: [
     { path: "/companyAdmin", element: <AdminDashboard /> },

@@ -5,9 +5,11 @@ import InputField from "../public/InputField"
 import Spin from "../public/Spin"
 import myToaster from "../../utils/toaster";
 import BreadcrumbComponent from "../shared/Breadcrumb"
+import { addCompany as registerCompany } from "../../Services/CompanyService";
+import storage from "../../utils/storages";
 const AddCompany = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
   const {
     register,
     handleSubmit,
@@ -17,11 +19,14 @@ const AddCompany = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      // Simulate API response for adding company
-      const response = { isSuccess: true, message: "Company registered successfully" };
-
+    const token = storage.getItem("salesTrack");
+    const bearerToken = `Bearer ${token.replace(/"/g, "")}`;
+    const response=await registerCompany(data,bearerToken);
+    console.log(data)
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
+        setLoading(false);
+        navigate("/companyAdmin/compannylist");
       } else {
         myToaster.showErrorToast(response.message);
       }
@@ -55,7 +60,7 @@ const AddCompany = () => {
         <div className="login-container">
           <h2 className="form-title">Register New Company</h2>
           <form className="login-form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-            {/* Name Field */}
+
             <div>
               <InputField
                 type="text"
@@ -66,7 +71,7 @@ const AddCompany = () => {
               {errors.name && <span className="error-message">{errors.name.message}</span>}
             </div>
 
-            {/* Company Name Field */}
+
             <div>
               <InputField
                 type="text"
@@ -79,7 +84,7 @@ const AddCompany = () => {
               )}
             </div>
 
-            {/* Email Field */}
+     
             <div>
               <InputField
                 type="email"
@@ -94,7 +99,6 @@ const AddCompany = () => {
               {errors.email && <span className="error-message">{errors.email.message}</span>}
             </div>
 
-            {/* Phone Number Field */}
             <div>
               <InputField
                 type="text"
@@ -109,7 +113,7 @@ const AddCompany = () => {
                 <Spin />
               </button>
             ) : (
-              <button type="submit" className="login-button">
+              <button type="submit" className="btn btn-primary" style={{width:"100%"}}>
                 Register Company
               </button>
             )}

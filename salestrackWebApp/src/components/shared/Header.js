@@ -1,12 +1,21 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Button } from 'primereact/button';
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
+
 
 const Header = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
+    <>
+      <Toast  />
+      <ConfirmDialog />
+      <Button  icon="pi pi-check" label="Confirm"></Button>
+      <Button icon="pi pi-times" label="Delete"></Button>
+    </>;
+  
   };
 
   return (
