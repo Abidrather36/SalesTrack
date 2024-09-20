@@ -26,7 +26,7 @@ const AddCompany = () => {
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
         setLoading(false);
-        navigate("/companyAdmin/compannylist");
+        navigate("/companyAdmin/companylist");
       } else {
         myToaster.showErrorToast(response.message);
       }

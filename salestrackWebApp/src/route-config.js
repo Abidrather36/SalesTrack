@@ -10,9 +10,10 @@ import AddCompany from "./Components/admin/AddCompany";
 import AdminDashboard from "./Components/admin/adminDashboard";
 import EnquiryList from "./Components/admin/EnquiryList";
 import ProfilePage from "./Components/shared/ProfileCard";
-import UserList from "./components/admin/UserList"
 import AddUser from "./Components/companyAdmin/AddUser";
+import UserList from "./Components/companyAdmin/UserList";
 import CompanyList from "./Components/admin/CompanyList";
+import CompanyAdminDashboard from "./Components/companyAdmin/CompanyAdminDashboard"
 
 
 export const routerConfiguration = {
@@ -22,7 +23,7 @@ export const routerConfiguration = {
     { path: "about", element: <About /> },
     { path: "contact", element: <Contact /> },
     { path: "enquiry", element: <RegisterEnquiry /> },
-    { path: "login", element: <Login /> },
+    { path: "/login", element: <Login /> },
   ],
   AdminRoutes: [
     { path: "/admin", element: <AdminDashboard /> },
@@ -34,9 +35,9 @@ export const routerConfiguration = {
 
   ],
   CompanyAdminRoutes: [
-    { path: "/companyAdmin", element: <AdminDashboard /> },
-    { path: "/companyAdmin/dashboard", element: <AdminDashboard /> },
-    { path: "/companyAdmin/userList", element: <UserL /> },
+    { path: "/companyAdmin", element: <CompanyAdminDashboard /> },
+    { path: "/companyAdmin/dashboard", element: <CompanyAdminDashboard /> },
+    { path: "/companyAdmin/userList", element: <UserList /> },
     { path: "/companyAdmin/add-new-user", element: <AddUser /> },
    
   ],

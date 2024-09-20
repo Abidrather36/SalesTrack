@@ -1,21 +1,15 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from 'primereact/button';
-import { ConfirmDialog } from 'primereact/confirmdialog';
-import { Toast } from 'primereact/toast';
-
 
 const Header = () => {
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    <>
-      <Toast  />
-      <ConfirmDialog />
-      <Button  icon="pi pi-check" label="Confirm"></Button>
-      <Button icon="pi pi-times" label="Delete"></Button>
-    </>;
+  const user = JSON.parse(localStorage.getItem("user"))
+  const userRole=user.userRole || "";
+  const companyName = user.companyName || "";
   
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
   };
 
   return (
@@ -87,16 +81,22 @@ const Header = () => {
                           className="dropdown-header-name"
                           style={{ margin: 0 }}
                         >
-                          {JSON.parse(localStorage.getItem("user")).userRole ===
-                          1
+                          {userRole === 1
                             ? "Admin"
-                            : "SalesExecutive"}
+                            : userRole === 2
+                            ? `${user.fullName}`
+                            : userRole === 3
+                            ? "Sales Executive"
+                            : "Sales Manager"}
                         </h5>
                         <p className="text-muted" style={{ margin: 0 }}>
-                          {JSON.parse(localStorage.getItem("user")).userRole ===
-                          1
+                          {userRole === 1
                             ? "Managing the whole portal"
-                            : "Managing Leads"}
+                            : userRole === 2
+                            ? `Managing company`
+                            : userRole === 3
+                            ? "Managing Leads"
+                            : "Managing Sales"}
                         </p>
                       </div>
                     </div>

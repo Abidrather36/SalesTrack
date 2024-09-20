@@ -9,7 +9,7 @@ function CompanyList() {
   const [companies, setCompanies] = useState([]);
 
   const headers = [
-    { key: "name", label: "Admin Name" },
+    { key: "adminName", label: "Admin Name" },
     { key: "companyName", label: "Company Name" },
     { key: "email", label: "Email" },
     { key: "phoneNumber", label: "PhoneNumber" },
@@ -37,10 +37,7 @@ function CompanyList() {
       icon: <FaTrash />,
     },
   ];
-  const breadcrumLabels = {
-    module: "Admin",
-    currentRoute: "Companies",
-  };
+
 
   const addCompany = () => {};
 
@@ -48,6 +45,7 @@ function CompanyList() {
     try {
       const response = await getCompanies();
       setCompanies(response.result);
+      console.log(companies)
     } catch (err) {
       myToaster.showErrorToast(err.message);
     }
