@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { Margin } from "@mui/icons-material";
 
-const ThreeDotMenu = ({props}) => {
+const ThreeDotMenu = ({ options, handleEdit, handleDelete }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -23,6 +25,7 @@ const ThreeDotMenu = ({props}) => {
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleClick}
+        sx={{ color: "blue" }} 
       >
         <MoreVertIcon />
       </IconButton>
@@ -35,12 +38,25 @@ const ThreeDotMenu = ({props}) => {
           "aria-labelledby": "long-button",
         }}
       >
-        {props.map((prop)=>{
-            return (
-                <MenuItem key={prop.id} onClick={handleClose}>{prop}</MenuItem>
-            )
-        })}
+        {options.map((option) => (
+          <MenuItem
+            key={option.title}
+            onClick={() => {
+              if (option.title === "Edit") {
+                handleEdit(); 
+              } else if (option.title === "Delete") {
+                handleDelete(); 
+              }
+              handleClose();
+            }}
+          >
+          <div style={{marginRight:"10px"}}>
+          {option.icon} 
 
+          </div>
+            {option.title} 
+          </MenuItem>
+        ))}
       </Menu>
     </div>
   );

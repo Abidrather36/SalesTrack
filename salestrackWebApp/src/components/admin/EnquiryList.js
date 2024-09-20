@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAllEnquiries } from "../../Services/AuthService";
-import Grid from "./Grid";
+import Grid from "../shared/Grid";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 
 function EnquiryList() {
@@ -12,23 +13,35 @@ function EnquiryList() {
     { key: "phoneNumber", label: "PhoneNumber" },
     { key: "isActive", label: "isActive" },
   ];
+
+  const breadcrumbLabels={
+    module:"Admin",
+    currentRoute:"Enquiries"
+  }
+
   const btnList = [
     {
       key: "edit",
-      label: "Edit",
+      title: "Edit",
       className: "btn btn-primary",
-      onClick: (data) => console.log(data),
+      onEditHandler: (data) => console.log(data),
+      icon:<FaEdit/>
     },
     {
       key: "delete",
-      label: "Delete",
+      title: "Delete",
       className: "btn btn-danger",
-      onClick: (data) => console.log(data),
+      onDeleteHandler: (data) => console.log(data),
+      icon:<FaTrash/>
     },
   ];
   const breadcrumLabels={
     module:"Admin",currentRoute:"Enquiries"
   }
+
+  const addEnquiry = () => {
+  
+  };
 
   const fetchEnquiries = async () => {
     try {
@@ -45,17 +58,15 @@ function EnquiryList() {
 
   return (
     <>
-<<<<<<< HEAD
-    <div>
-      <BreadcrumbComponent labels={breadcrumLabels}/>
-    </div>
-      <Grid 
-      headers={headers} 
-      buttons={btnList}
-      data={enquiries}/>
-=======
-      <Grid headers={headers} buttons={btnList} data={enquiries} />
->>>>>>> origin/aamir
+
+    <BreadcrumbComponent labels={breadcrumbLabels}/>
+      <Grid
+       headers={headers}
+        buttons={btnList}
+        data={enquiries}
+        onAdd={addEnquiry}
+        tableName="Enquiries" />
+
     </>
   );
 }

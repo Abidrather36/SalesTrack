@@ -55,6 +55,7 @@ const Header = () => {
                       maxWidth: "300px",
                       textAlign: "left",
                       paddingRight: "20px",
+                      backgroundColor: "lightskyblue",
                     }}
                   >
                     <div
@@ -77,10 +78,16 @@ const Header = () => {
                           className="dropdown-header-name"
                           style={{ margin: 0 }}
                         >
-                        {JSON.parse(localStorage.getItem('user')).userRole===1?"Admin":"SalesExecutive"}
+                          {JSON.parse(localStorage.getItem("user")).userRole ===
+                          1
+                            ? "Admin"
+                            : "SalesExecutive"}
                         </h5>
                         <p className="text-muted" style={{ margin: 0 }}>
-                        {JSON.parse(localStorage.getItem('user')).userRole===1?"Managing the whole portal":"Managing Leads"}
+                          {JSON.parse(localStorage.getItem("user")).userRole ===
+                          1
+                            ? "Managing the whole portal"
+                            : "Managing Leads"}
                         </p>
                       </div>
                     </div>

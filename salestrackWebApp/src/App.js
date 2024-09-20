@@ -8,10 +8,12 @@ import {
 import "./App.css";
 
 import { ToastContainer } from "react-toastify";
-import PublicLayout from "./components/shared/PublicLayout"
+import PublicLayout from "./Components/shared/PublicLayout"
+import DashboardLayout from "./Components/shared/DashboardLayout";
 import { routerConfiguration } from "./route-config";
-import DashboardLayout from './components/shared/DashboardLayout'
-import {sidebarLabels} from "./components/shared/SidebarLabels"
+import { PortalAdminsidebarLabels } from "./Components/shared/SidebarLabels";
+import { CompanyAdminsidebarLabels } from "./Components/shared/SidebarLabels";
+
 
 const App = () => {
   return (
@@ -25,9 +27,17 @@ const App = () => {
         </Route>
         <Route
           path="/admin"
-          element={<DashboardLayout labelList={sidebarLabels} />}
+          element={<DashboardLayout labelList={PortalAdminsidebarLabels} />}
         >
           {routerConfiguration.AdminRoutes.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element} />
+          ))}
+        </Route>
+        <Route
+          path="/companyAdmin"
+          element={<DashboardLayout labelList={CompanyAdminsidebarLabels} />}
+        >
+          {routerConfiguration.CompanyAdminRoutes.map((route, index) => (
             <Route key={index} path={route.path} element={route.element} />
           ))}
         </Route>

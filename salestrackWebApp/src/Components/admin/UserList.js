@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Grid from "./Grid";
+import Grid from "../shared/Grid";
 import { getAllUsers } from "../../Services/AuthService";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 
@@ -47,7 +47,7 @@ function UserList() {
   
   return (
     <>
-    <BreadcrumbComponent labels={breadcrumbLabels}/>
+     <BreadcrumbComponent labels={breadcrumbLabels}/>
       <Grid headers={headers} buttons={btnList} data={users} />
     </>
   );
