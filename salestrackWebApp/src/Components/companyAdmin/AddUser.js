@@ -4,7 +4,6 @@ import { Button } from "react-bootstrap";
 import { addUser } from "../../Services/AuthService";
 import myToaster from "../../utils/toaster";
 import InputField from "../public/InputField";
-
 const AddUser = () => {
   const [loading, setLoading] = useState(false);
   const managerId = "91855f4a-f9af-4044-8535-90f8ec8021c2";

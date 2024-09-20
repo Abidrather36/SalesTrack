@@ -10,8 +10,7 @@ import AddCompany from "./Components/admin/AddCompany";
 import AdminDashboard from "./Components/admin/adminDashboard";
 import EnquiryList from "./Components/admin/EnquiryList";
 import ProfilePage from "./Components/shared/ProfileCard";
-import UserList from "./Components/admin/UserList";
-
+import UserList from "./components/admin/UserList"
 import AddUser from "./Components/companyAdmin/AddUser";
 import CompanyList from "./Components/admin/CompanyList";
 
@@ -37,7 +36,7 @@ export const routerConfiguration = {
   CompanyAdminRoutes: [
     { path: "/companyAdmin", element: <AdminDashboard /> },
     { path: "/companyAdmin/dashboard", element: <AdminDashboard /> },
-    { path: "/companyAdmin/userList", element: <UserList /> },
+    { path: "/companyAdmin/userList", element: <UserL /> },
     { path: "/companyAdmin/add-new-user", element: <AddUser /> },
    
   ],

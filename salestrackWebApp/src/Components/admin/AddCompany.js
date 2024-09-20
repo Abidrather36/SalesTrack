@@ -60,7 +60,6 @@ const AddCompany = () => {
         <div className="login-container">
           <h2 className="form-title">Register New Company</h2>
           <form className="login-form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-
             <div>
               <InputField
                 type="text"
@@ -70,7 +69,6 @@ const AddCompany = () => {
               />
               {errors.name && <span className="error-message">{errors.name.message}</span>}
             </div>
-
 
             <div>
               <InputField
