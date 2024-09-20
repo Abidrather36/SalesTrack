@@ -5,9 +5,11 @@ import InputField from "../public/InputField"
 import Spin from "../public/Spin"
 import myToaster from "../../utils/toaster";
 import BreadcrumbComponent from "../shared/Breadcrumb"
+import { addCompany as registerCompany } from "../../Services/CompanyService";
+import storage from "../../utils/storages";
 const AddCompany = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
   const {
     register,
     handleSubmit,
@@ -17,9 +19,14 @@ const AddCompany = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-
+    const token = storage.getItem("salesTrack");
+    const bearerToken = `Bearer ${token.replace(/"/g, "")}`;
+    const response=await registerCompany(data,bearerToken);
+    console.log(data)
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
+        setLoading(false);
+        navigate("/Admin/companylist");
       } else {
         myToaster.showErrorToast(response.message);
       }
@@ -32,7 +39,7 @@ const AddCompany = () => {
 
   return (
     <>
-    <BreadcrumbComponent labels={{module:"CompanyAdmin",currentRoute:"Register-New-Company"}}/>
+    <BreadcrumbComponent labels={{module:"Admin",currentRoute:"Register-New-Company"}}/>
     <div className="row" style={{ display: "flex", flexDirection: "row", height: "100vh" }}>
       <div className="col-lg-6 mb-4 mb-lg-0">
         <img
@@ -75,6 +82,7 @@ const AddCompany = () => {
               )}
             </div>
 
+     
             <div>
               <InputField
                 type="email"
@@ -103,7 +111,7 @@ const AddCompany = () => {
                 <Spin />
               </button>
             ) : (
-              <button type="submit" className="login-button">
+              <button type="submit" className="btn btn-primary" style={{width:"100%"}}>
                 Register Company
               </button>
             )}

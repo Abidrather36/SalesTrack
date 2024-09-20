@@ -1,4 +1,4 @@
-import { FaTachometerAlt, FaEnvelope,FaUser,FaHouseDamage } from "react-icons/fa";
+import { FaTachometerAlt, FaEnvelope,FaPlus,FaListAlt, FaUsers } from "react-icons/fa";
 
 export const PortalAdminsidebarLabels = [
     {
@@ -14,10 +14,16 @@ export const PortalAdminsidebarLabels = [
       icon: <FaEnvelope />,
     },
     {
-      id: 2,
+      id: 1,
       label: "Add Company",
       link: "/admin/add-new-company",
-      icon: <FaHouseDamage />,
+      icon: <FaPlus />,
+    },
+    {
+      id: 2,
+      label: "Company List",
+      link: "/admin/companylist",
+      icon: <FaListAlt />,
     },
   
   ];
@@ -32,12 +38,12 @@ export const PortalAdminsidebarLabels = [
       id: 2,
       label: "Users List",
       link: "/companyAdmin/userList",
-      icon: <FaEnvelope />,
+      icon: <FaUsers />,
     },
     {
         id: 3,
         label: "Add New User",
         link: "/companyAdmin/add-new-user",
-        icon: <FaUser />,
+        icon: <FaPlus />,
       },
     ]

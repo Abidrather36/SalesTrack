@@ -4,6 +4,7 @@ using salesTrack.Application.Abstraction.IRepository;
 using salesTrack.Application.Abstraction.IService;
 using salesTrack.Application.Utils;
 using salesTrack.Domain.Entities;
+using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Abstraction.IRepository;
@@ -59,6 +60,7 @@ namespace salesTrack.Application.Services
                         CreatedDate = DateTime.Now,
                         PhoneNumber = model.PhoneNumber,
                         IsActive = true,
+                        UserRole=UserRole.CompanyAdmin,
                         Email = model.Email,
                         DeletedBy = Guid.Empty,
                         DeletedDate = null,

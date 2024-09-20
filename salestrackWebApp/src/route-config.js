@@ -30,10 +30,9 @@ export const routerConfiguration = {
     { path: "/admin/users", element: <UserList /> },
   ],
   CompanyAdminRoutes: [
-    { path: "/companyAdmin", element: <AdminDashboard /> },
     { path: "/companyAdmin/dashboard", element: <AdminDashboard /> },
-    { path: "/companyAdmin/userList", element: <UserList /> },
-    { path: "/companyAdmin/add-new-user", element: <AddUser /> },
-   
+    { path: "/admin/profile", element: <ProfilePage /> },
+    { path: "/admin/companylist", element: <CompanyList /> },
+
   ],
-};
+}

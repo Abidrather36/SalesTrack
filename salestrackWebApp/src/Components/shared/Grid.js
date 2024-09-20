@@ -5,9 +5,9 @@ import ThreeDotMenu from "./ConextMenu";
 import TablePagination from "@mui/material/TablePagination";
 import { Button } from 'primereact/button';
 
-function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd }) {
+function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd, addButtonLabel }) {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5); 
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchText, setSearchText] = useState("");
 
   const handleChangePage = (event, newPage) => {
@@ -34,21 +34,23 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd }) 
 
   return (
     <div className="card shadow border-0 mb-7">
-      <div className="card-header">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div className="card-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ flexDirection: "column", alignItems: "flex-start" }}>
           <h5 className="mb-0">{tableName}</h5>
-          <div style={{ display: "flex", alignItems: "center" }}>
-       
-            <input
-              type="text"
-              placeholder={`Search ${tableName}`}
-              name="search"
-              id="search"
-              value={searchText}
-              onChange={handleSearch} 
-              style={{ padding: "5px", borderRadius: "4px", border: "1px solid #ddd" }}
-            />
-          </div>
+          <button onClick={onAdd} className="btn btn-success btn-small" style={{ marginTop: "10px",padding:"7px",fontSize:"15px" }}>
+            {`+ ${addButtonLabel}`}
+          </button>
+        </div>
+        <div>
+          <input
+            type="text"
+            placeholder={`Search ${tableName}`}
+            name="search"
+            id="search"
+            value={searchText}
+            onChange={handleSearch}
+            style={{ padding: "5px", borderRadius: "4px", border: "1px solid #ddd" }}
+          />
         </div>
       </div>
       <div className="table-responsive">
@@ -104,7 +106,7 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd }) 
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={filteredData.length} 
+        count={filteredData.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Grid from "../shared/Grid";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import BreadcrumbComponent from "../shared/Breadcrumb";
-import { UserList } from "../../Services/CompanyService";
+import { UserList as getUsers } from "../../Services/UserService";
 
 function UserList() {
   const [users, setUsers] = useState([]);
@@ -16,7 +16,7 @@ function UserList() {
   ];
 
   const breadcrumbLabels = {
-    module: "CmpanyAdmin",
+    module: "CompanyAdmin",
     currentRoute: "users",
   };
 
@@ -37,12 +37,14 @@ function UserList() {
     },
   ];
 
-  const addUser = () => {};
+  const addUser = () => {
+    
+  };
 
   const fetchUsers = async () => {
     try {
-      const response = await UserList();
-      setEnquiries(response.result);
+      const response = await getUsers();
+      setUsers(response.result);
     } catch (err) {
       console.error("Failed to fetch enquiries", err);
     }
@@ -61,6 +63,7 @@ function UserList() {
         data={users}
         onAdd={addUser}
         tableName="Users"
+        addButtonLabel="Add User"
       />
     </>
   );
