@@ -11,6 +11,6 @@ export const UserList=()=>{
     return res;
 }
 export const addCompany=(companyRequestModel)=>{
-    let res= axios.post(`${ApiUrl}Company/Add`,companyRequestModel).then(res=>res.data)
+    let res= axios.post(`${ApiUrl}PortalAdmin/AddCompany`,companyRequestModel).then(res=>res.data)
     return res;
 }
