@@ -4,9 +4,10 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import { getCompanies } from "../../Services/CompanyService";
 import myToaster from "../../utils/toaster";
-
+import { useNavigate } from "react-router-dom";
 function CompanyList() {
   const [companies, setCompanies] = useState([]);
+  const navigate=useNavigate()
 
   const headers = [
     { key: "adminName", label: "Admin Name" },
@@ -26,20 +27,29 @@ function CompanyList() {
       key: "edit",
       title: "Edit",
       className: "btn btn-primary",
-      onEditHandler: (data) => console.log(data),
+      onEditHandler: (data) => editCompany(data),
       icon: <FaEdit />,
     },
     {
       key: "delete",
       title: "Delete",
       className: "btn btn-danger",
-      onDeleteHandler: (data) => console.log(data),
+      onDeleteHandler: (data) => deleteCompany(data),
       icon: <FaTrash />,
     },
   ];
 
 
-  const addCompany = () => {};
+  const handleAdd = () => {
+    navigate("/admin/add-new-company")
+  };
+ 
+  const editCompany=async (company)=>{
+  }
+
+  const deleteCompany=(company)=>{
+
+  }
 
   const fetchComapnies = async () => {
     try {
@@ -62,8 +72,9 @@ function CompanyList() {
         headers={headers}
         buttons={btnList}
         data={companies}
-        onAdd={addCompany}
+        onAdd={handleAdd}
         tableName="Companies"
+        addButtonLabel="Add company"
       />
     </>
   );

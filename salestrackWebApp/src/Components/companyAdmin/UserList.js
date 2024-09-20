@@ -16,7 +16,7 @@ function UserList() {
   ];
 
   const breadcrumbLabels = {
-    module: "CmpanyAdmin",
+    module: "CompanyAdmin",
     currentRoute: "users",
   };
 
@@ -37,7 +37,9 @@ function UserList() {
     },
   ];
 
-  const addUser = () => {};
+  const addUser = () => {
+    
+  };
 
   const fetchUsers = async () => {
     try {
@@ -61,6 +63,7 @@ function UserList() {
         data={users}
         onAdd={addUser}
         tableName="Users"
+        addButtonLabel="Add User"
       />
     </>
   );

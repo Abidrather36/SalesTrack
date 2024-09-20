@@ -26,7 +26,7 @@ const AddCompany = () => {
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
         setLoading(false);
-        navigate("/companyAdmin/companylist");
+        navigate("/Admin/companylist");
       } else {
         myToaster.showErrorToast(response.message);
       }
@@ -39,7 +39,7 @@ const AddCompany = () => {
 
   return (
     <>
-    <BreadcrumbComponent labels={{module:"CompanyAdmin",currentRoute:"Register-New-Company"}}/>
+    <BreadcrumbComponent labels={{module:"Admin",currentRoute:"Register-New-Company"}}/>
     <div className="row" style={{ display: "flex", flexDirection: "row", height: "100vh" }}>
       <div className="col-lg-6 mb-4 mb-lg-0">
         <img

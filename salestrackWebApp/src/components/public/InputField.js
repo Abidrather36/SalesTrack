@@ -1,7 +1,7 @@
 import React, { useState, forwardRef } from "react";
 
 const InputField = forwardRef(
-  ({ type, placeholder, icon, className, ...rest }, ref) => {
+  ({ type, as, placeholder, icon, className, required, children, ...rest }, ref) => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
 
     const handlePasswordToggle = () => {
@@ -9,19 +9,25 @@ const InputField = forwardRef(
     };
 
     return (
-      <div className={`input-wrapper ${className}`}>
-        <input
-          type={
-            type === "password" ? (isPasswordShown ? "text" : "password") : type
-          }
-          placeholder={placeholder}
-          ref={ref} // This ensures react-hook-form can register the input
-          className="input-field"
-          {...rest} // This spreads additional props like onChange, value, etc.
-          required
-        />
+      <div className={`input-wrapper ${className || ""}`}>
+        {as === "select" ? (
+          <select ref={ref} className="input-field" required={required} {...rest}>
+            {children} {/* Renders the options for the select dropdown */}
+          </select>
+        ) : (
+          <input
+            type={type === "password" ? (isPasswordShown ? "text" : "password") : type}
+            placeholder={placeholder}
+            ref={ref}
+            className="input-field"
+            required={required}
+            {...rest}
+          />
+        )}
+        
         {icon && <i className="material-symbols-rounded">{icon}</i>}
-        {type === "password" && (
+
+        {type === "password" && as !== "select" && (
           <i
             onClick={handlePasswordToggle}
             className="material-symbols-rounded eye-icon"

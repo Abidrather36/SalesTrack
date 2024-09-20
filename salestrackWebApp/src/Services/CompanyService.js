@@ -19,3 +19,19 @@ export const getCompanies=(companyRequestModel,bearerToken)=>{
     }).then(res=>res.data)
     return res;
 }
+export const updateCompany=(companyRequestModel,bearerToken)=>{
+    let res= axios.post(`${ApiUrl}PortalAdmin/AddCompany`,companyRequestModel,{
+        headers: {
+            Authorization: bearerToken,
+          },
+    }).then(res=>res.data)
+    return res;
+}
+export const deleteCompany=(companyRequestModel,bearerToken)=>{
+    let res= axios.post(`${ApiUrl}PortalAdmin/AddCompany`,companyRequestModel,{
+        headers: {
+            Authorization: bearerToken,
+          },
+    }).then(res=>res.data)
+    return res;
+}
