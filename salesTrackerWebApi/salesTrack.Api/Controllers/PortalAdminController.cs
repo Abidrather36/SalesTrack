@@ -5,11 +5,14 @@ using salesTrack.Application.Services;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using salesTrack.Application.Abstraction.IService;
+using Microsoft.AspNetCore.Authorization;
+using salesTrack.Domain.Enums;
 
 namespace salesTrack.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+/*    [Authorize(Roles =nameof(UserRole.PortalAdmin))]*/
     
     public class PortalAdminController : ControllerBase
     {
