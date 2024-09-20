@@ -11,5 +11,6 @@ namespace SalesTrack.Domain.Entities.Models.Request
         public UserType UserType { get; set; }
         public Guid ReportsTo { get; set; }
 
+
     }
 }

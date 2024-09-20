@@ -23,9 +23,9 @@ namespace salesTrack.Persistence.Repository
            return await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserResponseModel>> GetAllUsersAsync()
+        public async Task<IEnumerable<UserResponseModel>> GetAllUsersByCompanyIdAsync(Guid companyId)
         {
-            var userList = await context.Users.Select(user => new UserResponseModel
+            var userList = await context.Users.Where(user =>user.CompanyId==companyId).Select(user => new UserResponseModel
             {
                 Id = user.Id,
                 Name = user.MasterUser!.Name,
@@ -36,10 +36,13 @@ namespace salesTrack.Persistence.Repository
                 IsActive = user.IsActive,
                 UserRole = user.MasterUser.UserRole,
                 UserType = user.UserType,
+                CompanyId=user.CompanyId,
+                CompanyName=user.Company!.CompanyName,
                 IsPasswordTemporary = user.MasterUser.IsPasswordTemporary,
 
             }).ToListAsync();
             return userList;
         }
+
     }
 }

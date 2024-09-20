@@ -10,7 +10,14 @@ namespace salesTrack.Domain.Entities
         public UserType UserType { get; set; }
         public Guid? ReportsTo { get; set; }
 
+        public Guid CompanyId { get; set; }
+
         [ForeignKey(nameof(Id))]
         public MasterUser? MasterUser { get; set; }
+
+        [ForeignKey(nameof(CompanyId))]
+        public Company? Company { get; set; }
+
+
     }
 }

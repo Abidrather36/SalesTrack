@@ -38,14 +38,14 @@ namespace salesTrack.Application.Services
             try
             {
                 var portalAdmin = contextService.UserId();
-                if (portalAdmin == Guid.Empty)
+               /* if (portalAdmin == Guid.Empty)
                 {
                     return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
-                }
+                }*/
 
                 if (await companyRepository.IsExistsAsync(x => x.CompanyName == model.CompanyName))
                 {
-                    return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.AlreadyAvailable, HttpStatusCodes.BadRequest);
+                    return ApiResponse<CompanyResponseModel>.ErrorResponse("Company Alredy registered", HttpStatusCodes.BadRequest);
                 }
                 else
                 {
@@ -96,6 +96,7 @@ namespace salesTrack.Application.Services
                                     AdminName = masterUser.Name,
                                     CompanyName = company.CompanyName,
                                     Email = company.Email,
+                                    PhoneNumber=company.PhoneNumber
 
                                 };
                                 return ApiResponse<CompanyResponseModel>.SuccessResponse(companyResponseModel, "Company Added Successfully ", HttpStatusCodes.OK);
@@ -132,9 +133,51 @@ namespace salesTrack.Application.Services
 
         }
 
-        public Task<ApiResponse<CompanyResponseModel>> DeleteCompany(Guid id)
+        public async Task<ApiResponse<CompanyResponseModel>> DeleteCompany(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var portalAdmin = contextService.UserId();
+                var user = await companyRepository.GetByIdAsync(id);
+                var company = await companyRepository.GetByIdAsync(id);
+                if (user is null)
+                {
+                    return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                }
+                else if (company is null)
+                {
+                    return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+
+                }
+                else
+                {
+                    user.IsActive = false;
+                    user.ModifiedBy = portalAdmin;
+                    user.ModifiedDate = DateTime.Now;
+
+                    company.IsActive = false;
+                    company.ModifiedBy = portalAdmin;
+                    company.ModifiedDate = DateTime.Now;
+
+                    var userUpdated = await companyRepository.UpdateAsync(user);
+                    var companyUpdated = await companyRepository.UpdateAsync(company);
+
+                    if (userUpdated > 0 && companyUpdated > 0)
+                    {
+                        var companyDeleted = await companyRepository.GetCompanyByIdAsync(company.Id);
+                        return ApiResponse<CompanyResponseModel>.SuccessResponse(companyDeleted, "Company Deleted Successfully", HttpStatusCodes.OK);
+                    }
+                    else
+                    {
+                        return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<CompanyResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message} ", HttpStatusCodes.BadRequest);
+
+            }
         }
 
         public async Task<ApiResponse<IEnumerable<CompanyResponseModel>>> GetAllComapnies()
@@ -159,9 +202,26 @@ namespace salesTrack.Application.Services
             }
         }
 
-        public Task<ApiResponse<CompanyResponseModel>> GetCompanyById(Guid id)
+        public async Task<ApiResponse<CompanyResponseModel>> GetCompanyById(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var company = await companyRepository.GetCompanyByIdAsync(id);
+                if (company is not null)
+                {
+                    return ApiResponse<CompanyResponseModel>.SuccessResponse(company, "Company Found", HttpStatusCodes.OK);
+                }
+                else
+                {
+                    return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<CompanyResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message} ", HttpStatusCodes.BadRequest);
+
+            }
         }
     }
 }

@@ -38,12 +38,12 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
-        [HttpGet("GetAllUsers")]
-        public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsers()
+        [HttpGet("GetAllUsersByCompanyId/{id:guid}")]
+        public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsersByCompanyId(Guid id)
         {
             try
             {
-                return await adminService.GetAllUsers();
+                return await adminService.GetAllUsersByCompanyId(id);
             }
             catch (Exception ex)
             {

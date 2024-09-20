@@ -11,8 +11,8 @@ import { ToastContainer } from "react-toastify";
 import PublicLayout from "./components/shared/PublicLayout";
 import DashBoardLayout from "./components/shared/DashboardLayout"
 import { routerConfiguration } from "./route-config";
-import { PortalAdminsidebarLabels } from "./Components/shared/SidebarLabels";
-import { CompanyAdminsidebarLabels } from "./Components/shared/SidebarLabels";
+import {PortalAdminsidebarLabels} from "./components/shared/SidebarLabels"
+import { CompanyAdminsidebarLabels } from "./components/shared/SidebarLabels";
 
 
 const App = () => {
@@ -27,7 +27,7 @@ const App = () => {
         </Route>
         <Route
           path="/admin"
-          element={<Dashbo labelList={PortalAdminsidebarLabels} />}
+          element={<DashBoardLayout labelList={PortalAdminsidebarLabels} />}
         >
           {routerConfiguration.AdminRoutes.map((route, index) => (
             <Route key={index} path={route.path} element={route.element} />

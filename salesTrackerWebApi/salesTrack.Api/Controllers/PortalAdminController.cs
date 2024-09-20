@@ -75,5 +75,11 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
+
+        [HttpPut("Update-Company")]
+        public Task<ApiResponse<CompanyResponseModel>> UpdateCompany()
+        {
+            return default;
+        }
     }
 }

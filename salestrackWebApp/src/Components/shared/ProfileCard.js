@@ -11,9 +11,8 @@ import {
   MDBBreadcrumbItem,
 } from "mdb-react-ui-kit";
 
-import BreadcrumbComponent from "./Breadcrumb";
 
-export default function ProfilePage() {
+ function ProfilePage() {
   const getUserData = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     return user || {};
@@ -109,3 +108,4 @@ export default function ProfilePage() {
     </section>
   );
 }
+export default ProfilePage;

@@ -7,7 +7,7 @@ namespace SalesTrack.Application.Abstraction.IRepository
     public  interface IUserRepository:IBaseRepository<MasterUser>
     {
         Task<int> AddUser(User user);
-        Task<IEnumerable<UserResponseModel>> GetAllUsersAsync();
+        Task<IEnumerable<UserResponseModel>> GetAllUsersByCompanyIdAsync(Guid companyId);
 
     }
 }

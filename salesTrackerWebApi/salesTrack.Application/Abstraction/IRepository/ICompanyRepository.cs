@@ -7,5 +7,6 @@ namespace salesTrack.Application.Abstraction.IRepository
     public interface ICompanyRepository : IBaseRepository<Company>
     {
         Task<IEnumerable<CompanyResponseModel>> GetAllCompaniesAsync();
+        Task<CompanyResponseModel> GetCompanyByIdAsync(Guid companyId);
     }
 }

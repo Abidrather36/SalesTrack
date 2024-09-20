@@ -81,6 +81,7 @@ namespace salesTrack.Application.Services
                                 ModifiedDate = DateTime.Now,
                                 IsActive = true,
                                 UserType = UserType.SalesExecutive,
+                                CompanyId=companyAdmin,
                             };
                             var salesExecutiveAdded = await userRepository.AddUser(salesExecutive);
                             
@@ -98,7 +99,8 @@ namespace salesTrack.Application.Services
                                 ModifiedBy = Guid.Empty,
                                 ModifiedDate = DateTime.Now,
                                 IsActive = true,
-                                UserType = UserType.SalesManager
+                                UserType = UserType.SalesManager,
+                                CompanyId = companyAdmin,
 
                             };
                             var salesManagerAdded = await userRepository.AddUser(salesManager);
@@ -309,9 +311,9 @@ namespace salesTrack.Application.Services
                 return ApiResponse<AdminProcessStepResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message} ", HttpStatusCodes.BadRequest);
             }
         }
-        public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsers()
+        public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsersByCompanyId(Guid CompanyId)
         {
-          var users=await userRepository.GetAllUsersAsync();
+          var users=await userRepository.GetAllUsersByCompanyIdAsync(CompanyId);
             if (users is null)
             {
                 return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse(ApiMessages.Auth.UserNotFound, HttpStatusCodes.BadRequest);
