@@ -60,6 +60,18 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        [HttpGet("GetAllLeads-ByCompanyId/{id:guid}")]
+        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompanyId(Guid id)
+        {
+            try
+            {
+                return await leadService.GetAllLeadsByCompanyId(id);
+            }
+            catch   (Exception ex)
+            {
+                throw;
+            }
+        }
 
         [HttpDelete("Delete-Lead/{id:guid}")]
         public async Task<ApiResponse<LeadResponseModel>> DeleteLead(Guid id)
@@ -86,8 +98,21 @@ namespace salesTrack.Api.Controllers
             }
 
         }
-        
-        
+        [HttpPost("addLeadProcessStep")]
+        public async Task<ApiResponse<LeadProcessResponseModel>> AddLeadProcessStep(LeadProcessRequestModel model)
+        {
+            try
+            {
+                return await leadService.AddLeadProcessStep(model);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
+
+
         [HttpPut("updateLeadProcessStep")]
         public async Task<ApiResponse<LeadProcessResponseModel>> UpdateLeadProcessStep(LeadProcessUpdateModel model)
         {
@@ -102,19 +127,7 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-        [HttpPost("addLeadProcessStep")]
-        public async Task<ApiResponse<LeadProcessResponseModel>> AddLeadProcessStep(LeadProcessRequestModel model)
-        {
-            try
-            {
-                return await leadService.AddLeadProcessStep(model);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-
-        }
+      
 
         [HttpPost("addLeadComment")]
         public async Task<ApiResponse<LeadCommentsResponseModel>> AddLeadComment(LeadCommentsRequestModel model)

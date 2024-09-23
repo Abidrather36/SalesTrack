@@ -77,9 +77,16 @@ namespace salesTrack.Api.Controllers
         }
 
         [HttpPut("Update-Company")]
-        public Task<ApiResponse<CompanyResponseModel>> UpdateCompany()
+        public async Task<ApiResponse<CompanyResponseModel>> UpdateCompany(CompanyRequestUpdateModel model)
         {
-            return default;
+            try
+            {
+                return await portalAdminService.UpdateCompany(model);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

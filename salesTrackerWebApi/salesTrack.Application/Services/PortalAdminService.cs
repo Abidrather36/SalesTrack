@@ -39,10 +39,7 @@ namespace salesTrack.Application.Services
             try
             {
                 var portalAdmin = contextService.UserId();
-               /* if (portalAdmin == Guid.Empty)
-                {
-                    return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
-                }*/
+
 
                 if (await companyRepository.IsExistsAsync(x => x.CompanyName == model.CompanyName))
                 {
@@ -60,7 +57,7 @@ namespace salesTrack.Application.Services
                         CreatedDate = DateTime.Now,
                         PhoneNumber = model.PhoneNumber,
                         IsActive = true,
-                        UserRole=UserRole.CompanyAdmin,
+                        UserRole = UserRole.CompanyAdmin,
                         Email = model.Email,
                         DeletedBy = Guid.Empty,
                         DeletedDate = null,
@@ -98,7 +95,7 @@ namespace salesTrack.Application.Services
                                     AdminName = masterUser.Name,
                                     CompanyName = company.CompanyName,
                                     Email = company.Email,
-                                    PhoneNumber=company.PhoneNumber
+                                    PhoneNumber = company.PhoneNumber
 
                                 };
                                 return ApiResponse<CompanyResponseModel>.SuccessResponse(companyResponseModel, "Company Added Successfully ", HttpStatusCodes.OK);
@@ -224,6 +221,62 @@ namespace salesTrack.Application.Services
                 return ApiResponse<CompanyResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message} ", HttpStatusCodes.BadRequest);
 
             }
+        }
+
+        public async Task<ApiResponse<CompanyResponseModel>> UpdateCompany(CompanyRequestUpdateModel model)
+        {
+            var portalAdmin = contextService.UserId();
+
+            var masterUser = await userRepository.GetByIdAsync(model.Id);
+            var company = await companyRepository.GetByIdAsync(model.Id);
+
+            if(masterUser is null )
+            {
+                return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+            }
+            else
+            {
+                masterUser.Name = model.Name;
+                masterUser.Email = model.Email;
+                masterUser.PhoneNumber = model.PhoneNumber;
+
+
+             var updatedmasterUser=  await userRepository.UpdateAsync(masterUser);
+                if (company is null)
+                {
+                    return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                }
+                else
+                {
+                    company.CompanyName = model.CompanyName;
+                    company.ModifiedBy = portalAdmin;
+                    company.ModifiedDate = DateTime.Now;
+
+                    var companyUpdated = await companyRepository.UpdateAsync(company);
+                    if (updatedmasterUser > 0 && companyUpdated >0)
+                    {
+                        CompanyResponseModel companyResponse = new()
+                        {
+                            Id = model.Id,
+                            AdminName = masterUser.Name,
+                            CompanyName = company.CompanyName,
+                            PhoneNumber = company.PhoneNumber,
+                            Email = masterUser.Email,
+                            IsActive = company.IsActive,
+
+                        };
+
+                        return ApiResponse<CompanyResponseModel>.SuccessResponse(companyResponse, "CompanyUpdated Successfully", HttpStatusCodes.OK);
+                    }
+                    else
+                    {
+                        return ApiResponse<CompanyResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+
+                    }
+
+                }
+            }
+         
         }
     }
 }

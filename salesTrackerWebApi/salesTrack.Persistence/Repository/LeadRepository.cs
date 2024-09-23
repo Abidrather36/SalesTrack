@@ -55,7 +55,26 @@ namespace salesTrack.Persistence.Repository
 
             return Leads;
         }
-       
+
+        public async Task<IEnumerable<LeadResponseModel>> GetAllLeadsByCompanyId(Guid id)
+        {
+           var leads=await context.Leads.Where(lead => lead.CompanyId == id).Select(lead => new LeadResponseModel
+            {
+                Id = lead.Id,
+                Name=lead!.User!.Name,
+                Email = lead.User!.Email,
+                PhoneNumber = lead.User!.PhoneNumber,
+                Comment = lead.Comment,
+                FinalStatus = lead.FinalStatus,
+                UserRole = lead.User.UserRole,
+                LeadSourceId = lead.LeadSourceId,
+                IsActive = lead.IsActive,
+                CompanyName=lead.Company!.CompanyName,
+                AssignToId=lead.AssignTo,
+                LeadSourceName=lead.LeadSource!.LeadSourceName,
+            }).ToListAsync();
+            return leads;
+        }
 
         public async  Task<LeadResponseModel> GetLeadById(Guid leadId)
         {
@@ -73,6 +92,7 @@ namespace salesTrack.Persistence.Repository
                 LeadSourceName=x.LeadSource!.LeadSourceName,
                 AssignToId=x.AssignTo,
                 IsActive=x.User.IsActive,
+                CompanyName=x.Company!.CompanyName
 
             }).FirstOrDefaultAsync();
 

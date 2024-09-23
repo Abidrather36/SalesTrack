@@ -16,6 +16,7 @@ namespace salesTrack.Domain.Entities
         public MasterUser? User { get; set; }
 
         public ICollection<User>? CompanyUser { get; set; }
+        public ICollection<Lead>? Lead {  get; set; }
 
         #endregion
     }

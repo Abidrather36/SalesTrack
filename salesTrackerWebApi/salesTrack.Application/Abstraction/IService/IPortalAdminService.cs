@@ -10,5 +10,7 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<IEnumerable<CompanyResponseModel>>> GetAllComapnies();
         Task<ApiResponse<CompanyResponseModel>> GetCompanyById(Guid id);
         Task<ApiResponse<CompanyResponseModel>> DeleteCompany(Guid id);
+        Task<ApiResponse<CompanyResponseModel>> UpdateCompany(CompanyRequestUpdateModel model);
+
     }
 }

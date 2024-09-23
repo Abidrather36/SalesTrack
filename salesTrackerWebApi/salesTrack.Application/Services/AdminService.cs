@@ -23,13 +23,15 @@ namespace salesTrack.Application.Services
         private readonly IAdminRepository adminRepository;
         private readonly IContextService contextService;
         private readonly IEmailHelperService emailHelperService;
+        private readonly ICompanyRepository companyRepository;
 
-        public AdminService(IUserRepository userRepository,IAdminRepository adminRepository,IContextService contextService,IEmailHelperService emailHelperService)
+        public AdminService(IUserRepository userRepository,IAdminRepository adminRepository,IContextService contextService,IEmailHelperService emailHelperService,ICompanyRepository companyRepository)
         {
             this.userRepository = userRepository;
             this.adminRepository = adminRepository;
             this.contextService = contextService;
             this.emailHelperService = emailHelperService;
+            this.companyRepository = companyRepository;
         }
 
         public async Task<ApiResponse<UserResponseModel>> AddUser(UserRequestModel model)
@@ -39,7 +41,7 @@ namespace salesTrack.Application.Services
             try
             {
 
-                var companyAdmin = contextService.UserId();
+                var companyId = contextService.UserId();
                 if (await userRepository.IsExistsAsync(x => x.Email == model.Email))
                 {
                     return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.AlreadyAvailable, HttpStatusCodes.BadRequest);
@@ -55,7 +57,7 @@ namespace salesTrack.Application.Services
                         Name = model.Name,
                         Email = model.Email,
                         PhoneNumber = model.PhoneNumber,
-                        CreatedBy = companyAdmin,
+                        CreatedBy = companyId,
                         ModifiedBy = Guid.Empty,
                         CreatedDate = DateTime.Now,
                         DeletedBy = Guid.Empty,
@@ -73,7 +75,7 @@ namespace salesTrack.Application.Services
                             {
                                 Id = user.Id,
                                 ReportsTo = model.ReportsTo,
-                                CreatedBy = companyAdmin,
+                                CreatedBy = companyId,
                                 CreatedDate = DateTime.Now,
                                 DeletedBy = Guid.Empty,
                                 DeletedDate = DateTime.Now,
@@ -81,7 +83,7 @@ namespace salesTrack.Application.Services
                                 ModifiedDate = DateTime.Now,
                                 IsActive = true,
                                 UserType = UserType.SalesExecutive,
-                                CompanyId=companyAdmin,
+                                CompanyId=companyId,
                             };
                             var salesExecutiveAdded = await userRepository.AddUser(salesExecutive);
                             
@@ -92,7 +94,7 @@ namespace salesTrack.Application.Services
                             {
                                 Id = user.Id,
                                 ReportsTo = model.ReportsTo,
-                                CreatedBy = companyAdmin,
+                                CreatedBy = companyId,
                                 CreatedDate = DateTime.Now,
                                 DeletedBy = Guid.Empty,
                                 DeletedDate = DateTime.Now,
@@ -100,7 +102,7 @@ namespace salesTrack.Application.Services
                                 ModifiedDate = DateTime.Now,
                                 IsActive = true,
                                 UserType = UserType.SalesManager,
-                                CompanyId = companyAdmin,
+                                CompanyId = companyId,
 
                             };
                             var salesManagerAdded = await userRepository.AddUser(salesManager);

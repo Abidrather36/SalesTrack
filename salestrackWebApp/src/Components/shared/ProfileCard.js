@@ -10,6 +10,7 @@ import {
   MDBBreadcrumb,
   MDBBreadcrumbItem,
 } from "mdb-react-ui-kit";
+import BreadcrumbComponent from "./Breadcrumb";
 
 
  function ProfilePage() {

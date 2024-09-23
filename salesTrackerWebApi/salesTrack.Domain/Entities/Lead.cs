@@ -12,7 +12,12 @@ namespace salesTrack.Domain.Entities
         public Guid LeadSourceId { get; set; }
         public FinalStatus FinalStatus { get; set; }
 
+        public Guid CompanyId { get; set; }
+
         #region navigation
+
+        [ForeignKey(nameof(CompanyId))]
+        public Company? Company { get; set; }    
 
         [ForeignKey(nameof(LeadSourceId))]
         public LeadSource? LeadSource { get; set; }
