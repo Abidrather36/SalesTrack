@@ -4,12 +4,14 @@ using salesTrack.Application.Abstraction.IService;
 using salesTrack.Application.Utils;
 using salesTrack.Domain.Entities;
 using salesTrack.Domain.Enums;
+using salesTrack.Domain.Models;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Abstraction.IRepository;
 using SalesTrack.Application.Common;
 using SalesTrack.Application.Shared;
 using SalesTrack.Domain.Entities;
+using System.ComponentModel.Design;
 
 namespace salesTrack.Application.Services
 {
@@ -18,16 +20,22 @@ namespace salesTrack.Application.Services
         private readonly ILeadRepository leadRepository;
         private readonly IContextService contextService;
         private readonly IUserRepository userRepository;
+        private readonly ICompanyRepository companyRepository;
         private readonly ILeadSourceRepository leadSourceRepository;
 
-        public LeadService(ILeadRepository leadRepository,IContextService contextService,IUserRepository userRepository,ILeadSourceRepository leadSourceRepository)
+        public LeadService(ILeadRepository leadRepository,
+                          IContextService contextService,
+                          IUserRepository userRepository,
+                          ICompanyRepository companyRepository,
+                          ILeadSourceRepository leadSourceRepository)
         {
             this.leadRepository = leadRepository;
             this.contextService = contextService;
             this.userRepository = userRepository;
+            this.companyRepository = companyRepository;
             this.leadSourceRepository = leadSourceRepository;
         }
-        
+
         public async Task<ApiResponse<LeadResponseModel>> AddLead(LeadRequestModel model)
         {
             try
@@ -53,9 +61,10 @@ namespace salesTrack.Application.Services
                     Salt = AppEncryption.GenerateSalt(),
                     UserRole = UserRole.Lead,
                     CreatedDate = DateTime.UtcNow,
-                    DeletedDate = DateTime.UtcNow,  
-                    IsActive=true,
-                    ModifiedDate = DateTime.UtcNow, 
+                    DeletedDate = DateTime.UtcNow,
+                    IsActive = true,
+                    ModifiedDate = DateTime.UtcNow,
+
                 };
 
                 var userAdded = await userRepository.InsertAsync(user);
@@ -70,14 +79,15 @@ namespace salesTrack.Application.Services
                     AssignTo = model.AssignTo,
                     LeadSourceId = model.LeadSourceId,
                     IsActive = true,
-                    Comment=model.Comment,
-                    CreatedBy=salesExecutiveId,
-                    ModifiedBy=Guid.Empty,
+                    Comment = model.Comment,
+                    CreatedBy = salesExecutiveId,
+                    ModifiedBy = Guid.Empty,
                     FinalStatus = model.FinalStatus,
                     CreatedDate = DateTime.Now,
                     DeletedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
-                    
+                    CompanyId = model.CompanyId
+
                 };
 
                 var leadAdded = await leadRepository.InsertAsync(lead);
@@ -89,9 +99,13 @@ namespace salesTrack.Application.Services
                 }
                 else
                 {
-                     var sourceLead = await leadRepository.GetLeadById(lead!.Id);
+                    var sourceLead = await leadRepository.GetLeadById(lead!.Id);
                     var returnVal = await userRepository.GetByIdAsync(sourceLead.AssignToId);
                     sourceLead.AssignedTo = returnVal!.Name;
+                    var returnCompany = await companyRepository.GetByIdAsync(lead.CompanyId);
+                    sourceLead.CompanyName = returnCompany!.CompanyName;
+
+
 
 
                     return ApiResponse<LeadResponseModel>.SuccessResponse(sourceLead, ApiMessages.LeadManagement.LeadAddedSuccessfully, HttpStatusCodes.Created);
@@ -106,7 +120,7 @@ namespace salesTrack.Application.Services
             }
         }
 
-      
+
         public async Task<ApiResponse<LeadResponseModel>> DeleteLead(Guid id)
         {
             try
@@ -160,16 +174,16 @@ namespace salesTrack.Application.Services
         {
             try
             {
-                    var leads = await leadRepository.GetAllLeadsAsync();
+                var leads = await leadRepository.GetAllLeadsAsync();
                 foreach (var lead in leads)
                 {
                     var assignUser = await userRepository.GetByIdAsync(lead.AssignToId);
-                    lead.AssignedTo = assignUser?.Name;  
+                    lead.AssignedTo = assignUser?.Name;
                 }
 
-                if (leads is not  null)
+                if (leads is not null)
                 {
-                   
+
                     return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(leads, ApiMessages.LeadManagement.LeadListRetrievedSuccessfully, HttpStatusCodes.OK);
                 }
                 return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.LeadManagement.LeadNotFound, HttpStatusCodes.BadRequest);
@@ -196,18 +210,18 @@ namespace salesTrack.Application.Services
                 }
                 else
                 {
-                 
+
 
                     var leadResponseModel = await leadRepository.GetLeadById(leadId);
                     leadResponseModel.AssignedTo = (await userRepository.GetByIdAsync(compactLead.AssignToId))!.Name;
-             
+
                     return ApiResponse<LeadResponseModel>.SuccessResponse(leadResponseModel, ApiMessages.LeadManagement.LeadFound, HttpStatusCodes.OK);
 
                 }
             }
             catch (Exception ex)
             {
-                    return ApiResponse<LeadResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+                return ApiResponse<LeadResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
             }
         }
 
@@ -216,10 +230,6 @@ namespace salesTrack.Application.Services
             try
             {
                 var salesExecutiveId = contextService.UserId();
-                if (salesExecutiveId == Guid.Empty)
-                {
-                    return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
-                }
                 var user = await userRepository.GetByIdAsync(model.Id);
                 var lead = await leadRepository.GetByIdAsync(model.Id);
 
@@ -263,9 +273,9 @@ namespace salesTrack.Application.Services
                     if (updatedLead > 0)
                     {
                         var leadSource = await leadSourceRepository.GetByIdAsync(lead.LeadSourceId);
-                        if(leadSource is null)
+                        if (leadSource is null)
                         {
-                          return   ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.LeadSourceManagement.InvalidLeadSourceData, HttpStatusCodes.BadRequest);
+                            return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.LeadSourceManagement.InvalidLeadSourceData, HttpStatusCodes.BadRequest);
                         }
                         else
                         {
@@ -282,15 +292,15 @@ namespace salesTrack.Application.Services
                                 Comment = model.Comment,
                                 IsActive = true,
                                 FinalStatus = model.FinalStatus,
-                                UserRole=UserRole.Lead
-                                
+                                UserRole = UserRole.Lead
+
                             };
                             return ApiResponse<LeadResponseModel>.SuccessResponse(leadResponseModel, ApiMessages.LeadManagement.LeadUpdateSuccess, HttpStatusCodes.OK);
                         }
                     }
                     else
                     {
-                        return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.TechnicalError , HttpStatusCodes.BadRequest);
+                        return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
 
                     }
                 }
@@ -303,43 +313,43 @@ namespace salesTrack.Application.Services
         }
 
 
-     /*   public async Task<ApiResponse<ProcessResponseModel>> UpdateLeadProcessSteps(LeadProcessUpdateModel model)
-        {
-            try
-            {
-                var processStep = await leadRepository.GetLeadProcessStepById(model.Id);
-                if (processStep is null)
-                {
-                    return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.Process.ProcessNotFound, HttpStatusCodes.BadRequest);
-                }
-                else
-                {
-                    processStep.StepDescription = model.StepDescription;
+        /*   public async Task<ApiResponse<ProcessResponseModel>> UpdateLeadProcessSteps(LeadProcessUpdateModel model)
+           {
+               try
+               {
+                   var processStep = await leadRepository.GetLeadProcessStepById(model.Id);
+                   if (processStep is null)
+                   {
+                       return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.Process.ProcessNotFound, HttpStatusCodes.BadRequest);
+                   }
+                   else
+                   {
+                       processStep.StepDescription = model.StepDescription;
 
-                    var result = await leadRepository.UpdateLeadProcessStep(processStep);
-                    if (result > 0)
-                    {
-                        return ApiResponse<ProcessResponseModel>.SuccessResponse(new ProcessResponseModel
-                        {
-                            Id = processStep.Id,
-                            StepDescription = processStep.StepDescription,
-                        }, ApiMessages.Process.ProcessUpdatedSuccessfully, HttpStatusCodes.OK);
-                    }
-                    else
-                    {
-                        return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                       var result = await leadRepository.UpdateLeadProcessStep(processStep);
+                       if (result > 0)
+                       {
+                           return ApiResponse<ProcessResponseModel>.SuccessResponse(new ProcessResponseModel
+                           {
+                               Id = processStep.Id,
+                               StepDescription = processStep.StepDescription,
+                           }, ApiMessages.Process.ProcessUpdatedSuccessfully, HttpStatusCodes.OK);
+                       }
+                       else
+                       {
+                           return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
 
-                    }
-                }
-            }
+                       }
+                   }
+               }
 
-            catch (Exception ex)
-            {
-                  return ApiResponse<ProcessResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+               catch (Exception ex)
+               {
+                     return ApiResponse<ProcessResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
 
-            }
+               }
 
-        }*/
+           }*/
 
         public async Task<ApiResponse<LeadProcessResponseModel>> AddLeadProcessStep(LeadProcessRequestModel model)
         {
@@ -385,14 +395,14 @@ namespace salesTrack.Application.Services
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return ApiResponse<LeadProcessResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
 
             }
         }
 
-        public async  Task<ApiResponse<LeadProcessResponseModel>> UpdateLeadProcessSteps(LeadProcessUpdateModel model)
+        public async Task<ApiResponse<LeadProcessResponseModel>> UpdateLeadProcessSteps(LeadProcessUpdateModel model)
         {
             try
             {
@@ -408,8 +418,8 @@ namespace salesTrack.Application.Services
 
                 }
                 else
-                {  
-                   
+                {
+
                     leadProcessStep.StepDescription = model.StepDescription;
                     leadProcessStep.AdminProcessStepId = model.AdminProcessStepId;
                     leadProcessStep.LeadId = model.LeadId;
@@ -458,13 +468,13 @@ namespace salesTrack.Application.Services
                         Id = Guid.NewGuid(),
                         LeadId = model.LeadId,
                         Text = model.Text,
-                        CreatedBy=loggedInUser,
-                        CreatedDate=DateTime.Now,
-                        ModifiedBy=Guid.Empty,
-                        ModifiedDate=null,
-                        IsActive=true,
-                        DeletedBy=Guid.Empty,
-                        DeletedDate=null,
+                        CreatedBy = loggedInUser,
+                        CreatedDate = DateTime.Now,
+                        ModifiedBy = Guid.Empty,
+                        ModifiedDate = null,
+                        IsActive = true,
+                        DeletedBy = Guid.Empty,
+                        DeletedDate = null,
 
                     };
                     var commentAdded = await leadRepository.AddComment(comments);
@@ -537,6 +547,32 @@ namespace salesTrack.Application.Services
             catch (Exception ex)
             {
                 return ApiResponse<LeadFollowUpdateResponse>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+        }
+
+        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompanyId(Guid id)
+        {
+            var leads = await leadRepository.GetAllLeadsByCompanyId(id);
+
+            if (leads == null || !leads.Any())
+            {
+                return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"no Leads Found", HttpStatusCodes.NotFound);
+            }
+
+            foreach (var lead in leads)
+            {
+                var assignUser = await userRepository.GetByIdAsync(lead.AssignToId);
+                lead.AssignedTo = assignUser?.Name;
+            }
+            if (leads is null)
+            {
+                return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError}", HttpStatusCodes.InternalServerError);
+
+            }
+            else
+            {
+                return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(leads, "Leads Fetched by CompanyId", HttpStatusCodes.InternalServerError);
 
             }
         }

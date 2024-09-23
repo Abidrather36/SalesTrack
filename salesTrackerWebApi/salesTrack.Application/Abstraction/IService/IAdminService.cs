@@ -9,7 +9,7 @@ namespace salesTrack.Application.Abstraction.IService
     public interface IAdminService
     {
         Task<ApiResponse<UserResponseModel>> AddUser(UserRequestModel model);
-        Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsers();
+        Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsersByCompanyId(Guid CompanyId);
         Task<ApiResponse<UserResponseModel>> GetUserById(Guid id);
         Task<ApiResponse<AdminProcessStepResponseModel>> AddAdminProcessStep(AdminProcessStepRequestModel model);
         Task<ApiResponse<AdminProcessStepResponseModel>> UpdateAdminProcessStep(UpdateAdminProcessStepModel model);

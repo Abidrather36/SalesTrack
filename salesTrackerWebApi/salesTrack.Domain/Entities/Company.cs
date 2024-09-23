@@ -10,11 +10,14 @@ namespace salesTrack.Domain.Entities
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
 
-
         #region  navigation  
 
         [ForeignKey(nameof(Id))]
         public MasterUser? User { get; set; }
+
+        public ICollection<User>? CompanyUser { get; set; }
+        public ICollection<Lead>? Lead {  get; set; }
+
         #endregion
     }
 }

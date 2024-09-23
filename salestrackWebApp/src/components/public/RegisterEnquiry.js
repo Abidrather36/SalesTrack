@@ -3,8 +3,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { HttpStatusCode } from "axios";
 import myToaster from "../../utils/toaster";
-import Spin from "././Spin"
-import InputField from "./InputField";
+import Spin from "./Spin.";
+import InputField from "/components/public/InputField.js"
 import { signUpUser } from "../../Services/AuthService";
 
 function RegisterEnquiry() {

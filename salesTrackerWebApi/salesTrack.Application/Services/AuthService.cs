@@ -99,7 +99,7 @@ namespace salesTrack.Application.Services
                     FullName = user.Name,
                     Token = userTokens.Token,
                     IsPasswordTemporary=user.IsPasswordTemporary,
-                    UserRole= user.UserRole ,
+                    UserRole= userTokens.UserRole ?? UserRole.PortalAdmin ,
                     Email=user.Email,
                     PhoneNumber=user.PhoneNumber,
                 };

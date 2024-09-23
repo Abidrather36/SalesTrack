@@ -23,5 +23,6 @@ namespace salesTrack.Domain.Models.Response
         public UserRole UserRole { get; set; }
         public FinalStatus FinalStatus { get; set; }
         public bool IsActive { get; set; }
+        public string? CompanyName { get; set; }
     }
 }

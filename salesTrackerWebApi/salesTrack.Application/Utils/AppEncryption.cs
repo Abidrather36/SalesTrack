@@ -36,7 +36,7 @@ namespace salesTrack.Application.Utils
             var randomString = new string(Enumerable.Repeat(chars, 6)
                                                     .Select(s => s[random.Next(s.Length)]).ToArray());
 
-            return emailName + randomString;
+            return emailName + randomString.ToLower();
         }
     }
 }

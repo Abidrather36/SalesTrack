@@ -19,6 +19,8 @@ namespace salesTrack.Domain.Models
         public UserType UserType { get; set; }
         public UserRole UserRole { get; set; }
         public bool IsActive { get; set; }
+        public Guid CompanyId { get; set; }
+        public string? CompanyName { get; set; }
 
 
     }
