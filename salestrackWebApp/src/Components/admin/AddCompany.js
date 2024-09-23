@@ -64,7 +64,7 @@ const AddCompany = () => {
               <InputField
                 type="text"
                 name="name"
-                placeholder="Your Name"
+                placeholder="Admin Name"
                 {...register("name", { required: "Name is required" })}
               />
               {errors.name && <span className="error-message">{errors.name.message}</span>}
@@ -101,7 +101,7 @@ const AddCompany = () => {
               <InputField
                 type="text"
                 name="phoneNumber"
-                placeholder="Phone Number (Optional)"
+                placeholder="Phone Number"
                 {...register("phoneNumber")}
               />
             </div>

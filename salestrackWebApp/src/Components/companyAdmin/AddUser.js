@@ -5,7 +5,7 @@ import InputField from "../public/InputField";
 import Spin from "../public/Spin";
 import myToaster from "../../utils/toaster";
 import BreadcrumbComponent from "../shared/Breadcrumb";
-import { addUser } from "../../Services/AuthService";
+import { registerUser } from "../../Services/UserService";
 import storage from "../../utils/storages";
 
 const AddUser = () => {
@@ -23,7 +23,7 @@ const AddUser = () => {
       data.userType = Number(data.userType);
       const token = storage.getItem("salesTrack");
       const bearerToken = `Bearer ${token.replace(/"/g, "")}`;
-      const response = await addUser(data, bearerToken);
+      const response = await registerUser(data, bearerToken);
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
         setLoading(false);
@@ -65,10 +65,10 @@ const AddUser = () => {
                 <InputField
                   type="text"
                   name="name"
-                  placeholder="Your Name"
+                  placeholder="Name"
                   {...register("name", { required: "Name is required" })}
                 />
-                {errors.name && <span className="error-message">{errors.name.message}</span>}
+                {errors.name && <span className="text-danger">{errors.name.message}</span>}
               </div>
 
               <div>
@@ -78,18 +78,19 @@ const AddUser = () => {
                   placeholder="Email"
                   {...register("email", {
                     required: "Email is required",
-                    validate: (value) =>
-                      /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(value) || "Invalid email address",
+//                     validate: (value) =>
+//                       /^[a-zA-Z0-9]+@[a-zA-Z0-9]+$/.test(value)
+//  || "Invalid email address",
                   })}
                 />
-                {errors.email && <span className="error-message">{errors.email.message}</span>}
+                {errors.email && <span className="text-danger">{errors.email.message}</span>}
               </div>
 
               <div>
                 <InputField
                   type="text"
                   name="phoneNumber"
-                  placeholder="Phone Number (Optional)"
+                  placeholder="Phone Number"
                   {...register("phoneNumber")}
                 />
               </div>
@@ -104,7 +105,7 @@ const AddUser = () => {
                   <option value="1">Sales Executive</option>
                   <option value="2">Sales Manager</option>
                 </InputField>
-                {errors.userType && <span className="error-message">{errors.userType.message}</span>}
+                {errors.userType && <span className="text-danger">{errors.userType.message}</span>}
               </div>
 
               <div>
