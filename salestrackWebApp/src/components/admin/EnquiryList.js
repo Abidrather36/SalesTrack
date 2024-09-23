@@ -65,7 +65,9 @@ function EnquiryList() {
         buttons={btnList}
         data={enquiries}
         onAdd={addEnquiry}
-        tableName="Enquiries" />
+        tableName="Enquiries"
+        addButtonLabel="null"
+         />
 
     </>
   );

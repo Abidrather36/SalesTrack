@@ -68,7 +68,7 @@ const Header = () => {
                       maxWidth: "300px",
                       textAlign: "left",
                       paddingRight: "20px",
-                      backgroundColor: "lightskyblue",
+                      backgroundColor: "f4f9f7",
                     }}
                   >
                     <div

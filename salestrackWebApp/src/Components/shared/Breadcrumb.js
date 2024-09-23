@@ -1,4 +1,6 @@
 import React from 'react';
+import {FaUser, FaHome } from "react-icons/fa";
+
 import {
   MDBBreadcrumb,
   MDBBreadcrumbItem,
@@ -11,10 +13,10 @@ function BreadcrumbComponent({ labels = {} }) {
   return (
     <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
       <MDBBreadcrumbItem>
-        <Link to="/home">Home</Link>
+        <Link to="/home"><FaHome/> Home</Link>
       </MDBBreadcrumbItem>
       <MDBBreadcrumbItem>
-        <Link to={`/${module}`}>{module}</Link>
+        <Link to={`/${module}`}><FaUser/> {module}</Link>
       </MDBBreadcrumbItem>
       <MDBBreadcrumbItem active>{currentRoute}</MDBBreadcrumbItem>
     </MDBBreadcrumb>

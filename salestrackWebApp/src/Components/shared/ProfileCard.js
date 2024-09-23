@@ -38,14 +38,15 @@ export default function ProfilePage() {
 
 
   return (
-    <section style={{ backgroundColor: "#eee" }}>
-      <MDBContainer className="py-5">
-        <MDBRow>
+    <>
+
+<MDBRow>
           <MDBCol>
           <BreadcrumbComponent labels={{module:Props.userRole,currentRoute:"profile"}}/>
           </MDBCol>
         </MDBRow>
-
+    <section style={{ backgroundColor: "#eee" }}>
+      <MDBContainer className="py-5">
         <MDBRow>
           <MDBCol lg="4">
             <MDBCard className="mb-4">
@@ -116,5 +117,6 @@ export default function ProfilePage() {
         </MDBRow>
       </MDBContainer>
     </section>
+    </>
   );
 }

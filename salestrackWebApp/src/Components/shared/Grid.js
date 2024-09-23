@@ -37,9 +37,13 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd, ad
       <div className="card-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ flexDirection: "column", alignItems: "flex-start" }}>
           <h5 className="mb-0">{tableName}</h5>
-          <button onClick={onAdd} className="btn btn-success btn-small" style={{ marginTop: "10px",padding:"7px",fontSize:"15px" }}>
-            {`+ ${addButtonLabel}`}
+          {addButtonLabel !=="null" && (
+            <button onClick={onAdd} className="btn btn-success btn-small" style={{ marginTop: "10px", padding: "7px", fontSize: "15px" }}>
+            { `+ ${addButtonLabel}`}
           </button>
+          )}
+         
+
         </div>
         <div>
           <input
