@@ -363,6 +363,8 @@ namespace salesTrack.Application.Services
                 }
                 else
                 {
+                  /*  var leadId = await leadRepository.IsExistsAsync(x => x.Id == model.LeadId);*/
+
                     LeadProcessSteps leadSteps = new()
                     {
                         Id = Guid.NewGuid(),
@@ -411,6 +413,7 @@ namespace salesTrack.Application.Services
                 {
                     return ApiResponse<LeadProcessResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
                 }
+                
                 var leadProcessStep = await leadRepository.GetLeadProcessStepById(model.Id);
                 if (leadProcessStep is null)
                 {

@@ -76,7 +76,7 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-        [HttpPut("update-process-steps")]
+        [HttpPut("update-process-step")]
         public async Task<ApiResponse<AdminProcessStepResponseModel>> UpdateProcessStep(UpdateAdminProcessStepModel model)
         {
             try
