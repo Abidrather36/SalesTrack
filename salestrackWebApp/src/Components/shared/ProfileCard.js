@@ -24,19 +24,29 @@ import BreadcrumbComponent from "./Breadcrumb";
     fullName: user.fullName || "",
     email: user.email || "",
     phoneNumber: user.phoneNumber || "",
-    userRole: user.userRole === 1 ? "Admin" : "Other",
+    userRole:
+    user.userRole === 1
+      ? "Admin"
+      : user.userRole === 2
+      ? "Company Admin"
+      : user.userRole === 3
+      ? "Sales Executive"
+      : user.userRole === 4
+      ? "Sales Manager"
+      : "Unknown", 
   };
 
 
   return (
-    <section style={{ backgroundColor: "#eee" }}>
-      <MDBContainer className="py-5">
-        <MDBRow>
+    <>
+
+<MDBRow>
           <MDBCol>
           <BreadcrumbComponent labels={{module:Props.userRole,currentRoute:"profile"}}/>
           </MDBCol>
         </MDBRow>
-
+    <section style={{ backgroundColor: "#eee" }}>
+      <MDBContainer className="py-5">
         <MDBRow>
           <MDBCol lg="4">
             <MDBCard className="mb-4">
@@ -107,6 +117,7 @@ import BreadcrumbComponent from "./Breadcrumb";
         </MDBRow>
       </MDBContainer>
     </section>
+    </>
   );
 }
 export default ProfilePage;

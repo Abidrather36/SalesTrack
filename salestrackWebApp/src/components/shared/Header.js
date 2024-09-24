@@ -5,7 +5,17 @@ const Header = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"))
   const userRole=user.userRole || "";
-  const companyName = user.companyName || "";
+  let profileRoute;
+  if (userRole === 1) {
+    profileRoute = "/admin/profile";
+  } else if (userRole === 2) {
+    profileRoute = "/companyAdmin/profile";
+  } else if (userRole === 3) {
+    profileRoute = "/salesExecutive/profile";
+  }
+  else{
+    profileRoute = "/salesManager/profile";
+  }
   
   const handleLogout = () => {
     localStorage.clear();
@@ -58,7 +68,7 @@ const Header = () => {
                       maxWidth: "300px",
                       textAlign: "left",
                       paddingRight: "20px",
-                      backgroundColor: "lightskyblue",
+                      backgroundColor: "f4f9f7",
                     }}
                   >
                     <div
@@ -104,7 +114,8 @@ const Header = () => {
                     <hr className="dropdown-divider" />
 
                     <Link
-                      to="/admin/profile"
+                    
+                      to={profileRoute}
                       className="dropdown-item"
                       style={{
                         cursor: "pointer",

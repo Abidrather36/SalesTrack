@@ -2,8 +2,12 @@ import React from "react";
 import { ApiUrl } from "./Shared";
 import axios from "axios";
 
-export const registerUser=(registerUserModel)=>{
-    let res= axios.post(`${ApiUrl}Auth/register`,registerUserModel).then(res=>res.data)
+export const registerUser=(registerUserModel,bearerToken)=>{
+    let res= axios.post(`${ApiUrl}CompanyAdmin/register-User`,registerUserModel,{
+        headers: {
+            Authorization: bearerToken,
+          },
+}).then(res=>res.data)
     return res;
  }
  

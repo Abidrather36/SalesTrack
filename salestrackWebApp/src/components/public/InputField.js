@@ -12,7 +12,7 @@ const InputField = forwardRef(
       <div className={`input-wrapper ${className || ""}`}>
         {as === "select" ? (
           <select ref={ref} className="input-field" required={required} {...rest}>
-            {children} {/* Renders the options for the select dropdown */}
+            {children} 
           </select>
         ) : (
           <input

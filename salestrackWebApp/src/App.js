@@ -8,11 +8,11 @@ import {
 import "./App.css";
 
 import { ToastContainer } from "react-toastify";
-import PublicLayout from "./components/shared/PublicLayout";
-import DashboardLayout from "./components/shared/DashboardLayout"
+import PublicLayout from "./Components/shared/PublicLayout"
+import DashboardLayout from "./Components/shared/DashboardLayout"
 import { routerConfiguration } from "./route-config";
-import {PortalAdminsidebarLabels} from "./components/shared/SidebarLabels"
-import { CompanyAdminsidebarLabels } from "./components/shared/SidebarLabels";
+import {PortalAdminsidebarLabels} from "./Components/shared/SidebarLabels"
+import { CompanyAdminsidebarLabels } from "./Components/shared/SidebarLabels";
 
 
 const App = () => {
