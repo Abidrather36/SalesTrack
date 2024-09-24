@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Grid from "../shared/Grid";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import BreadcrumbComponent from "../shared/Breadcrumb";
-import { getCompanies } from "../../Services/CompanyService";
-import myToaster from "../../utils/toaster";
+import { getCompanies, updateCompany } from "../../Services/CompanyService";
 import { useNavigate } from "react-router-dom";
+import BreadcrumbComponent from "../shared/Breadcrumb";
+import myToaster from "../../utils/toaster";
+import { useLocation } from "react-router-dom";
+
 function CompanyList() {
   const [companies, setCompanies] = useState([]);
   const navigate=useNavigate()
+  const location=useLocation()
 
   const headers = [
     { key: "adminName", label: "Admin Name" },
@@ -45,6 +48,10 @@ function CompanyList() {
   };
  
   const editCompany=async (company)=>{
+    console.log(company)
+   await myToaster.FireInputSwal(company);
+   await fetchComapnies();
+
   }
 
   const deleteCompany=(company)=>{

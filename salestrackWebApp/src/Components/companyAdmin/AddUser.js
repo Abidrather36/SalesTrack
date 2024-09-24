@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import InputField from "../public/InputField";
-import Spin from "../public/Spin";
 import myToaster from "../../utils/toaster";
-import BreadcrumbComponent from "../shared/Breadcrumb";
 import { registerUser } from "../../Services/UserService";
 import storage from "../../utils/storages";
+import BreadcrumbComponent from "../shared/Breadcrumb";
+import InputField from "../public/InputField";
+import Spin from "../public/Spin";
 
 const AddUser = () => {
   const navigate = useNavigate();
@@ -122,7 +122,7 @@ const AddUser = () => {
 
               {loading ? (
                 <button type="submit" className="login-button" disabled>
-                  <Spin />
+                  < Spin/>
                 </button>
               ) : (
                 <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>

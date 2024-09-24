@@ -3,7 +3,6 @@ import { getAllEnquiries } from "../../Services/AuthService";
 import Grid from "../shared/Grid";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import BreadcrumbComponent from "../shared/Breadcrumb";
-
 function EnquiryList() {
   const [enquiries, setEnquiries] = useState([]);
   

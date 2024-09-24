@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import InputField from "../public/InputField"
 import Spin from "../public/Spin"
 import myToaster from "../../utils/toaster";
-import BreadcrumbComponent from "../shared/Breadcrumb"
 import { addCompany as registerCompany } from "../../Services/CompanyService";
+import BreadcrumbComponent from "../shared/Breadcrumb";
 import storage from "../../utils/storages";
 const AddCompany = () => {
   const navigate = useNavigate();

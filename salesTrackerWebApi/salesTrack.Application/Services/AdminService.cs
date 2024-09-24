@@ -285,6 +285,7 @@ namespace salesTrack.Application.Services
         {
             try
             {
+                var companyAdmin = contextService.UserId();
                 var stepProcess = await adminRepository.GetByIdAsync(model.Id);
                 if (stepProcess is null)
                 {
@@ -293,6 +294,8 @@ namespace salesTrack.Application.Services
                 else
                 {
                     stepProcess.StepName = model.StepName;
+                    stepProcess.ModifiedBy = companyAdmin;
+                    stepProcess.ModifiedDate = DateTime.Now;
                     var stepProcessupdated = await adminRepository.UpdateAsync(stepProcess);
                     if (stepProcessupdated > 0)
                     {
@@ -300,6 +303,7 @@ namespace salesTrack.Application.Services
                         {
                             Id = stepProcess.Id,
                             StepName = stepProcess.StepName,
+                            
                         }, ApiMessages.ProcessManagement.StepProcessUpdateSuccess, HttpStatusCodes.OK);
                     }
                     else

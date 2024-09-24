@@ -3,10 +3,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { HttpStatusCode } from "axios";
 import myToaster from "../../utils/toaster";
-import Spin from "../public/Spin"
-import InputField from "./InputField";
 import { signUpUser } from "../../Services/AuthService";
-
+import InputField from "./InputField"
+import Spin from "./Spin"
 function RegisterEnquiry() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
