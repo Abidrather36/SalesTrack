@@ -1,0 +1,78 @@
+/* .custom-dialog{
+    
+} */
+.custom-dialog .p-dialog-header {
+    background-color: white;
+    border-bottom: none;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.custom-dialog .p-dialog-content {
+    padding: 1rem;
+    text-align: center;
+}
+
+.custom-dialog .p-confirm-dialog-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: #333;
+}
+
+.custom-dialog .p-confirm-dialog-icon {
+    font-size: 2rem;
+    color: #ffa500; /* Warning color */
+    margin-right: 10px;
+}
+
+.custom-dialog .p-dialog-footer {
+    border-top: none;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    gap:10px
+}
+
+.custom-dialog .p-button {
+    min-width: 100px;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+.custom-dialog .p-button-secondary {
+    background-color: #3085d6;
+    border: none;
+}
+
+.custom-dialog .p-button-danger {
+    background-color: #d33;
+    border: none;
+    
+}
+
+.custom-dialog .p-button-secondary:enabled:hover {
+    background-color: #2569a4;
+}
+
+.custom-dialog .p-button-danger:enabled:hover {
+    background-color: #a32626;
+}
+
+/* Additional customization for spacing */
+.custom-dialog .p-dialog {
+    width: 200px;
+}
+
+.custom-dialog .p-dialog-header-close {
+    color: #999;
+}
+
+.custom-dialog .p-dialog-header-close:hover {
+    color: #666;
+}
+

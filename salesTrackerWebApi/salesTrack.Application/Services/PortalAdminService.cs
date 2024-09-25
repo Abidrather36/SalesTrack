@@ -250,6 +250,8 @@ namespace salesTrack.Application.Services
                 {
                     company.CompanyName = model.CompanyName;
                     company.ModifiedBy = portalAdmin;
+                    company.PhoneNumber = model.PhoneNumber;
+                    company.Email = model.Email;
                     company.ModifiedDate = DateTime.Now;
 
                     var companyUpdated = await companyRepository.UpdateAsync(company);

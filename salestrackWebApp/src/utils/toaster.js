@@ -1,6 +1,12 @@
 import { toast } from "react-toastify";
 import Swal from "sweetalert2"
-import { updateCompany } from "../Services/CompanyService";
+import { updateCompany ,deleteCompanyById} from "../Services/CompanyService";
+import { confirmDialog } from 'primereact/confirmdialog'; 
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import 'primereact/resources/themes/saga-blue/theme.css';
+import 'primereact/resources/primereact.min.css';          
+import 'primeicons/primeicons.css';
+import "./toaster.css"
 class Toaster{
 
     showSuccessToast=(message)=>{
@@ -9,62 +15,137 @@ class Toaster{
     showErrorToast=(message)=>{
         toast.error(message)
     }
-   
-      FireInputSwal =async (data={},navigate) => {
+  
+      
+      FireInputSwal = async (data = {}, fetchCompanies) => {
         Swal.fire({
           title: "Edit Company",
           html: `
-            admin Name :<input id="swal-input1" class="swal2-input" placeholder="Admin Name" value="${data.adminName}" />
-           company Name : <input id="swal-input2" class="swal2-input" placeholder="Company Name" value="${data.companyName}" />
-             email :<input id="swal-input3" class="swal2-input" placeholder="Email" value="${data.email}" />
-           phone Number <input id="swal-input4" class="swal2-input" placeholder="Phone Number" value="${data.phoneNumber}" />
+               <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
+              <label for="swal-input1" style="text-align:left" >Admin Name</label>
+              <input id="swal-input1" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Admin Name" value="${data.adminName}" />
+              
+              <label for="swal-input2"  style="text-align:left">Company Name</label>
+              <input id="swal-input2" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Company Name" value="${data.companyName}" />
+              
+              <label for="swal-input3 "  style="text-align:left">Email</label>
+              <input id="swal-input3" class="swal2-input" style="width: 80%;  margin-left:10px" placeholder="Email" value="${data.email}" />
+
+              
+              <label for="swal-input4 "  style="text-align:left">Phone Number</label>
+              <input id="swal-input4" class="swal2-input" style="width: 80%;  margin-left:10px" placeholder="Phone Number" value="${data.phoneNumber}" />
+           
+           </div>
           `,
-          
           focusConfirm: false,
           preConfirm: () => {
-            const name = document.getElementById('swal-input1').value;
-            const companyName = document.getElementById('swal-input2').value;
-            const email = document.getElementById('swal-input3').value;
-            const phoneNumber = document.getElementById('swal-input4').value;
+            const name = document.getElementById("swal-input1").value;
+            const companyName = document.getElementById("swal-input2").value;
+            const email = document.getElementById("swal-input3").value;
+            const phoneNumber = document.getElementById("swal-input4").value;
       
             if (!name || !companyName || !email || !phoneNumber) {
               Swal.showValidationMessage(`Please enter all fields`);
               return null;
             }
       
-            return {
-             name,
-              companyName,
-              email,
-              phoneNumber,
-            };
+            return { name, companyName, email, phoneNumber };
           },
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "update",
+          confirmButtonText: "Update",
         }).then(async (result) => {
           if (result.isConfirmed) {
             const updatedCompany = result.value;
-            updatedCompany.id=data.id;
-            console.log("Updated company details:", updatedCompany)  ;
-             if(updateCompany !== null || []){
-               const res=  await updateCompany(updatedCompany);
-               if(res.isSuccess){
-                myToaster.showSuccessToast("company updated successfully");
-                return;
-               }
-               else{
-                myToaster.showErrorToast(res.message)
-                return;
-               }
-
-             }
+            updatedCompany.id = data.id;
+      
+            if (updateCompany !== null || []) {
+              const res = await updateCompany(updatedCompany);
+              if (res.isSuccess) {
+                myToaster.showSuccessToast("Company updated successfully");
+                fetchCompanies();
+              } else {
+                myToaster.showErrorToast(res.message);
+              }
+            }
           }
         });
       };
+      //  FireDeleteSwal = async (company, fetchCompanies) => {
+      //   Swal.fire({
+      //     title: `Delete Company`,
+      //     text: `Are you sure you want to delete the company "${company.companyName}"?`,
+      //     icon: "warning",
+      //     showCancelButton: true,
+      //     confirmButtonColor: "#d33",
+      //     cancelButtonColor: "#3085d6",
+      //     confirmButtonText: "Delete",
+      //     cancelButtonText: "Cancel",
+      //   }).then(async (result) => {
+      //     if (result.isConfirmed) {
+      //       try {
+      //         const res = await deleteCompany({ id: company.id });
+      //         console.log(result)
+      //         if (res.isSuccess) {
+      //           myToaster.showSuccessToast("Company deleted successfully");
+      //           fetchCompanies();
+      //         } else {
+      //           myToaster.showErrorToast(res.message);
+      //         }
+      //       } catch (error) {
+      //         myToaster.showErrorToast("Failed to delete the company");
+      //       }
+      //     }
+      //   });
+      // };
+
+      ////////
+      // FireDeleteSwal = async (company, fetchCompanies) => {
+      //   Swal.fire({
+      //     title: `Delete Company`,
+      //     text: `Are you sure you want to delete the company "${company.companyName}"?`,
+      //     icon: "warning",
+      //     showCancelButton: true,
+      //     confirmButtonColor: "#d33",
+      //     cancelButtonColor: "#3085d6",
+      //     confirmButtonText: "Delete",
+      //     cancelButtonText: "Cancel",
+      //   }).then(async (result) => {
+      //     if (result.isConfirmed) {
+      //       try {
+      //         // Call the API to delete the company by its ID
+      //         const res = await deleteCompanyById(company.id);  // Adjusted to pass the company ID directly
       
-  
+      //         if (res.isSuccess) {
+      //           myToaster.showSuccessToast("Company deleted successfully");
+      //           fetchCompanies(); // Refresh the company list after deletion
+      //         } else {
+      //           myToaster.showErrorToast(res.message);
+      //         }
+      //       } catch (error) {
+      //         myToaster.showErrorToast("Failed to delete the company");
+      //       }
+      //     }
+      //   });
+      // };
+      
+       primereactDeleteConfirm = (company,deleteSwalHandler) => {
+        confirmDialog({
+            message: `Are you sure you want to delete the company "${company.companyName}"?`,
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Yes',
+            rejectLabel: 'No',
+            acceptClassName: 'p-button-secondary',
+            rejectClassName: 'p-button-danger',
+            className: 'custom-dialog',
+            accept:()=>deleteSwalHandler(company.id)
+           
+        });
+    };
+      
+      
 }
 const myToaster=new Toaster();
 export default myToaster;

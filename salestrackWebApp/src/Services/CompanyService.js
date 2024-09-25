@@ -20,11 +20,7 @@ export const updateCompany=async (companyRequestModel)=>{
     let res= await axiosObject.put(`PortalAdmin/Update-Company`,companyRequestModel).then(res=>res.data)
     return res;
 }
-export const deleteCompany=(companyRequestModel,bearerToken)=>{
-    let res= axios.post(`${ApiUrl}PortalAdmin/AddCompany`,companyRequestModel,{
-        headers: {
-            Authorization: bearerToken,
-          },
-    }).then(res=>res.data)
+export const deleteCompanyById=(companyId)=>{
+    let res= axiosObject.delete(`${ApiUrl}PortalAdmin/Delete-Company/${companyId}`).then(res=>res.data)
     return res;
 }
