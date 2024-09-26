@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import myToaster from "../../utils/toaster";
 import { registerUser } from "../../Services/UserService";
-import storage from "../../utils/storages";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import InputField from "../public/InputField";
 import Spin from "../public/Spin";
@@ -21,8 +20,7 @@ const AddUser = () => {
     setLoading(true);
     try {
       data.userType = Number(data.userType);
-      // const token = storage.getItem("salesTrack");
-      // const bearerToken = `Bearer ${token.replace(/"/g, "")}`;
+      console.log("reister user data",data)
       const response = await registerUser(data);
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
@@ -133,20 +131,22 @@ const AddUser = () => {
                 >
                   <option value="">Reports To</option>
                   <option value="91855f4a-f9af-4044-8535-90f8ec8021c2">Ram</option>
-                </InputField> */}
+                </InputField>
+                {errors.reportsTo && <span className="error-message">{errors.reportsTo.message}</span>} */}
                 <InputField
                   as="select"
                   name="reportsTo"
                   {...register("reportsTo", {
-                    required: "ReportsTo is required",
+                    required: "Reports To is required",
                   })}
                 >
-                  <option value="">Reports To</option>
-                  <option value="91855f4a-f9af-4044-8535-90f8ec8021c2">
+                  <option value="">Select Reports To</option>
+                  <option value="7EC27075-3A19-4BB8-A5FF-A20EF959155D">
                     Ram
-                  </option>
+                  </option>{" "}
+                  {/* Ensure the value is correct */}
+                  {/* Add more options as necessary */}
                 </InputField>
-
                 {errors.reportsTo && (
                   <span className="error-message">
                     {errors.reportsTo.message}
