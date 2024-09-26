@@ -32,7 +32,6 @@ namespace salesTrack.Persistence.Repository
                 Email = user.MasterUser.Email,
                 PhoneNumber = user.MasterUser.PhoneNumber,
                 ReportsToId = user.ReportsTo,
-                ReportsToName = user.MasterUser.Name!,
                 IsActive = user.IsActive,
                 UserRole = user.MasterUser.UserRole,
                 UserType = user.UserType,

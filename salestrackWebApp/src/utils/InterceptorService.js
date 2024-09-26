@@ -8,8 +8,7 @@ const axiosObject = axios.create({
 
 axiosObject.interceptors.request.use(
     (config) => {
-
-        const token = storage.getItem("salesTrack");
+        const token = storage.getItem("salesTrack").replace(/^"|"$/g, "");
         const publicRoutes = ['/login', '/enquiry'];
         const isApiUrl = config.url.startsWith(ApiUrl);
         const isPublicRoute = publicRoutes.some(route => config.url.includes(route));

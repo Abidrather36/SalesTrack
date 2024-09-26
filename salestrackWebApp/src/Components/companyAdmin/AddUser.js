@@ -21,13 +21,13 @@ const AddUser = () => {
     setLoading(true);
     try {
       data.userType = Number(data.userType);
-      const token = storage.getItem("salesTrack");
-      const bearerToken = `Bearer ${token.replace(/"/g, "")}`;
-      const response = await registerUser(data, bearerToken);
+      // const token = storage.getItem("salesTrack");
+      // const bearerToken = `Bearer ${token.replace(/"/g, "")}`;
+      const response = await registerUser(data);
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
         setLoading(false);
-        navigate("/Admin/userlist");
+        navigate("/Admin/userList");
       } else {
         myToaster.showErrorToast(response.message);
       }
@@ -40,8 +40,13 @@ const AddUser = () => {
 
   return (
     <>
-      <BreadcrumbComponent labels={{ module: "companyAdmin", currentRoute: "Register-New-User" }} />
-      <div className="row" style={{ display: "flex", flexDirection: "row", height: "100vh" }}>
+      <BreadcrumbComponent
+        labels={{ module: "companyAdmin", currentRoute: "Register-New-User" }}
+      />
+      <div
+        className="row"
+        style={{ display: "flex", flexDirection: "row", height: "100vh" }}
+      >
         <div className="col-lg-6 mb-4 mb-lg-0">
           <img
             src="https://i.ibb.co/k8TBpyy/illustration-sign-up-log-wireframe-idea-showcasing-various-ui-elements-1278800-10890.jpg"
@@ -60,7 +65,11 @@ const AddUser = () => {
         <div className="col-lg-6 mb-4-lg-0">
           <div className="login-container">
             <h2 className="form-title">Register New User</h2>
-            <form className="login-form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+            <form
+              className="login-form"
+              onSubmit={handleSubmit(onSubmit)}
+              autoComplete="off"
+            >
               <div>
                 <InputField
                   type="text"
@@ -68,7 +77,9 @@ const AddUser = () => {
                   placeholder="Name"
                   {...register("name", { required: "Name is required" })}
                 />
-                {errors.name && <span className="text-danger">{errors.name.message}</span>}
+                {errors.name && (
+                  <span className="text-danger">{errors.name.message}</span>
+                )}
               </div>
 
               <div>
@@ -78,12 +89,14 @@ const AddUser = () => {
                   placeholder="Email"
                   {...register("email", {
                     required: "Email is required",
-//                     validate: (value) =>
-//                       /^[a-zA-Z0-9]+@[a-zA-Z0-9]+$/.test(value)
-//  || "Invalid email address",
+                    //                     validate: (value) =>
+                    //                       /^[a-zA-Z0-9]+@[a-zA-Z0-9]+$/.test(value)
+                    //  || "Invalid email address",
                   })}
                 />
-                {errors.email && <span className="text-danger">{errors.email.message}</span>}
+                {errors.email && (
+                  <span className="text-danger">{errors.email.message}</span>
+                )}
               </div>
 
               <div>
@@ -99,33 +112,58 @@ const AddUser = () => {
                 <InputField
                   as="select"
                   name="userType"
-                  {...register("userType", { required: "User Type is required" })}
+                  {...register("userType", {
+                    required: "User Type is required",
+                  })}
                 >
                   <option value="">Select User Type</option>
                   <option value="1">Sales Executive</option>
                   <option value="2">Sales Manager</option>
                 </InputField>
-                {errors.userType && <span className="text-danger">{errors.userType.message}</span>}
+                {errors.userType && (
+                  <span className="text-danger">{errors.userType.message}</span>
+                )}
               </div>
 
               <div>
-                <InputField
+                {/* <InputField
                   as="select"
                   name="reportsTo"
                   {...register("reportsTo", { required: "Reports To is required" })}
                 >
                   <option value="">Reports To</option>
                   <option value="91855f4a-f9af-4044-8535-90f8ec8021c2">Ram</option>
+                </InputField> */}
+                <InputField
+                  as="select"
+                  name="reportsTo"
+                  {...register("reportsTo", {
+                    required: "ReportsTo is required",
+                  })}
+                >
+                  <option value="">Reports To</option>
+                  <option value="91855f4a-f9af-4044-8535-90f8ec8021c2">
+                    Ram
+                  </option>
                 </InputField>
-                {errors.reportsTo && <span className="error-message">{errors.reportsTo.message}</span>}
+
+                {errors.reportsTo && (
+                  <span className="error-message">
+                    {errors.reportsTo.message}
+                  </span>
+                )}
               </div>
 
               {loading ? (
                 <button type="submit" className="login-button" disabled>
-                  < Spin/>
+                  <Spin />
                 </button>
               ) : (
-                <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  style={{ width: "100%" }}
+                >
                   Register User
                 </button>
               )}

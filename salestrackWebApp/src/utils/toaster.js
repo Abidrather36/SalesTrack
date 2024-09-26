@@ -72,64 +72,7 @@ class Toaster{
           }
         });
       };
-      //  FireDeleteSwal = async (company, fetchCompanies) => {
-      //   Swal.fire({
-      //     title: `Delete Company`,
-      //     text: `Are you sure you want to delete the company "${company.companyName}"?`,
-      //     icon: "warning",
-      //     showCancelButton: true,
-      //     confirmButtonColor: "#d33",
-      //     cancelButtonColor: "#3085d6",
-      //     confirmButtonText: "Delete",
-      //     cancelButtonText: "Cancel",
-      //   }).then(async (result) => {
-      //     if (result.isConfirmed) {
-      //       try {
-      //         const res = await deleteCompany({ id: company.id });
-      //         console.log(result)
-      //         if (res.isSuccess) {
-      //           myToaster.showSuccessToast("Company deleted successfully");
-      //           fetchCompanies();
-      //         } else {
-      //           myToaster.showErrorToast(res.message);
-      //         }
-      //       } catch (error) {
-      //         myToaster.showErrorToast("Failed to delete the company");
-      //       }
-      //     }
-      //   });
-      // };
-
-      ////////
-      // FireDeleteSwal = async (company, fetchCompanies) => {
-      //   Swal.fire({
-      //     title: `Delete Company`,
-      //     text: `Are you sure you want to delete the company "${company.companyName}"?`,
-      //     icon: "warning",
-      //     showCancelButton: true,
-      //     confirmButtonColor: "#d33",
-      //     cancelButtonColor: "#3085d6",
-      //     confirmButtonText: "Delete",
-      //     cancelButtonText: "Cancel",
-      //   }).then(async (result) => {
-      //     if (result.isConfirmed) {
-      //       try {
-      //         // Call the API to delete the company by its ID
-      //         const res = await deleteCompanyById(company.id);  // Adjusted to pass the company ID directly
-      
-      //         if (res.isSuccess) {
-      //           myToaster.showSuccessToast("Company deleted successfully");
-      //           fetchCompanies(); // Refresh the company list after deletion
-      //         } else {
-      //           myToaster.showErrorToast(res.message);
-      //         }
-      //       } catch (error) {
-      //         myToaster.showErrorToast("Failed to delete the company");
-      //       }
-      //     }
-      //   });
-      // };
-      
+  
        primereactDeleteConfirm = (company,deleteSwalHandler) => {
         confirmDialog({
             message: `Are you sure you want to delete the company "${company.companyName}"?`,

@@ -2,16 +2,20 @@ import React, { useState, useEffect } from "react";
 import Grid from "../shared/Grid";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import BreadcrumbComponent from "../shared/Breadcrumb";
-import { UserList as getUsers } from "../../Services/UserService";
-
+import { UserLists } from "../../Services/UserService";
 function UserList() {
   const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetchUsers()
+}, []);
+
   const headers = [
     { key: "name", label: "Name" },
     { key: "email", label: "Email" },
     { key: "phoneNumber", label: "PhoneNumber" },
     { key: "userType", label: "userType" },
-    { key: "repostsTo", label: "repostsTo" },
+    { key: "reportsToName", label: "reportsTo" },
     { key: "isActive", label: "isActive" },
   ];
 
@@ -43,16 +47,14 @@ function UserList() {
 
   const fetchUsers = async () => {
     try {
-      const response = await getUsers();
+      const response = await UserLists();
       setUsers(response.result);
     } catch (err) {
       console.error("Failed to fetch enquiries", err);
     }
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+ 
 
   return (
     <>

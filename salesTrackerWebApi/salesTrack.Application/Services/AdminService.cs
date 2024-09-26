@@ -25,7 +25,7 @@ namespace salesTrack.Application.Services
         private readonly IEmailHelperService emailHelperService;
         private readonly ICompanyRepository companyRepository;
 
-        public AdminService(IUserRepository userRepository,IAdminRepository adminRepository,IContextService contextService,IEmailHelperService emailHelperService,ICompanyRepository companyRepository)
+        public AdminService(IUserRepository userRepository, IAdminRepository adminRepository, IContextService contextService, IEmailHelperService emailHelperService, ICompanyRepository companyRepository)
         {
             this.userRepository = userRepository;
             this.adminRepository = adminRepository;
@@ -36,7 +36,7 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<UserResponseModel>> AddUser(UserRequestModel model)
         {
-          
+
 
             try
             {
@@ -83,10 +83,10 @@ namespace salesTrack.Application.Services
                                 ModifiedDate = DateTime.Now,
                                 IsActive = true,
                                 UserType = UserType.SalesExecutive,
-                                CompanyId=companyId,
+                                CompanyId = companyId,
                             };
                             var salesExecutiveAdded = await userRepository.AddUser(salesExecutive);
-                            
+
                         }
                         else
                         {
@@ -106,13 +106,13 @@ namespace salesTrack.Application.Services
 
                             };
                             var salesManagerAdded = await userRepository.AddUser(salesManager);
-                           
+
 
                         }
                         var isEmailSent = await emailHelperService.AddRegistrationEmail(user.Email!, newPassword, user.Name!);
                         if (isEmailSent)
                         {
-                            var reporter=await userRepository.GetByIdAsync(model.ReportsTo);
+                            var reporter = await userRepository.GetByIdAsync(model.ReportsTo);
                             return ApiResponse<UserResponseModel>.SuccessResponse(new UserResponseModel
                             {
                                 Id = user.Id,
@@ -121,10 +121,10 @@ namespace salesTrack.Application.Services
                                 PhoneNumber = user.PhoneNumber,
                                 UserRole = user.UserRole,
                                 UserType = model.UserType,
-                                ReportsToId =model.ReportsTo,
-                                ReportsToName=reporter!.Name!,
+                                ReportsToId = model.ReportsTo,
+                                ReportsToName = reporter!.Name!,
                                 IsPasswordTemporary = user.IsPasswordTemporary,
-                                IsActive=user.IsActive, 
+                                IsActive = user.IsActive,
 
                             }, ApiMessages.User.UserAddedSuccessfully, HttpStatusCodes.Created);
                         }
@@ -157,7 +157,7 @@ namespace salesTrack.Application.Services
                 {
                     return ApiResponse<AdminProcessStepResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
                 }
-                var alredyStepExists=await adminRepository.IsExistsAsync(x => x.StepName == model.StepName);
+                var alredyStepExists = await adminRepository.IsExistsAsync(x => x.StepName == model.StepName);
                 if (alredyStepExists)
                 {
                     return ApiResponse<AdminProcessStepResponseModel>.ErrorResponse(ApiMessages.Process.ProcessStepAlreadyExists, HttpStatusCodes.BadRequest);
@@ -183,7 +183,7 @@ namespace salesTrack.Application.Services
                         {
                             Id = adminProcessStep.Id,
                             StepName = adminProcessStep.StepName,
-                            
+
 
                         }, ApiMessages.Process.ProcessAddedSuccessfully, HttpStatusCodes.OK);
                     }
@@ -193,14 +193,14 @@ namespace salesTrack.Application.Services
                     }
                 }
             }
-         
-            catch(Exception ex)
+
+            catch (Exception ex)
             {
                 return ApiResponse<AdminProcessStepResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
             }
         }
 
-      
+
 
         public async Task<ApiResponse<DeleteAdminProcessStepResponseModel>> DeleteAdminProcessStep(Guid Id)
         {
@@ -218,7 +218,7 @@ namespace salesTrack.Application.Services
                     adminProcessStep.DeletedDate = DateTime.UtcNow;
                     adminProcessStep.DeletedBy = adminId;
                     adminProcessStep.ModifiedBy = adminId;
-                    adminProcessStep.ModifiedDate= DateTime.UtcNow; 
+                    adminProcessStep.ModifiedDate = DateTime.UtcNow;
                     var adminProcessStepResponse = await adminRepository.UpdateAsync(adminProcessStep);
                     if (adminProcessStepResponse > 0)
                     {
@@ -236,7 +236,7 @@ namespace salesTrack.Application.Services
 
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -247,8 +247,8 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<AdminProcessStepResponseModel>> GetAdminProcessStepById(Guid Id)
         {
-           var processStep=await adminRepository.GetByIdAsync(Id);
-            if(processStep is null)
+            var processStep = await adminRepository.GetByIdAsync(Id);
+            if (processStep is null)
             {
                 return ApiResponse<AdminProcessStepResponseModel>.ErrorResponse(ApiMessages.ProcessManagement.StepProcessNotFound, HttpStatusCodes.BadRequest);
             }
@@ -265,14 +265,14 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<IEnumerable<AdminProcessStepResponseModel>>> GetAllAdminProcessSteps()
         {
-           var adminProcessSteps=await adminRepository.GetAllAsync();
-            if(adminProcessSteps is null)
+            var adminProcessSteps = await adminRepository.GetAllAsync();
+            if (adminProcessSteps is null)
             {
                 return ApiResponse<IEnumerable<AdminProcessStepResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
             }
             else
             {
-                var adminProcessResponse= adminProcessSteps.Select(x => new AdminProcessStepResponseModel
+                var adminProcessResponse = adminProcessSteps.Select(x => new AdminProcessStepResponseModel
                 {
                     Id = x.Id,
                     StepName = x.StepName,
@@ -303,7 +303,7 @@ namespace salesTrack.Application.Services
                         {
                             Id = stepProcess.Id,
                             StepName = stepProcess.StepName,
-                            
+
                         }, ApiMessages.ProcessManagement.StepProcessUpdateSuccess, HttpStatusCodes.OK);
                     }
                     else
@@ -317,19 +317,50 @@ namespace salesTrack.Application.Services
                 return ApiResponse<AdminProcessStepResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message} ", HttpStatusCodes.BadRequest);
             }
         }
-        public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsersByCompanyId(Guid CompanyId)
+        public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsersByCompanyId()
         {
-          var users=await userRepository.GetAllUsersByCompanyIdAsync(CompanyId);
-            if (users is null)
-            {
-                return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse(ApiMessages.Auth.UserNotFound, HttpStatusCodes.BadRequest);
+            var companyId = contextService.UserId(); // Assuming t
+            var users = await userRepository.GetAllUsersByCompanyIdAsync(companyId);
 
-            }
-            else
+            if (users == null || !users.Any())
             {
-                return ApiResponse<IEnumerable<UserResponseModel>>.SuccessResponse(users,"users found Successfully",HttpStatusCodes.OK);
+                return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse(
+                    ApiMessages.Auth.UserNotFound,
+                    HttpStatusCodes.BadRequest
+                );
             }
+
+            var userListWithReportsTo = new List<UserResponseModel>();
+
+            foreach (var user in users)
+            {
+                // Fetch the manager (head) by ReportsToId if it exists
+                var reportsToName = user.ReportsToId != null? (await userRepository.GetByIdAsync(user.ReportsToId))?.Name: null; 
+
+                userListWithReportsTo.Add(new UserResponseModel
+                {
+                    Id = user.Id,
+                    CompanyId = user.CompanyId,
+                    ReportsToId = user.ReportsToId,
+                    ReportsToName = reportsToName!,
+                    Name = user.Name,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    IsActive = user.IsActive,
+                    UserRole = user.UserRole,
+                    UserType = user.UserType,
+                    CompanyName = user.CompanyName,
+                    IsPasswordTemporary = user.IsPasswordTemporary
+                });
+            }
+
+            return ApiResponse<IEnumerable<UserResponseModel>>.SuccessResponse(
+                userListWithReportsTo,
+                "Users found successfully",
+                HttpStatusCodes.OK
+            );
         }
+
 
         public async Task<ApiResponse<UserResponseModel>> GetUserById(Guid id)
         {
@@ -349,8 +380,8 @@ namespace salesTrack.Application.Services
                     IsPasswordTemporary = user.IsPasswordTemporary,
                     PhoneNumber = user.PhoneNumber,
                     UserRole = user.UserRole,
-             /*       UserType = user.UserType,
-                    ReportsTo = user.ReportsTo,*/
+                    /*       UserType = user.UserType,
+                           ReportsTo = user.ReportsTo,*/
 
                 };
                 return ApiResponse<UserResponseModel>.SuccessResponse(userResponseModel, ApiMessages.User.UserFound, HttpStatusCodes.OK);

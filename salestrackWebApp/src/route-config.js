@@ -9,10 +9,10 @@ import HomePage from "./components/public/Home"
 import Contact from "./components/public/Contact"
 import { addCompany } from "./Services/CompanyService"
 import CompanyList from "./components/admin/CompanyList"
-import ProfilePage from "./components/shared/ProfileCard"
 import AddCompany from "./components/admin/AddCompany"
 import About from "./components/public/About" 
 import Login from "./components/public/Login"
+import ProfilePage from "./components/shared/ProfileCard"
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -27,7 +27,7 @@ export const routerConfiguration = {
     { path: "/admin/dashboard", element: <AdminDashboard /> },
     { path: "/admin/enquirylist", element: <EnquiryList /> },
     { path: "/admin/add-new-company", element: < AddCompany/> },
-    { path: "/admin/profile", element: <ProfilePage /> },
+    { path: "/admin/profile", element: < ProfilePage/> },
     { path: "/admin/companylist", element: <CompanyList /> },
 
   ],
@@ -36,7 +36,7 @@ export const routerConfiguration = {
     { path: "/companyAdmin/dashboard", element: <CompanyAdminDashboard /> },
     { path: "/companyAdmin/userList", element: <UserList /> },
     { path: "/companyAdmin/add-new-user", element: <AddUser /> },
-    { path: "/companyAdmin/profile", element: <ProfilePage /> },
+    { path: "/companyAdmin/profile", element: <ProfilePage/> },
 
    
   ],

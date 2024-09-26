@@ -4,10 +4,12 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import ThreeDotMenu from "./ConextMenu";
 import TablePagination from "@mui/material/TablePagination";
 import { Button } from 'primereact/button';
+import myToaster from "../../utils/toaster";
 
 function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd, addButtonLabel }) {
+ 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchText, setSearchText] = useState("");
 
   const handleChangePage = (event, newPage) => {
@@ -33,6 +35,10 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd, ad
   const paginatedData = filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
+    <>
+    {data.length===0 && (
+      myToaster.showErrorToast("no data available")
+    )}:
     <div className="card shadow border-0 mb-7">
       <div className="card-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ flexDirection: "column", alignItems: "flex-start" }}>
@@ -80,7 +86,7 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd, ad
                       )
                     ) : header.key === "userType" ? (
                       item[header.key] === 1 ? (
-                        <Badge bg="secondary">Sales Executive</Badge>
+                        <Badge bg="info">Sales Executive</Badge>
                       ) : item[header.key] === 2 ? (
                         <Badge bg="info">Sales Manager</Badge>
                       ) : (
@@ -117,6 +123,8 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd, ad
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </div>
+    
+    </>
   );
 }
 

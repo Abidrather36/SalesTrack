@@ -40,6 +40,10 @@ const Login = () => {
           else if (response.result.userRole ===2){
             navigate("/companyAdmin/dashboard");
           }
+          else  if (response.result.userRole ===3){
+            
+          }
+
         }
       } else {
         myToaster.showErrorToast(response.message);

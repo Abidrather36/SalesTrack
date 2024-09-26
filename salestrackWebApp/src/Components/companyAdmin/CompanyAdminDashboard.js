@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "../shared/Card";
 import { FaEnvelope, FaUsers, FaBriefcase } from "react-icons/fa";
-import { UserList as fetchAllUsers } from "../../Services/UserService";
+import { UserLists as fetchAllUsers } from "../../Services/UserService";
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
