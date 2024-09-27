@@ -50,7 +50,10 @@ namespace salesTrack.Persistence.Repository
                 UserRole = lead.User.UserRole,
                 LeadSourceId = lead.LeadSourceId,
                 LeadSourceName = lead.LeadSource!.LeadSourceName,
-                AssignToId = lead.AssignTo
+                AssignToId = lead.AssignTo,
+                IsActive=lead.IsActive,
+                CompanyName=lead.Company!.CompanyName,
+                CompanyId=lead.CompanyId
             }).ToListAsync();
 
             return Leads;

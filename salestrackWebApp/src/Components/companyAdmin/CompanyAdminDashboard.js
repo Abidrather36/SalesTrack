@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "../shared/Card";
 import { FaEnvelope, FaUsers, FaBriefcase } from "react-icons/fa";
 import { UserLists as fetchAllUsers } from "../../Services/UserService";
+import { UserRole } from "../../Models/Enums/userRole";
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -19,7 +20,8 @@ export default function AdminDashboard() {
     }
   };
 
-
+  const totalSalesExecutives = users.filter(user => user.userType === 1).length;
+  const totalSalesManagers = users.filter(user => user.userType === 2).length;
   const myProps = [
     {
       title: "Total Users",
@@ -28,12 +30,12 @@ export default function AdminDashboard() {
     },
     {
       title: "Total Sales Executives",
-      number: 20,
+      number: totalSalesExecutives,
       icon: <FaUsers />,
     },
     {
       title: "Total Sales Managers",
-      number: 7,
+      number: totalSalesManagers,
       icon: <FaBriefcase />,
     },
   ];

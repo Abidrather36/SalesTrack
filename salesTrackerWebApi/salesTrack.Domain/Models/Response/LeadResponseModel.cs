@@ -24,5 +24,6 @@ namespace salesTrack.Domain.Models.Response
         public FinalStatus FinalStatus { get; set; }
         public bool IsActive { get; set; }
         public string? CompanyName { get; set; }
+        public Guid CompanyId { get; set; }
     }
 }

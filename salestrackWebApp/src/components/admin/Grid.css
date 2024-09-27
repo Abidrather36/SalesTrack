@@ -1,0 +1,36 @@
+/* .btn-sales-executive {
+    background: linear-gradient(135deg, #00b4d8, #0077b6);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-sales-executive:hover {
+    background: linear-gradient(135deg, #0077b6, #03045e);
+  }
+  
+  .btn-sales-manager {
+    background: linear-gradient(135deg, #e63946, #d90429);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-sales-manager:hover {
+    background: linear-gradient(135deg, #d90429, #9b2226);
+  }
+  
+  button i {
+    font-size: 1.2rem;
+  }
+   */

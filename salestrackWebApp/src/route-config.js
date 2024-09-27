@@ -13,6 +13,10 @@ import AddCompany from "./components/admin/AddCompany"
 import About from "./components/public/About" 
 import Login from "./components/public/Login"
 import ProfilePage from "./components/shared/ProfileCard"
+import LeadList from "./components/salesExecutive/LeadList"
+import SalesExecutiveDashboard from  "./components/salesExecutive/ExecutiveDashboard"
+import AddLead from "./components/salesExecutive/AddLead"
+
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -37,7 +41,12 @@ export const routerConfiguration = {
     { path: "/companyAdmin/userList", element: <UserList /> },
     { path: "/companyAdmin/add-new-user", element: <AddUser /> },
     { path: "/companyAdmin/profile", element: <ProfilePage/> },
-
-   
   ],
+
+  SalesExecutiveRoutes:[
+    {path:"/salesExecutive",element:<SalesExecutiveDashboard/>},
+    {path:"/salesExecutive/dashboard",element:<SalesExecutiveDashboard/>},
+    { path: "/salesExecutive/leadList", element: <LeadList /> },
+    { path: "/salesExecutive/add-new-lead", element: <AddLead /> },
+  ]
 }

@@ -25,7 +25,7 @@ const AddUser = () => {
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
         setLoading(false);
-        navigate("/Admin/userList");
+        navigate("/companyAdmin/userList");
       } else {
         myToaster.showErrorToast(response.message);
       }
@@ -124,15 +124,7 @@ const AddUser = () => {
               </div>
 
               <div>
-                {/* <InputField
-                  as="select"
-                  name="reportsTo"
-                  {...register("reportsTo", { required: "Reports To is required" })}
-                >
-                  <option value="">Reports To</option>
-                  <option value="91855f4a-f9af-4044-8535-90f8ec8021c2">Ram</option>
-                </InputField>
-                {errors.reportsTo && <span className="error-message">{errors.reportsTo.message}</span>} */}
+               
                 <InputField
                   as="select"
                   name="reportsTo"

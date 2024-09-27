@@ -11,7 +11,7 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<LeadResponseModel>> DeleteLead(Guid id);   
         Task<ApiResponse<LeadResponseModel>> GetLeadById(Guid leadId);
         Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsAsync();
-        Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompanyId(Guid id);
+        Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompany();
         Task<ApiResponse<LeadResponseModel>> UpdateLead(LeadUpdateModel model);
         Task<ApiResponse<LeadProcessResponseModel>> AddLeadProcessStep(LeadProcessRequestModel model);
         Task<ApiResponse<LeadProcessResponseModel>> UpdateLeadProcessSteps(LeadProcessUpdateModel model);

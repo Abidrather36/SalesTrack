@@ -43,5 +43,10 @@ namespace salesTrack.Persistence.Repository
             return userList;
         }
 
+        public async Task<User> GetCompanyIdByUserId(Guid userId)
+        {
+           return await context.Users.FindAsync(userId);
+
+        }
     }
 }

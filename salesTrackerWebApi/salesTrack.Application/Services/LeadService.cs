@@ -554,9 +554,10 @@ namespace salesTrack.Application.Services
             }
         }
 
-        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompanyId(Guid id)
+        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompany()
         {
-            var leads = await leadRepository.GetAllLeadsByCompanyId(id);
+            var executiveId = contextService.UserId();     
+            var leads = await leadRepository.GetAllLeadsByCompanyId((await userRepository.GetCompanyIdByUserId(executiveId)).CompanyId);
 
             if (leads == null || !leads.Any())
             {

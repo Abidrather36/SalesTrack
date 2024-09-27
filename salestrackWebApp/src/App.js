@@ -8,11 +8,12 @@ import {
 import "./App.css";
 
 import { ToastContainer } from "react-toastify";
-import PublicLayout from "./components/shared/PublicLayout"
-import DashboardLayout from "./components/shared/DashboardLayout"
+import PublicLayout from "./components/shared/PublicLayout";
+import DashboardLayout from "./components/shared/DashboardLayout";
 import { routerConfiguration } from "./route-config";
-import {PortalAdminsidebarLabels} from "./components/shared/SidebarLabels"
+import { PortalAdminsidebarLabels } from "./components/shared/SidebarLabels";
 import { CompanyAdminsidebarLabels } from "./components/shared/SidebarLabels";
+import { SalesExectivesidebarLabels } from "./components/shared/SidebarLabels";
 
 const App = () => {
   return (
@@ -37,6 +38,14 @@ const App = () => {
           element={<DashboardLayout labelList={CompanyAdminsidebarLabels} />}
         >
           {routerConfiguration.CompanyAdminRoutes.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element} />
+          ))}
+        </Route>
+        <Route
+          path="/salesExecutive"
+          element={<DashboardLayout labelList={SalesExectivesidebarLabels} />}
+        >
+          {routerConfiguration.SalesExecutiveRoutes.map((route, index) => (
             <Route key={index} path={route.path} element={route.element} />
           ))}
         </Route>

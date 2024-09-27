@@ -60,12 +60,12 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        [HttpGet("GetAllLeads-ByCompanyId/{id:guid}")]
-        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompanyId(Guid id)
+        [HttpGet("GetAllLeads-ByCompany")]
+        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompanyId()
         {
             try
             {
-                return await leadService.GetAllLeadsByCompanyId(id);
+                return await leadService.GetAllLeadsByCompany();
             }
             catch   (Exception ex)
             {
