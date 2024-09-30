@@ -41,6 +41,8 @@ namespace salesTrack.Application.Services
             try
             {
                 var salesExecutiveId = contextService.UserId();
+                var salesEx=await userRepository.GetUserById(salesExecutiveId);
+                var companyId = salesEx!.CompanyId;
                 if (salesExecutiveId == Guid.Empty)
                 {
                     return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
@@ -77,7 +79,7 @@ namespace salesTrack.Application.Services
                 {
                     Id = user.Id,
                     AssignTo = model.AssignTo,
-                    LeadSourceId = model.LeadSourceId,
+                    LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId: throw new ArgumentException("lead SouceId is Required"),
                     IsActive = true,
                     Comment = model.Comment,
                     CreatedBy = salesExecutiveId,
@@ -86,7 +88,7 @@ namespace salesTrack.Application.Services
                     CreatedDate = DateTime.Now,
                     DeletedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
-                    CompanyId = model.CompanyId
+                    CompanyId =companyId
 
                 };
 
@@ -246,6 +248,7 @@ namespace salesTrack.Application.Services
                     user.CreatedBy = salesExecutiveId;
                     user.ModifiedBy = salesExecutiveId;
                     user.ModifiedDate = DateTime.UtcNow;
+                    user.PhoneNumber = model.PhoneNumber;
 
                     var updatedUser = await userRepository.UpdateAsync(user);
 
@@ -264,6 +267,7 @@ namespace salesTrack.Application.Services
                     lead.ModifiedDate = DateTime.UtcNow;
                     lead.AssignTo = model.AssignTo;
                     lead.IsActive = true;
+                    lead.Comment = model.Comment;
 
                     var updatedLead = await leadRepository.UpdateAsync(lead);
                     var assignUserId = await userRepository.GetByIdAsync(lead.AssignTo);
@@ -288,7 +292,7 @@ namespace salesTrack.Application.Services
                                 LeadSourceId = lead.LeadSourceId,
                                 LeadSourceName = leadSource.LeadSourceName,
                                 AssignToId = lead.AssignTo,
-                                AssignedTo = assignUserId!.Name,
+                                AssignedTo = assignUserId != null ? assignUserId.Name : null,
                                 Comment = model.Comment,
                                 IsActive = true,
                                 FinalStatus = model.FinalStatus,

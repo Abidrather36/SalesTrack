@@ -61,6 +61,7 @@ namespace SalesTrack.Persistence.Repository
         public async  Task<int> UpdateAsync(T model)
         {
             await Task.Run(() =>context.Set<T>().Update(model));
+
             return await context.SaveChangesAsync();    
         }
     }
