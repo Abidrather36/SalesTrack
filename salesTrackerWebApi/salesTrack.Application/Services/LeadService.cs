@@ -563,29 +563,30 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompany()
         {
-            var executiveId = contextService.UserId();     
-            var leads = await leadRepository.GetAllLeadsByCompanyId((await userRepository.GetCompanyIdByUserId(executiveId)).CompanyId);
+            /* var executiveId = contextService.UserId();
+             var leads = null;*//*await leadRepository.GetAllLeadsByCompanyId((await userRepository.GetCompanyIdByUserId(executiveId)).);
+ *//*
+             if (leads == null || !leads.Any())
+             {
+                 return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"no Leads Found", HttpStatusCodes.NotFound);
+             }
 
-            if (leads == null || !leads.Any())
-            {
-                return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"no Leads Found", HttpStatusCodes.NotFound);
-            }
+             foreach (var lead in leads)
+             {
+                 var assignUser = await userRepository.GetByIdAsync(lead.AssignToId);
+                 lead.AssignedTo = assignUser?.Name;
+             }
+             if (leads is null)
+             {
+                 return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError}", HttpStatusCodes.InternalServerError);
 
-            foreach (var lead in leads)
-            {
-                var assignUser = await userRepository.GetByIdAsync(lead.AssignToId);
-                lead.AssignedTo = assignUser?.Name;
-            }
-            if (leads is null)
-            {
-                return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError}", HttpStatusCodes.InternalServerError);
+             }
+             else
+             {
+                 return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(leads, "Leads Fetched by CompanyId", HttpStatusCodes.InternalServerError);
 
-            }
-            else
-            {
-                return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(leads, "Leads Fetched by CompanyId", HttpStatusCodes.InternalServerError);
-
-            }
+             }*/
+            return default;
         }
     }
 }

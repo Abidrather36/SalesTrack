@@ -319,9 +319,9 @@ namespace salesTrack.Application.Services
         }
         public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsersByCompanyId()
         {
-            var userId = contextService.UserId(); // Assuming t
+            var userId = contextService.UserId();
             var returnedUser = await userRepository.GetCompanyIdByUserId(userId);
-            var users = await userRepository.GetAllUsersByCompanyIdAsync(returnedUser.CompanyId);
+            var users = await userRepository.GetAllUsersByCompanyIdAsync(returnedUser.Id);
             if (users == null || !users.Any())
             {
                 return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse(
