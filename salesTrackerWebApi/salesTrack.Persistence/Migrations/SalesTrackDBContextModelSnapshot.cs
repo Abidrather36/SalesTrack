@@ -83,16 +83,16 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7ec27075-3a19-4bb8-a5ff-a20ef959155d"),
+                            Id = new Guid("15eda46a-374e-42ce-8ba5-2a272354099d"),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "FbPSeRQPV8Qb50RIhYs7PXymWZMCehwDtoJbw65gqQU=",
+                            Password = "fyMlcw6DQctF4osdFA1mGiftfxy8P6Zx52CIRCNJQOk=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 9, 23, 5, 42, 1, 649, DateTimeKind.Unspecified).AddTicks(4736), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "nBQGAJXs3XDSc3yN5oFp2g==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 10, 1, 9, 48, 18, 393, DateTimeKind.Unspecified).AddTicks(8620), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "5l6nq1uGPZBFSxAETh3EDw==",
                             UserRole = (byte)1
                         });
                 });

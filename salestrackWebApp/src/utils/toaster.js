@@ -87,6 +87,20 @@ class Toaster{
            
         });
     };
+    primereactDeleteConfirmLead = (lead, deleteLeadHandler) => {
+      confirmDialog({
+          message: `Are you sure you want to delete the lead "${lead.name}"?`, 
+          header: 'Confirmation',
+          icon: 'pi pi-exclamation-triangle',
+          acceptLabel: 'Yes',
+          rejectLabel: 'No',
+          acceptClassName: 'p-button-secondary',
+          rejectClassName: 'p-button-danger',
+          className: 'custom-dialog',
+          accept: () => deleteLeadHandler(lead.id) 
+      });
+  };
+  
       
       
 }

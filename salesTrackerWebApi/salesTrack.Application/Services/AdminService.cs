@@ -319,9 +319,9 @@ namespace salesTrack.Application.Services
         }
         public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsersByCompanyId()
         {
-            var companyId = contextService.UserId(); // Assuming t
-            var users = await userRepository.GetAllUsersByCompanyIdAsync(companyId);
-
+            var userId = contextService.UserId(); // Assuming t
+            var returnedUser = await userRepository.GetCompanyIdByUserId(userId);
+            var users = await userRepository.GetAllUsersByCompanyIdAsync(returnedUser.CompanyId);
             if (users == null || !users.Any())
             {
                 return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse(
@@ -334,7 +334,6 @@ namespace salesTrack.Application.Services
 
             foreach (var user in users)
             {
-                // Fetch the manager (head) by ReportsToId if it exists
                 var reportsToName = user.ReportsToId != null? (await userRepository.GetByIdAsync(user.ReportsToId))?.Name: null; 
 
                 userListWithReportsTo.Add(new UserResponseModel
@@ -350,7 +349,8 @@ namespace salesTrack.Application.Services
                     UserRole = user.UserRole,
                     UserType = user.UserType,
                     CompanyName = user.CompanyName,
-                    IsPasswordTemporary = user.IsPasswordTemporary
+                    IsPasswordTemporary = user.IsPasswordTemporary,
+                   
                 });
             }
 

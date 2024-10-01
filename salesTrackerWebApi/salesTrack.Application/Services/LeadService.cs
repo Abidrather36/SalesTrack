@@ -66,6 +66,7 @@ namespace salesTrack.Application.Services
                     DeletedDate = DateTime.UtcNow,
                     IsActive = true,
                     ModifiedDate = DateTime.UtcNow,
+                   
 
                 };
 
@@ -79,7 +80,7 @@ namespace salesTrack.Application.Services
                 {
                     Id = user.Id,
                     AssignTo = model.AssignTo,
-                    LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId: throw new ArgumentException("lead SouceId is Required"),
+                    LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId : throw new ArgumentException("lead SouceId is Required"),
                     IsActive = true,
                     Comment = model.Comment,
                     CreatedBy = salesExecutiveId,
@@ -88,7 +89,9 @@ namespace salesTrack.Application.Services
                     CreatedDate = DateTime.Now,
                     DeletedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
-                    CompanyId =companyId
+                    CompanyId = companyId,
+                    
+
 
                 };
 

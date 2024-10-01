@@ -48,6 +48,5 @@ export const routerConfiguration = {
     {path:"/salesExecutive/dashboard",element:<SalesExecutiveDashboard/>},
     { path: "/salesExecutive/leadList", element: <LeadList /> },
     { path: "/salesExecutive/add-new-lead", element: <AddLead /> },
-    { path:"/salesExecutive/edit-lead", element:<AddLead /> }
   ]
 }

@@ -11,7 +11,7 @@ export const getAllLeads =async()=>{
     return res
 }
 export const deleteLead=async (leadId)=>{
-    let res=await axiosObject.delete(`${ApiUrl}Leads/DeleteLead/${leadId}`).then(res=>res.data)
+    let res=await axiosObject.delete(`${ApiUrl}Leads/Delete-Lead/${leadId}`).then(res=>res.data)
     return res;
 }
 export const updateLead=async (lead)=>{

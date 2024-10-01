@@ -8,22 +8,25 @@ import InputField from "../public/InputField";
 import Spin from "../public/Spin";
 import { useForm } from "react-hook-form";
 import { leadSources as getLeadSources } from "../../Services/LeadSource";
-import myToaster from "../../utils/toaster";
+import { toast } from "react-toastify"; // Import Toastify
 import { updateLead } from "../../Services/LeadService";
+import { UserLists } from "../../Services/UserService";
+import { deleteLead as deleteLeadService } from "../../Services/LeadService";
 
 function LeadList() {
-  const [leads, setLeads] = useState();
+  const [leads, setLeads] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showGrid, setShowGrid] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [editLeadData, setEditLeadData] = useState({name:"",email:""});
   const [leadSources, setLeadSources] = useState([]);
-  const[leadData,setLeadData]=useState({})
+  const [leadData, setLeadData] = useState({});
+  const [userAssignTo, setUserAssignTo] = useState([]);
 
   useEffect(() => {
     fetchAllLeads();
     fetchLeadSources();
+    fetchAssignTo();
   }, []);
 
   const {
@@ -37,7 +40,7 @@ function LeadList() {
       const res = await getLeadSources();
       setLeadSources(res.result);
     } catch (error) {
-      myToaster.showErrorToast("Failed to load lead sources.");
+      toast.error("Failed to load lead sources."); // Using Toastify
     }
   };
 
@@ -46,54 +49,91 @@ function LeadList() {
     { key: "email", label: "Email" },
     { key: "phoneNumber", label: "Phone Number" },
     { key: "leadSourceName", label: "Lead Source" },
-    { key: "comment", label: "Comment" },
     { key: "assignedTo", label: "Assigned To" },
-    { key: "userRole", label: "User Role" },
+    { key: "finalStatus", label: "Final Status" },
     { key: "isActive", label: "Is Active" },
-    { key: "companyName", label: "Company Name" },
   ];
 
   const editLead = (lead) => {
     setLeadData(lead);
     setShowGrid(false);
     setShowForm(true);
-    console.log(leadData)
-
   };
 
-  const submitLeadForm=async (e)=>{
-  e.preventDefault()
-   var result=await updateLead(leadData);
-   if(result.isSuccess){
-    console.log(result)
-    myToaster.showSuccessToast(result.message)
-   }
-   else{
-    myToaster.showErrorToast(result.message)
-   }
-  }
+  const submitLeadForm = async (data) => {
+    setLoading(true);
+    try {
+      const result = await updateLead({ ...leadData, ...data });
+      if (result.isSuccess) {
+        toast.success(result.message); // Using Toastify
+        fetchAllLeads();
+        setShowForm(false);
+        setShowGrid(true);
+      } else {
+        toast.error(result.message); // Using Toastify
+      }
+    } catch (error) {
+      toast.error("An error occurred while updating the lead."); // Using Toastify
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setEditLeadData((prevState) => ({
-  //     ...prevState,
-  //     [name]: value,
-  //   }));
-  // };
-
-  const deleteLead = (leadId) => {
-    console.log(leadId);
+  const deleteLead = async (leadId) => {
+    const confirmToast = toast.info("Are you sure you want to delete this lead?", {
+      position: "top-right",
+      autoClose: false,
+      closeOnClick: false,
+      draggable: false,
+      progress: undefined,
+      action: [
+        <button
+          onClick={async () => {
+            try {
+              const response = await deleteLeadService(leadId);
+              if (response.isSuccess) {
+                toast.success(response.message); // Using Toastify
+                fetchAllLeads();
+              } else {
+                toast.error(response.message); // Using Toastify
+              }
+            } catch (error) {
+              toast.error("An error occurred while deleting the lead."); // Using Toastify
+            }
+            toast.dismiss(confirmToast); // Dismiss the confirmation toast
+          }}
+        >
+          Yes
+        </button>,
+        <button
+          onClick={() => {
+            toast.dismiss(confirmToast); // Dismiss the confirmation toast
+          }}
+        >
+          No
+        </button>,
+      ],
+    });
   };
 
   const fetchAllLeads = async () => {
+    setLoading(true);
     try {
       const response = await getAllLeads();
       setLeads(response.result);
-      
     } catch (err) {
-      console.error("Failed to fetch users", err);
+      console.error("Failed to fetch leads", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchAssignTo = async () => {
+    try {
+      const response = await UserLists();
+      setUserAssignTo(response.result || []);
+    } catch (error) {
+      toast.error("Failed to fetch users for assignment."); // Using Toastify
     }
   };
 
@@ -122,7 +162,7 @@ function LeadList() {
             ]}
             data={leads}
             loading={loading}
-            onAdd={() => navigate("/companyAdmin/add-new-lead")}
+            onAdd={() => navigate("/salesExecutive/add-new-lead")}
             tableName="Leads"
             addButtonLabel="Add Lead"
           />
@@ -144,14 +184,14 @@ function LeadList() {
                 }}
               >
                 <h2 className="form-title">Edit Lead</h2>
-                <form className="login-form" onSubmit={submitLeadForm} autoComplete="off">
+                <form className="login-form" onSubmit={handleSubmit(submitLeadForm)} autoComplete="off">
                   <div className="row">
                     <div className="col-lg-6 mb-3">
                       <InputField
                         type="text"
                         name="name"
-                        value={leadData.name}
-                        onChange={(e) => setLeadData({ ...leadData, name: e.target.value })} 
+                        value={leadData.name || ""}
+                        onChange={(e) => setLeadData({ ...leadData, name: e.target.value })}
                         placeholder="Lead Name"
                       />
                       {errors.name && <span className="error-message">{errors.name.message}</span>}
@@ -162,9 +202,8 @@ function LeadList() {
                         type="email"
                         name="email"
                         placeholder="Email"
-                        value={leadData.email}
-                        onChange={(e)=>setLeadData({...leadData, email:e.target.value})} // Updated
-                       
+                        value={leadData.email || ""}
+                        onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
                       />
                       {errors.email && <span className="error-message">{errors.email.message}</span>}
                     </div>
@@ -173,9 +212,9 @@ function LeadList() {
                       <InputField
                         type="text"
                         name="phoneNumber"
-                        value={leadData.phoneNumber}
+                        value={leadData.phoneNumber || ""}
                         placeholder="Phone Number"
-                        onChange={(e)=>setLeadData({...leadData,phoneNumber:e.target.value})} // Updated
+                        onChange={(e) => setLeadData({ ...leadData, phoneNumber: e.target.value })}
                       />
                     </div>
 
@@ -183,8 +222,8 @@ function LeadList() {
                       <InputField
                         as="select"
                         name="leadSourceId"
-                        value={leadData.leadSourceId}
-                        onChange={(e)=>setLeadData({...leadData,leadSourceId:e.target.value})} // Updated
+                        value={leadData.leadSourceId || ""}
+                        onChange={(e) => setLeadData({ ...leadData, leadSourceId: e.target.value })}
                       >
                         <option value="">Select Lead Source</option>
                         {leadSources.map((source) => (
@@ -200,9 +239,9 @@ function LeadList() {
                       <InputField
                         type="text"
                         name="comment"
-                        value={leadData.comment}
+                        value={leadData.comment || ""}
                         placeholder="Comment"
-                        onChange={(e)=>{setLeadData({...leadData, comment :e.target.value})}} // Updated
+                        onChange={(e) => setLeadData({ ...leadData, comment: e.target.value })}
                       />
                     </div>
 
@@ -210,25 +249,32 @@ function LeadList() {
                       <InputField
                         as="select"
                         name="assignTo"
-                        value={leadData.assignTo}
-                        onChange={(e)=>{setLeadData({...leadData, assignTo :e.target.value})}} 
+                        value={leadData.assignTo || ""}
+                        onChange={(e) => setLeadData({ ...leadData, assignTo: e.target.value })}
                       >
                         <option value="">Assign To</option>
-                        <option value="7EC27075-3A19-4BB8-A5FF-A20EF959155D">Ram</option>
+                        {userAssignTo.map((user) => (
+                          <option key={user.id} value={user.id}>
+                            {user.name}
+                          </option>
+                        ))}
                       </InputField>
                       {errors.assignTo && <span className="error-message">{errors.assignTo.message}</span>}
                     </div>
                   </div>
-
-                  {loading ? (
-                    <button type="submit" className="login-button" disabled>
-                      <Spin />
-                    </button>
-                  ) : (
-                    <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>
-                      update Lead
-                    </button>
-                  )}
+                  <button type="submit" className="btn btn-primary mt-3">
+                    Update Lead
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary mt-3"
+                    onClick={() => {
+                      setShowForm(false);
+                      setShowGrid(true);
+                    }}
+                  >
+                    Cancel
+                  </button>
                 </form>
               </div>
             </div>

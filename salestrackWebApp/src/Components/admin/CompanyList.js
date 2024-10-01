@@ -70,7 +70,7 @@ function CompanyList() {
 
   const deleteCompany = async (company) => {
     console.log(company);
-    myToaster.primereactDeleteConfirm(company, deleteSwalHandler);
+    myToaster.primereactDeleteConfirmLead(company, deleteSwalHandler);
   };
 
   const fetchComapnies = async () => {

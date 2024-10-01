@@ -15,7 +15,7 @@ namespace salesTrack.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = nameof(UserRole.CompanyAdmin))]
+    [Authorize(Roles = nameof(UserRole.CompanyAdmin) + "," + nameof(UserRole.SalesExecutive))] 
     public class CompanyAdminController : ControllerBase
     {
         private readonly IAdminService adminService;
