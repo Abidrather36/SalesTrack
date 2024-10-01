@@ -105,8 +105,8 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<LeadProcessSteps?> GetLeadProcessStepById(Guid id)
         {
-           var procStep= context.LeadProcessSteps.FindAsync(id);
-            return await procStep;
+           var procStep= await context.LeadProcessSteps.FindAsync(id);
+            return procStep;
         }
 
         public async Task<int> UpdateLeadProcessStep(LeadProcessSteps model)

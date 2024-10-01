@@ -41,7 +41,7 @@ namespace salesTrack.Application.Services
             try
             {
                 var salesExecutiveId = contextService.UserId();
-                var salesEx=await userRepository.GetUserById(salesExecutiveId);
+                var salesEx = await userRepository.GetUserById(salesExecutiveId);
                 var companyId = salesEx!.CompanyId;
                 if (salesExecutiveId == Guid.Empty)
                 {
@@ -66,7 +66,7 @@ namespace salesTrack.Application.Services
                     DeletedDate = DateTime.UtcNow,
                     IsActive = true,
                     ModifiedDate = DateTime.UtcNow,
-                   
+
 
                 };
 
@@ -90,7 +90,7 @@ namespace salesTrack.Application.Services
                     DeletedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
                     CompanyId = companyId,
-                    
+
 
 
                 };
@@ -370,7 +370,7 @@ namespace salesTrack.Application.Services
                 }
                 else
                 {
-                  /*  var leadId = await leadRepository.IsExistsAsync(x => x.Id == model.LeadId);*/
+                    /*  var leadId = await leadRepository.IsExistsAsync(x => x.Id == model.LeadId);*/
 
                     LeadProcessSteps leadSteps = new()
                     {
@@ -420,7 +420,7 @@ namespace salesTrack.Application.Services
                 {
                     return ApiResponse<LeadProcessResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
                 }
-                
+
                 var leadProcessStep = await leadRepository.GetLeadProcessStepById(model.Id);
                 if (leadProcessStep is null)
                 {
@@ -563,30 +563,31 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompany()
         {
-            /* var executiveId = contextService.UserId();
-             var leads = null;*//*await leadRepository.GetAllLeadsByCompanyId((await userRepository.GetCompanyIdByUserId(executiveId)).);
- *//*
-             if (leads == null || !leads.Any())
-             {
-                 return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"no Leads Found", HttpStatusCodes.NotFound);
-             }
+            var executiveId = contextService.UserId();
+            var user = await userRepository.GetUserById(executiveId);
+            var leads = await leadRepository.GetAllLeadsByCompanyId(user.CompanyId);
+            if (leads == null || !leads.Any())
+            {
+                return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"no Leads Found", HttpStatusCodes.NotFound);
+            }
 
-             foreach (var lead in leads)
-             {
-                 var assignUser = await userRepository.GetByIdAsync(lead.AssignToId);
-                 lead.AssignedTo = assignUser?.Name;
-             }
-             if (leads is null)
-             {
-                 return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError}", HttpStatusCodes.InternalServerError);
+            foreach (var lead in leads)
+            {
+                var assignUser = await userRepository.GetByIdAsync(lead.AssignToId);
+                lead.AssignedTo = assignUser?.Name;
+            }
+            if (leads is null)
+            {
+                return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError}", HttpStatusCodes.InternalServerError);
 
-             }
-             else
-             {
-                 return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(leads, "Leads Fetched by CompanyId", HttpStatusCodes.InternalServerError);
+            }
+            else
+            {
+                return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(leads, "Leads Fetched by CompanyId", HttpStatusCodes.InternalServerError);
 
-             }*/
-            return default;
+
+                return default;
+            }
         }
     }
 }
