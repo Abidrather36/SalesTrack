@@ -16,6 +16,7 @@ import ProfilePage from "./components/shared/ProfileCard"
 import LeadList from "./components/salesExecutive/LeadList"
 import SalesExecutiveDashboard from  "./components/salesExecutive/ExecutiveDashboard"
 import AddLead from "./components/salesExecutive/AddLead"
+import AdminProcessStep from "./components/companyAdmin/AdminProcessStep"
 
 export const routerConfiguration = {
   PublicRoutes: [
@@ -41,6 +42,7 @@ export const routerConfiguration = {
     { path: "/companyAdmin/userList", element: <UserList /> },
     { path: "/companyAdmin/add-new-user", element: <AddUser /> },
     { path: "/companyAdmin/profile", element: <ProfilePage/> },
+    { path: "/companyAdmin/processStepList", element: <AdminProcessStep /> },
   ],
 
   SalesExecutiveRoutes:[

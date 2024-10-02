@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Badge from "react-bootstrap/Badge";
 import TablePagination from "@mui/material/TablePagination";
-import myToaster from "../../utils/toaster";
 import ThreeDotMenu from "./ConextMenu";
 import { MDBBadge } from "mdb-react-ui-kit";
 
 function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd, addButtonLabel, loading }) {
+  
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchText, setSearchText] = useState("");
@@ -75,8 +75,7 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd, ad
                           ) : (
                             <Badge bg="danger">Inactive</Badge>
                           )
-                        ) 
-                        : header.key === "finalStatus" ? (
+                        ) : header.key === "finalStatus" ? (
                           item[header.key] === 1 ? (
                             <MDBBadge color='warning' pill>Open</MDBBadge>
                           ) : item[header.key] === 2 ? (
@@ -85,10 +84,14 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd, ad
                             <MDBBadge color="success" pill>Success</MDBBadge>
                           ) : (
                             <MDBBadge color="primary" pill>Unknown</MDBBadge>
-
-                          )  
-                        ) 
-                        : (
+                          )
+                        ) : header.key === "userType" ? (
+                          item[header.key] === 1 ? (
+                            <MDBBadge color='info' pill>SalesExecutive</MDBBadge>
+                          ) : item[header.key] === 2 ? (
+                            <MDBBadge color="success" pill>SalesManager</MDBBadge>
+                          ) : null
+                        ) : (
                           item[header.key]
                         )}
                       </td>
@@ -117,7 +120,7 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd, ad
           </table>
         </div>
         <TablePagination
-          rowsPerPageOptions={[ 10,15, 25]}
+          rowsPerPageOptions={[10, 15, 25]}
           component="div"
           count={filteredData.length}
           rowsPerPage={rowsPerPage}
@@ -130,4 +133,4 @@ function Grid({ headers = [], data = [], buttons = [], tableName = "", onAdd, ad
   );
 }
 
-export default Grid;  
+export default Grid;

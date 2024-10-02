@@ -13,6 +13,7 @@ using SalesTrack.Application.Common;
 using SalesTrack.Application.Shared;
 using SalesTrack.Domain.Entities;
 using SalesTrack.Domain.Entities.Models.Request;
+using System.Data;
 using static SalesTrack.Application.Shared.ApiMessages;
 
 namespace salesTrack.Application.Services
@@ -319,10 +320,33 @@ namespace salesTrack.Application.Services
         }
         public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsersByCompanyId()
          {
+            var dbSet = new List<UserResponseModel>();
             var userId = contextService.UserId();
             var returnedUser = await userRepository.GetCompanyIdByUserId(userId);
-            var users = await userRepository.GetAllUsersByCompanyIdAsync(returnedUser.Id);
-            if (users == null || !users.Any())
+            if(returnedUser.UserRole==UserRole.SalesManager || returnedUser.UserRole == UserRole.SalesExecutive)
+            {
+                var miniUser = await userRepository.GetUserById(returnedUser.Id);
+                if (miniUser.UserType == UserType.SalesExecutive || miniUser.UserType == UserType.SalesManager)
+                {
+                    var dataSet = await userRepository.GetAllUsersByCompanyIdAsync(miniUser.CompanyId);
+                    foreach (var user in dataSet)
+                    {
+                        dbSet.Add(user);
+                    }
+
+                }
+            }
+           
+            else
+            {
+                var dataSet = await userRepository.GetAllUsersByCompanyIdAsync(returnedUser.Id);
+                foreach (var user in dataSet)
+                {
+                    dbSet.Add(user);
+                }
+            }
+
+            if (dbSet == null || !dbSet.Any())
             {
                 return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse(
                     ApiMessages.Auth.UserNotFound,
@@ -332,7 +356,7 @@ namespace salesTrack.Application.Services
 
             var userListWithReportsTo = new List<UserResponseModel>();
 
-            foreach (var user in users)
+            foreach (var user in dbSet)
             {
                 var reportsToName = user.ReportsToId != null? (await userRepository.GetByIdAsync(user.ReportsToId))?.Name: null; 
 

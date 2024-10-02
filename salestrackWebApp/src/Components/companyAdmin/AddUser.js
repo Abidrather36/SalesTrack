@@ -22,6 +22,7 @@ const AddUser = () => {
       data.userType = Number(data.userType);
       console.log("reister user data",data)
       const response = await registerUser(data);
+      console.log(response)
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
         setLoading(false);
@@ -87,9 +88,6 @@ const AddUser = () => {
                   placeholder="Email"
                   {...register("email", {
                     required: "Email is required",
-                    //                     validate: (value) =>
-                    //                       /^[a-zA-Z0-9]+@[a-zA-Z0-9]+$/.test(value)
-                    //  || "Invalid email address",
                   })}
                 />
                 {errors.email && (
@@ -102,8 +100,16 @@ const AddUser = () => {
                   type="text"
                   name="phoneNumber"
                   placeholder="Phone Number"
-                  {...register("phoneNumber")}
+                  {...register("phoneNumber",{
+                    required:"phoneNumber is required",
+                    maxLength:10,
+                    minLength:10,
+                    message:"phoneNumber should be  10 digit "
+                  })}
                 />
+                 {errors.phoneNumber && (
+                  <span className="text-danger">{errors.phoneNumber.message}</span>
+                )}
               </div>
 
               <div>
@@ -133,11 +139,9 @@ const AddUser = () => {
                   })}
                 >
                   <option value="">Select Reports To</option>
-                  <option value="7EC27075-3A19-4BB8-A5FF-A20EF959155D">
+                  <option value="15EDA46A-374E-42CE-8BA5-2A272354099D">
                     Ram
-                  </option>{" "}
-                  {/* Ensure the value is correct */}
-                  {/* Add more options as necessary */}
+                  </option>
                 </InputField>
                 {errors.reportsTo && (
                   <span className="error-message">

@@ -46,6 +46,12 @@ export const PortalAdminsidebarLabels = [
         link: "/companyAdmin/add-new-user",
         icon: <FaPlus />,
       },
+      {
+        id: 4,
+        label: "Add process Step",
+        link: "/companyAdmin/processStepList",
+        icon: <FaPlus />,
+      }
     ];
 
     export const SalesExectivesidebarLabels = [

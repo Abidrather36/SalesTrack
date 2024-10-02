@@ -9,6 +9,7 @@ namespace SalesTrack.Application.Abstraction.IRepository
         Task<int> AddUser(User user);
         Task<IEnumerable<UserResponseModel>> GetAllUsersByCompanyIdAsync(Guid companyId);
         Task<MasterUser> GetCompanyIdByUserId(Guid userId);
+        /*  Task<Company> GetCompanyIdByUserId(Guid userId);*/
         Task<User> GetUserById(Guid id);
 
     }

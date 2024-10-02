@@ -45,9 +45,17 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<MasterUser> GetCompanyIdByUserId(Guid userId)
         {
-           return await context.MasterUsers.FindAsync(userId);
+            return await context.MasterUsers.FindAsync(userId);
 
         }
+        /*  public async Task<Company?> GetCompanyIdByUserId(Guid userId)
+          {
+              return await context.Users
+                  .Where(u => u.Id == userId)
+                  .Select(u => u.Company)
+                  .FirstOrDefaultAsync();
+          }*/
+
 
         public async Task<User> GetUserById(Guid id)
         {

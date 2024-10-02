@@ -18,3 +18,7 @@ export const updateLead=async (lead)=>{
     const res=await axiosObject.put(`${ApiUrl}Leads/Update-Lead`,lead).then(res=>res.data)
     return res;
 }
+export const addLeadProcessStep=(leadProcessStep)=>{
+    const res=axiosObject.post(`${ApiUrl}Leads/addLeadProcessStep`,leadProcessStep).then(res=>res.data)
+    return res;
+}

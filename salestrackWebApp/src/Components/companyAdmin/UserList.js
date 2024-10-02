@@ -83,7 +83,7 @@ import { useNavigate } from "react-router-dom";
 
 function UserList() {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true); // Add a loading state
+  const [loading, setLoading] = useState(true); 
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -97,6 +97,7 @@ function UserList() {
     { key: "userType", label: "User Type" },
     { key: "reportsToName", label: "Reports To" },
     { key: "isActive", label: "Is Active" },
+    { key: "companyName", label: "Company Name"}
   ];
 
   const breadcrumbLabels = {
@@ -128,11 +129,12 @@ function UserList() {
   const fetchUsers = async () => {
     try {
       const response = await UserLists();
+      console.log(response.result)
       setUsers(response.result);
     } catch (err) {
       console.error("Failed to fetch users", err);
     } finally {
-      setLoading(false); // Set loading to false after fetching
+      setLoading(false); 
     }
   };
 
