@@ -20,7 +20,7 @@ const AddUser = () => {
     setLoading(true);
     try {
       data.userType = Number(data.userType);
-      console.log("reister user data",data)
+      console.log("register user data",data)
       const response = await registerUser(data);
       console.log(response)
       if (response.isSuccess) {

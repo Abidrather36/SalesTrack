@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import { Margin } from "@mui/icons-material";
 
-const ThreeDotMenu = ({ options, handleEdit, handleDelete }) => {
+const ThreeDotMenu = ({ options, handleEdit, handleDelete,handleManageLead  }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -25,7 +23,6 @@ const ThreeDotMenu = ({ options, handleEdit, handleDelete }) => {
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={{ color: "blue" }} 
       >
         <MoreVertIcon />
       </IconButton>
@@ -38,28 +35,32 @@ const ThreeDotMenu = ({ options, handleEdit, handleDelete }) => {
           "aria-labelledby": "long-button",
         }}
       >
-        {options.map((option) => (
-          <MenuItem
-            key={option.title}
-            onClick={() => {
-              if (option.title === "Edit") {
-                handleEdit(); 
-              } else if (option.title === "Delete") {
-                handleDelete(); 
-              }
-              handleClose();
-            }}
-          >
-          <div style={{marginRight:"10px"}}>
-          {option.icon} 
+       {options.map((option) => (
+  <MenuItem
+    key={option.title}
+    onClick={() => {
+      if (option.title === "Edit") {
+        handleEdit(); 
+      } else if (option.title === "Delete") {
+        handleDelete(); 
+      }
+      else if(option.title === "AddFollowup"){
+        handleManageLead();
+      }
+      handleClose();
+    }}
+  >
+  <div style={{marginRight:"10px"}}>
+  {option.icon} 
 
-          </div>
-            {option.title} 
-          </MenuItem>
-        ))}
+  </div>
+    {option.title} 
+  </MenuItem>
+))}
       </Menu>
     </div>
   );
 };
+
 
 export default ThreeDotMenu;

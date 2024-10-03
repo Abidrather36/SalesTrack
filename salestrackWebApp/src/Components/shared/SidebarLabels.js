@@ -25,6 +25,12 @@ export const PortalAdminsidebarLabels = [
       link: "/admin/companylist",
       icon: <FaListAlt />,
     },
+    {
+      id:5,
+      label:"Add Process Step",
+      link:"/admin/addProcessStep",
+      icon:<FaUsers />
+    }
   
   ];
   export const CompanyAdminsidebarLabels = [
@@ -46,12 +52,7 @@ export const PortalAdminsidebarLabels = [
         link: "/companyAdmin/add-new-user",
         icon: <FaPlus />,
       },
-      {
-        id: 4,
-        label: "Add process Step",
-        link: "/companyAdmin/processStepList",
-        icon: <FaPlus />,
-      }
+    
     ];
 
     export const SalesExectivesidebarLabels = [
@@ -73,5 +74,11 @@ export const PortalAdminsidebarLabels = [
           label: "Add New Lead",
           link: "/salesExecutive/add-new-lead",
           icon: <FaPlus />,
-        }
+      },
+      // {
+      //   id: 4,
+      //   label: "Add process Step",
+      //   link: "/salesExecutive/addLeadProcessStep",
+      //   icon: <FaPlus />,
+      // }
     ]

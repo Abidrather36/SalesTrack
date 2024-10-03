@@ -89,7 +89,6 @@ const AddLead = () => {
           />
         </div>
 
-        {/* Form Section */}
         <div style={{ flex: 1, padding: "20px" }}>
           <div className="col-lg-8 mb-4-lg-0">
             <div

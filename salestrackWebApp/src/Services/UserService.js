@@ -19,3 +19,8 @@ export const addprocessStep=async (processStep)=>{
     let res=await axiosObject.post(`${ApiUrl}CompanyAdmin/add-process-steps`,processStep).then(res=>res.data)
     return res;
 }
+export const getAllProcessSteps=async()=>{
+    let res=await axiosObject.get(`${ApiUrl}CompanyAdmin/getAll-process-steps`).then(res=>res.data)
+    return res;
+    
+}

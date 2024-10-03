@@ -16,7 +16,10 @@ import ProfilePage from "./components/shared/ProfileCard"
 import LeadList from "./components/salesExecutive/LeadList"
 import SalesExecutiveDashboard from  "./components/salesExecutive/ExecutiveDashboard"
 import AddLead from "./components/salesExecutive/AddLead"
-import AdminProcessStep from "./components/companyAdmin/AdminProcessStep"
+import GetProcessSteps from "./components/companyAdmin/GetProcessSteps"
+import AdminProcessStep from "./components/admin/AdminProcessStep"
+import AddLeadProcessStep from "./components/salesExecutive/AddLeadProcessStep"
+import AddFollowUpdate from "./components/salesExecutive/AddfollowUpdate"
 
 export const routerConfiguration = {
   PublicRoutes: [
@@ -34,6 +37,8 @@ export const routerConfiguration = {
     { path: "/admin/add-new-company", element: < AddCompany/> },
     { path: "/admin/profile", element: < ProfilePage/> },
     { path: "/admin/companylist", element: <CompanyList /> },
+    { path: "/admin/addProcessStep", element: < AdminProcessStep/> },
+
 
   ],
   CompanyAdminRoutes: [
@@ -42,7 +47,8 @@ export const routerConfiguration = {
     { path: "/companyAdmin/userList", element: <UserList /> },
     { path: "/companyAdmin/add-new-user", element: <AddUser /> },
     { path: "/companyAdmin/profile", element: <ProfilePage/> },
-    { path: "/companyAdmin/processStepList", element: <AdminProcessStep /> },
+    { path: "/companyAdmin/getAllProcess-steps", element: <GetProcessSteps /> },
+
   ],
 
   SalesExecutiveRoutes:[
@@ -50,5 +56,8 @@ export const routerConfiguration = {
     {path:"/salesExecutive/dashboard",element:<SalesExecutiveDashboard/>},
     { path: "/salesExecutive/leadList", element: <LeadList /> },
     { path: "/salesExecutive/add-new-lead", element: <AddLead /> },
+    { path: "/salesExecutive/addLeadProcessStep", element: <AddLeadProcessStep/> },
+    { path: "/salesExecutive/addFollowUpdate",element:<AddFollowUpdate/> }
+
   ]
 }

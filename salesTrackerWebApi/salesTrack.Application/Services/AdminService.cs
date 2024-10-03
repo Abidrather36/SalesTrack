@@ -319,11 +319,11 @@ namespace salesTrack.Application.Services
             }
         }
         public async Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsersByCompanyId()
-         {
+        {
             var dbSet = new List<UserResponseModel>();
             var userId = contextService.UserId();
             var returnedUser = await userRepository.GetCompanyIdByUserId(userId);
-            if(returnedUser.UserRole==UserRole.SalesManager || returnedUser.UserRole == UserRole.SalesExecutive)
+            if (returnedUser.UserRole == UserRole.SalesManager || returnedUser.UserRole == UserRole.SalesExecutive)
             {
                 var miniUser = await userRepository.GetUserById(returnedUser.Id);
                 if (miniUser.UserType == UserType.SalesExecutive || miniUser.UserType == UserType.SalesManager)
@@ -336,7 +336,7 @@ namespace salesTrack.Application.Services
 
                 }
             }
-           
+
             else
             {
                 var dataSet = await userRepository.GetAllUsersByCompanyIdAsync(returnedUser.Id);
@@ -358,7 +358,7 @@ namespace salesTrack.Application.Services
 
             foreach (var user in dbSet)
             {
-                var reportsToName = user.ReportsToId != null? (await userRepository.GetByIdAsync(user.ReportsToId))?.Name: null; 
+                var reportsToName = user.ReportsToId != null ? (await userRepository.GetByIdAsync(user.ReportsToId))?.Name : null;
 
                 userListWithReportsTo.Add(new UserResponseModel
                 {
@@ -374,7 +374,7 @@ namespace salesTrack.Application.Services
                     UserType = user.UserType,
                     CompanyName = user.CompanyName,
                     IsPasswordTemporary = user.IsPasswordTemporary,
-                   
+
                 });
             }
 

@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import Grid from "../shared/Grid";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import BreadcrumbComponent from "../shared/Breadcrumb";
-import { getAllLeads } from "../../Services/LeadService";
+import { addFollowUpdate, getAllLeads } from "../../Services/LeadService";
 import { useNavigate } from "react-router-dom";
 import InputField from "../public/InputField";
 import Spin from "../public/Spin";
@@ -15,6 +14,8 @@ import { UserLists } from "../../Services/UserService";
 import { deleteLead as deleteLeadService } from "../../Services/LeadService";
 import { confirmDialog, ConfirmDialog } from "primereact/confirmdialog"; // PrimeReact confirm dialog
 import myToaster from "../../utils/toaster";
+import AddfollowUpdate from "./AddfollowUpdate";
+import AddFollowUpdate from "./AddfollowUpdate";
 
 function LeadList() {
   const [leads, setLeads] = useState([]);
@@ -25,6 +26,7 @@ function LeadList() {
   const [leadSources, setLeadSources] = useState([]);
   const [leadData, setLeadData] = useState({});
   const [userAssignTo, setUserAssignTo] = useState([]);
+  const [followupdate,setFollowUpdate]=useState(false);
 
   useEffect(() => {
     fetchAllLeads();
@@ -61,7 +63,7 @@ function LeadList() {
     setLeadData(lead);
     setShowGrid(false);
     setShowForm(true);
-    console.log(leadData)
+    console.log(leadData);
   };
 
   const submitLeadForm = async (e) => {
@@ -69,12 +71,12 @@ function LeadList() {
     setLoading(true);
     try {
       const res = await updateLead(leadData);
-      console.log("-----",leadData)
-      if(res.isSuccess){
+      console.log("-----", leadData);
+      if (res.isSuccess) {
         myToaster.showSuccessToast(res.message);
         fetchAllLeads();
-        setShowGrid(true)
-        setShowForm(false)
+        setShowGrid(true);
+        setShowForm(false);
       }
     } catch {
       toast.error("Failed to update lead.");
@@ -109,7 +111,7 @@ function LeadList() {
     setLoading(true);
     try {
       const response = await getAllLeads();
-      console.log(response.result)
+      console.log(response.result);
       setLeads(response.result);
     } catch (err) {
       console.error("Failed to fetch leads", err);
@@ -121,20 +123,27 @@ function LeadList() {
   const fetchAssignTo = async () => {
     try {
       const response = await UserLists();
-      console.log("////////")
-      console.log(response.result)
+      console.log("////////");
+      console.log(response.result);
       setUserAssignTo(response.result);
     } catch (error) {
       toast.error("Failed to fetch users for assignment.");
     }
   };
 
-  const checkValue=(e)=>{
-    console.log(e.target.innerHTML)
-  }
+  const checkValue = (e) => {
+    console.log(e.target.innerHTML);
+  };
+  const manageLead = (lead) => {
+    setLeadData(lead);
+    setFollowUpdate(true)
+    setShowGrid(false);
+    setShowForm(false);
+  };
 
   return (
     <>
+    
       <ConfirmDialog style={{ height: "150px" }} />
       {showGrid && (
         <div>
@@ -157,6 +166,22 @@ function LeadList() {
                 className: "btn btn-danger",
                 onDeleteHandler: (lead) => deleteLead(lead.id),
                 icon: <FaTrash />,
+              },
+              {
+                key: "add",
+                title: "AddFollowup",
+                className: "btn btn-warning",
+                onAddFollowUpdate: (lead) => manageLead(lead),
+                icon: <FaPlus />,
+              },
+              {
+                key: "process",
+                title: "Add Process",
+                className: "btn btn-warning",
+                addProcess: (lead) => {
+                  console.log("Process clicked", lead);
+                },
+                icon: <FaPlus />,
               },
             ]}
             data={leads}
@@ -198,9 +223,7 @@ function LeadList() {
                       <InputField
                         type="text"
                         name="name"
-                        value={leadData.name
-
-                        }
+                        value={leadData.name}
                         onChange={(e) =>
                           setLeadData({ ...leadData, name: e.target.value })
                         }
@@ -343,10 +366,15 @@ function LeadList() {
                     Cancel
                   </button>
                 </form>
+                
               </div>
             </div>
           </div>
         </div>
+      )}
+      {followupdate && (
+      <AddFollowUpdate leadData={leadData}/>
+
       )}
     </>
   );
