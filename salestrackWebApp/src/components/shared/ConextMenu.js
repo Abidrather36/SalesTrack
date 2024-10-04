@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const ThreeDotMenu = ({ options, handleEdit, handleDelete,handleManageLead  }) => {
+const ThreeDotMenu = ({ options, handleEdit, handleDelete,handleManageLead, }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -44,9 +44,10 @@ const ThreeDotMenu = ({ options, handleEdit, handleDelete,handleManageLead  }) =
       } else if (option.title === "Delete") {
         handleDelete(); 
       }
-      else if(option.title === "AddFollowup"){
+      else if(option.title === "Manage Lead"){
         handleManageLead();
       }
+    
       handleClose();
     }}
   >

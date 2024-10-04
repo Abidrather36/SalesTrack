@@ -154,9 +154,6 @@ function Grid({
                           ?.onAddFollowUpdate(item)
                       }
 
-                      handleProcessStep={()=>
-                        buttons.find(btn=>btn.key==="process")?.addProcess(item)
-                      }    
                     />
                   </td>
                 </tr>

@@ -8,7 +8,7 @@ namespace salesTrack.Domain.Entities
     {
       
         public DateTime Date { get; set; }
-        public DateTime Time { get; set; }
+        public TimeSpan Time { get; set; }
 
         public Guid LeadId { get; set; }
 

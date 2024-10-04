@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Grid from "../shared/Grid";
-import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import { FaEdit, FaPlus, FaTrash, FaCog } from "react-icons/fa";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import { addFollowUpdate, getAllLeads } from "../../Services/LeadService";
 import { useNavigate } from "react-router-dom";
@@ -10,14 +10,13 @@ import { useForm } from "react-hook-form";
 import { leadSources as getLeadSources } from "../../Services/LeadSource";
 import { toast } from "react-toastify";
 import { updateLead } from "../../Services/LeadService";
-import { UserLists } from "../../Services/UserService";
+import { getAllProcessSteps, UserLists } from "../../Services/UserService";
 import { deleteLead as deleteLeadService } from "../../Services/LeadService";
 import { confirmDialog, ConfirmDialog } from "primereact/confirmdialog"; // PrimeReact confirm dialog
 import myToaster from "../../utils/toaster";
-import AddfollowUpdate from "./AddfollowUpdate";
-import AddFollowUpdate from "./AddfollowUpdate";
+import BasicModal from "./AddfollowUpdate";
 
-function LeadList() {
+function LeadList(props) {
   const [leads, setLeads] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -27,6 +26,8 @@ function LeadList() {
   const [leadData, setLeadData] = useState({});
   const [userAssignTo, setUserAssignTo] = useState([]);
   const [followupdate,setFollowUpdate]=useState(false);
+  const [addprocessstep,setAddProcessStep]=useState();
+
 
   useEffect(() => {
     fetchAllLeads();
@@ -82,6 +83,7 @@ function LeadList() {
       toast.error("Failed to update lead.");
     }
   };
+ 
 
   const deleteLead = (leadId) => {
     confirmDialog({
@@ -140,6 +142,12 @@ function LeadList() {
     setShowGrid(false);
     setShowForm(false);
   };
+  const addProccessStep =(lead)=>{
+    setLeadData(lead)
+    setAddProcessStep(true)
+    setShowGrid(false);
+    setShowForm(false);
+  }
 
   return (
     <>
@@ -169,20 +177,12 @@ function LeadList() {
               },
               {
                 key: "add",
-                title: "AddFollowup",
+                title: "Manage Lead",
                 className: "btn btn-warning",
                 onAddFollowUpdate: (lead) => manageLead(lead),
-                icon: <FaPlus />,
+                icon: <FaCog />,
               },
-              {
-                key: "process",
-                title: "Add Process",
-                className: "btn btn-warning",
-                addProcess: (lead) => {
-                  console.log("Process clicked", lead);
-                },
-                icon: <FaPlus />,
-              },
+             
             ]}
             data={leads}
             loading={loading}
@@ -372,10 +372,17 @@ function LeadList() {
           </div>
         </div>
       )}
-      {followupdate && (
-      <AddFollowUpdate leadData={leadData}/>
-
+       {followupdate && (
+        <BasicModal 
+          leadData={leadData} 
+          onClose={() => {
+            setFollowUpdate(false);
+            setShowGrid(true); // Update LeadList's state
+          }}
+        />
       )}
+
+
     </>
   );
 }

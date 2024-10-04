@@ -19,7 +19,6 @@ import AddLead from "./components/salesExecutive/AddLead"
 import GetProcessSteps from "./components/companyAdmin/GetProcessSteps"
 import AdminProcessStep from "./components/admin/AdminProcessStep"
 import AddLeadProcessStep from "./components/salesExecutive/AddLeadProcessStep"
-import AddFollowUpdate from "./components/salesExecutive/AddfollowUpdate"
 
 export const routerConfiguration = {
   PublicRoutes: [
@@ -57,7 +56,5 @@ export const routerConfiguration = {
     { path: "/salesExecutive/leadList", element: <LeadList /> },
     { path: "/salesExecutive/add-new-lead", element: <AddLead /> },
     { path: "/salesExecutive/addLeadProcessStep", element: <AddLeadProcessStep/> },
-    { path: "/salesExecutive/addFollowUpdate",element:<AddFollowUpdate/> }
-
   ]
 }

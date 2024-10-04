@@ -1,259 +1,217 @@
-
-
-import React, { useState } from "react";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import { Margin, TroubleshootTwoTone } from "@mui/icons-material";
+import {
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormHelperText,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { addFollowUpdate, addLeadComment, addLeadProcessStep } from "../../Services/LeadService";
 import myToaster from "../../utils/toaster";
-import BreadcrumbComponent from "../shared/Breadcrumb";
-import InputField from "../public/InputField";
-import Spin from "../public/Spin";
-import { addFollowUpdate } from "../../Services/LeadService";
-
-const AddFollowUpdate = ({ leadData }) => {
-  console.log(leadData.id);
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = async (data) => {
-    const followUpPayload = {
-      date: data.date, 
-      time: data.time, 
-      leadId: leadData?.leadId, 
-    };
-  
-    
-    if (!followUpPayload.leadId) {
-      myToaster.showErrorToast("Lead ID is missing.");
-      return;
-    }
-  
-    setLoading(true);
-    try {
-      const response = await addFollowUpdate(followUpPayload);
-      console.log("API Response: ", response);
-  
-      if (response.isSuccess) {
-        myToaster.showSuccessToast(response.message);
-        setLoading(false);
-        navigate("/admin/dashboard");
-      } else {
-        myToaster.showErrorToast(response.message);
-      }
-    } catch (error) {
-      console.error("Error Details: ", error.response || error.message); 
-      myToaster.showErrorToast("Failed to add follow-up.");
-    } finally {
-      setLoading(false);
-    }
-  };
-  
-
-  return (
-    <>
-      <BreadcrumbComponent
-        labels={{ module: "Admin", currentRoute: "Add-Follow-Update" }}
-      />
-      <div
-        className="row"
-        style={{ display: "flex", flexDirection: "row", height: "100vh" }}
-      >
-        <div className="col-lg-6 mb-4 mb-lg-0">
-          <img
-            src="https://i.ibb.co/9g2y0MH/professional-registration-page-form-submission-by-diverse-group-people-1334819-37395.jpg"
-            alt="Form Illustration"
-            className="img-fluid"
-            style={{
-              maxWidth: "100%",
-              height: "65%",
-              marginLeft: "10px",
-              marginTop: "40px",
-              borderRadius: "10px",
-            }}
-          />
-        </div>
-
-        <div className="col-lg-6 mb-4-lg-0">
-          <div className="login-container" style={{ height: "60%" }}>
-            <h2 className="form-title">Add Follow Update</h2>
-            <form
-              className="login-form"
-              onSubmit={handleSubmit(onSubmit)}
-              autoComplete="off"
-            >
-              <div>
-                <InputField
-                  type="date"
-                  name="date"
-                  placeholder="Follow-up Date"
-                  {...register("date", { required: "Date is required" })}
-                />
-                {errors.date && (
-                  <span className="error-message">{errors.date.message}</span>
-                )}
-              </div>
-
-              <div>
-                <InputField
-                  type="time"
-                  name="time"
-                  placeholder="Follow-up Time"
-                  {...register("time", { required: "Time is required" })}
-                />
-                {errors.time && (
-                  <span className="error-message">{errors.time.message}</span>
-                )}
-              </div>
-              {loading ? (
-                <button type="submit" className="login-button" disabled>
-                  <Spin />
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  style={{ width: "100%" }}
-                >
-                  Add Follow Update
-                </button>
-              )}
-            </form>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+import { getAllProcessSteps } from "../../Services/UserService";
+import { useEffect } from "react";
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "60%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
 };
 
-export default AddFollowUpdate;
+export default function BasicModal({ leadData, onClose }) {
+  console.log(leadData);
+  const [open, setOpen] = useState(TroubleshootTwoTone);
+  const handleOpen = () => setOpen(true);
+  const [showList, setShowList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [processSteps, setProcessSteps] = useState([]);
+
+
+  useEffect(() => {
+    fetchProcessSteps();
+  }, []);
+
+  const handleClose = () => {
+    setOpen(false);
+    onClose();
+  };
+ 
   
-// import React, { useState } from "react";
-// import { useForm } from "react-hook-form";
-// import { useNavigate } from "react-router-dom";
-// import myToaster from "../../utils/toaster";
-// import BreadcrumbComponent from "../shared/Breadcrumb";
-// import InputField from "../public/InputField";
-// import Spin from "../public/Spin";
-// import { addFollowUpdate } from "../../Services/LeadService";
 
-// const AddFollowUpdate = ({ leadData }) => {
-//   console.log("Lead Data: ", leadData?.id); 
-//   const navigate = useNavigate();
-//   const [loading, setLoading] = useState(false);
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm();
+  const { register, handleSubmit, formState: errors } = useForm();
+  const fetchProcessSteps = async () => {
+    try {
+      const response = await getAllProcessSteps();
+      setProcessSteps(response.result);
+    } catch (error) {
+      myToaster.showErrorToast("Failed to fetch process steps.");
+    }
+  };
+  const onSubmit = async (data) => {
+    const followUpPayload = {
+      date: data.date,
+      time: `${data.time}:00`,
+      leadId: leadData?.id,             
+    };
+  
+    const processStep = {
+      leadId: leadData?.id,             
+      adminProcessStepId: data.adminProcessStepId,   
+      stepDescription:  "sss",         
+    };
+  
+    const comment = {
+      text: data.comments || "", 
+      leadId: leadData?.id,  
+    };
 
-//   const onSubmit = async (data) => {
-//     // Prepare the payload
-//     const followUpPayload = {
-//       date: data.date, // Date part
-//       time: `${data.date}T${data.time}:00`, // Time part as ISO string
-//       leadId: leadData?.leadId || '', // Use leadId from props or fallback to empty
-//     };
+    console.log(followUpPayload)
+    console.log(processStep)
+    console.log(comment)
 
-//     console.log("Follow-up Payload: ", followUpPayload); // Log payload before sending
+   
+    setLoading(true);
 
-//     setLoading(true);
-//     try {
-//       const response = await addFollowUpdate(followUpPayload);
-//       console.log("API Response: ", response); // Log API response
+    try {
+      const responseOne = await addFollowUpdate(followUpPayload);
+      
+      if (responseOne.isSuccess) {
+          const responseTwo = await addLeadProcessStep(processStep); 
+          console.log(responseTwo)
+          
+          if (responseTwo.isSuccess) {
+              const responseThree = await addLeadComment(comment);
 
-//       if (response.isSuccess) {
-//         myToaster.showSuccessToast(response.message);
-//         setLoading(false);
-//         navigate("/admin/dashboard");
-//       } else {
-//         myToaster.showErrorToast(response.message);
-//       }
-//     } catch (error) {
-//       console.error("Error Details: ", error.response || error.message); // Log full error response
-//       myToaster.showErrorToast("Failed to add follow-up.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+              if (responseThree.isSuccess) {
+                  myToaster.showSuccessToast("data updated successfully")
+                  handleClose();
+                  
+              } else {
+                  myToaster.showErrorToast(responseThree.message);
+              }
+          } else {
+              myToaster.showErrorToast(responseTwo.message);
+          }
+      } else {
+          myToaster.showErrorToast(responseOne.message);
+      }
+  } catch (error) {
+      myToaster.showErrorToast('Something went wrong,try again:', error);
+  } finally {
+    setLoading(false)
+  }
+  
+  };
 
-//   return (
-//     <>
-//       <BreadcrumbComponent
-//         labels={{ module: "Admin", currentRoute: "Add-Follow-Update" }}
-//       />
-//       <div
-//         className="row"
-//         style={{ display: "flex", flexDirection: "row", height: "100vh" }}
-//       >
-//         <div className="col-lg-6 mb-4 mb-lg-0">
-//           <img
-//             src="https://i.ibb.co/9g2y0MH/professional-registration-page-form-submission-by-diverse-group-people-1334819-37395.jpg"
-//             alt="Form Illustration"
-//             className="img-fluid"
-//             style={{
-//               maxWidth: "100%",
-//               height: "65%",
-//               marginLeft: "10px",
-//               marginTop: "40px",
-//               borderRadius: "10px",
-//             }}
-//           />
-//         </div>
+  return (
+    <div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          {/* Modal Title */}
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Manage Lead
+          </Typography>
 
-//         <div className="col-lg-6 mb-4-lg-0">
-//           <div className="login-container" style={{ height: "60%" }}>
-//             <h2 className="form-title">Add Follow Update</h2>
-//             <form
-//               className="login-form"
-//               onSubmit={handleSubmit(onSubmit)}
-//               autoComplete="off"
-//             >
-//               <div>
-//                 <InputField
-//                   type="date"
-//                   name="date"
-//                   placeholder="Follow-up Date"
-//                   {...register("date", { required: "Date is required" })}
-//                 />
-//                 {errors.date && (
-//                   <span className="error-message">{errors.date.message}</span>
-//                 )}
-//               </div>
+          {/* Form Fields */}
+          <Box
+            component="form"
+            sx={{ mt: 2 }}
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            {/* Date Picker */}
+            <TextField
+              id="date"
+              label="Follow-Up Date"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              {...register("date", { required: true })}
+              error={Boolean(errors.date)}
+              helperText={errors.date ? "Follow-up date is required" : ""}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
 
-//               <div>
-//                 <InputField
-//                   type="time"
-//                   name="time"
-//                   placeholder="Follow-up Time"
-//                   {...register("time", { required: "Time is required" })}
-//                 />
-//                 {errors.time && (
-//                   <span className="error-message">{errors.time.message}</span>
-//                 )}
-//               </div>
-//               {loading ? (
-//                 <button type="submit" className="login-button" disabled>
-//                   <Spin />
-//                 </button>
-//               ) : (
-//                 <button
-//                   type="submit"
-//                   className="btn btn-primary"
-//                   style={{ width: "100%" }}
-//                 >
-//                   Add Follow Update
-//                 </button>
-//               )}
-//             </form>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
+            {/* Time Picker */}
+            <TextField
+              id="time"
+              label="Follow-Up Time"
+              type="time"
+              InputLabelProps={{ shrink: true }}
+              {...register("time", { required: true })}
+              error={Boolean(errors.time)}
+              helperText={errors.time ? "Follow-up time is required" : ""}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
 
-// export default AddFollowUpdate;
+            {/* Process Step Dropdown */}
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel id="process-step-label">Process Step</InputLabel>
+              <Select
+                labelId="process-step-label"
+                id="adminProcessStepId"
+                label="Process Step"
+                {...register("adminProcessStepId", { required: true })}
+                error={Boolean(errors.adminProcessStepId)}
+              >
+              
+                 {processSteps.map((step) => (
+                     
+                      <MenuItem key={step.id} value={step.id}>{step.stepName}</MenuItem>
+                    ))}
+              
+              </Select>
+              {errors.adminProcessStepId && (
+                <FormHelperText error>
+                  {errors.adminProcessStepId.message}
+                </FormHelperText>
+              )}
+            </FormControl>
+
+            {/* Comments Text Area */}
+            <TextField
+              id="comments"
+              label="Comments"
+              multiline
+              rows={4}
+              {...register("comments", { required: false })}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
+
+            {/* Action Buttons */}
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Button variant="contained" color="primary" type="submit">
+                Save
+              </Button>
+              <Button
+                variant="outlined"
+                color="white"
+                onClick={handleClose}
+                style={{ backgroundColor: "red", color: "white" }}
+              >
+                Cancel
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Modal>
+    </div>
+  );
+}
