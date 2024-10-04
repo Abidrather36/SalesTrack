@@ -25,7 +25,7 @@ const AdminProcessStep = () => {
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
         setLoading(false);
-        navigate("/companyAdmin/dashboard");     
+        navigate("/admin/dashboard");     
       } else {
         myToaster.showErrorToast(response.message);
       }

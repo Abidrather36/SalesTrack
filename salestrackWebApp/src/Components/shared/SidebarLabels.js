@@ -30,6 +30,13 @@ export const PortalAdminsidebarLabels = [
       label:"Add Process Step",
       link:"/admin/addProcessStep",
       icon:<FaUsers />
+    },
+    {
+      id:6,
+      label:"Process Step List",
+      link:"/admin/getProcessSteps",
+      icon: <FaListAlt />,
+
     }
   
   ];
@@ -75,10 +82,5 @@ export const PortalAdminsidebarLabels = [
           link: "/salesExecutive/add-new-lead",
           icon: <FaPlus />,
       },
-      // {
-      //   id: 4,
-      //   label: "Add process Step",
-      //   link: "/salesExecutive/addLeadProcessStep",
-      //   icon: <FaPlus />,
-      // }
+      
     ]
