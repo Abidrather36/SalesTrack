@@ -43,7 +43,7 @@ const AddCompany = () => {
     <div className="row" style={{ display: "flex", flexDirection: "row", height: "100vh" }}>
       <div className="col-lg-6 mb-4 mb-lg-0">
         <img
-          src="https://i.ibb.co/k8wqsx3/DALL-E-2024-10-04-17-42-00-A-flat-illustration-of-a-logistics-process-showing-a-delivery-truck-a-wor.webp"
+          src="https://i.ibb.co/Qf0hxTZ/team-brainstorming-ideas-business-growth-with-data-analysis-1305385-91252.jpg"
           alt="Registration Illustration"
           className="img-fluid"
           style={{
