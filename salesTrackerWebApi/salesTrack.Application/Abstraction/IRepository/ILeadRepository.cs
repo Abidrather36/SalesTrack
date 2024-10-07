@@ -1,4 +1,5 @@
 ﻿using salesTrack.Domain.Entities;
+using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Abstraction.IRepository;
 
@@ -14,6 +15,7 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<LeadProcessSteps> GetLeadProcessStepById(Guid id);
         Task<int> AddComment(LeadComments model);
         Task<int> AddfollowUpdate(FollowUpDate model);
+        Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId);
 
     }
 }

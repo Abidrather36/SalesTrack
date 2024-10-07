@@ -191,7 +191,7 @@ function LeadList(props) {
             addButtonLabel="Add Lead"
           />
         </div>
-      )}
+      )}  
 
       {showForm && (
         <div className="addForm">
@@ -377,7 +377,6 @@ function LeadList(props) {
           leadData={leadData} 
           onClose={() => {
             setFollowUpdate(false);
-            setShowGrid(true); // Update LeadList's state
           }}
         />
       )}

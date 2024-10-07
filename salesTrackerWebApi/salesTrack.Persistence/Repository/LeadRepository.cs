@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using salesTrack.Application.Abstraction.IRepository;
 using salesTrack.Domain.Entities;
+using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Domain.Entities;
 using SalesTrack.Persistence.Data;
@@ -108,6 +109,30 @@ namespace salesTrack.Persistence.Repository
            var procStep= await context.LeadProcessSteps.FindAsync(id);
             return procStep;
         }
+
+        public async Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId)
+        {
+            var query = await (from ms in context.MasterUsers
+                               join l in context.Leads on ms.Id equals l.Id
+                               join lc in context.LeadComments on l.Id equals lc.LeadId into leadCommentsGroup
+                               from lc in leadCommentsGroup.DefaultIfEmpty()
+                               join lps in context.LeadProcessSteps on l.Id equals lps.LeadId into leadProcessStepsGroup
+                               from lps in leadProcessStepsGroup.DefaultIfEmpty()
+                               where (ms.Id == leadId)
+                               select new LeadFollowUpHistoryResponse
+                               {
+                                   ClientName = ms.Name,
+                                   Email = ms.Email,
+                                   PhoneNumber = ms.PhoneNumber,
+                                   LeadProcessStep=lps.StepDescription,
+                                   LeadComments=lc.Text,
+
+                               }).ToListAsync();
+
+            return query;
+        }
+
+
 
         public async Task<int> UpdateLeadProcessStep(LeadProcessSteps model)
         {

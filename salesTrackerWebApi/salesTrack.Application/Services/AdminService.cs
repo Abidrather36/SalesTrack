@@ -355,10 +355,17 @@ namespace salesTrack.Application.Services
             }
 
             var userListWithReportsTo = new List<UserResponseModel>();
-
+            
             foreach (var user in dbSet)
             {
-                var reportsToName = user.ReportsToId != null ? (await userRepository.GetByIdAsync(user.ReportsToId))?.Name : null;
+              
+                string? reportsToName = null;
+                if (user.ReportsToId != null)
+                {
+                    var reportsTo = await userRepository.GetMasterUserById(user.ReportsToId.Value);
+                    reportsToName = reportsTo?.Name ?? string.Empty; 
+                }
+
 
                 userListWithReportsTo.Add(new UserResponseModel
                 {

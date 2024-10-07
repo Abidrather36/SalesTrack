@@ -61,5 +61,9 @@ namespace salesTrack.Persistence.Repository
         {
             return await context.Users.FindAsync(id);
         }
+        public async Task<MasterUser> GetMasterUserById(Guid? id)
+        {
+            return await context.MasterUsers.FindAsync(id);
+        }
     }
 }

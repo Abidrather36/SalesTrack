@@ -11,7 +11,7 @@ const HomePage = () => {
         <main
           className="main"
           style={{
-            backgroundColor: "#f0f0f0", // Light background color
+            backgroundColor: "#f0f0f0", 
           }}
         >
           <section
@@ -21,7 +21,7 @@ const HomePage = () => {
               justifyContent: "space-between",
               alignItems: "center",
               padding: "60px 20px",
-              backgroundColor: "#ffffff", // White background for the hero section
+              backgroundColor: "#ffffff",
               backgroundColor: "#9bd9f6",
             }}
           >
@@ -32,7 +32,7 @@ const HomePage = () => {
                 flexDirection: "column",
                 justifyContent: "center",
                 padding: "20px",
-                color: "#333", // Dark text color
+                color: "#333", 
               }}
             >
               <h1
@@ -65,11 +65,11 @@ const HomePage = () => {
                   className="btn-get-started"
                   style={{
                     padding: "10px 20px",
-                    backgroundColor: "#007bff", // Button background color
-                    color: "#ffffff", // Button text color
+                    backgroundColor: "#007bff", 
+                    color: "#ffffff", 
                     textDecoration: "none",
-                    borderRadius: "10px", // Border radius for the button
-                    marginRight: "20px", // Add margin on the right side
+                    borderRadius: "10px", 
+                    marginRight: "20px", 
                   }}
                 >
                   Get Started
@@ -79,10 +79,10 @@ const HomePage = () => {
                   className="glightbox btn-watch-video d-flex align-items-center"
                   style={{
                     padding: "10px 20px",
-                    backgroundColor: "#28a745", // Button background color
-                    color: "#ffffff", // Button text color
+                    backgroundColor: "#28a745", 
+                    color: "#ffffff", 
                     textDecoration: "none",
-                    borderRadius: "10px", // Border radius for the button
+                    borderRadius: "10px", 
                     display: "flex",
                     alignItems: "center",
                     gap: "8px",

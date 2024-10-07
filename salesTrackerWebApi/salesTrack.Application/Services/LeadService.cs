@@ -589,5 +589,21 @@ namespace salesTrack.Application.Services
                 return default;
             }
         }
+
+        public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> ShowLeadFollowUpHistory(Guid leadId)
+        {
+            var loggedInUser = contextService.UserId();
+            var leadHistory=await leadRepository.ShowLeadHistory(leadId);
+            if(leadHistory is null || !leadHistory.Any())
+            {
+                return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse("An error occurred while retrieving the lead follow-up history.", HttpStatusCodes.Conflict, ApiMessages.TechnicalError);
+
+            }
+            else
+            {
+                return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(leadHistory, "Leads History Fetched Succesfully", HttpStatusCodes.OK);
+
+            }
+        }
     }
 }

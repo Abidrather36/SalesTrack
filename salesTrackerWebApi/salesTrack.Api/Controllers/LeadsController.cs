@@ -154,6 +154,18 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
+        [HttpGet("showLeadFollowUpHistory/{leadId:guid}")]
+        public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> ShowLeadHistory(Guid leadId)
+        {
+            try
+            {
+                return await leadService.ShowLeadFollowUpHistory(leadId);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         
     }
 }

@@ -4,6 +4,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Margin, TroubleshootTwoTone } from "@mui/icons-material";
+import Grid from "../shared/Grid";
+import { leadFollowUpHistory } from "../../Services/LeadService";
 import {
   TextField,
   FormControl,
@@ -14,10 +16,15 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { addFollowUpdate, addLeadComment, addLeadProcessStep } from "../../Services/LeadService";
+import {
+  addFollowUpdate,
+  addLeadComment,
+  addLeadProcessStep,
+} from "../../Services/LeadService";
 import myToaster from "../../utils/toaster";
 import { getAllProcessSteps } from "../../Services/UserService";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 const style = {
   position: "absolute",
   top: "50%",
@@ -29,25 +36,58 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ leadData, onClose }) {
+export default function BasicModal({ leadData, onClose,showFallowup }) {
   console.log(leadData);
   const [open, setOpen] = useState(TroubleshootTwoTone);
   const handleOpen = () => setOpen(true);
-  const [showList, setShowList] = useState([]);
+  const [showList, setShowList] = useState(false);
   const [loading, setLoading] = useState(false);
   const [processSteps, setProcessSteps] = useState([]);
-
+  const [followUpHistory, setFollowUpHistory] = useState([]);
+  const [showModel,setShowModel]=useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProcessSteps();
+    fetchFollowUpHistory();
   }, []);
 
   const handleClose = () => {
     setOpen(false);
     onClose();
+    setShowList(true);
   };
- 
-  
+
+  const followupColumns = [
+    { key: "clientName", label: "Client Name" },
+    { key: "leadProcessStep", label: "Lead Process Step" },
+    { key: "phoneNumber", label: "Phone Number" },
+    { key: "email", label: "Email" },
+    { key: "leadComments", label: "Lead Comments" },
+
+
+  ];
+
+
+  const fetchFollowUpHistory = async () => {
+    setLoading(true);
+    try {
+      const response = await leadFollowUpHistory(leadData.id);
+      if (response.isSuccess) {
+        setFollowUpHistory(response.result);
+      } else {
+        myToaster.showErrorToast(
+          response.message || "Failed to fetch follow-up history."
+        );
+      }
+    } catch (error) {
+      myToaster.showErrorToast(
+        "Something went wrong while fetching follow-up history."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const { register, handleSubmit, formState: errors } = useForm();
   const fetchProcessSteps = async () => {
@@ -62,61 +102,61 @@ export default function BasicModal({ leadData, onClose }) {
     const followUpPayload = {
       date: data.date,
       time: `${data.time}:00`,
-      leadId: leadData?.id,             
+      leadId: leadData?.id,
     };
-  
+
     const processStep = {
-      leadId: leadData?.id,             
-      adminProcessStepId: data.adminProcessStepId,   
-      stepDescription:  "sss",         
+      leadId: leadData?.id,
+      adminProcessStepId: data.adminProcessStepId,
+      stepDescription: "sss",
     };
-  
+
     const comment = {
-      text: data.comments || "", 
-      leadId: leadData?.id,  
+      text: data.comments || "",
+      leadId: leadData?.id,
     };
 
-    console.log(followUpPayload)
-    console.log(processStep)
-    console.log(comment)
+    console.log(followUpPayload);
+    console.log(processStep);
+    console.log(comment);
 
-   
     setLoading(true);
 
     try {
       const responseOne = await addFollowUpdate(followUpPayload);
-      
-      if (responseOne.isSuccess) {
-          const responseTwo = await addLeadProcessStep(processStep); 
-          console.log(responseTwo)
-          
-          if (responseTwo.isSuccess) {
-              const responseThree = await addLeadComment(comment);
 
-              if (responseThree.isSuccess) {
-                  myToaster.showSuccessToast("data updated successfully")
-                  handleClose();
-                  
-              } else {
-                  myToaster.showErrorToast(responseThree.message);
-              }
+      if (responseOne.isSuccess) {
+        const responseTwo = await addLeadProcessStep(processStep);
+        console.log(responseTwo);
+
+        if (responseTwo.isSuccess) {
+          const responseThree = await addLeadComment(comment);
+
+          if (responseThree.isSuccess) {
+            myToaster.showSuccessToast("data updated successfully");
+            fetchFollowUpHistory();
+            setShowModel(false);
+            setShowList(true)
           } else {
-              myToaster.showErrorToast(responseTwo.message);
+            myToaster.showErrorToast(responseThree.message);
           }
+        } else {
+          myToaster.showErrorToast(responseTwo.message);
+        }
       } else {
-          myToaster.showErrorToast(responseOne.message);
+        myToaster.showErrorToast(responseOne.message);
       }
-  } catch (error) {
-      myToaster.showErrorToast('Something went wrong,try again:', error);
-  } finally {
-    setLoading(false)
-  }
-  
+    } catch (error) {
+      myToaster.showErrorToast("Something went wrong,try again:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div>
-      <Modal
+      {showModel &&(
+        <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -170,12 +210,11 @@ export default function BasicModal({ leadData, onClose }) {
                 {...register("adminProcessStepId", { required: true })}
                 error={Boolean(errors.adminProcessStepId)}
               >
-              
-                 {processSteps.map((step) => (
-                     
-                      <MenuItem key={step.id} value={step.id}>{step.stepName}</MenuItem>
-                    ))}
-              
+                {processSteps.map((step) => (
+                  <MenuItem key={step.id} value={step.id}>
+                    {step.stepName}
+                  </MenuItem>
+                ))}
               </Select>
               {errors.adminProcessStepId && (
                 <FormHelperText error>
@@ -212,6 +251,16 @@ export default function BasicModal({ leadData, onClose }) {
           </Box>
         </Box>
       </Modal>
+      )}
+      
+      {showList && (
+        <Grid
+          headers={followupColumns}
+          data={followUpHistory}
+          tableName="FollowUp History"
+          addButtonLabel="Add Follow Up History"
+        />
+      )}
     </div>
   );
 }
