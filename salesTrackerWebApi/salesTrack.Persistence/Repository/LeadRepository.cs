@@ -110,27 +110,102 @@ namespace salesTrack.Persistence.Repository
             return procStep;
         }
 
+        /*        public async Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId)
+                {
+                    var query = await (from ms in context.MasterUsers
+                                       join l in context.Leads on ms.Id equals l.Id
+                                       join lc in context.LeadComments on l.Id equals lc.LeadId into leadCommentsGroup
+                                       from lc in leadCommentsGroup.DefaultIfEmpty()
+                                       join lps in context.LeadProcessSteps on l.Id equals lps.LeadId into leadProcessStepsGroup
+                                       from lps in leadProcessStepsGroup.DefaultIfEmpty()
+                                       where (ms.Id == leadId)
+                                       select new LeadFollowUpHistoryResponse
+                                       {
+                                           ClientName = ms.Name,
+                                           Email = ms.Email,
+                                           PhoneNumber = ms.PhoneNumber,
+                                           LeadProcessStep=lps.StepDescription,
+                                           LeadComments=lc.Text,
+
+                                       }).ToListAsync();
+
+                    return query;
+                }*/
+        /* public async Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId)
+         {
+             var query = await (from ms in context.MasterUsers
+                                join l in context.Leads on ms.Id equals l.Id
+                                join lc in context.LeadComments on l.Id equals lc.LeadId into leadCommentsGroup
+                                from lc in leadCommentsGroup.DefaultIfEmpty()
+                                join lps in context.LeadProcessSteps on l.Id equals lps.LeadId into leadProcessStepsGroup
+                                from lps in leadProcessStepsGroup.DefaultIfEmpty()
+                                join fd in context.FollowUpDates on l.Id equals fd.LeadId into followUpDatesGroup
+                                from fd in followUpDatesGroup.DefaultIfEmpty()
+                                where ms.Id == leadId
+                                select new LeadFollowUpHistoryResponse
+                                {
+                                    ClientName = ms.Name,
+                                    Email = ms.Email,
+                                    PhoneNumber = ms.PhoneNumber,
+                                    LeadProcessStep = lps.StepDescription,
+                                    LeadComments = lc.Text,
+                                    FollowUpDate = fd.Date,       
+                                    FollowUpTime = fd.Time        
+                                }).ToListAsync();
+
+             return query;
+         }*/
+
+        /*   public async Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId)
+           {
+               var query = await (from l in context.Leads
+                                  join ms in context.MasterUsers on l.AssignTo equals ms.Id
+                                  join lc in context.LeadComments on l.Id equals lc.LeadId into leadCommentsGroup
+                                  from lc in leadCommentsGroup.DefaultIfEmpty()
+                                  join lps in context.LeadProcessSteps on l.Id equals lps.LeadId into leadProcessStepsGroup
+                                  from lps in leadProcessStepsGroup.DefaultIfEmpty()
+                                  join fd in context.FollowUpDates on l.Id equals fd.LeadId into followUpDatesGroup
+                                  from fd in followUpDatesGroup.DefaultIfEmpty()
+                                  where l.Id == leadId
+                                  select new LeadFollowUpHistoryResponse
+                                  {
+                                      ClientName = ms.Name,
+                                      Email = ms.Email,
+                                      PhoneNumber = ms.PhoneNumber,
+                                      LeadProcessStep = lps.StepDescription,
+                                      LeadComments = lc.Text,
+                                      FollowUpDate = fd.Date.Add(fd.Time)
+                                  }).ToListAsync();
+
+               return query;
+           }*/
+
         public async Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId)
         {
-            var query = await (from ms in context.MasterUsers
-                               join l in context.Leads on ms.Id equals l.Id
+            var query = await (from l in context.Leads
+                               join ms in context.MasterUsers on l.AssignTo equals ms.Id
                                join lc in context.LeadComments on l.Id equals lc.LeadId into leadCommentsGroup
                                from lc in leadCommentsGroup.DefaultIfEmpty()
                                join lps in context.LeadProcessSteps on l.Id equals lps.LeadId into leadProcessStepsGroup
                                from lps in leadProcessStepsGroup.DefaultIfEmpty()
-                               where (ms.Id == leadId)
+                               join fd in context.FollowUpDates on l.Id equals fd.LeadId into followUpDatesGroup
+                               from fd in followUpDatesGroup.DefaultIfEmpty()
+                               where l.Id == leadId
                                select new LeadFollowUpHistoryResponse
                                {
                                    ClientName = ms.Name,
                                    Email = ms.Email,
                                    PhoneNumber = ms.PhoneNumber,
-                                   LeadProcessStep=lps.StepDescription,
-                                   LeadComments=lc.Text,
-
+                                   LeadProcessStep = lps.StepDescription,
+                                   LeadComments = lc.Text,
+                                   FollowUpDate = (fd.Date != default(DateTime) && fd.Time != default(TimeSpan)) 
+                                                   ? fd.Date.Add(fd.Time) // Combine date and time
+                                                   : (DateTime?)null // Handle null case
                                }).ToListAsync();
 
             return query;
         }
+
 
 
 

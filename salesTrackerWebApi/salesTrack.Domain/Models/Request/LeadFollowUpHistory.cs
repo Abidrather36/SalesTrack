@@ -13,5 +13,6 @@ namespace salesTrack.Domain.Models.Request
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public string? LeadComments { get; set; }
+        public DateTime? FollowUpDate { get; set; }
     }
 }

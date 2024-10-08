@@ -153,6 +153,9 @@ function Grid({
                           .find((btn) => btn.key === "add")
                           ?.onAddFollowUpdate(item)
                       }
+                      handleFollowUpHistory={()=>
+                        buttons.find((btn)=>btn.key === "followUpHistory")?.onAddFollowUpHistory(item)
+                      }
 
                     />
                   </td>

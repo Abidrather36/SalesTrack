@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Grid from "../shared/Grid";
-import { FaEdit, FaPlus, FaTrash, FaCog } from "react-icons/fa";
+import { FaEdit, FaPlus, FaTrash, FaCog, FaHistory } from "react-icons/fa";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import { addFollowUpdate, getAllLeads } from "../../Services/LeadService";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,9 @@ import { deleteLead as deleteLeadService } from "../../Services/LeadService";
 import { confirmDialog, ConfirmDialog } from "primereact/confirmdialog"; // PrimeReact confirm dialog
 import myToaster from "../../utils/toaster";
 import BasicModal from "./AddfollowUpdate";
-
+import { classNames } from "primereact/utils";
+import fetchFollowUpHistory from "./AddfollowUpdate"
+import { useTheme } from "@emotion/react";
 function LeadList(props) {
   const [leads, setLeads] = useState([]);
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ function LeadList(props) {
   const [userAssignTo, setUserAssignTo] = useState([]);
   const [followupdate,setFollowUpdate]=useState(false);
   const [addprocessstep,setAddProcessStep]=useState();
+  const [followuphistory,setFollowUpHistory]=useState(false)
 
 
   useEffect(() => {
@@ -51,38 +54,41 @@ function LeadList(props) {
   };
 
   const headers = [
-    { key: "name", label: "Name" },
+    { key: "name", label: "LeadName" },
     { key: "email", label: "Email" },
     { key: "phoneNumber", label: "Phone Number" },
     { key: "leadSourceName", label: "Lead Source" },
     { key: "assignedTo", label: "Assigned To" },
-    { key: "finalStatus", label: "Final Status" },
-    { key: "isActive", label: "Is Active" },
+    { key: "finalStatus", label: "Lead Status" },
   ];
 
+  // const editLead = (lead) => {
+  //   setLeadData(lead);
+  //   setShowGrid(false);
+  //   setShowForm(true);
+  //   console.log(leadData);
+  // };
   const editLead = (lead) => {
-    setLeadData(lead);
-    setShowGrid(false);
-    setShowForm(true);
-    console.log(leadData);
+    // Call the editLeadSwal method
+    myToaster.editLeadSwal(lead, userAssignTo, leadSources, fetchAllLeads);
   };
 
-  const submitLeadForm = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await updateLead(leadData);
-      console.log("-----", leadData);
-      if (res.isSuccess) {
-        myToaster.showSuccessToast(res.message);
-        fetchAllLeads();
-        setShowGrid(true);
-        setShowForm(false);
-      }
-    } catch {
-      toast.error("Failed to update lead.");
-    }
-  };
+  // const submitLeadForm = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   try {
+  //     const res = await updateLead(leadData);
+  //     console.log("-----", leadData);
+  //     if (res.isSuccess) {
+  //       myToaster.showSuccessToast(res.message);
+  //       fetchAllLeads();
+  //       setShowGrid(true);
+  //       setShowForm(false);
+  //     }
+  //   } catch {
+  //     toast.error("Failed to update lead.");
+  //   }
+  // };
  
 
   const deleteLead = (leadId) => {
@@ -148,6 +154,12 @@ function LeadList(props) {
     setShowGrid(false);
     setShowForm(false);
   }
+  const fetchFollowUpHis=(lead)=>{
+    setLeadData(lead)
+    setFollowUpHistory(true)
+    setShowGrid(false);
+    setShowForm(false);
+  }
 
   return (
     <>
@@ -162,6 +174,7 @@ function LeadList(props) {
             headers={headers}
             buttons={[
               {
+                
                 key: "edit",
                 title: "Edit",
                 className: "btn btn-primary",
@@ -182,6 +195,13 @@ function LeadList(props) {
                 onAddFollowUpdate: (lead) => manageLead(lead),
                 icon: <FaCog />,
               },
+              {
+                key :"followUpHistory",
+                title: "Follow Up History",
+                className:"btn btn-warning",
+                onAddFollowUpHistory:(lead) => fetchFollowUpHis(lead),
+                icon: <FaHistory />,
+              }
              
             ]}
             data={leads}
@@ -198,7 +218,7 @@ function LeadList(props) {
           <BreadcrumbComponent
             labels={{ module: "SalesExecutive", currentRoute: "Update-Lead" }}
           />
-          <div
+          {/* <div
             className="row justify-content-center"
             style={{ padding: "20px" }}
           >
@@ -369,7 +389,7 @@ function LeadList(props) {
                 
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       )}
        {followupdate && (
@@ -379,6 +399,14 @@ function LeadList(props) {
             setFollowUpdate(false);
           }}
         />
+      )}
+      {followuphistory && (
+        <BasicModal 
+        leadData={leadData} 
+        onClose={() => {
+          setFollowUpdate(false);
+        }}
+        showFoloowUpHistory ={true}/>
       )}
 
 

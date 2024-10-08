@@ -1,6 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import { FaCog } from "react-icons/fa";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Margin, TroubleshootTwoTone } from "@mui/icons-material";
@@ -36,11 +37,11 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ leadData, onClose,showFallowup }) {
+export default function BasicModal({ leadData, onClose,showFallowup,showFoloowUpHistory }) {
   console.log(leadData);
-  const [open, setOpen] = useState(TroubleshootTwoTone);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const [showList, setShowList] = useState(false);
+  const [showList, setShowList] = useState(showFoloowUpHistory);
   const [loading, setLoading] = useState(false);
   const [processSteps, setProcessSteps] = useState([]);
   const [followUpHistory, setFollowUpHistory] = useState([]);
@@ -52,28 +53,41 @@ export default function BasicModal({ leadData, onClose,showFallowup }) {
     fetchFollowUpHistory();
   }, []);
 
+
   const handleClose = () => {
     setOpen(false);
     onClose();
     setShowList(true);
   };
-
+  const handleManageLeadClick = () => {
+    setShowModel(true);
+    setOpen(true);
+  };
+ 
   const followupColumns = [
     { key: "clientName", label: "Client Name" },
     { key: "leadProcessStep", label: "Lead Process Step" },
     { key: "phoneNumber", label: "Phone Number" },
     { key: "email", label: "Email" },
     { key: "leadComments", label: "Lead Comments" },
+    { key :"followUpDate" ,label:"FollowUp Date"}
 
 
   ];
 
-
+ 
   const fetchFollowUpHistory = async () => {
     setLoading(true);
     try {
       const response = await leadFollowUpHistory(leadData.id);
       if (response.isSuccess) {
+        const formattedHistory = response.result.map(history => ({
+          ...history,
+          followUpDate: history.followUpDate 
+            ? new Date(history.followUpDate).toLocaleDateString() 
+            : "",  
+        }));
+        setFollowUpHistory(formattedHistory);
         setFollowUpHistory(response.result);
       } else {
         myToaster.showErrorToast(
@@ -259,6 +273,14 @@ export default function BasicModal({ leadData, onClose,showFallowup }) {
           data={followUpHistory}
           tableName="FollowUp History"
           addButtonLabel="Add Follow Up History"
+          buttons={[
+            {
+              key:"manageLead",
+              title:"Manage Lead",
+              className:"btn btn-warning",
+              icon: <FaCog />,
+            }
+          ]}
         />
       )}
     </div>

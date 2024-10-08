@@ -66,6 +66,7 @@ namespace salesTrack.Application.Services
                     DeletedDate = DateTime.UtcNow,
                     IsActive = true,
                     ModifiedDate = DateTime.UtcNow,
+                    
 
 
                 };
@@ -85,7 +86,7 @@ namespace salesTrack.Application.Services
                     Comment = model.Comment,
                     CreatedBy = salesExecutiveId,
                     ModifiedBy = Guid.Empty,
-                    FinalStatus = model.FinalStatus,
+                    FinalStatus = FinalStatus.Open,
                     CreatedDate = DateTime.Now,
                     DeletedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
@@ -601,6 +602,8 @@ namespace salesTrack.Application.Services
             }
             else
             {
+                var sortedLeadHistory = leadHistory.OrderBy(l => l.FollowUpDate).ToList();
+
                 return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(leadHistory, "Leads History Fetched Succesfully", HttpStatusCodes.OK);
 
             }
