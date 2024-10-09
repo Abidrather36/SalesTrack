@@ -39,7 +39,7 @@ const style = {
 
 export default function BasicModal({ leadData, onClose,showFallowup,showFoloowUpHistory }) {
   console.log(leadData);
-  const [open, setOpen] = useState(TroubleshootTwoTone);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const [showList, setShowList] = useState(showFoloowUpHistory);
   const [loading, setLoading] = useState(false);
@@ -70,7 +70,7 @@ export default function BasicModal({ leadData, onClose,showFallowup,showFoloowUp
     { key: "phoneNumber", label: "Phone Number" },
     { key: "email", label: "Email" },
     { key: "leadComments", label: "Lead Comments" },
-    { key :"followUpDate" ,label:"FollowUp Date"}
+    { key : "followUpDate" ,label:"FollowUp Date"}
 
 
   ];
@@ -81,13 +81,6 @@ export default function BasicModal({ leadData, onClose,showFallowup,showFoloowUp
     try {
       const response = await leadFollowUpHistory(leadData.id);
       if (response.isSuccess) {
-        const formattedHistory = response.result.map(history => ({
-          ...history,
-          followUpDate: history.followUpDate 
-            ? new Date(history.followUpDate).toLocaleDateString() 
-            : "",  
-        }));
-        setFollowUpHistory(formattedHistory);
         setFollowUpHistory(response.result);
       } else {
         myToaster.showErrorToast(

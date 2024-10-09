@@ -109,6 +109,7 @@ const AddLead = () => {
                     <InputField
                       type="text"
                       name="name"
+                      style={{ padding: "0px 1.25rem 0 1.12rem" }} 
                       placeholder="Lead Name"
                       {...register("name", { required: "Lead Name is required" })}
                     />
@@ -119,6 +120,7 @@ const AddLead = () => {
                     <InputField
                       type="email"
                       name="email"
+                      style={{ padding: "0px 1.25rem 0 1.12rem" }} 
                       placeholder="Email"
                       {...register("email", {
                         required: "Email is required",
@@ -133,6 +135,7 @@ const AddLead = () => {
                     <InputField
                       type="text"
                       name="phoneNumber"
+                      style={{ padding: "0px 1.25rem 0 1.12rem" }} 
                       placeholder="Phone Number"
                       {...register("phoneNumber")}
                     />
@@ -142,6 +145,7 @@ const AddLead = () => {
                     <InputField
                       as="select"
                       name="leadSourceId"
+                      style={{ padding: "0px 1.25rem 0 1.12rem" }} 
                       {...register("leadSourceId", { required: "Lead Source is required" })}
                     >
                       <option value="">Select Lead Source</option>
@@ -158,6 +162,7 @@ const AddLead = () => {
                     <InputField
                       type="text"
                       name="comment"
+                      style={{ padding: "0px 1.25rem 0 1.12rem" }} 
                       placeholder="Comment"
                       {...register("comment")}
                     />
@@ -167,6 +172,8 @@ const AddLead = () => {
                     <InputField
                       as="select"
                       name="assignTo"
+                      style={{ padding: "0px 1.25rem 0 1.12rem" }} 
+
                       {...register("assignTo", { required: "Assign To is required" })}
                     >
                       <option value="">Assign To</option>

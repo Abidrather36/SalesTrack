@@ -37,7 +37,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Card({ props }) {
+export default function Card({ props, }) { 
+  
+
   return (
     <main className="py-6 bg-surface-secondary">
       <div className="container-fluid">
