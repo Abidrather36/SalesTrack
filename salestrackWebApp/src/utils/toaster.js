@@ -136,18 +136,18 @@ class Toaster{
           const email = document.getElementById("swal-input-email").value;
           const phoneNumber = document.getElementById("swal-input-phone").value;
           const comment = document.getElementById("swal-input-comment").value;
-          const assignToId = document.getElementById("swal-input-assign").value;
+          const assignTo = document.getElementById("swal-input-assign").value;
           const leadSourceId = document.getElementById("swal-input-source").value;
           const finalStatus = Number(document.getElementById("swal-input-status").value);
     
           // Check for empty fields
-          if (!name || !email || !phoneNumber || !assignToId || !leadSourceId || !finalStatus) {
+          if (!name || !email || !phoneNumber || !assignTo || !leadSourceId || !finalStatus) {
             Swal.showValidationMessage(`Please enter all fields`);
             return null;
           }
     
           // Return the lead data to be updated
-          return { name, email, phoneNumber, comment, assignToId, leadSourceId, finalStatus };
+          return { name, email, phoneNumber, comment, assignTo, leadSourceId, finalStatus };
         },
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
