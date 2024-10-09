@@ -27,6 +27,7 @@ export default function AdminDashboard() {
       title: "Total Users",
       number: users.length, 
       icon: <FaUsers />,
+      link:"/companyAdmin/userList"
     },
     {
       title: "Total Sales Executives",

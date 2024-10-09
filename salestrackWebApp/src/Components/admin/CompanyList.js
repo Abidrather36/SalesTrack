@@ -20,7 +20,6 @@ function CompanyList() {
     { key: "email", label: "Email" },
     { key: "phoneNumber", label: "PhoneNumber" },
     { key: "isActive", label: "isActive" },
-    {key: "leadComments",label: "Lead Comments"}
   ];
 
   const breadcrumbLabels = {

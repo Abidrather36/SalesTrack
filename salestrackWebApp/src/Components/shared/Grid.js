@@ -125,9 +125,10 @@ function Grid({
                             SalesExecutive
                           </MDBBadge>
                         ) : item[header.key] === 2 ? (
-                          <MDBBadge color="success" pill>
-                            SalesManager
-                          </MDBBadge>
+                          <MDBBadge color="primary" pill>
+                          SalesManager
+                        </MDBBadge>
+
                         ) : null
                       ) : (
                         item[header.key]
@@ -147,16 +148,16 @@ function Grid({
                           .find((btn) => btn.key === "delete")
                           ?.onDeleteHandler(item)
                       }
-                      
                       handleManageLead={() =>
                         buttons
                           .find((btn) => btn.key === "add")
                           ?.onAddFollowUpdate(item)
                       }
-                      handleFollowUpHistory={()=>
-                        buttons.find((btn)=>btn.key === "followUpHistory")?.onAddFollowUpHistory(item)
+                      handleFollowUpHistory={() =>
+                        buttons
+                          .find((btn) => btn.key === "followUpHistory")
+                          ?.onAddFollowUpHistory(item)
                       }
-
                     />
                   </td>
                 </tr>
@@ -187,4 +188,4 @@ function Grid({
   );
 }
 
-export default Grid;  
+export default Grid;

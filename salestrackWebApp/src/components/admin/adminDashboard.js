@@ -37,11 +37,14 @@ export default function AdminDashboard() {
       title: "Total Enquiries",
       number: enquiries.length, 
       icon: <FaEnvelope />,
+      link:"/admin/enquirylist"
     },
     {
       title: "Total Companies",
       number:companies.length, 
       icon: <FaBuilding />,
+      link:"/admin/companylist"
+
     },
    
   ];
