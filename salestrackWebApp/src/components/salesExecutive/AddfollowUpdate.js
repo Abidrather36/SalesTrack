@@ -39,7 +39,7 @@ const style = {
 
 export default function BasicModal({ leadData, onClose,showFallowup,showFoloowUpHistory }) {
   console.log(leadData);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(TroubleshootTwoTone);
   const handleOpen = () => setOpen(true);
   const [showList, setShowList] = useState(showFoloowUpHistory);
   const [loading, setLoading] = useState(false);
