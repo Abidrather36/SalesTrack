@@ -1,4 +1,5 @@
 ﻿using SalesTrack.Domain.Shared;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace salesTrack.Domain.Entities
 {
@@ -8,5 +9,8 @@ namespace salesTrack.Domain.Entities
         public Guid LeadId { get; set; }
         public Lead? Lead { get; set; }
 
+        public Guid? LeadProcessStepId { get; set; }
+        [ForeignKey(nameof(LeadProcessStepId))]
+        public LeadProcessSteps? LeadProcessStep { get; set; }
     }
 }

@@ -15,6 +15,9 @@ namespace salesTrack.Domain.Entities
         public Guid LeadId { get; set; }
         [ForeignKey(nameof(LeadId))]
         public Lead? Lead { get; set; }
+
+        public ICollection<LeadComments>? LeadComment { get; set; }
+        public ICollection<FollowUpDate>? LeadFollowUpDate { get; set; }
     }
 
 

@@ -18,6 +18,7 @@ const AddLead = () => {
   useEffect(() => {
     const fetchData = async () => {
       await fetchLeadSources();
+      <Spin/>
       await fetchUsers();
     };
     fetchData();
@@ -173,7 +174,6 @@ const AddLead = () => {
                       as="select"
                       name="assignTo"
                       style={{ padding: "0px 1.25rem 0 1.12rem" }} 
-
                       {...register("assignTo", { required: "Assign To is required" })}
                     >
                       <option value="">Assign To</option>

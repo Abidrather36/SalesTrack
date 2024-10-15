@@ -66,7 +66,7 @@ namespace salesTrack.Application.Services
                     DeletedDate = DateTime.UtcNow,
                     IsActive = true,
                     ModifiedDate = DateTime.UtcNow,
-                    
+
 
 
                 };
@@ -371,7 +371,7 @@ namespace salesTrack.Application.Services
                 }
                 else
                 {
-                    /*  var leadId = await leadRepository.IsExistsAsync(x => x.Id == model.LeadId);*/
+                    var leadId = await leadRepository.IsExistsAsync(x => x.Id == model.LeadId);
 
                     LeadProcessSteps leadSteps = new()
                     {
@@ -591,22 +591,203 @@ namespace salesTrack.Application.Services
             }
         }
 
+        /*   public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> ShowLeadFollowUpHistory(Guid leadId)
+           {
+               var loggedInUser = contextService.UserId();
+               var leadHistory=await leadRepository.ShowLeadHistory(leadId);
+               if(leadHistory is null || !leadHistory.Any())
+               {
+                   return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse("An error occurred while retrieving the lead follow-up history.", HttpStatusCodes.Conflict, ApiMessages.TechnicalError);
+
+               }
+               var res= leadHistory.Select(ls => new LeadFollowUpHistoryResponse
+               {
+                   ClientName = ls.ClientName,
+                   LeadComments = ls.LeadComments,
+                   LeadProcessStep = ls.LeadProcessStep,
+                   Email = ls.Email,
+                   FollowUpDate = ls.FollowUpDate,
+                   PhoneNumber = ls.PhoneNumber
+               });
+               else if()
+               else
+               {
+                   var sortedLeadHistory = leadHistory.OrderBy(l => l.FollowUpDate).ToList();
+
+                   return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(leadHistory, "Leads History Fetched Succesfully", HttpStatusCodes.OK);
+
+               }
+           }
+       }*/
+        /* public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> ShowLeadFollowUpHistory(Guid leadId)
+         {
+             var loggedInUser = contextService.UserId();
+             var leadHistory = await leadRepository.ShowLeadHistory(leadId);
+
+             if (leadHistory is null || !leadHistory.Any())
+             {
+                 return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse(
+                     "An error occurred while retrieving the lead follow-up history.",
+                     HttpStatusCodes.Conflict,
+                     ApiMessages.TechnicalError
+                 );
+             }
+
+             var validLeadHistory = leadHistory
+                 .Where(ls => ls.FollowUpDate != null && !string.IsNullOrWhiteSpace(ls.LeadProcessStep))
+                 .ToList();
+
+             if (!validLeadHistory.Any())
+             {
+                 return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse(
+                     "No valid follow-up history found.",
+                     HttpStatusCodes.NotFound,
+                     "No history found with valid FollowUpDate or LeadProcessStep."
+                 );
+             }
+
+             var res = validLeadHistory.Select(ls => new LeadFollowUpHistoryResponse
+             {
+                 ClientName = ls.ClientName,
+                 LeadComments = ls.LeadComments,
+                 LeadProcessStep = ls.LeadProcessStep,
+                 Email = ls.Email,
+                 FollowUpDate = ls.FollowUpDate,
+                 PhoneNumber = ls.PhoneNumber
+             });
+
+             var sortedLeadHistory = res.OrderBy(l => l.FollowUpDate).ToList();
+
+             return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(
+                 sortedLeadHistory,
+                 "Leads history fetched successfully.",
+                 HttpStatusCodes.OK
+             );
+         }
+     }*/
         public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> ShowLeadFollowUpHistory(Guid leadId)
         {
-            var loggedInUser = contextService.UserId();
-            var leadHistory=await leadRepository.ShowLeadHistory(leadId);
-            if(leadHistory is null || !leadHistory.Any())
-            {
-                return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse("An error occurred while retrieving the lead follow-up history.", HttpStatusCodes.Conflict, ApiMessages.TechnicalError);
 
+            var leadHistory = await leadRepository.ShowLeadHistory(leadId);
+
+            if (leadHistory == null || !leadHistory.Any())
+            {
+                return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse(
+                    "An error occurred while retrieving the lead follow-up history.",
+                    HttpStatusCodes.Conflict,
+                    ApiMessages.TechnicalError
+                );
+            }
+
+            // Filter records where FollowUpDate or LeadProcessStep are null
+            var validLeadHistory = leadHistory
+                .Where(ls => ls.FollowUpDate != null && !string.IsNullOrWhiteSpace(ls.LeadProcessStep))
+                .ToList();
+
+            if (!validLeadHistory.Any())
+            {
+                return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse(
+                    "No valid follow-up history found.",
+                    HttpStatusCodes.NotFound,
+                    "No history found with valid FollowUpDate or LeadProcessStep."
+                );
+            }
+
+            // Sort valid records by FollowUpDate
+            var sortedLeadHistory = validLeadHistory.OrderBy(l => l.FollowUpDate).ToList();
+
+            return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(
+                sortedLeadHistory,
+                "Leads history fetched successfully.",
+                HttpStatusCodes.OK
+            );
+        }
+
+        public async Task<ApiResponse<bool>> AddLeadFollowUpHistory(FollowUpReq model)
+        {
+            var loggedInUser=contextService.UserId();
+            var result=await leadRepository.AddProcessStep(model);
+            if(result)
+            {
+                return ApiResponse<bool>.SuccessResponse(true,"Lead Managed Successfully",HttpStatusCodes.OK);
             }
             else
             {
-                var sortedLeadHistory = leadHistory.OrderBy(l => l.FollowUpDate).ToList();
+                return ApiResponse<bool>.ErrorResponse(ApiMessages.TechnicalError,HttpStatusCodes.BadRequest);
 
-                return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(leadHistory, "Leads History Fetched Succesfully", HttpStatusCodes.OK);
+            }
+            /*  var newFollowUp = leadRepository.AddProcessStep(new FollowUpReq()
+              {
+                  LeadId = 
+                  Comment = "Test comment fololow re",
+                  Date = new DateTime(),
+                  StepProcessId = Guid.Parse("d350dd4f-53d6-45bc-b82c-452a85e94bda"),
+                  Time = new TimeSpan()
+              });*/
+            /*
+                        LeadComments leadComment = new()
+                        {
+                            Text = model.Comment,
+                            LeadId=model.Id,
+                            CreatedDate=DateTimeOffset.Now,
+                            CreatedBy=loggedInUser
 
+                        };
+                      var commentAdded= await leadRepository.AddComment(leadComment);
+                        if(commentAdded > 0)
+                        {
+                            LeadProcessSteps leadProcessSteps = new()
+                            {
+                                Id = Guid.NewGuid(),
+                                AdminProcessStepId = model.AdminProcessStepId,
+                                LeadId = model.Id,
+                                CreatedDate = DateTimeOffset.Now,
+                                CreatedBy = loggedInUser,
+                            };
+                          var addedLeadProcessStep=await  leadRepository.AddLeadProcessStep(leadProcessSteps);
+                            if(addedLeadProcessStep > 0)
+                            {
+                                FollowUpDate leadFollowUpDate = new()
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Date = model.Date,
+                                    Time = model.Time,
+                                    LeadId = model.Id,
+                                    CreatedDate = DateTimeOffset.Now,
+                                    CreatedBy = loggedInUser,
+                                };
+                                var addedFollowUpdate=await leadRepository.AddfollowUpdate(leadFollowUpDate);
+                                if(addedFollowUpdate > 0)
+                                {
+                                    return default;
+                                }
+
+                            }
+                        }*/
+
+
+            return new();
+        }
+
+        public async Task<ApiResponse<LeadFollowUpHistoryResponse>> TodaysFollowUpDate(TodaysFollowUpdateRequest  model)
+        {
+           var todaysFollowUpdate=await leadRepository.TodaysFollowUpdate(model);
+            if(todaysFollowUpdate is null)
+            {
+                return  ApiResponse<LeadFollowUpHistoryResponse>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+            }
+            else
+            {
+                return ApiResponse<LeadFollowUpHistoryResponse>.SuccessResponse(todaysFollowUpdate, ApiMessages.Success, HttpStatusCodes.Found);
             }
         }
     }
+    }
+public class FollowUpReq
+{
+    public Guid LeadId { get; set; }
+    public Guid AdminProcessStepId { get; set; }
+    public string? Comment { get; set; }
+    public TimeSpan Time { get; set; }
+    public DateTime Date { get; set; }
 }

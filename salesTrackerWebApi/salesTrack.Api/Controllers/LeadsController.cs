@@ -166,6 +166,35 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
-        
+
+        [HttpPost("AddManageLead")]
+        public async Task<ApiResponse<string>> ManageLead(FollowUpReq model)
+        {
+            try
+            {
+                await leadService.AddLeadFollowUpHistory(model);
+                return new();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpPost("TodaysFollowUpDate")]
+        public async Task<ApiResponse<LeadFollowUpHistoryResponse>> TodaysFollowUpDate(TodaysFollowUpdateRequest model) 
+        {
+            try
+            {
+                return await leadService.TodaysFollowUpDate(model);
+            }
+            catch (Exception ex)
+            {
+                throw;
+
+            }
+
+        }
+
     }
 }

@@ -25,6 +25,7 @@ namespace salesTrack.Persistence.Data
                     PhoneNumber = "6545454543",
                     Password = dbPassword,
                     Salt = salt,
+                    CreatedDate=DateTime.Now,
                     UserRole = UserRole.PortalAdmin,
                     ResetCode = 12345,
                     ResetExpiry = DateTimeOffset.UtcNow.AddMinutes(15),

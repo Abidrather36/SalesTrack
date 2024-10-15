@@ -4,6 +4,8 @@ import { FaEnvelope, FaUsers, FaBriefcase } from "react-icons/fa";
 import { getAllLeads as fetchAllLeads } from "../../Services/LeadService";
 import { useEffect } from 'react';
 import { leadSources } from '../../Services/LeadSource';
+import Spin from '../public/Spin';
+import DateTimePickers from './TodaysFollowUpdate';
 
 export default function ExecutiveDashboard() {
     const [leads,setleads]=useState([])
@@ -12,6 +14,7 @@ export default function ExecutiveDashboard() {
     
  useEffect(() => {
   getAllLeads()
+  
   fetchAllLeadSources()
  }, [])
  
@@ -47,14 +50,15 @@ export default function ExecutiveDashboard() {
       icon: <FaUsers />,
     },
     {
-      title: "Total Sales Managers",
+      title: "Todays FollowUpDate",
       number: salesmanager.length,
       icon: <FaBriefcase />,
     },
   ];
     return (
     <>
-      <Card props={myProps}/>
+      <Card props={myProps} />
+      <DateTimePickers/>
     </>
   )
 }

@@ -8,7 +8,6 @@ namespace salesTrack.Domain.Models.Request
         public Guid LeadId { get; set; }
         [Required]
         public Guid AdminProcessStepId { get; set; } 
-        [Required]
         public string? StepDescription { get; set; }
     }
 }

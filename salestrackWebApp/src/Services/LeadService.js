@@ -34,3 +34,11 @@ export const leadFollowUpHistory =async (leadId)=>{
         let res = await axiosObject.get(`${ApiUrl}Leads/showLeadFollowUpHistory/${leadId}`).then(res=>res.data)
         return res;
 }
+export const addManageLead =async(manageLead) =>{
+    let res = await axiosObject.post(`${ApiUrl}Leads/AddManageLead`,manageLead).then(res =>res.data)
+    return res;
+}
+export const todaysFollowUp=async (leadTodaysFollowUp)=>{
+    let res=await axiosObject.post(`${ApiUrl}Leads/TodaysFollowUpDate`,leadTodaysFollowUp).then(res=> res.data) 
+    return res;
+}

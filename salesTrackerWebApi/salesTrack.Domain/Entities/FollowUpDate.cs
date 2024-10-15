@@ -15,5 +15,10 @@ namespace salesTrack.Domain.Entities
         [ForeignKey(nameof(LeadId))]
         public Lead? Lead { get; set; }
 
+        public Guid? LeadProcessStepId { get; set; }
+        [ForeignKey(nameof(LeadProcessStepId))]
+
+        public LeadProcessSteps? LeadProcessStep {  get; set; }
+
     }
 }

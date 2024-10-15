@@ -83,16 +83,16 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("870d5838-0a0f-4267-957f-89fcdd19ec11"),
+                            Id = new Guid("371869a4-99ed-49ff-8d4d-794486f511ce"),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "WZtmbaeK/FqjIM9WDe5/VQ4IlxkIHV0yQ7QrcKnVfbU=",
+                            Password = "0ZxvzBE6PcMArdnfMLorernffIUyjn5N1jddZB80o8E=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 10, 4, 5, 33, 34, 198, DateTimeKind.Unspecified).AddTicks(5262), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "UGh6xuYb069Wq8WxNMvj2w==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 10, 14, 5, 59, 4, 287, DateTimeKind.Unspecified).AddTicks(6414), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "tz/klzjpTrGA1ma+2FcxGw==",
                             UserRole = (byte)1
                         });
                 });
@@ -240,18 +240,23 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<Guid>("LeadId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("LeadProcessStepId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset?>("ModifiedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("Time")
+                        .HasColumnType("time");
 
                     b.HasKey("Id");
 
                     b.HasIndex("LeadId");
+
+                    b.HasIndex("LeadProcessStepId");
 
                     b.ToTable("FollowUpDates");
                 });
@@ -330,6 +335,9 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<Guid>("LeadId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("LeadProcessStepId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -342,6 +350,8 @@ namespace salesTrack.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LeadId");
+
+                    b.HasIndex("LeadProcessStepId");
 
                     b.ToTable("LeadComments");
                 });
@@ -485,12 +495,18 @@ namespace salesTrack.Persistence.Migrations
             modelBuilder.Entity("salesTrack.Domain.Entities.FollowUpDate", b =>
                 {
                     b.HasOne("salesTrack.Domain.Entities.Lead", "Lead")
-                        .WithMany()
+                        .WithMany("FollowUpDate")
                         .HasForeignKey("LeadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("salesTrack.Domain.Entities.LeadProcessSteps", "LeadProcessStep")
+                        .WithMany("LeadFollowUpDate")
+                        .HasForeignKey("LeadProcessStepId");
+
                     b.Navigation("Lead");
+
+                    b.Navigation("LeadProcessStep");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.Lead", b =>
@@ -528,7 +544,13 @@ namespace salesTrack.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("salesTrack.Domain.Entities.LeadProcessSteps", "LeadProcessStep")
+                        .WithMany("LeadComment")
+                        .HasForeignKey("LeadProcessStepId");
+
                     b.Navigation("Lead");
+
+                    b.Navigation("LeadProcessStep");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.LeadProcessSteps", b =>
@@ -540,7 +562,7 @@ namespace salesTrack.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("salesTrack.Domain.Entities.Lead", "Lead")
-                        .WithMany()
+                        .WithMany("ProcessSteps")
                         .HasForeignKey("LeadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -587,7 +609,18 @@ namespace salesTrack.Persistence.Migrations
 
             modelBuilder.Entity("salesTrack.Domain.Entities.Lead", b =>
                 {
+                    b.Navigation("FollowUpDate");
+
                     b.Navigation("LeadComments");
+
+                    b.Navigation("ProcessSteps");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.LeadProcessSteps", b =>
+                {
+                    b.Navigation("LeadComment");
+
+                    b.Navigation("LeadFollowUpDate");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.LeadSource", b =>
