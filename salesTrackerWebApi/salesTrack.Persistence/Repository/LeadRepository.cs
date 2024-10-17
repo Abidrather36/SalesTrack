@@ -17,12 +17,10 @@ namespace salesTrack.Persistence.Repository
         private readonly SalesTrackDBContext context;
         private readonly IContextService contextService;
         private readonly IConfiguration configuration;
-        private readonly string _connectionString;
-        public LeadRepository(SalesTrackDBContext context, IConfiguration configuration,IContextService contextService) : base(context)
+        public LeadRepository(SalesTrackDBContext context,IContextService contextService) : base(context)
         {
             this.context = context;
             this.contextService = contextService;
-            _connectionString = configuration.GetConnectionString("SalesTrackDbContext");
         }
 
         public async Task<int> AddComment(LeadComments model)
