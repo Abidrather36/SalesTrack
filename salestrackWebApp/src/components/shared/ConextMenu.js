@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const ThreeDotMenu = ({ options, handleEdit, handleDelete,handleManageLead,handleFollowUpHistory }) => {
+const ThreeDotMenu = ({ options, handleEdit, handleDelete,handleManageLead,handleFollowUpHistory,handleTodaysFollowUpDate }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 

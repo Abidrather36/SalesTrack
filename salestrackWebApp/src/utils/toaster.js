@@ -17,82 +17,7 @@ class Toaster{
     showErrorToast=(message)=>{
         toast.error(message)
     }
-    //  editLeadSwal = async (lead = {},userAssignTo,leadSources, fetchLeads) => {
-    //   Swal.fire({
-    //     title: "Edit Lead",
-    //     html: `
-    //          <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
-    //         <label for="swal-input1" style="text-align:left">Lead Name</label>
-    //         <input id="swal-input1" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Lead Name" value="${lead.name}" />
-            
-    //         <label for="swal-input2" style="text-align:left">Email</label>
-    //         <input id="swal-input2" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Email" value="${lead.email}" />
-            
-    //         <label for="swal-input3" style="text-align:left">Phone Number</label>
-    //         <input id="swal-input3" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Phone Number" value="${lead.phoneNumber}" />
-            
-    //         <label for="swal-input4" style="text-align:left">Comment</label>
-    //         <input id="swal-input4" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Comment" value="${lead.comment}" />
-            
-    //         <label for="swal-input5" style="text-align:left">Assign To</label>
-    //         <select id="swal-input5" class="swal2-input" style="width: 80%; margin-left:10px">
-    //           ${lead.assignTo ? `<option value="${lead.assignTo.id}">${lead.assignTo.name}</option>` : ""}
-    //           ${userAssignTo.map(user => `<option value="${user.id}">${user.name}</option>`).join("")}
-    //         </select>
-            
-    //         <label for="swal-input6" style="text-align:left">Lead Source</label>
-    //         <select id="swal-input6" class="swal2-input" style="width: 80%; margin-left:10px">
-    //           ${lead.leadSourceId ? `<option value="${lead.leadSourceId}">${lead.leadSourceName}</option>` : ""}
-    //           ${leadSources.map(source => `<option value="${source.id}">${source.leadSourceName}</option>`).join("")}
-    //         </select>
-            
-    //         <label for="swal-input7" style="text-align:left">Final Status</label>
-    //         <select id="swal-input7" class="swal2-input" style="width: 80%; margin-left:10px">
-    //           <option value="1" ${lead.finalStatus === 1 ? "selected" : ""}>Open</option>
-    //           <option value="2" ${lead.finalStatus === 2 ? "selected" : ""}>Close</option>
-    //           <option value="3" ${lead.finalStatus === 3 ? "selected" : ""}>Success</option>
-    //         </select>
-    //       </div>
-    //     `,
-    //     focusConfirm: false,
-    //     preConfirm: () => {
-    //       const name = document.getElementById("swal-input1").value;
-    //       const email = document.getElementById("swal-input2").value;
-    //       const phoneNumber = document.getElementById("swal-input3").value;
-    //       const comment = document.getElementById("swal-input4").value;
-    //       const assignToId = document.getElementById("swal-input5").value;
-    //       const leadSourceId = document.getElementById("swal-input6").value;
-    //       const finalStatus = document.getElementById("swal-input7").value;
-    
-    //       if (!name || !email || !phoneNumber || !assignToId || !leadSourceId || !finalStatus) {
-    //         Swal.showValidationMessage(`Please enter all fields`);
-    //         return null;
-    //       }
-    
-    //       return { name, email, phoneNumber, comment, assignToId, leadSourceId, finalStatus };
-    //     },
-    //     showCancelButton: true,
-    //     confirmButtonColor: "#3085d6",
-    //     cancelButtonColor: "#d33",
-    //     confirmButtonText: "Update",
-    //   }).then(async (result) => {
-    //     if (result.isConfirmed) {
-    //       const updatedLead = { ...result.value, id: lead.id };
-    //             updateLead.id=lead.id
-    //       try {
-    //         const res = await updateLead(updatedLead);
-    //         if (res.isSuccess) {
-    //           myToaster.showSuccessToast("Lead updated successfully");
-    //           fetchLeads();
-    //         } else {
-    //           myToaster.showErrorToast(res.message);
-    //         }
-    //       } catch (error) {
-    //         myToaster.showErrorToast("Failed to update lead");
-    //       }
-    //     }
-    //   });
-    // };
+   
     editLeadSwal = async (lead = {}, userAssignTo, leadSources, fetchLeads) => {
       Swal.fire({
         title: "Edit Lead",
@@ -161,7 +86,7 @@ class Toaster{
             const res = await updateLead(updatedLead);
             if (res.isSuccess) {
               myToaster.showSuccessToast("Lead updated successfully");
-              fetchLeads(); // Fetch updated leads after success
+              fetchLeads(); 
             } else {
               myToaster.showErrorToast(res.message);
             }

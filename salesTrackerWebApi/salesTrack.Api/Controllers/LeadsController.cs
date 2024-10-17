@@ -168,12 +168,11 @@ namespace salesTrack.Api.Controllers
         }
 
         [HttpPost("AddManageLead")]
-        public async Task<ApiResponse<string>> ManageLead(FollowUpReq model)
+        public async Task<ApiResponse<bool>> ManageLead(FollowUpReq model)
         {
             try
             {
-                await leadService.AddLeadFollowUpHistory(model);
-                return new();
+             return  await leadService.AddLeadFollowUpHistory(model);
             }
             catch (Exception)
             {

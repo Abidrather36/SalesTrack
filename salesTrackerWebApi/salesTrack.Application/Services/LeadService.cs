@@ -591,80 +591,7 @@ namespace salesTrack.Application.Services
             }
         }
 
-        /*   public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> ShowLeadFollowUpHistory(Guid leadId)
-           {
-               var loggedInUser = contextService.UserId();
-               var leadHistory=await leadRepository.ShowLeadHistory(leadId);
-               if(leadHistory is null || !leadHistory.Any())
-               {
-                   return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse("An error occurred while retrieving the lead follow-up history.", HttpStatusCodes.Conflict, ApiMessages.TechnicalError);
-
-               }
-               var res= leadHistory.Select(ls => new LeadFollowUpHistoryResponse
-               {
-                   ClientName = ls.ClientName,
-                   LeadComments = ls.LeadComments,
-                   LeadProcessStep = ls.LeadProcessStep,
-                   Email = ls.Email,
-                   FollowUpDate = ls.FollowUpDate,
-                   PhoneNumber = ls.PhoneNumber
-               });
-               else if()
-               else
-               {
-                   var sortedLeadHistory = leadHistory.OrderBy(l => l.FollowUpDate).ToList();
-
-                   return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(leadHistory, "Leads History Fetched Succesfully", HttpStatusCodes.OK);
-
-               }
-           }
-       }*/
-        /* public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> ShowLeadFollowUpHistory(Guid leadId)
-         {
-             var loggedInUser = contextService.UserId();
-             var leadHistory = await leadRepository.ShowLeadHistory(leadId);
-
-             if (leadHistory is null || !leadHistory.Any())
-             {
-                 return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse(
-                     "An error occurred while retrieving the lead follow-up history.",
-                     HttpStatusCodes.Conflict,
-                     ApiMessages.TechnicalError
-                 );
-             }
-
-             var validLeadHistory = leadHistory
-                 .Where(ls => ls.FollowUpDate != null && !string.IsNullOrWhiteSpace(ls.LeadProcessStep))
-                 .ToList();
-
-             if (!validLeadHistory.Any())
-             {
-                 return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse(
-                     "No valid follow-up history found.",
-                     HttpStatusCodes.NotFound,
-                     "No history found with valid FollowUpDate or LeadProcessStep."
-                 );
-             }
-
-             var res = validLeadHistory.Select(ls => new LeadFollowUpHistoryResponse
-             {
-                 ClientName = ls.ClientName,
-                 LeadComments = ls.LeadComments,
-                 LeadProcessStep = ls.LeadProcessStep,
-                 Email = ls.Email,
-                 FollowUpDate = ls.FollowUpDate,
-                 PhoneNumber = ls.PhoneNumber
-             });
-
-             var sortedLeadHistory = res.OrderBy(l => l.FollowUpDate).ToList();
-
-             return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(
-                 sortedLeadHistory,
-                 "Leads history fetched successfully.",
-                 HttpStatusCodes.OK
-             );
-         }
-     }*/
+        
         public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> ShowLeadFollowUpHistory(Guid leadId)
         {
 
@@ -716,57 +643,8 @@ namespace salesTrack.Application.Services
                 return ApiResponse<bool>.ErrorResponse(ApiMessages.TechnicalError,HttpStatusCodes.BadRequest);
 
             }
-            /*  var newFollowUp = leadRepository.AddProcessStep(new FollowUpReq()
-              {
-                  LeadId = 
-                  Comment = "Test comment fololow re",
-                  Date = new DateTime(),
-                  StepProcessId = Guid.Parse("d350dd4f-53d6-45bc-b82c-452a85e94bda"),
-                  Time = new TimeSpan()
-              });*/
-            /*
-                        LeadComments leadComment = new()
-                        {
-                            Text = model.Comment,
-                            LeadId=model.Id,
-                            CreatedDate=DateTimeOffset.Now,
-                            CreatedBy=loggedInUser
+           
 
-                        };
-                      var commentAdded= await leadRepository.AddComment(leadComment);
-                        if(commentAdded > 0)
-                        {
-                            LeadProcessSteps leadProcessSteps = new()
-                            {
-                                Id = Guid.NewGuid(),
-                                AdminProcessStepId = model.AdminProcessStepId,
-                                LeadId = model.Id,
-                                CreatedDate = DateTimeOffset.Now,
-                                CreatedBy = loggedInUser,
-                            };
-                          var addedLeadProcessStep=await  leadRepository.AddLeadProcessStep(leadProcessSteps);
-                            if(addedLeadProcessStep > 0)
-                            {
-                                FollowUpDate leadFollowUpDate = new()
-                                {
-                                    Id = Guid.NewGuid(),
-                                    Date = model.Date,
-                                    Time = model.Time,
-                                    LeadId = model.Id,
-                                    CreatedDate = DateTimeOffset.Now,
-                                    CreatedBy = loggedInUser,
-                                };
-                                var addedFollowUpdate=await leadRepository.AddfollowUpdate(leadFollowUpDate);
-                                if(addedFollowUpdate > 0)
-                                {
-                                    return default;
-                                }
-
-                            }
-                        }*/
-
-
-            return new();
         }
 
         public async Task<ApiResponse<LeadFollowUpHistoryResponse>> TodaysFollowUpDate(TodaysFollowUpdateRequest  model)
@@ -778,7 +656,7 @@ namespace salesTrack.Application.Services
             }
             else
             {
-                return ApiResponse<LeadFollowUpHistoryResponse>.SuccessResponse(todaysFollowUpdate, ApiMessages.Success, HttpStatusCodes.Found);
+                return ApiResponse<LeadFollowUpHistoryResponse>.SuccessResponse(todaysFollowUpdate, "Follow Up Found ", HttpStatusCodes.Found);
             }
         }
     }

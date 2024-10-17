@@ -240,7 +240,7 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<LeadFollowUpHistoryResponse> TodaysFollowUpdate(TodaysFollowUpdateRequest model)
         {
-            var data =await context.Leads
+            var data = await context.Leads
                 .Where(l => l.Id == model.LeadId)
                 .Include(u => u.User)
                 .Include(l => l.ProcessSteps!)
@@ -250,7 +250,7 @@ namespace salesTrack.Persistence.Repository
                 .Include(l => l.ProcessSteps!)
                     .ThenInclude(ps => ps.ProcessStepAdmin)
                     .FirstOrDefaultAsync();
-            if(data is null || data.ProcessSteps is null)
+            if (data is null || data.ProcessSteps is null)
             {
                 throw new InvalidOperationException("No lead data found or lead has no process steps.");
             }
@@ -265,19 +265,15 @@ namespace salesTrack.Persistence.Repository
                         PhoneNumber = ps.Lead.User.PhoneNumber ?? "No Phone Number",
                         LeadComments = ps.LeadComment!.FirstOrDefault()!.Text ?? "No Commnet Here",
                         LeadProcessStep = ps.ProcessStepAdmin!.StepName ?? "No Step Name",
-                        FollowUpDate = ps.LeadFollowUpDate!.FirstOrDefault()!.Date 
+                        FollowUpDate = ps.LeadFollowUpDate!.FirstOrDefault()!.Date
                     }).FirstOrDefault();
-
-                if (followUpForToday == null)
-                {
-                    throw new InvalidOperationException("No follow-up found for the given date.");
-                }
+ 
                 return followUpForToday;
 
             }
         }
 
-        
+
 
         public async Task<int> UpdateLeadProcessStep(LeadProcessSteps model)
         {

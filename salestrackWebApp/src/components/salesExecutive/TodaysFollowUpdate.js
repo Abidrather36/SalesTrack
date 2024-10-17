@@ -6,12 +6,13 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { TextField, Box } from '@mui/material';
 import { todaysFollowUp } from '../../Services/LeadService';
 import myToaster from '../../utils/toaster';
-import Spin from '../public/Spin';
+
+import InputField from '../public/InputField';
 
 const TodaysFollowUpDate = ({leadData}) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [lead,setLeads]=useState([])
 
   const onSubmit = async(e)=>{
     e.preventDefault()
@@ -22,6 +23,7 @@ const TodaysFollowUpDate = ({leadData}) => {
     console.log(tdfud)
     const response =await todaysFollowUp(tdfud);
     if(response.isSuccess){
+        
         myToaster.showSuccessToast(response.message)
     }
     else{
@@ -33,11 +35,10 @@ const TodaysFollowUpDate = ({leadData}) => {
     <>
     <form  onSubmit={onSubmit}>
 
-    <div>
-    <label style={{marginBottom:"30px"}}>Todays Follow UpDate </label>
-    </div>
+    <div style={{marginBottom:"30px",marginLeft:"35px"}}>
+    <label style={{marginBottom:"20px"}} className="h6 font-semibold text-muted text-sm d-block mb-2">Select Date </label>
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: 300 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: 200 }}>
         {/* Date Picker */}
         <DatePicker
           label="Select Date"
@@ -45,16 +46,11 @@ const TodaysFollowUpDate = ({leadData}) => {
           onChange={(newDate) => setSelectedDate(newDate)}
           renderInput={(params) => <TextField {...params} />}
         />
-         <button
-                  type="submit"
-                  className="btn btn-primary"
-                  style={{ width: "100%" }}
-                  disabled={loading}
-                >
-                  {loading ? <Spin /> : "Show Todays FollowUp"}
-                </button>
+        
       </Box>
     </LocalizationProvider>
+    </div>
+
     </form>
     </>
   );
