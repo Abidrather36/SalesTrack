@@ -652,7 +652,7 @@ namespace salesTrack.Application.Services
            var todaysFollowUpdate=await leadRepository.TodaysFollowUpdate(model);
             if(todaysFollowUpdate is null)
             {
-                return  ApiResponse<LeadFollowUpHistoryResponse>.ErrorResponse("There is on Follow Up For Such Date", HttpStatusCodes.BadRequest);
+                return  ApiResponse<LeadFollowUpHistoryResponse>.ErrorResponse("There is No Follow Up For Such Date", HttpStatusCodes.BadRequest);
             }
             else
             {

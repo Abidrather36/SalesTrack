@@ -18,6 +18,7 @@ import AddLead from "./components/salesExecutive/AddLead"
 import AdminProcessStep from "./components/admin/AdminProcessStep"
 import GetProcessSteps from "./components/admin/GetProcessSteps"
 import DateTimePickers from "./components/salesExecutive/TodaysFollowUpdate"
+import TimeSheet from "./components/salesExecutive/TimeSheet"
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -54,6 +55,8 @@ export const routerConfiguration = {
     {path:"/salesExecutive/dashboard",element:<SalesExecutiveDashboard/>},
     { path: "/salesExecutive/leadList", element: <LeadList /> },
     { path: "/salesExecutive/add-new-lead", element: <AddLead /> },
+    {path :"/salesExecutive/timeSheet",element:<TimeSheet/>},
+
 
   ]
 }

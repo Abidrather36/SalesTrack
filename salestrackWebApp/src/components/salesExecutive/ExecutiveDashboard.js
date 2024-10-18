@@ -630,14 +630,18 @@ export default function ExecutiveDashboard({ leadData }) {
     }
   };
 
-  // Fetch today's follow-up history
   const onfetchFollowUpHistory = async (data) => {
     setLoading(true);
     try {
       const response = await todaysFollowUp(data);
       if (response.isSuccess) {
-        const result = Array.isArray(response.result) ? response.result : [];
-        setLeadTodayFollowUp(response.result || []);
+        const result = Array.isArray(response.result) ? response.result : [response.result];
+        const formattedResult = result.map(item => ({
+          ...item,
+          followUpDate: item.followUpDate ? item.followUpDate.split("T")[0] : null, 
+        }));
+        setLeadTodayFollowUp(formattedResult);
+        setLeadTodayFollowUp(result);
         myToaster.showSuccessToast(response.message);
       } else {
         myToaster.showErrorToast(response.message);
@@ -669,9 +673,9 @@ export default function ExecutiveDashboard({ leadData }) {
     { key: "email", label: "Email" },
     { key: "leadComments", label: "Lead Comments" },
     { key: "followUpDate", label: "Follow-up Date" },
+
   ];
 
-  // Cards data
   const myProps = [
     {
       title: "Total Leads",
