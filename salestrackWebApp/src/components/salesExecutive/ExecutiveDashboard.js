@@ -393,21 +393,216 @@
 //   );
 // }
 
+//  Mine Corrected one
+// import React, { useState, useEffect } from "react";
+// import Card from "../shared/Card";
+// import { useForm } from "react-hook-form";
+// import { FaUsers, FaBriefcase } from "react-icons/fa";
+// import { getAllLeads as fetchAllLeads, todaysFollowUp } from "../../Services/LeadService";
+// import { leadSources } from "../../Services/LeadSource";
+// import InputField from "../public/InputField";
+// import Spin from "../public/Spin";
+// import myToaster from "../../utils/toaster";
+// import Grid from "../shared/Grid";
+
+// export default function ExecutiveDashboard({ leadData }) {
+//   const [leads, setLeads] = useState([]);
+//   const [leadSources, setLeadSources] = useState([]);
+//   const [salesManager, setSalesManager] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const [leadTodayFollowUp,setleadTodayFollowUp]=useState([])
+
+//   useEffect(() => {
+//     getAllLeads();
+//     fetchAllLeadSources();
+    
+//   }, []);
+ 
+//   const headers = [
+//     { key: "clientName", label: "ClientName" },
+//     { key: "leadProcessStep", label: "Lead Process Step" },
+//     { key: "phoneNumber", label: "Phone Number" },
+//     { key: "email", label: "Email" },
+//     { key: "leadComments", label: "Lead Comments" },
+//     { key: "followUpDate", label: "FollowUp Date" },
+//   ];
+//   const {
+//     register,
+//     handleSubmit,
+//     formState: { errors },
+//   } = useForm();
+
+//   const onfetchFollowUpHistory= async(data)=>{
+//     const response = todaysFollowUp(data);
+//     if (response.isSuccess) {
+//     setleadTodayFollowUp(response.result)
+
+//       myToaster.showSuccessToast(response.message)
+//     } else {
+//       myToaster.showErrorToast(response.message);
+//     }
+//   }
+//   const onSubmit = (result) => {
+//     onfetchFollowUpHistory(result)
+//   };
+
+//   const getAllLeads = async () => {
+//     try {
+//       const response = await fetchAllLeads();
+//       setLeads(response.result || []);
+//     } catch (error) {
+//       console.error("Error fetching leads:", error);
+//     }
+//   };
+
+//   const fetchAllLeadSources = async () => {
+//     try {
+//       const response = await leadSources();
+//       setLeadSources(response.result || []);
+//     } catch (error) {
+//       console.error("Error fetching leadSources:", error);
+//     }
+//   };
+
+//   const myProps = [
+//     {
+//       title: "Total Leads",
+//       number: leads.length,
+//       icon: <FaUsers />,
+//       link: "/salesExecutive/leadList",
+//     },
+//     {
+//       title: "Total Lead Sources",
+//       number: leadSources.length,
+//       icon: <FaUsers />,
+//     },
+//     {
+//       title: "Today's Follow Up",
+//       number: salesManager.length,
+//       icon: <FaBriefcase />,
+//     },
+//   ];
+
+//   return (
+//     <>
+//       <Card props={myProps} />
+//       <div
+//         style={{ marginLeft: "30px" }}
+//         className="d-flex justify-content-between align-items-start mb-3"
+//       >
+//         <div style={{ marginRight: "400px" }} className="col-lg-6 ml-3">
+//           <form
+//             className="login-form"
+//             onSubmit={handleSubmit(onSubmit)}
+//             autoComplete="off"
+//           >
+//             <div
+//               style={{
+//                 display: "flex",
+//                 flexDirection: "row",
+//                 gap: "20px",
+//                 alignItems: "center",
+//               }}
+//             >
+//               {/* Date Input Field */}
+//               <div style={{ marginBottom: "22px" }}>
+//                 <label
+//                   style={{ marginBottom: "20px" }}
+//                   className="h6 font-semibold text-muted text-sm d-block mb-2"
+//                 >
+//                   Select Date
+//                 </label>
+//                 <InputField
+//                   type="date" 
+//                   style={{
+//                     padding: "0px 1.25rem 0 1.12rem",
+//                     maxWidth: "300px",
+//                   }}
+//                   {...register("date", { required: "Date is required" })}
+//                 />
+//                 {errors.date && (
+//                   <span className="error-message">{errors.date.message}</span>
+//                 )}
+//               </div>
+
+//               {/* Lead Dropdown */}
+//               <div style={{ marginBottom: "22px" }}>
+
+//                 <label
+//                   style={{}}
+//                   className="h6 font-semibold text-muted text-sm d-block mb-2"
+//                 >
+//                   Select Lead
+//                 </label>
+//                 <InputField
+//                   as="select"
+//                   style={{
+//                     padding: "0px 1.25rem 0 1.12rem",
+//                     maxWidth: "300px",
+//                   }}
+//                   {...register("leadId", { required: "Lead is required" })}
+//                 >
+//                   <option value="">Select Lead</option>
+//                   {leads.map((lead) => (
+//                     <option key={lead?.id} value={lead?.id}>
+//                       {lead?.name || "Unnamed Lead"}
+//                     </option>
+//                   ))}
+//                 </InputField>
+//                 {errors.leadId && (
+//                   <span className="error-message">{errors.leadId.message}</span>
+//                 )}
+//               </div>
+//             </div>
+
+//             <div>
+//               <button
+//                 type="submit"
+//                 className="btn btn-primary"
+//                 style={{ width: "200px", marginLeft: "217px",marginTop:"-40px"}}
+//                 disabled={loading}
+//               >
+//                 {loading ? <Spin /> : "Search"}    
+//               </button>
+//             </div>
+//           </form>
+//         </div>
+//       </div>
+//       <div>
+//       <h1>Executive Dashboard</h1>
+
+//       {loading ? (
+//         <p>Loading...</p>
+//       ) : leadTodayFollowUp.length === 0 ? (
+//         <p>No follow-ups for today</p>
+//       ) : (
+//         <Grid
+//           headers={headers}
+//           data={leadTodayFollowUp}
+//           loading={loading}
+//           tableName="Today's Follow-up"
+//         />
+//       )}
+//     </div>
+//     </>
+//   );
+// }
 
 import React, { useState, useEffect } from "react";
 import Card from "../shared/Card";
 import { useForm } from "react-hook-form";
 import { FaUsers, FaBriefcase } from "react-icons/fa";
 import { getAllLeads as fetchAllLeads, todaysFollowUp } from "../../Services/LeadService";
-import { leadSources } from "../../Services/LeadSource";
+import { leadSources as fetchLeadSources } from "../../Services/LeadSource";
 import InputField from "../public/InputField";
 import Spin from "../public/Spin";
 import myToaster from "../../utils/toaster";
+import Grid from "../shared/Grid";
 
 export default function ExecutiveDashboard({ leadData }) {
   const [leads, setLeads] = useState([]);
   const [leadSources, setLeadSources] = useState([]);
-  const [salesManager, setSalesManager] = useState([]);
+  const [leadTodayFollowUp, setLeadTodayFollowUp] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -415,25 +610,7 @@ export default function ExecutiveDashboard({ leadData }) {
     fetchAllLeadSources();
   }, []);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onfetchFollowUpHistory= async(data)=>{
-    const response = todaysFollowUp(data);
-    if (response.isSuccess) {
-      console.log(response.result);
-      myToaster.showSuccessToast(response.message)
-    } else {
-      myToaster.showErrorToast(response.message);
-    }
-  }
-  const onSubmit = (result) => {
-    onfetchFollowUpHistory(result)
-  };
-
+  // Fetch leads
   const getAllLeads = async () => {
     try {
       const response = await fetchAllLeads();
@@ -443,15 +620,58 @@ export default function ExecutiveDashboard({ leadData }) {
     }
   };
 
+  // Fetch lead sources
   const fetchAllLeadSources = async () => {
     try {
-      const response = await leadSources();
+      const response = await fetchLeadSources();
       setLeadSources(response.result || []);
     } catch (error) {
-      console.error("Error fetching leadSources:", error);
+      console.error("Error fetching lead sources:", error);
     }
   };
 
+  // Fetch today's follow-up history
+  const onfetchFollowUpHistory = async (data) => {
+    setLoading(true);
+    try {
+      const response = await todaysFollowUp(data);
+      if (response.isSuccess) {
+        const result = Array.isArray(response.result) ? response.result : [];
+        setLeadTodayFollowUp(response.result || []);
+        myToaster.showSuccessToast(response.message);
+      } else {
+        myToaster.showErrorToast(response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching follow-up history:", error);
+      myToaster.showErrorToast("Failed to fetch follow-up data.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Form submit handler
+  const onSubmit = (data) => {
+    onfetchFollowUpHistory(data);
+  };
+
+  // React Hook Form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const headers = [
+    { key: "clientName", label: "Client Name" },
+    { key: "leadProcessStep", label: "Lead Process Step" },
+    { key: "phoneNumber", label: "Phone Number" },
+    { key: "email", label: "Email" },
+    { key: "leadComments", label: "Lead Comments" },
+    { key: "followUpDate", label: "Follow-up Date" },
+  ];
+
+  // Cards data
   const myProps = [
     {
       title: "Total Leads",
@@ -466,7 +686,7 @@ export default function ExecutiveDashboard({ leadData }) {
     },
     {
       title: "Today's Follow Up",
-      number: salesManager.length,
+      number: leadTodayFollowUp.length,
       icon: <FaBriefcase />,
     },
   ];
@@ -474,6 +694,7 @@ export default function ExecutiveDashboard({ leadData }) {
   return (
     <>
       <Card props={myProps} />
+
       <div
         style={{ marginLeft: "30px" }}
         className="d-flex justify-content-between align-items-start mb-3"
@@ -501,7 +722,7 @@ export default function ExecutiveDashboard({ leadData }) {
                   Select Date
                 </label>
                 <InputField
-                  type="date" 
+                  type="date"
                   style={{
                     padding: "0px 1.25rem 0 1.12rem",
                     maxWidth: "300px",
@@ -515,11 +736,7 @@ export default function ExecutiveDashboard({ leadData }) {
 
               {/* Lead Dropdown */}
               <div style={{ marginBottom: "22px" }}>
-
-                <label
-                  style={{}}
-                  className="h6 font-semibold text-muted text-sm d-block mb-2"
-                >
+                <label className="h6 font-semibold text-muted text-sm d-block mb-2">
                   Select Lead
                 </label>
                 <InputField
@@ -543,18 +760,39 @@ export default function ExecutiveDashboard({ leadData }) {
               </div>
             </div>
 
+            {/* Submit Button */}
             <div>
               <button
                 type="submit"
                 className="btn btn-primary"
-                style={{ width: "200px", marginLeft: "217px",marginTop:"-45px"}}
+                style={{
+                  width: "200px",
+                  marginLeft: "217px",
+                  marginTop: "-40px",
+                }}
                 disabled={loading}
               >
-                {loading ? <Spin /> : "Search"}    
+                {loading ? <Spin /> : "Search"}
               </button>
             </div>
           </form>
         </div>
+      </div>
+
+      {/* Follow-up History Grid */}
+      <div>
+        {loading ? (
+          <p>Loading...</p>
+        ) : leadTodayFollowUp.length === 0 ? (
+          <p style={{marginLeft:"32px"}}>No follow-ups for today</p>
+        ) : (
+          <Grid
+            headers={headers}
+            data={Array.isArray(leadTodayFollowUp) ? leadTodayFollowUp : []}
+            loading={loading}
+            tableName="Today's Follow-up"
+          />
+        )}
       </div>
     </>
   );
