@@ -8,7 +8,7 @@ namespace salesTrack.Domain.Models.Request
 {
     public  class TodaysFollowUpdateRequest
     {
-        public Guid LeadId { get; set; }
+       /* public Guid LeadId { get; set; }*/
         public DateTime Date {  get; set; }
     }
 }

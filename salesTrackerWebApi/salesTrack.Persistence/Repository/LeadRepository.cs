@@ -236,10 +236,44 @@ namespace salesTrack.Persistence.Repository
             return results;
         }
 
-        public async Task<LeadFollowUpHistoryResponse> TodaysFollowUpdate(TodaysFollowUpdateRequest model)
+        /* public async Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest model)
+         {
+             var data = await context.Leads
+                 .Where(l => l.Id == model.LeadId)
+                 .Include(u => u.User)
+                 .Include(l => l.ProcessSteps!)
+                     .ThenInclude(ps => ps.LeadFollowUpDate)
+                 .Include(l => l.ProcessSteps!)
+                     .ThenInclude(ps => ps.LeadComment)
+                 .Include(l => l.ProcessSteps!)
+                     .ThenInclude(ps => ps.ProcessStepAdmin)
+                 .FirstOrDefaultAsync();
+
+             if (data is null || data.ProcessSteps is null)
+             {
+                 throw new InvalidOperationException("No lead data found or lead has no process steps.");
+             }
+             else
+             {
+                 var followUpForToday = data.ProcessSteps
+                     .Where(ps => ps.LeadFollowUpDate != null && ps.LeadFollowUpDate.Any(fd => fd.Date == model.Date.Date))
+                     .Select(ps => new LeadFollowUpHistoryResponse
+                     {
+                         ClientName = ps.Lead!.User!.Name ?? "N/A",
+                         Email = ps.Lead.User.Email ?? "No Email",
+                         PhoneNumber = ps.Lead.User.PhoneNumber ?? "No Phone Number",
+                         LeadComments = ps.LeadComment!.FirstOrDefault()?.Text ?? "No Comment Here",
+                         LeadProcessStep = ps.ProcessStepAdmin?.StepName ?? "No Step Name",
+                         FollowUpDate = ps.LeadFollowUpDate!.FirstOrDefault()?.Date
+                     }).ToList(); // Change FirstOrDefault to ToList to return a collection
+
+                 return followUpForToday;
+             }
+         }*/
+
+        public async Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest model)
         {
-            var data = await context.Leads
-                .Where(l => l.Id == model.LeadId)
+            var followUpsForToday = await context.Leads
                 .Include(u => u.User)
                 .Include(l => l.ProcessSteps!)
                     .ThenInclude(ps => ps.LeadFollowUpDate)
@@ -247,30 +281,25 @@ namespace salesTrack.Persistence.Repository
                     .ThenInclude(ps => ps.LeadComment)
                 .Include(l => l.ProcessSteps!)
                     .ThenInclude(ps => ps.ProcessStepAdmin)
-                    .FirstOrDefaultAsync();
-            if (data is null || data.ProcessSteps is null)
-            {
-                throw new InvalidOperationException("No lead data found or lead has no process steps.");
-            }
-            else
-            {
-                var followUpForToday = data.ProcessSteps
-                    .Where(ps => ps.LeadFollowUpDate != null && ps.LeadFollowUpDate.Any(fd => fd.Date == model.Date.Date))
+                .Where(l => l.ProcessSteps != null
+                             && l.ProcessSteps.Any(ps => ps.LeadFollowUpDate != null
+                                                          && ps.LeadFollowUpDate.Any(fd => fd.Date.Date == model.Date.Date)))
+                .SelectMany(l => l.ProcessSteps
+                    .Where(ps => ps.LeadFollowUpDate != null
+                                 && ps.LeadFollowUpDate.Any(fd => fd.Date.Date == model.Date.Date))
                     .Select(ps => new LeadFollowUpHistoryResponse
                     {
                         ClientName = ps.Lead!.User!.Name ?? "N/A",
                         Email = ps.Lead.User.Email ?? "No Email",
                         PhoneNumber = ps.Lead.User.PhoneNumber ?? "No Phone Number",
-                        LeadComments = ps.LeadComment!.FirstOrDefault()!.Text ?? "No Commnet Here",
+                        LeadComments = ps.LeadComment!.FirstOrDefault()!.Text ?? "No Comment Here",
                         LeadProcessStep = ps.ProcessStepAdmin!.StepName ?? "No Step Name",
                         FollowUpDate = ps.LeadFollowUpDate!.FirstOrDefault()!.Date
-                    }).FirstOrDefault();
- 
-                return followUpForToday;
+                    }))
+                .ToListAsync(); 
 
-            }
+            return followUpsForToday;
         }
-
 
 
         public async Task<int> UpdateLeadProcessStep(LeadProcessSteps model)

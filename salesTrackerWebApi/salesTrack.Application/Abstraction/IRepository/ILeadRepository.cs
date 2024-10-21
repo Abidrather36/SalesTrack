@@ -17,7 +17,7 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<int> AddfollowUpdate(FollowUpDate model);
         Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId);
         Task<bool> AddProcessStep(FollowUpReq model);
-        Task<LeadFollowUpHistoryResponse> TodaysFollowUpdate(TodaysFollowUpdateRequest models);
+        Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest models);
 
     }
 }

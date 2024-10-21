@@ -647,16 +647,17 @@ namespace salesTrack.Application.Services
 
         }
 
-        public async Task<ApiResponse<LeadFollowUpHistoryResponse>> TodaysFollowUpDate(TodaysFollowUpdateRequest  model)
+        public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> TodaysFollowUpDate(TodaysFollowUpdateRequest  model)
         {
            var todaysFollowUpdate=await leadRepository.TodaysFollowUpdate(model);
-            if(todaysFollowUpdate is null)
+            if(todaysFollowUpdate is null || !todaysFollowUpdate.Any())
             {
-                return  ApiResponse<LeadFollowUpHistoryResponse>.ErrorResponse("There is No Follow Up For Such Date", HttpStatusCodes.BadRequest);
+                return  ApiResponse< IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse("There is No Follow Up For Such Date", HttpStatusCodes.BadRequest);
             }
             else
             {
-                return ApiResponse<LeadFollowUpHistoryResponse>.SuccessResponse(todaysFollowUpdate, "Follow Up Found ", HttpStatusCodes.Found);
+                return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(todaysFollowUpdate,$"{todaysFollowUpdate.Count()} Follow Up Found",HttpStatusCodes.Found
+);
             }
         }
     }

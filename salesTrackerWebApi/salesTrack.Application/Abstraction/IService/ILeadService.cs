@@ -19,7 +19,7 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<LeadFollowUpdateResponse>> AddLeadFollowUpdate(LeadFollowUpdateRequest model);
         Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> ShowLeadFollowUpHistory(Guid leadId);
         Task<ApiResponse<bool>> AddLeadFollowUpHistory(FollowUpReq model);
-        Task<ApiResponse<LeadFollowUpHistoryResponse>> TodaysFollowUpDate(TodaysFollowUpdateRequest model);
+        Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> TodaysFollowUpDate(TodaysFollowUpdateRequest model);
 
 
     }

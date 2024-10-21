@@ -66,7 +66,6 @@ function LeadList(props) {
       message: "Are you sure you want to delete this lead?",
       header: "Delete Confirmation",
       icon: "pi pi-exclamation-triangle",
-      style:"width:200px",
       accept: async () => {
         try {
           const response = await deleteLeadService(leadId);

@@ -11,7 +11,7 @@ namespace salesTrack.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = nameof(UserRole.SalesExecutive))]
+ /*   [Authorize(Roles = nameof(UserRole.SalesExecutive))]*/
     public class LeadsController : ControllerBase
     {
         private readonly ILeadService leadService;
@@ -181,7 +181,7 @@ namespace salesTrack.Api.Controllers
             }
         }
         [HttpPost("TodaysFollowUpDate")]
-        public async Task<ApiResponse<LeadFollowUpHistoryResponse>> TodaysFollowUpDate(TodaysFollowUpdateRequest model) 
+        public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> TodaysFollowUpDate(TodaysFollowUpdateRequest model) 
         {
             try
             {
