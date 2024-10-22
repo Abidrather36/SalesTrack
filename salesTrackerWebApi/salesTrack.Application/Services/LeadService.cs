@@ -660,6 +660,40 @@ namespace salesTrack.Application.Services
 );
             }
         }
+
+        public async  Task<ApiResponse<TimeSheetRequestModel>> AddTimeSheet(TimeSheetRequestModel model)
+        {
+            var loggedInUser=contextService.UserId();
+            var errorMessage = "";
+            int timeSheetAdded;
+
+            try
+            {
+                TimeSheet timeSheet = new()
+                {
+                    Date = model.Date,
+                    ProcessStep = model.ProcessStep,
+                    Comment = model.Comment,
+                    SalesExecutiveId = model.SalesExecutiveId,
+                    CreatedBy = loggedInUser,
+                    CreatedDate = DateTimeOffset.Now,
+                    ModifiedBy = Guid.Empty
+                };
+
+               timeSheetAdded= await leadRepository.AddTimeSheet(timeSheet);
+                if(timeSheetAdded > 0)
+                {
+                    return ApiResponse<TimeSheetRequestModel>.SuccessResponse(model, "Time Sheet Created ,", HttpStatusCodes.OK);
+                }
+                return ApiResponse<TimeSheetRequestModel>.ErrorResponse("Time sheet not added", HttpStatusCodes.BadRequest);
+
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "something went wrong while adding" + ex.Message;
+                return ApiResponse<TimeSheetRequestModel>.ErrorResponse(errorMessage, HttpStatusCodes.InternalServerError);
+            }
+        }
     }
     }
 public class FollowUpReq

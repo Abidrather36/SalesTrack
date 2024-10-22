@@ -11,7 +11,6 @@ import {
   MDBBreadcrumbItem,
 } from "mdb-react-ui-kit";
 import BreadcrumbComponent from "./Breadcrumb";
-
  function ProfilePage() {
   const getUserData = () => {
     const user = JSON.parse(localStorage.getItem("user"));

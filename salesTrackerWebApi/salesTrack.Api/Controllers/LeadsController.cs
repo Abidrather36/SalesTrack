@@ -194,6 +194,19 @@ namespace salesTrack.Api.Controllers
             }
 
         }
+        [HttpPost("addTimeSheet")]
+        public async Task<ApiResponse<TimeSheetRequestModel>> AddTimeSheet(TimeSheetRequestModel model)
+        {
+            try
+            {
+                return await leadService.AddTimeSheet(model);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+        }
 
     }
 }

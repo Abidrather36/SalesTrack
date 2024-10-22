@@ -65,5 +65,6 @@ namespace salesTrack.Persistence.Repository
         {
             return await context.MasterUsers.FindAsync(id);
         }
+        
     }
 }

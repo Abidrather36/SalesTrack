@@ -2,6 +2,7 @@
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Abstraction.IRepository;
+using SalesTrack.Application.Common;
 
 namespace salesTrack.Application.Abstraction.IRepository
 {
@@ -18,6 +19,7 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId);
         Task<bool> AddProcessStep(FollowUpReq model);
         Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest models);
+        Task<int> AddTimeSheet(TimeSheet model);
 
     }
 }

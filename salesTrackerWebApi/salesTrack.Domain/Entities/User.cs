@@ -11,12 +11,14 @@ namespace salesTrack.Domain.Entities
         public Guid? ReportsTo { get; set; }
 
         public Guid CompanyId { get; set; }
+        public TimeSheet? TimeSheet { get; set; }
 
         [ForeignKey(nameof(Id))]
         public MasterUser? MasterUser { get; set; }
 
         [ForeignKey(nameof(CompanyId))]
         public Company? Company { get; set; }
+
 
 
     }

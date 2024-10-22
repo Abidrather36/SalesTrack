@@ -6,6 +6,7 @@ using salesTrack.Application.Abstraction.IRepository;
 using salesTrack.Domain.Entities;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
+using SalesTrack.Application.Common;
 using SalesTrack.Domain.Entities;
 using SalesTrack.Persistence.Data;
 using SalesTrack.Persistence.Repository;
@@ -83,6 +84,14 @@ namespace salesTrack.Persistence.Repository
             context.LeadProcessSteps.Add(leadProcessStep);
             await context.SaveChangesAsync();
             return true;
+        }
+
+       
+
+        public async Task<int> AddTimeSheet(TimeSheet model)
+        {
+            await context.TimeSheets.AddAsync(model);
+            return  await context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<LeadResponseModel>> GetAllLeadsAsync()

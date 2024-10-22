@@ -144,7 +144,9 @@ export default function BasicModal({
     if (response.isSuccess) {
       myToaster.showSuccessToast("followup history added");
       setShowModel(false);
-      setShowList(true);
+      setpopUpModel(false)
+      setshowHistoryGrid(true)      
+
       fetchFollowUpHistory();
     } else {
       myToaster.showErrorToast(response.message);
