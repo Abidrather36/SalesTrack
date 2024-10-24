@@ -11,7 +11,6 @@ namespace salesTrack.Domain.Entities
         public Guid? ReportsTo { get; set; }
 
         public Guid CompanyId { get; set; }
-        public TimeSheet? TimeSheet { get; set; }
 
         [ForeignKey(nameof(Id))]
         public MasterUser? MasterUser { get; set; }
@@ -19,7 +18,7 @@ namespace salesTrack.Domain.Entities
         [ForeignKey(nameof(CompanyId))]
         public Company? Company { get; set; }
 
-
+        public ICollection<TimeSheet>? TimeSheeet { get; set; }
 
     }
 }

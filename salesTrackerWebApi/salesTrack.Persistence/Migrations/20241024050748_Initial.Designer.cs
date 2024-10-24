@@ -12,8 +12,8 @@ using SalesTrack.Persistence.Data;
 namespace salesTrack.Persistence.Migrations
 {
     [DbContext(typeof(SalesTrackDBContext))]
-    [Migration("20241022110623_TimeSheetAdded2")]
-    partial class TimeSheetAdded2
+    [Migration("20241024050748_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,17 +86,17 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7d6dc953-90f5-4674-8128-c807b360711d"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 10, 22, 16, 36, 22, 889, DateTimeKind.Unspecified).AddTicks(7888), new TimeSpan(0, 5, 30, 0, 0)),
+                            Id = new Guid("472b1333-438f-41e1-8ab7-feafe3ba4710"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 10, 24, 10, 37, 48, 207, DateTimeKind.Unspecified).AddTicks(5173), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "1zPGgxVfCFpjw9anSZ8YTtcLzFJavtjwCU90uZ9VLBA=",
+                            Password = "Pgn/yW4QIqUxsf2qbyE8f8P+X2BOBjCAi0diKSx2Jnw=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 10, 22, 11, 21, 22, 889, DateTimeKind.Unspecified).AddTicks(7956), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "zS4SpxtZ8l45emySpuHnwQ==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 10, 24, 5, 22, 48, 207, DateTimeKind.Unspecified).AddTicks(5238), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "geN3n0129MkGsk1qb3YvAw==",
                             UserRole = (byte)1
                         });
                 });
@@ -479,16 +479,15 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<DateTimeOffset?>("ModifiedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ProcessStep")
+                    b.Property<Guid?>("ProcessStepName")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("SalesExecutiveId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SalesExecutiveId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("TimeSheets");
                 });
@@ -629,8 +628,8 @@ namespace salesTrack.Persistence.Migrations
             modelBuilder.Entity("salesTrack.Domain.Entities.TimeSheet", b =>
                 {
                     b.HasOne("salesTrack.Domain.Entities.User", "User")
-                        .WithOne("TimeSheet")
-                        .HasForeignKey("salesTrack.Domain.Entities.TimeSheet", "SalesExecutiveId")
+                        .WithMany("TimeSheeet")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -695,7 +694,7 @@ namespace salesTrack.Persistence.Migrations
 
             modelBuilder.Entity("salesTrack.Domain.Entities.User", b =>
                 {
-                    b.Navigation("TimeSheet");
+                    b.Navigation("TimeSheeet");
                 });
 #pragma warning restore 612, 618
         }

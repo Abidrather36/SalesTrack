@@ -4,11 +4,14 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import { UserLists } from "../../Services/UserService";
 import { useNavigate } from "react-router-dom";
+import myToaster from "../../utils/toaster";
+import { CircularProgress } from "@mui/material";
 
 function UserList() {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true); 
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true);
+  const [showSpinner, setShowSpinner] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
@@ -21,7 +24,7 @@ function UserList() {
     { key: "userType", label: "User Type" },
     { key: "reportsToName", label: "Reports To" },
     { key: "isActive", label: "Is Active" },
-    { key: "companyName", label: "Company Name"}
+    { key: "companyName", label: "Company Name" },
   ];
 
   const breadcrumbLabels = {
@@ -47,36 +50,43 @@ function UserList() {
   ];
 
   const addUser = () => {
-     navigate("/companyAdmin/add-new-user")
+    navigate("/companyAdmin/add-new-user");
   };
 
   const fetchUsers = async () => {
-    try {
-      const response = await UserLists();
-      console.log(response.result)
+    const response = await UserLists();
+    if (response.isSuccess) {
+      console.log(response.result);
       setUsers(response.result);
-    } catch (err) {
-      console.error("Failed to fetch users", err);
-    } finally {
-      setLoading(false); 
+      setShowSpinner(false);
+    } else {
+      myToaster.showErrorToast(response.message);
+      setShowSpinner(false);
     }
+    setLoading(false);
   };
 
   return (
     <>
       <BreadcrumbComponent labels={breadcrumbLabels} />
-      <Grid
-        headers={headers}
-        buttons={btnList}
-        data={users}
-        loading={loading} 
-        onAdd={addUser}
-        tableName="Users"
-        addButtonLabel="Add User"
-      />
+      {showSpinner ? (
+        <div style={{display:"flex",justifyContent:"center",alignItems:"center",marginTop:"150px"}} >
+        <CircularProgress  />
+
+        </div>
+      ) : (
+        <Grid
+          headers={headers}
+          buttons={btnList}
+          data={users}
+          loading={loading}
+          onAdd={addUser}
+          tableName="Users"
+          addButtonLabel="Add User"
+        />
+      )}
     </>
   );
 }
 
 export default UserList;
-

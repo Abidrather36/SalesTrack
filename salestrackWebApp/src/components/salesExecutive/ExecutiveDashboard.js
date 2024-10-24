@@ -383,6 +383,7 @@ export default function ExecutiveDashboard({ leadData }) {
       title: "Total Lead Sources",
       number: leadSources.length,
       icon: <FaUsers />,
+      link:"/salesExecutive/leadSourceList"
     },
     {
       title: "Today's Follow Up",

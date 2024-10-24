@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace salesTrack.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMig : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -134,6 +134,7 @@ namespace salesTrack.Persistence.Migrations
                     AssignTo = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LeadSourceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FinalStatus = table.Column<byte>(type: "tinyint", nullable: false),
+                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -146,6 +147,12 @@ namespace salesTrack.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Leads", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Leads_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Leads_LeadSources_LeadSourceId",
                         column: x => x.LeadSourceId,
                         principalTable: "LeadSources",
@@ -156,7 +163,7 @@ namespace salesTrack.Persistence.Migrations
                         column: x => x.Id,
                         principalTable: "MasterUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -183,66 +190,13 @@ namespace salesTrack.Persistence.Migrations
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Users_MasterUsers_Id",
                         column: x => x.Id,
                         principalTable: "MasterUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FollowUpDates",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Time = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LeadId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ModifiedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DeletedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FollowUpDates", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FollowUpDates_Leads_LeadId",
-                        column: x => x.LeadId,
-                        principalTable: "Leads",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LeadComments",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LeadId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ModifiedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DeletedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LeadComments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_LeadComments_Leads_LeadId",
-                        column: x => x.LeadId,
-                        principalTable: "Leads",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -278,10 +232,104 @@ namespace salesTrack.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TimeSheets",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProcessStepName = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    HoursSpent = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ModifiedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeSheets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TimeSheets_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FollowUpDates",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Time = table.Column<TimeSpan>(type: "time", nullable: false),
+                    LeadId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LeadProcessStepId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ModifiedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FollowUpDates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FollowUpDates_LeadProcessSteps_LeadProcessStepId",
+                        column: x => x.LeadProcessStepId,
+                        principalTable: "LeadProcessSteps",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FollowUpDates_Leads_LeadId",
+                        column: x => x.LeadId,
+                        principalTable: "Leads",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LeadComments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LeadId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LeadProcessStepId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ModifiedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeadComments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LeadComments_LeadProcessSteps_LeadProcessStepId",
+                        column: x => x.LeadProcessStepId,
+                        principalTable: "LeadProcessSteps",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_LeadComments_Leads_LeadId",
+                        column: x => x.LeadId,
+                        principalTable: "Leads",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "MasterUsers",
                 columns: new[] { "Id", "CreatedBy", "CreatedDate", "DeletedBy", "DeletedDate", "Email", "IsActive", "IsPasswordTemporary", "ModifiedBy", "ModifiedDate", "Name", "Password", "PhoneNumber", "ResetCode", "ResetExpiry", "Salt", "UserRole" },
-                values: new object[] { new Guid("263ec308-f4bf-4569-a19c-453b49733e9a"), null, null, null, null, "ramrk@anterntech.com", false, true, null, null, "Ram", "mws+7klJVuwsU89AMqlpYWN88vix/qwV8ueNJKOY1jA=", "6545454543", 12345, new DateTimeOffset(new DateTime(2024, 9, 20, 9, 41, 9, 863, DateTimeKind.Unspecified).AddTicks(7383), new TimeSpan(0, 0, 0, 0, 0)), "4J1IHYryurjhWtQNbLIJGQ==", (byte)1 });
+                values: new object[] { new Guid("472b1333-438f-41e1-8ab7-feafe3ba4710"), null, new DateTimeOffset(new DateTime(2024, 10, 24, 10, 37, 48, 207, DateTimeKind.Unspecified).AddTicks(5173), new TimeSpan(0, 5, 30, 0, 0)), null, null, "ramrk@anterntech.com", false, true, null, null, "Ram", "Pgn/yW4QIqUxsf2qbyE8f8P+X2BOBjCAi0diKSx2Jnw=", "6545454543", 12345, new DateTimeOffset(new DateTime(2024, 10, 24, 5, 22, 48, 207, DateTimeKind.Unspecified).AddTicks(5238), new TimeSpan(0, 0, 0, 0, 0)), "geN3n0129MkGsk1qb3YvAw==", (byte)1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_FollowUpDates_LeadId",
@@ -289,9 +337,19 @@ namespace salesTrack.Persistence.Migrations
                 column: "LeadId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FollowUpDates_LeadProcessStepId",
+                table: "FollowUpDates",
+                column: "LeadProcessStepId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LeadComments_LeadId",
                 table: "LeadComments",
                 column: "LeadId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeadComments_LeadProcessStepId",
+                table: "LeadComments",
+                column: "LeadProcessStepId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LeadProcessSteps_AdminProcessStepId",
@@ -304,9 +362,19 @@ namespace salesTrack.Persistence.Migrations
                 column: "LeadId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Leads_CompanyId",
+                table: "Leads",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Leads_LeadSourceId",
                 table: "Leads",
                 column: "LeadSourceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeSheets_UserId",
+                table: "TimeSheets",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_CompanyId",
@@ -325,6 +393,9 @@ namespace salesTrack.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "LeadComments");
+
+            migrationBuilder.DropTable(
+                name: "TimeSheets");
 
             migrationBuilder.DropTable(
                 name: "LeadProcessSteps");

@@ -83,17 +83,17 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2e1dc1c6-c01b-44f5-bdef-8339c33a308d"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 10, 22, 16, 49, 27, 766, DateTimeKind.Unspecified).AddTicks(3815), new TimeSpan(0, 5, 30, 0, 0)),
+                            Id = new Guid("f4c7de49-4344-4fab-8bd8-fce9827e8f68"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 10, 24, 10, 42, 58, 116, DateTimeKind.Unspecified).AddTicks(7693), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "r+uqpqfVVBkeMRMdUNNIs71CkdIY2W1iq2dAWhxw2LA=",
+                            Password = "2S2NbSZA7nc1oFPn1SbQyXBDm+1cyDdobkm1Zh2XyHE=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 10, 22, 11, 34, 27, 766, DateTimeKind.Unspecified).AddTicks(3881), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "VsC6GwNajLMdqvvUmgD+HQ==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 10, 24, 5, 27, 58, 116, DateTimeKind.Unspecified).AddTicks(7787), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "LYwHxCpJxbefHukLqjy/Qg==",
                             UserRole = (byte)1
                         });
                 });
@@ -476,17 +476,15 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<DateTimeOffset?>("ModifiedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ProcessStep")
+                    b.Property<Guid?>("ProcessStepName")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("SalesExecutiveId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SalesExecutiveId")
-                        .IsUnique()
-                        .HasFilter("[SalesExecutiveId] IS NOT NULL");
+                    b.HasIndex("UserId");
 
                     b.ToTable("TimeSheets");
                 });
@@ -627,8 +625,10 @@ namespace salesTrack.Persistence.Migrations
             modelBuilder.Entity("salesTrack.Domain.Entities.TimeSheet", b =>
                 {
                     b.HasOne("salesTrack.Domain.Entities.User", "User")
-                        .WithOne("TimeSheet")
-                        .HasForeignKey("salesTrack.Domain.Entities.TimeSheet", "SalesExecutiveId");
+                        .WithMany("TimeSheeet")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -691,7 +691,7 @@ namespace salesTrack.Persistence.Migrations
 
             modelBuilder.Entity("salesTrack.Domain.Entities.User", b =>
                 {
-                    b.Navigation("TimeSheet");
+                    b.Navigation("TimeSheeet");
                 });
 #pragma warning restore 612, 618
         }

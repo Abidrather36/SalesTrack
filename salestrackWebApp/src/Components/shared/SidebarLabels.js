@@ -5,9 +5,11 @@ import {
   FaListAlt,
   FaUsers,
   FaClipboardList,
+  FaStream ,
   FaClock,
+  FaBullhorn 
 } from "react-icons/fa";
-
+import { Source } from "@mui/icons-material";
 export const PortalAdminsidebarLabels = [
   {
     id: 1,
@@ -92,4 +94,17 @@ export const SalesExectivesidebarLabels = [
     link: "/salesExecutive/timeSheet",
     icon: <FaClock />,
   },
+  {
+    id:5,
+    label:"Register Lead Source",
+    link: "/salesExecutive/registerLeadSource",
+    icon: <FaBullhorn />
+  },
+  { 
+    id:6,
+    label:"Lead Source List",
+    link:"/salesExecutive/leadSourceList",
+    icon:<Source />,
+
+  }
 ];

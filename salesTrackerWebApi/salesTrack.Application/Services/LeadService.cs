@@ -663,7 +663,7 @@ namespace salesTrack.Application.Services
 
         public async  Task<ApiResponse<TimeSheetRequestModel>> AddTimeSheet(TimeSheetRequestModel model)
         {
-            var loggedInUser=contextService.UserId();
+            var loggedInUser = contextService.UserId();
             var errorMessage = "";
             int timeSheetAdded;
 
@@ -672,16 +672,19 @@ namespace salesTrack.Application.Services
                 TimeSheet timeSheet = new()
                 {
                     Date = model.Date,
-                    ProcessStep = model.ProcessStep,
+                    ProcessStepName = model.ProcessStep,
                     Comment = model.Comment,
-                    SalesExecutiveId = model.SalesExecutiveId,
+                    HoursSpent=model.HoursSpent,
+                    UserId = loggedInUser,
                     CreatedBy = loggedInUser,
                     CreatedDate = DateTimeOffset.Now,
-                    ModifiedBy = Guid.Empty
+                    ModifiedBy = Guid.Empty,
+                    IsActive=true
+                    
                 };
 
-               timeSheetAdded= await leadRepository.AddTimeSheet(timeSheet);
-                if(timeSheetAdded > 0)
+               int res= await leadRepository.AddTimeSheet(timeSheet);
+                if(res > 0)
                 {
                     return ApiResponse<TimeSheetRequestModel>.SuccessResponse(model, "Time Sheet Created ,", HttpStatusCodes.OK);
                 }

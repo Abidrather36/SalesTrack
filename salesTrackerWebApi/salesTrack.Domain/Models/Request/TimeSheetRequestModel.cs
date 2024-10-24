@@ -20,8 +20,6 @@ namespace salesTrack.Domain.Models.Request
         [Required]
 
         public string? Comment { get; set; }
-        [Required]
 
-        public Guid? SalesExecutiveId { get; set; }
     }
 }

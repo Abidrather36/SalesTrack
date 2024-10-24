@@ -1,19 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar } from "primereact/calendar";
-import {
-  Button,
-  Modal,
-  Box,
-  Typography,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Snackbar,
-} from "@mui/material";
+import {Button,Modal,Box,Typography,TextField,FormControl,InputLabel,Select,MenuItem,Snackbar,FormHelperText,} from "@mui/material";
 import Spin from "../public/Spin";
 import MuiAlert from "@mui/material/Alert";
+import { useForm } from "react-hook-form";
+import { getAllProcessSteps } from "../../Services/UserService";
+import myToaster from "../../utils/toaster";
+import { addTimeSheet } from "../../Services/LeadService";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -22,76 +15,95 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const TimeSheet = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [isMonday, setIsMonday] = useState(false);
-  const [open, setOpen] = useState(false); // State to manage modal visibility
-  const [formDate, setFormDate] = useState(null); // State for the date in the form
+  const [open, setOpen] = useState(false); 
+  const [formDate, setFormDate] = useState(null); 
   const [loading, setLoading] = useState(false);
-  const [processStep, setProcessStep] = useState(""); // State for selected process step
-  const [comments, setComments] = useState(""); // State for comments
-  const [hoursspent, setHoursSpent] = useState();
+  const [comments, setComments] = useState(""); 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [processSteps, setProcessSteps] = useState([]);
 
-  // Example process steps, replace with your data
-  const processSteps = [
-    { label: "Step 1", value: "step1" },
-    { label: "Step 2", value: "step2" },
-    { label: "Step 3", value: "step3" },
-  ];
+  useEffect(() => {
+    fetchProcessSteps();
+  }, []);
+  
+  useEffect(() => {
+    if (selectedDate) {
+      const startOfWeekDate = getStartOfWeek(new Date(selectedDate));
+      myToaster.showErrorToast(
+        `Start of the Week: ${startOfWeekDate.toDateString()}`
+      );
+    }
+  }, [selectedDate]);;
 
-  // Function to get the start of the week (Monday) for the selected date
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+
   const getStartOfWeek = (date) => {
     const day = date.getDay();
     const difference = date.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
     return new Date(date.setDate(difference));
   };
 
-  // Handle Date Selection
   const handleDateSelect = (date) => {
     setSelectedDate(date);
     const selectedDay = date.getDay();
     setIsMonday(selectedDay === 1);
   };
 
-  // Function to show the modal
   const showDialog = () => {
     if (selectedDate) {
       const startOfWeekDate = getStartOfWeek(new Date(selectedDate));
       setFormDate(startOfWeekDate);
+      setValue("date", startOfWeekDate); // Set the date in the form
     }
     setOpen(true);
-    setProcessStep(""); // Reset process step
-    setComments(""); // Reset comments
-    setHoursSpent(0);
   };
 
-  // Function to hide the modal
   const hideDialog = () => {
     setOpen(false);
   };
 
-  // Handle form submission in the modal
-  const handleSubmit = () => {
-    if (!formDate || !processStep || !comments) {
+  const handleSubmitDate = () => {
+    if (!formDate || !processSteps || !comments) {
       setSnackbarSeverity("error");
-      setSnackbarMessage("Please select a valid date,process step and Comments.");
+      setSnackbarMessage(
+        "Please select a valid date, process step and Comments."
+      );
       setSnackbarOpen(true);
       return;
     }
 
-    // Add validation logic here
-    // ...
-
-    // Hide the modal after submission
     hideDialog();
     setSnackbarSeverity("success");
     setSnackbarMessage("Time sheet entry saved successfully.");
     setSnackbarOpen(true);
   };
 
-  // Snackbar close handler
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
+  };
+
+  const fetchProcessSteps = async () => {
+    try {
+      const response = await getAllProcessSteps();
+      console.log(response.result);
+      setProcessSteps(response.result);
+    } catch (error) {
+      myToaster.showErrorToast("Failed to fetch process steps.");
+    }
+  };
+
+  const onSubmit = async (timeSheet) => {
+    timeSheet.hoursSpent = Number(timeSheet.hoursSpent);
+    console.log(timeSheet)
+    const response = await addTimeSheet(timeSheet);
+    console.log(response);
+    if (response.isSuccess) {
+      myToaster.showSuccessToast(response.message);
+    } else {
+      myToaster.showErrorToast(response.message);
+    }
   };
 
   return (
@@ -110,15 +122,15 @@ const TimeSheet = () => {
         Time Sheet
       </h2>
 
-      {/* Display the Start of the Week */}
+      {/* Display the Start of the Week
       {selectedDate && (
         <div className="start-of-week-label">
-          <label>
+          <label style={{color:"red"}}>
             Start of the Week:{" "}
             {getStartOfWeek(new Date(selectedDate)).toDateString()}
           </label>
         </div>
-      )}
+      )} */}
 
       {/* Calendar */}
       <div className="calendar-container">
@@ -158,96 +170,77 @@ const TimeSheet = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            width: 500,
             bgcolor: "background.paper",
             border: "2px solid #000",
             boxShadow: 24,
             p: 4,
           }}
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
         >
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Add New Entry
-          </Typography>
-
-          <div className="p-field">
+          </Typography> 
+          <br></br>
+          <div className="mb-1">
             <label htmlFor="date">Selected Date (Monday - Saturday)</label>
-            <Calendar
-              id="date"
-              value={formDate}
-              onChange={(e) => setFormDate(e.value)}
-              minDate={formDate || new Date()} // Set a fallback date
-              maxDate={
-                formDate
-                  ? new Date(
-                      formDate.getFullYear(),
-                      formDate.getMonth(),
-                      formDate.getDate() + 5
-                    )
-                  : null
-              } // Check for formDate
-              disabledDays={[0]} // Disable Sundays
-              showIcon
-              inputStyle={{
-                width: "100%",
-                padding: "10px",
-                boxSizing: "border-box",
-              }}
-              style={{
-                width: "100%",
-                marginBottom: "16px",
-              }}
-            />
+            <input type="date" className="form-control" {...register("date",{required:true})}>
+            {errors.date && (
+            <span className="text-danger">{errors.date.message}</span>
+            )}
+            </input>
           </div>
-
           {/* Process Step Dropdown */}
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel id="process-step-label">Process Step</InputLabel>
             <Select
               labelId="process-step-label"
-              value={processStep}
-              onChange={(e) => setProcessStep(e.target.value)}
+              id="processStep"
               label="Process Step"
-              required
+              {...register("processStep", { required: true })}
+              error={Boolean(errors.processStep)}
             >
               {processSteps.map((step) => (
-                <MenuItem key={step.value} value={step.value}>
-                  {step.label}
+                <MenuItem key={step.id} value={step.id}>
+                  {step.stepName}
                 </MenuItem>
               ))}
             </Select>
+            {errors.adminProcessStepId && (
+              <FormHelperText error>
+                {errors.adminProcessStepId.message}
+              </FormHelperText>
+            )}
           </FormControl>
           <TextField
-            id="hoursspent"
+            id="hoursSpent"
             label="Hours Spent"
-            value={hoursspent}
             type="number"
-            onChange={(e) => setHoursSpent(e.target.value)}
+            {...register("hoursSpent", { required: false })}
             fullWidth
             sx={{ mb: 2 }}
             placeholder="Enter Hours Spent"
             inputProps={{
-              min: 0, // Prevent negative numbers
-              step: 0.1, // Allow decimal inputs if needed, change to 1 if only whole numbers are allowed
+              min: 0,
+              step: 0.1,
             }}
           />
-
           {/* Comments Section */}
           <TextField
-            id="comments"
+            id="comment"
             label="Comments"
             multiline
             rows={4}
-            value={comments}
-            onChange={(e) => setComments(e.target.value)}
+            {...register("comment", { required: false })}
             fullWidth
             sx={{ mb: 2 }}
             required
             placeholder="Enter your comments here"
             helperText={!comments ? "Comments are required." : ""}
           />
-
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
+            <Button variant="contained" color="primary" type="submit">
               Submit
             </Button>
             <Button
@@ -266,7 +259,7 @@ const TimeSheet = () => {
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }} // Position the snackbar at the top right
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Alert
           onClose={handleSnackbarClose}

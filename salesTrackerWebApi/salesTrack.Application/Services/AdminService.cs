@@ -349,7 +349,7 @@ namespace salesTrack.Application.Services
             if (dbSet == null || !dbSet.Any())
             {
                 return ApiResponse<IEnumerable<UserResponseModel>>.ErrorResponse(
-                    ApiMessages.Auth.UserNotFound,
+                    "No Users Found",
                     HttpStatusCodes.BadRequest
                 );
             }

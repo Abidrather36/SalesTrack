@@ -14,8 +14,7 @@ import { deleteLead as deleteLeadService } from "../../Services/LeadService";
 import { confirmDialog, ConfirmDialog } from "primereact/confirmdialog";
 import myToaster from "../../utils/toaster";
 import BasicModal from "./AddfollowUpdate";
-import { Troubleshoot } from "@mui/icons-material";
-import { classNames } from "primereact/utils";
+
 function LeadList(props) {
   const [leads, setLeads] = useState([]);
   const navigate = useNavigate();
@@ -86,16 +85,15 @@ function LeadList(props) {
   };
 
   const fetchAllLeads = async () => {
-    setLoading(true);
-
-    try {
+      setLoading(true);
       const response = await getAllLeads();
-      setLeads(response.result);
-    } catch (err) {
-      console.error("Failed to fetch leads", err);
-    } finally {
+      if(response.result){
+        setLeads(response.result)
+      }
+      else{
+        myToaster.showErrorToast(response.message)
+      }
       setLoading(false);
-    }
   };
 
   const fetchAssignTo = async () => {

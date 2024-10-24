@@ -42,3 +42,7 @@ export const todaysFollowUp=async (leadTodaysFollowUp)=>{
     let res=await axiosObject.post(`${ApiUrl}Leads/TodaysFollowUpDate`,leadTodaysFollowUp).then(res=> res.data) 
     return res;
 }
+export const addTimeSheet =async(timeSheetModel)=>{
+    let res=await axiosObject.post(`${ApiUrl}Leads/addTimeSheet`,timeSheetModel).then(res=>res.data)
+    return res;
+}

@@ -20,12 +20,10 @@ const AddUser = () => {
     setLoading(true);
     try {
       data.userType = Number(data.userType);
-      console.log("register user data",data)
       const response = await registerUser(data);
-      console.log(response)
       if (response.isSuccess) 
         {
-        myToaster.showSuccessToast(response.message);
+        myToaster.showSuccessToast("user added successfully");
         setLoading(false);
         navigate("/companyAdmin/userList");
       } 
@@ -142,7 +140,7 @@ const AddUser = () => {
                   })}
                 >
                   <option value="">Select Reports To</option>
-                  <option value="371869A4-99ED-49FF-8D4D-794486F511CE"> 
+                  <option value="F4C7DE49-4344-4FAB-8BD8-FCE9827E8F68"> 
                     Ram
                   </option>
                 </InputField>
