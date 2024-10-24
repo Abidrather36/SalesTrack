@@ -321,43 +321,6 @@ namespace salesTrack.Application.Services
         }
 
 
-        /*   public async Task<ApiResponse<ProcessResponseModel>> UpdateLeadProcessSteps(LeadProcessUpdateModel model)
-           {
-               try
-               {
-                   var processStep = await leadRepository.GetLeadProcessStepById(model.Id);
-                   if (processStep is null)
-                   {
-                       return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.Process.ProcessNotFound, HttpStatusCodes.BadRequest);
-                   }
-                   else
-                   {
-                       processStep.StepDescription = model.StepDescription;
-
-                       var result = await leadRepository.UpdateLeadProcessStep(processStep);
-                       if (result > 0)
-                       {
-                           return ApiResponse<ProcessResponseModel>.SuccessResponse(new ProcessResponseModel
-                           {
-                               Id = processStep.Id,
-                               StepDescription = processStep.StepDescription,
-                           }, ApiMessages.Process.ProcessUpdatedSuccessfully, HttpStatusCodes.OK);
-                       }
-                       else
-                       {
-                           return ApiResponse<ProcessResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
-
-                       }
-                   }
-               }
-
-               catch (Exception ex)
-               {
-                     return ApiResponse<ProcessResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
-
-               }
-
-           }*/
 
         public async Task<ApiResponse<LeadProcessResponseModel>> AddLeadProcessStep(LeadProcessRequestModel model)
         {

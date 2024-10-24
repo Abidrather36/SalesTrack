@@ -166,54 +166,7 @@ namespace salesTrack.Persistence.Repository
             return procStep;
         }
 
-        /*  public async Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId)
-          {
-              var query = await (from ms in context.MasterUsers
-                                 join l in context.Leads on ms.Id equals l.Id
-                                 join lc in context.LeadComments on l.Id equals lc.LeadId into leadCommentsGroup
-                                 from lc in leadCommentsGroup.DefaultIfEmpty()
-                                 join lps in context.LeadProcessSteps on l.Id equals lps.LeadId into leadProcessStepsGroup
-                                 from lps in leadProcessStepsGroup.DefaultIfEmpty()
-                                 join fd in context.FollowUpDates on l.Id equals fd.LeadId into followUpDatesGroup
-                                 from fd in followUpDatesGroup.DefaultIfEmpty()
-                                 where l.Id == leadId
-                                 select new LeadFollowUpHistoryResponse
-                                 {
-                                     ClientName = ms.Name,
-                                     Email = ms.Email,
-                                     PhoneNumber = ms.PhoneNumber,
-                                     LeadProcessStep = lps.ProcessStepAdmin.StepName,
-                                     LeadComments = lc.Text,
-                                     FollowUpDate = fd.Date,
-                                 }).ToListAsync();
-
-              return query;
-
-
-          }*/
-        /*        public async Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId)
-                {
-                    var result = await (from lead in context.Leads
-                                        join user in context.MasterUsers on lead.Id equals user.Lead!.Id
-                                        join followUp in context.FollowUpDates on lead.Id equals followUp.LeadId
-                                        join processStep in context.LeadProcessSteps on followUp.LeadProcessStepId equals processStep.Id into processSteps
-                                        from processStep in processSteps.DefaultIfEmpty()
-                                        join comment in context.LeadComments on followUp.LeadProcessStepId equals comment.LeadProcessStepId into comments
-                                        from comment in comments.DefaultIfEmpty()
-                                        where lead.Id == leadId
-                                        select new LeadFollowUpHistoryResponse
-                                        {
-                                            ClientName = user.Name,
-                                            LeadProcessStep = processStep.ProcessStepAdmin.StepName,
-                                            PhoneNumber = user.PhoneNumber,
-                                            Email = user.Email,
-                                            LeadComments = comment.Text,
-                                            FollowUpDate = followUp.Date
-                                        }).ToListAsync();
-
-                    return result;
-                }*/
-
+       
         public async Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId)
         {
             var data = await context.Leads
@@ -245,41 +198,7 @@ namespace salesTrack.Persistence.Repository
             return results;
         }
 
-        /* public async Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest model)
-         {
-             var data = await context.Leads
-                 .Where(l => l.Id == model.LeadId)
-                 .Include(u => u.User)
-                 .Include(l => l.ProcessSteps!)
-                     .ThenInclude(ps => ps.LeadFollowUpDate)
-                 .Include(l => l.ProcessSteps!)
-                     .ThenInclude(ps => ps.LeadComment)
-                 .Include(l => l.ProcessSteps!)
-                     .ThenInclude(ps => ps.ProcessStepAdmin)
-                 .FirstOrDefaultAsync();
-
-             if (data is null || data.ProcessSteps is null)
-             {
-                 throw new InvalidOperationException("No lead data found or lead has no process steps.");
-             }
-             else
-             {
-                 var followUpForToday = data.ProcessSteps
-                     .Where(ps => ps.LeadFollowUpDate != null && ps.LeadFollowUpDate.Any(fd => fd.Date == model.Date.Date))
-                     .Select(ps => new LeadFollowUpHistoryResponse
-                     {
-                         ClientName = ps.Lead!.User!.Name ?? "N/A",
-                         Email = ps.Lead.User.Email ?? "No Email",
-                         PhoneNumber = ps.Lead.User.PhoneNumber ?? "No Phone Number",
-                         LeadComments = ps.LeadComment!.FirstOrDefault()?.Text ?? "No Comment Here",
-                         LeadProcessStep = ps.ProcessStepAdmin?.StepName ?? "No Step Name",
-                         FollowUpDate = ps.LeadFollowUpDate!.FirstOrDefault()?.Date
-                     }).ToList(); // Change FirstOrDefault to ToList to return a collection
-
-                 return followUpForToday;
-             }
-         }*/
-
+      
         public async Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest model)
         {
             var followUpsForToday = await context.Leads
