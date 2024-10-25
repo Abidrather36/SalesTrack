@@ -21,6 +21,7 @@ import DateTimePickers from "./components/salesExecutive/TodaysFollowUpdate"
 import TimeSheet from "./components/salesExecutive/TimeSheet"
 import LeadSource from "./components/salesExecutive/RegisterLeadSource"
 import LeadSourceList from "./components/salesExecutive/LeadSourceList"
+import TestimonialsComponent from "./components/public/TestimonialsComponent "
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -29,6 +30,7 @@ export const routerConfiguration = {
     { path: "contact", element: <Contact /> },
     { path: "enquiry", element: <RegisterEnquiry /> },
     { path: "login", element: < Login/> },
+    { path: "testimonial", element:<TestimonialsComponent/>}
   ],
   AdminRoutes: [
     { path: "/admin", element: <AdminDashboard /> },

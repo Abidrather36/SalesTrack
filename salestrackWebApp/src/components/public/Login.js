@@ -7,6 +7,7 @@ import myToaster from "../../utils/toaster";
 import ChangePasswordModal from "../../Shared/PasswordChangeModel";
 import storage from "../../utils/storages";
 import { loginUser } from "../../Services/AuthService";
+import "./LoginComponent.css"
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -70,7 +71,7 @@ const Login = () => {
       >
         {!showChangePasswordModal && (
           <>
-            <div className="col-lg-6 mb-4 mb-lg-0">
+            <div className="col-lg-6 mb-4 mb-lg-0 img">
               <img
                 src="https://i.ibb.co/ystg5fH/guardian-digital-realm-mans-vigilance-login-gate-1134661-21407.jpg"
                 alt="Login Illustration"

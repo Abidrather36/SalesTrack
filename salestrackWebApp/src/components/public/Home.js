@@ -3,6 +3,7 @@ import "primeicons/primeicons.css";
 import { PrimeIcons } from "primereact/api";
 import Contact from "./Contact";
 import About from "./About";
+import TestimonialsComponent from "./TestimonialsComponent "
 
 const HomePage = () => {
   return (
@@ -118,8 +119,12 @@ const HomePage = () => {
           </section>
         </main>
       </div>
-      <Contact />
+      <div style={{marginTop:"20px"}}>
       <About />
+
+      </div>
+      <Contact />
+      <TestimonialsComponent/>
     </>
   );
 };

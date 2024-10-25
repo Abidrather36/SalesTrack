@@ -10,6 +10,8 @@ import {
   FaBullhorn 
 } from "react-icons/fa";
 import { Source } from "@mui/icons-material";
+import {CalendarTodayIcon } from '@mui/icons-material/CalendarToday';
+import EventNoteIcon from '@mui/icons-material/EventNote';
 export const PortalAdminsidebarLabels = [
   {
     id: 1,
@@ -106,5 +108,11 @@ export const SalesExectivesidebarLabels = [
     link:"/salesExecutive/leadSourceList",
     icon:<Source />,
 
+  },
+  {
+    id:7,
+    label:"Time Sheet List",
+    link:"/salesExecutive/timeSheetList",
+    icon:<EventNoteIcon/>
   }
 ];

@@ -27,15 +27,6 @@ const TimeSheet = () => {
   useEffect(() => {
     fetchProcessSteps();
   }, []);
-  
-  // useEffect(() => {
-  //   if (selectedDate) {
-  //     const startOfWeekDate = getStartOfWeek(new Date(selectedDate));
-  //     myToaster.showErrorToast(
-  //       `Start of the Week: ${startOfWeekDate.toDateString()}`
-  //     );
-  //   }
-  // }, [selectedDate]);;
 
   const { register, handleSubmit, formState: { errors }, setValue } = useForm();
 
@@ -103,6 +94,7 @@ const TimeSheet = () => {
   };
 
   const onSubmit = async (timeSheet) => {
+    setLoading(true)
     timeSheet.hoursSpent = Number(timeSheet.hoursSpent);
     console.log(timeSheet)
     const response = await addTimeSheet(timeSheet);
@@ -112,6 +104,7 @@ const TimeSheet = () => {
     } else {
       myToaster.showErrorToast(response.message);
     }
+    setLoading(false)
   };
 
   return (
@@ -129,16 +122,6 @@ const TimeSheet = () => {
       >
         Time Sheet
       </h2>
-
-      {/* Display the Start of the Week
-      {selectedDate && (
-        <div className="start-of-week-label">
-          <label style={{color:"red"}}>
-            Start of the Week:{" "}
-            {getStartOfWeek(new Date(selectedDate)).toDateString()}
-          </label>
-        </div>
-      )} */}
 
       {/* Calendar */}
       <div className="calendar-container">
@@ -249,11 +232,17 @@ const TimeSheet = () => {
             helperText={!comments ? "Comments are required." : ""}
           />
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Button variant="contained" color="primary" type="submit">
+            {loading ?(
+              <button type="submit" className="login-button" disabled>
+              <Spin />
+            </button>
+            ):(
+              <Button variant="contained" color="primary" type="submit">
               Submit
-              {loading ? <Spin /> : ""}
 
             </Button>
+            )}
+          
             <Button
               variant="outlined"
               onClick={hideDialog}
