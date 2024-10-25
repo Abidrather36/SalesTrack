@@ -28,14 +28,14 @@ const TimeSheet = () => {
     fetchProcessSteps();
   }, []);
   
-  useEffect(() => {
-    if (selectedDate) {
-      const startOfWeekDate = getStartOfWeek(new Date(selectedDate));
-      myToaster.showErrorToast(
-        `Start of the Week: ${startOfWeekDate.toDateString()}`
-      );
-    }
-  }, [selectedDate]);;
+  // useEffect(() => {
+  //   if (selectedDate) {
+  //     const startOfWeekDate = getStartOfWeek(new Date(selectedDate));
+  //     myToaster.showErrorToast(
+  //       `Start of the Week: ${startOfWeekDate.toDateString()}`
+  //     );
+  //   }
+  // }, [selectedDate]);;
 
   const { register, handleSubmit, formState: { errors }, setValue } = useForm();
 
@@ -49,7 +49,15 @@ const TimeSheet = () => {
     setSelectedDate(date);
     const selectedDay = date.getDay();
     setIsMonday(selectedDay === 1);
+  
+    if (selectedDay !== 1) {
+      const startOfWeekDate = getStartOfWeek(new Date(date));
+      myToaster.showErrorToast(
+        `Please select a Monday to add a new timesheet entry. Start of the Week: ${startOfWeekDate.toDateString()}`
+      );
+    }
   };
+  
 
   const showDialog = () => {
     if (selectedDate) {
@@ -221,6 +229,7 @@ const TimeSheet = () => {
             fullWidth
             sx={{ mb: 2 }}
             placeholder="Enter Hours Spent"
+            required="Hours is required"
             inputProps={{
               min: 0,
               step: 0.1,
@@ -242,6 +251,8 @@ const TimeSheet = () => {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Button variant="contained" color="primary" type="submit">
               Submit
+              {loading ? <Spin /> : ""}
+
             </Button>
             <Button
               variant="outlined"

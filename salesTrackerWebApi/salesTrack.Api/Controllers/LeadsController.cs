@@ -36,11 +36,12 @@ namespace salesTrack.Api.Controllers
         }
         [HttpGet("GetLeadById/{id:guid}")]
 
-        public async Task<ApiResponse<LeadResponseModel>> GetLeadById(Guid id)
+        public async Task<IActionResult> GetLeadById(Guid id)
         {
             try
             {
-                return await leadService.GetLeadById(id);
+                var res= await leadService.GetLeadById(id);
+                return Ok(res);
             }
             catch (Exception ex)
             {
