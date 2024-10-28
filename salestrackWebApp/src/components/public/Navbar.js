@@ -1,6 +1,8 @@
 import { PrimeIcons } from "primereact/api";
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../../utils/logo_salestrack_blue.png"
+
 let projectLogoName = "Sales Track";
 
 function Navbar() {
@@ -31,7 +33,7 @@ function Navbar() {
                 margin: 0,
               }}
             >
-              {projectLogoName.toLocaleLowerCase()}
+             <img src={logo} style={{maxHeight:"76px"}} />
             </h1>
             </Link>
           </a>
@@ -56,7 +58,7 @@ function Navbar() {
                 <Link
                   to="/"
                   className="active"
-                  style={{ textDecoration: "none", color: "#333", fontWeight:"600",}}
+                  style={{ textDecoration: "none", color: "#333",  fontWeight:"600",}}
                 >
                   HOME
                 </Link>
@@ -96,7 +98,7 @@ function Navbar() {
             className="btn-getstarted"
             style={{
               color: "var(--contrast-color)",
-              background: "var(--accent-color)",
+              background: "#5a5c98",
               fontSize: "14px",
               padding: "8px 25px",
               margin: "0 0 0 30px",

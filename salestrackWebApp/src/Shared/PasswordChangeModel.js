@@ -8,7 +8,7 @@ import storage from "../utils/storages";
 import myToaster from "../utils/toaster";
 import { useNavigate } from "react-router-dom";
 
-function ChangePasswordModal({ open, handleClose }) {
+function ChangePasswordModal({ open, handleClose,currentPassword }) {
   const navigate=useNavigate()
   const [show, setShow] = useState(open);
   const {
@@ -28,9 +28,12 @@ function ChangePasswordModal({ open, handleClose }) {
   const onFormSubmit = async (data) => {
     const token = storage.getItem("salesTrack");
     const bearerToken = `Bearer ${token.replace(/"/g, "")}`;
+    data.oldPassword=currentPassword;
+    console.log(currentPassword)
     const response = await changePassword(data, bearerToken);
     if(response.isSuccess){
       myToaster.showSuccessToast(response.message)
+      setShow(false)
       navigate("/login")
     }
   };
@@ -42,19 +45,6 @@ function ChangePasswordModal({ open, handleClose }) {
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Form.Group className="mb-3" controlId="currentPassword">
-            <Form.Label>Current Password</Form.Label>
-            <Form.Control
-              type="password"
-              name="oldPassword"
-              {...register("oldPassword", {
-                require: "old password is required",
-              })}
-              placeholder="Enter current password"
-              autoFocus
-            />
-            {errors.oldPassword && <div>{errors.oldPassword.message}</div>}
-          </Form.Group>
           <Form.Group className="mb-3" controlId="newPassword">
             <Form.Label>New Password</Form.Label>
             <Form.Control

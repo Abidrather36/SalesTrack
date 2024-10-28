@@ -193,7 +193,7 @@ const TimeSheet = () => {
               error={Boolean(errors.processStep)}
             >
               {processSteps.map((step) => (
-                <MenuItem key={step.id} value={step.id}>
+                <MenuItem key={step.id} value={step.stepName}>
                   {step.stepName}
                 </MenuItem>
               ))}
@@ -232,6 +232,7 @@ const TimeSheet = () => {
             helperText={!comments ? "Comments are required." : ""}
           />
           <div style={{ display: "flex", justifyContent: "space-between" }}>
+            
             {loading ?(
               <button type="submit" className="login-button" disabled>
               <Spin />

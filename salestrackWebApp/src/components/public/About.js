@@ -17,9 +17,9 @@ const About = () => {
           <div className="col-12 col-lg-6 col-xl-7" >
             <div className="row justify-content-xl-center">
               <div className="col-12 col-xl-11">
-                <h2 className="mb-3">What Is Sales Track?</h2>
+                <h2 className="mb-3">What Is Sales Tern?</h2>
                 <p className="lead fs-4 text-secondary mb-3">
-                  Sales Track helps businesses manage their sales process efficiently, from lead generation to follow-ups and conversions.
+                  Sales Tern helps businesses manage their sales process efficiently, from lead generation to follow-ups and conversions.
                 </p>
                 <p className="mb-5">
                   We are committed to helping sales teams streamline their efforts with an innovative platform. Our tool is designed for collaboration, productivity, and delivering excellent customer experiences. We continuously work on improving features to meet evolving business needs.

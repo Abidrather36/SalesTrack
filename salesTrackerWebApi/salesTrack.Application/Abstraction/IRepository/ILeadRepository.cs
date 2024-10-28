@@ -20,6 +20,7 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<bool> AddProcessStep(FollowUpReq model);
         Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest models);
         Task<int> AddTimeSheet(TimeSheet model);
+        Task<IEnumerable<TimeSheetResponseModel>> GetAllTimeSheetsByUser(Guid userId);
 
     }
 }

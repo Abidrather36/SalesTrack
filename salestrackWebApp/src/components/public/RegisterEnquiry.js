@@ -1,106 +1,69 @@
-import { useState } from "react";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { HttpStatusCode } from "axios";
-import myToaster from "../../utils/toaster";
-import { signUpUser } from "../../Services/AuthService";
-import InputField from "./InputField"
-import Spin from "./Spin"
+
+import React from 'react';
+import './login.css'; // Custom CSS for styling if needed
+import logo from "../../utils/logo_salestrack_blue.png"
+
 function RegisterEnquiry() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [signUpData, setSignUpData] = useState({});
-
-  async function sendEnquiry(e) {
-    e.preventDefault();
-    setLoading(true);
-
-    const signUpObj = {
-      name,
-      email,
-      phoneNumber,
-    };
-    try {
-      const response = await signUpUser(signUpObj);
-      console.log(response);
-      if (response.isSuccess) {
-        myToaster.showSuccessToast(response.message);
-      } else {
-        myToaster.showErrorToast(response.message);
-      }
-    } catch (error) {
-      if (error.message === HttpStatusCode.BadRequest) {
-        myToaster.showErrorToast("incorrect payload!");
-      } else {
-        myToaster.showErrorToast(error.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const showPayload = () => {
-    console.log("Payload:", signUpData);
-  };
-
   return (
-    <>
-      <ToastContainer />
-      <div className="flex" style={{ display: "flex", flexDirection: "row" }}>
-        <div className="col-lg-6 mb-4 mb-lg-0">
+    <div className="container">
+      <div className="row m-5 no-gutters shadow-lg">
+        <div className="col-md-6 d-none d-md-block">
           <img
-            src="https://img.freepik.com/free-vector/customer-support-flat-design-illustration_23-2148889374.jpg?w=740&t=st=1725513124~exp=1725513724~hmac=0b88373e2075b3e0b214c074602fcc7224cf99d914f88953399486897ccd9902"
-            alt="Enquiry"
-            className="img-fluid"
-            style={{ maxWidth: "100%", height: "80%", marginLeft: "50px" }}
+           src="https://img.freepik.com/free-vector/customer-support-flat-design-illustration_23-2148889374.jpg?w=740&t=st=1725513124~exp=1725513724~hmac=0b88373e2075b3e0b214c074602fcc7224cf99d914f88953399486897ccd9902"
+            className="img-fluid rounded-3"
+            alt="Background"
+            style={{ minHeight: '100%' }}
           />
         </div>
+        <div className="col-md-6 bg-white p-5 rounded-3">
+          <div  style={{maxWidth:"60%",marginLeft:"90px"}}>
 
-        <div className="col-lg-6 mb-4-lg-0">
-          <div className="login-container">
-            <h2 className="form-title">Send Enquiry</h2>
-            <form className="login-form" onSubmit={sendEnquiry}>
-              <InputField
-                type="text"
-                placeholder="Your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <InputField
-                type="email"
-                placeholder="Your email address"
-                value={email}
-                pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <InputField
-                type="text"
-                placeholder="Your phone number"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
-
-              {loading ? (
+        <img src={logo}/>
+        </div>
+          <h3 className="pb-3">Register Enquiry</h3>
+          <div className="form-style">
+            <form>
+              <div className="form-group pb-3">
+                <input
+                  type="text"
+                  placeholder="Name"
+                  className="form-control"
+                  id="exampleInputName"
+                />
+              </div>
+              <div className="form-group pb-3">
+                <input
+                  type="email"
+                  placeholder="Email"
+                  className="form-control"
+                  id="exampleInputEmail"
+                  aria-describedby="emailHelp"
+                />
+              </div>
+              <div className="form-group pb-3">
+                <input
+                  type="tel"
+                  placeholder="Phone Number"
+                  className="form-control"
+                  id="exampleInputPhone"
+                />
+              </div>
+              <div className="pb-2">
                 <button
                   type="submit"
-                  className="login-button"
-                  disabled
-                  onClick={showPayload}
+                  className="btn btn-primary w-100 font-weight-bold mt-2"
                 >
-                  <Spin />
+                  Send Enquiry
                 </button>
-              ) : (
-                <button type="submit" className="login-button">
-                  Send
-                </button>
-              )}
+              </div>
             </form>
+            <div className="pt-4 text-center">
+              Already a member? <a href="#">Login</a>
+            </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

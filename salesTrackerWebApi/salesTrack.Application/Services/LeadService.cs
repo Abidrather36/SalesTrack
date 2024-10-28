@@ -658,6 +658,17 @@ namespace salesTrack.Application.Services
                 return ApiResponse<TimeSheetRequestModel>.ErrorResponse(errorMessage, HttpStatusCodes.InternalServerError);
             }
         }
+
+        public async Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetAllTimeSheets()
+        {
+           var user= contextService.UserId();
+            if(user ==Guid.Empty)
+            {
+                return  ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse("UnIdentitifed User ", HttpStatusCodes.BadRequest);
+            }
+             var timeSheets= await leadRepository.GetAllTimeSheetsByUser(user);
+            return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(timeSheets, $"{timeSheets.Count()} TimeSheets Found", HttpStatusCodes.OK);
+        }
     }
     }
 public class FollowUpReq

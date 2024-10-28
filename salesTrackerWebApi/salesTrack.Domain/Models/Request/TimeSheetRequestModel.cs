@@ -13,7 +13,7 @@ namespace salesTrack.Domain.Models.Request
         public DateTime Date { get; set; }
         [Required]
 
-        public Guid? ProcessStep { get; set; }
+        public string? ProcessStep { get; set; }
         [Required]
 
         public int HoursSpent { get; set; }

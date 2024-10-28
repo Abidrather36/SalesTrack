@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Card from "../shared/Card";
 import { useForm } from "react-hook-form";
@@ -128,7 +127,7 @@ export default function ExecutiveDashboard({ leadData }) {
       title: "Total Lead Sources",
       number: leadSources.length,
       icon: <FaUsers />,
-      link:"/salesExecutive/leadSourceList"
+      link: "/salesExecutive/leadSourceList",
     },
     {
       title: "Today's Follow Up",
@@ -141,18 +140,22 @@ export default function ExecutiveDashboard({ leadData }) {
     <>
       <Card props={myProps} />
       <h1
+        className="text-primary"
         style={{
-          fontFamily: "'Arial', sans-serif",
-          fontSize: "1.5em",
-          color: "black",
+          fontSize: "1.3em",
           textAlign: "left",
           marginTop: "20px",
           marginBottom: "20px",
-          textShadow: "1px 1px 2px #bdc3c7",
           marginLeft: "30px",
         }}
-      >
-        TODAY'S FOLLOWUP HISTORY
+      > 
+        <div >
+          <span >Search Follow-Up History</span>
+          <i
+            className="fas fa-arrow-down"
+            style={{ display: "block", marginTop: "5px",marginLeft:"80px"}}
+          ></i>
+        </div>
       </h1>
 
       <div
@@ -177,7 +180,7 @@ export default function ExecutiveDashboard({ leadData }) {
               <div style={{ marginBottom: "22px" }}>
                 <label
                   style={{ marginBottom: "20px" }}
-                  className="h6 font-semibold text-muted text-sm d-block mb-2"
+                  className="h6 font-semibold text-primary text-sm d-block mb-2"
                 >
                   Select Date
                 </label>
@@ -216,19 +219,26 @@ export default function ExecutiveDashboard({ leadData }) {
 
               {/* Conditionally rendered Refresh Button */}
               {leadTodayFollowUp.length > 0 && (
-                <div style={{ marginBottom: "22px", alignSelf: "flex-end",marginBottom: "22px", marginLeft: "auto",  }}>
+                <div
+                  style={{
+                    marginBottom: "22px",
+                    alignSelf: "flex-end",
+                    marginBottom: "22px",
+                    marginLeft: "auto",
+                  }}
+                >
                   <button
                     type="button"
                     className="btn btn-secondary d-flex align-items-center justify-content-center"
                     onClick={handleRefresh}
                     style={{
-                      marginTop:"-30px",
+                      marginTop: "-30px",
                       height: "50px",
                       width: "50px",
-                      borderRadius: "50%", // Makes the button circular
+                      borderRadius: "8px", // Makes the button circular
                       padding: "10px",
-                      position:"absolute",
-                      marginLeft:"500px"
+                      position: "absolute",
+                      marginLeft: "500px",
                     }}
                   >
                     <FaSyncAlt style={{ fontSize: "1.2rem" }} />

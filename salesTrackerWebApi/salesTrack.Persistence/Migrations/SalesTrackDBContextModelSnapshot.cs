@@ -83,17 +83,17 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f4c7de49-4344-4fab-8bd8-fce9827e8f68"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 10, 24, 10, 42, 58, 116, DateTimeKind.Unspecified).AddTicks(7693), new TimeSpan(0, 5, 30, 0, 0)),
+                            Id = new Guid("fdf7b964-b982-4953-997a-0ff1b7c5d186"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 10, 28, 10, 39, 15, 24, DateTimeKind.Unspecified).AddTicks(4325), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "2S2NbSZA7nc1oFPn1SbQyXBDm+1cyDdobkm1Zh2XyHE=",
+                            Password = "UJvngTia3Wzs3XhebLHzEqwsakYXAplVdTEpgzaSREg=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 10, 24, 5, 27, 58, 116, DateTimeKind.Unspecified).AddTicks(7787), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "LYwHxCpJxbefHukLqjy/Qg==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 10, 28, 5, 24, 15, 24, DateTimeKind.Unspecified).AddTicks(4396), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "tzyUiMBamyvW+D0HGda2lg==",
                             UserRole = (byte)1
                         });
                 });
@@ -476,8 +476,8 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<DateTimeOffset?>("ModifiedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ProcessStepName")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ProcessStepName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");

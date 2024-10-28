@@ -7,7 +7,7 @@ function PublicLayout() {
   return (
     <>
       <Navbar />
-      <main style={{marginTop:"100px"}}><Outlet/></main>
+      <main style={{marginTop:"120px"}}><Outlet/></main>
       <Footer />
     </>
   );

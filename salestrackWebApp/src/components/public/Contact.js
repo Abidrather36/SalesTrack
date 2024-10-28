@@ -29,7 +29,7 @@ const Contact = () => {
                   >
                     <i class="bi bi-geo-alt"></i>
                     <h3>Address</h3>
-                    <p>Wooden Street</p>
+                    <p> 100 Feet Rd, HRBR Layout,</p>
                     <p>Kalyan Nagar 560043</p>
                   </div>
                 </div>

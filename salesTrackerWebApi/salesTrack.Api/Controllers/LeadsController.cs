@@ -208,6 +208,19 @@ namespace salesTrack.Api.Controllers
 
             }
         }
+        [HttpGet("GetAllTimeSheets")]
+        public async Task<IActionResult> GetAllTimeSheets()
+        {
+            try
+            {
+                var res = await leadService.GetAllTimeSheets();
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

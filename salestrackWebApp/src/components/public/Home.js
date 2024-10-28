@@ -4,15 +4,14 @@ import { PrimeIcons } from "primereact/api";
 import Contact from "./Contact";
 import About from "./About";
 import TestimonialsComponent from "./TestimonialsComponent "
-
+import "./Home.css"
 const HomePage = () => {
   return (
     <>
-      <div>
+      <div className="home">
         <main
           className="main"
           style={{
-            backgroundColor: "#f0f0f0", 
           }}
         >
           <section
@@ -21,8 +20,7 @@ const HomePage = () => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              padding: "60px 20px",
-              backgroundColor: "#ffffff",
+              padding: "70px 20px",
               backgroundColor: "#9bd9f6",
             }}
           >
@@ -121,7 +119,6 @@ const HomePage = () => {
       </div>
       <div style={{marginTop:"20px"}}>
       <About />
-
       </div>
       <Contact />
       <TestimonialsComponent/>

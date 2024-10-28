@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../../utils/logo_salestrack_blue.png"
 
 function Sidebar({ labels = [] }) {
   return (
@@ -22,7 +23,8 @@ function Sidebar({ labels = [] }) {
         <a className="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="#">
           <img
             alt=""
-            src="https://i.ibb.co/hVx7Ch6/Whats-App-Image-2024-09-10-at-15-34-22-df8919c0.jpg"
+            src={logo}
+            style={{width:"250px",height:"60px"}}
           />
         </a>
         <div className="collapse navbar-collapse" id="sidebarCollapse">
@@ -30,9 +32,9 @@ function Sidebar({ labels = [] }) {
            
             {labels.map(label=>{
               return (
-                <li key={label.id}>
-                  <Link to={label.link} className="nav-link">
-                   {label.icon} {label.label}
+                <li key={label.id} >
+                  <Link to={label.link} className="nav-link" style={{fontSize:"17px"}}>
+                   <span style={{marginRight:"10px"}}>{label.icon}</span> {label.label}
                   </Link>
                 </li>
               )

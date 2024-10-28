@@ -136,6 +136,18 @@ namespace salesTrack.Persistence.Repository
             return leads;
         }
 
+        public async Task<IEnumerable<TimeSheetResponseModel>> GetAllTimeSheetsByUser(Guid userId)
+        {
+            var res = await context.TimeSheets.Where(x => x.UserId == userId).Select(x => new TimeSheetResponseModel
+            {
+                ProcessStep = x.ProcessStepName,
+                HoursSpent = x.HoursSpent,
+                Comment = x.Comment,
+                Date = x.Date
+            }).OrderBy(x=>x.Date).ToListAsync();
+            return res;
+        }
+
         public async Task<LeadResponseModel> GetLeadById(Guid leadId)
         {
 

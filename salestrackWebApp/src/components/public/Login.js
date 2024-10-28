@@ -1,3 +1,324 @@
+
+
+// import "./login.css";
+// import { Link } from "react-router-dom";
+// import { React, useState } from "react";
+// import { useForm } from "react-hook-form";
+// import { useNavigate } from "react-router-dom";
+// import Spin from "./Spin";
+// import InputField from "./InputField";
+// import myToaster from "../../utils/toaster";
+// import ChangePasswordModal from "../../Shared/PasswordChangeModel";
+// import storage from "../../utils/storages";
+// import { loginUser } from "../../Services/AuthService";
+// import "./LoginComponent.css";
+// import { color } from "@mui/system";
+// import logo from "../../utils/logo_salestrack_blue.png"
+
+// function Login() {
+//   const [loading, setLoading] = useState(false);
+//   const [isPasswordTemporary, setIsPasswordTemporary] = useState(false);
+//   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+
+//   const navigate = useNavigate();
+
+//   const {
+//     register,
+//     handleSubmit,
+//     formState: { errors },
+//   } = useForm();
+
+//   const logInUser = async (data) => {
+//     setLoading(true);
+//     try {
+//       const response = await loginUser(data);
+//       console.log(response);
+//       if (response.isSuccess) {
+//         storage.setItem("salesTrack", response.result.token);
+//         storage.setItem("user", response.result);
+//         if (response.result.isPasswordTemporary) {
+//           setIsPasswordTemporary(true);
+//           setShowChangePasswordModal(true);
+//         } else {
+//           myToaster.showSuccessToast(`Welcome, ${response.result.fullName}!`);
+//           if (response.result.userRole === 1) {
+//             navigate("/admin/dashboard");
+//           } else if (response.result.userRole === 2) {
+//             navigate("/companyAdmin/dashboard");
+//           } else if (response.result.userRole === 3) {
+//             navigate("/salesExecutive");
+//           }
+//         }
+//       } else {
+//         myToaster.showErrorToast(response.message);
+//       }
+//     } catch (err) {
+//       console.log(err);
+//       myToaster.showErrorToast(
+//         "Error during login: " + (err.response?.data || err.message)
+//       );
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleCloseModal = () => {
+//     setShowChangePasswordModal(false);
+//   };
+//   return (
+//     <> 
+//     <div className="container">
+//       <div className="row m-5 no-gutters shadow-lg ">
+        
+//         <div className="col-md-6 d-none d-md-block ">
+//           <img
+//             src="https://i.ibb.co/ystg5fH/guardian-digital-realm-mans-vigilance-login-gate-1134661-21407.jpg"
+//             className="img-fluid rounded-3"
+//             alt="Background"
+//             style={{ minHeight: "100%" }}
+//           />
+//         </div>
+//         <div className="col-md-6 bg-white p-5 rounded-3">
+//           <div style={{maxWidth:"60%",marginLeft:"90px"}}>
+//           <img src={logo}/>
+//           </div>
+         
+//           <h3 className="pb-3">Login Form</h3>
+//           <div className="form-style">
+//             <form onSubmit={handleSubmit(logInUser)}>
+//               <div className="form-group pb-3">
+//                 <input
+//                   type="email"
+//                   placeholder="Email"
+//                   className="form-control"
+//                   id="exampleInputEmail1"
+//                   aria-describedby="emailHelp"
+//                   {...register("email", { required: "Email is required"})}
+                  
+//                 />
+//                 {errors.email && (
+//                   <span style={{color:"red"}} className="error-message">{errors.email.message}</span>
+//                 )}
+//               </div>
+//               <div className="form-group pb-3">
+//                 <input
+//                   type="password"
+//                   placeholder="Password"
+//                   className="form-control"
+//                   id="exampleInputPassword1"
+//                   {...register("password", {
+//                     required: "Password is required",
+//                   })}
+//                 />
+//                 {errors.password &&(
+//                   <span style={{color:"red"}} className="error-message">{errors.password.message}</span>
+//                 )}
+//               </div>
+//               <div className="d-flex align-items-center justify-content-between">
+               
+//                 <div>
+//                   <Link to="/changePassword">Forget Password?</Link>
+//                 </div>
+//               </div>
+//               <div className="pb-2">
+              
+//                     <button type="submit" className="btn btn-primary w-100 font-weight-bold mt-2 p-3">
+//                       Log In  
+//                       <div className="mb-2">
+//                       {loading && (
+//                       <Spin />
+//                       )}   
+//                       </div>               
+//                     </button>
+//               </div>
+//             </form>
+
+//             <div className="pt-4 text-center">
+//               Dont Have an Account. <Link to="/enquiry">Sign Up</Link>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//     </>
+//   // )}
+
+//   //       <ChangePasswordModal
+//   //         open={showChangePasswordModal}
+//   //         handleClose={handleCloseModal}
+//   //       />
+//   //     </div>
+//   //   </>
+//    );
+// }
+
+// export default Login;
+
+
+
+// import { faFacebook } from "@fortawesome/free-brands-svg-icons";
+// import "./login.css";
+// import { Link } from "react-router-dom";
+// import { React, useState } from "react";
+// import { useForm } from "react-hook-form";
+// import { useNavigate } from "react-router-dom";
+// import Spin from "./Spin";
+// import InputField from "./InputField";
+// import myToaster from "../../utils/toaster";
+// import ChangePasswordModal from "../../Shared/PasswordChangeModel";
+// import storage from "../../utils/storages";
+// import { loginUser } from "../../Services/AuthService";
+// import "./LoginComponent.css";
+
+// function Login() {
+//   const [loading, setLoading] = useState(false);
+//   const [isPasswordTemporary, setIsPasswordTemporary] = useState(false);
+//   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+
+//   const navigate = useNavigate();
+
+//   const {
+//     register,
+//     handleSubmit,
+//     formState: { errors },
+//   } = useForm();
+
+//   const logInUser = async (data) => {
+//     setLoading(true);
+//     try {
+//       const response = await loginUser(data);
+//       console.log(response);
+//       if (response.isSuccess) {
+//         storage.setItem("salesTrack", response.result.token);
+//         storage.setItem("user", response.result);
+//         if (response.result.isPasswordTemporary) {
+//           setIsPasswordTemporary(true);
+//           setShowChangePasswordModal(true);
+//         } else {
+//           myToaster.showSuccessToast(`Welcome, ${response.result.fullName}!`);
+//           if (response.result.userRole === 1) {
+//             navigate("/admin/dashboard");
+//           } else if (response.result.userRole === 2) {
+//             navigate("/companyAdmin/dashboard");
+//           } else if (response.result.userRole === 3) {
+//             navigate("/salesExecutive");
+//           }
+//         }
+//       } else {
+//         myToaster.showErrorToast(response.message);
+//       }
+//     } catch (err) {
+//       console.log(err);
+//       myToaster.showErrorToast(
+//         "Error during login: " + (err.response?.data || err.message)
+//       );
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleCloseModal = () => {
+//     setShowChangePasswordModal(false);
+//   };
+
+//   return (
+//     <>
+//       {showChangePasswordModal && <div className="modal-overlay"></div>}
+//       <div
+//         className={`row ${showChangePasswordModal ? "modal-open" : ""}`}
+//         style={{ display: "flex", flexDirection: "row", height: "100vh" }}
+//       >
+//          {!showChangePasswordModal && (
+//           <>
+//         <div className="container">
+//           <div className="row m-5 no-gutters shadow-lg ">
+//             <div className="col-md-6 d-none d-md-block ">
+//               <img
+//                 src="https://i.ibb.co/ystg5fH/guardian-digital-realm-mans-vigilance-login-gate-1134661-21407.jpg"
+//                 className="img-fluid rounded-3"
+//                 alt="Background"
+//                 style={{ minHeight: "100%" }}
+//               />
+//             </div>
+//             <div className="col-md-6 bg-white p-5 rounded-3">
+//               <h3 className="pb-3">Login Form</h3>
+//               <div className="form-style">
+//                 <form onSubmit={handleSubmit(logInUser)}>
+//                   <div className="form-group pb-3">
+//                     <input
+//                       type="email"
+//                       placeholder="Email"
+//                       className="form-control"
+//                       id="exampleInputEmail1"
+//                       aria-describedby="emailHelp"
+//                       {...register("email", { required: "Email is required" })}
+//                     />
+//                     {errors.email && (
+//                       <span className="error-message">{errors.email.message}</span>
+//                     )}
+//                   </div>
+//                   <div className="form-group pb-3">
+//                     <input
+//                       type="password"
+//                       placeholder="Password"
+//                       className="form-control"
+//                       id="exampleInputPassword1"
+//                       {...register("password", {
+//                         required: "Password is required",
+//                       })}
+//                     />
+//                     {errors.password && (
+//                       <span className="error-message">{errors.password.message}</span>
+//                     )}
+//                   </div>
+//                   <div className="d-flex align-items-center justify-content-between">
+//                     <div className="d-flex align-items-center">
+//                       <input type="checkbox" />{" "}
+//                       <span className="pl-4 font-weight-bold">Remember Me</span>
+//                     </div>
+//                     <div>
+//                       <a href="#">Forget Password?</a>
+//                     </div>
+//                   </div>
+//                   <div className="pb-2">
+//                     {loading ? (
+//                       <button type="submit" className="login-button" disabled>
+//                         <Spin />
+//                       </button>
+//                     ) : (
+//                       <button
+//                         type="submit"
+//                         className="btn btn-primary w-100 font-weight-bold mt-2"
+//                       >
+//                         Log In
+//                       </button>
+//                     )}
+//                   </div>
+//                 </form>
+
+//                 <div className="pt-4 text-center">
+//                   Don't Have an Account? <Link to="/registerEnquiry">Sign Up</Link>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//         </>
+//         )}
+//         <ChangePasswordModal
+//           open={showChangePasswordModal}
+//           handleClose={handleCloseModal}
+//         />
+//       </div>
+//     </>
+//   );
+// }
+
+// export default Login;
+
+
+import "./login.css";
+import { Link } from "react-router-dom";
 import { React, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -7,12 +328,14 @@ import myToaster from "../../utils/toaster";
 import ChangePasswordModal from "../../Shared/PasswordChangeModel";
 import storage from "../../utils/storages";
 import { loginUser } from "../../Services/AuthService";
-import "./LoginComponent.css"
+import "./LoginComponent.css";
+import logo from "../../utils/logo_salestrack_blue.png";
 
-const Login = () => {
+function Login() {
   const [loading, setLoading] = useState(false);
   const [isPasswordTemporary, setIsPasswordTemporary] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+  const [oldPassword,setOldPassword]=useState("")
 
   const navigate = useNavigate();
 
@@ -23,35 +346,34 @@ const Login = () => {
   } = useForm();
 
   const logInUser = async (data) => {
+    
     setLoading(true);
     try {
       const response = await loginUser(data);
-      console.log(response);
       if (response.isSuccess) {
         storage.setItem("salesTrack", response.result.token);
         storage.setItem("user", response.result);
         if (response.result.isPasswordTemporary) {
           setIsPasswordTemporary(true);
           setShowChangePasswordModal(true);
+          setOldPassword(data.password)
         } else {
           myToaster.showSuccessToast(`Welcome, ${response.result.fullName}!`);
           if (response.result.userRole === 1) {
             navigate("/admin/dashboard");
-          }
-          else if (response.result.userRole ===2){
+          } else if (response.result.userRole === 2) {
             navigate("/companyAdmin/dashboard");
+          } else if (response.result.userRole === 3) {
+            navigate("/salesExecutive");
           }
-          else  if (response.result.userRole ===3){
-            navigate("/salesExecutive") 
-          }
-
         }
       } else {
         myToaster.showErrorToast(response.message);
       }
     } catch (err) {
-      console.log(err);
-      myToaster.showErrorToast("Error during login: " + (err.response?.data || err.message));
+      myToaster.showErrorToast(
+        "Error during login: " + (err.response?.data || err.message)
+      );
     } finally {
       setLoading(false);
     }
@@ -63,91 +385,82 @@ const Login = () => {
 
   return (
     <>
-      {showChangePasswordModal && <div className="modal-overlay"></div>}
-      <myToaster />
-      <div
-        className={`row ${showChangePasswordModal ? "modal-open" : ""}`}
-        style={{ display: "flex", flexDirection: "row", height: "100vh" }}
-      >
-        {!showChangePasswordModal && (
-          <>
-            <div className="col-lg-6 mb-4 mb-lg-0 img">
-              <img
-                src="https://i.ibb.co/ystg5fH/guardian-digital-realm-mans-vigilance-login-gate-1134661-21407.jpg"
-                alt="Login Illustration"
-                className="img-fluid"
-                style={{ maxWidth: "100%", height: "80%", marginLeft: "50px" }}
-              />
-            </div>
-            <div className="col-lg-6 mb-4-lg-0">
-              <div className="login-container">
-                <h2 className="form-title">Sign in to your account</h2>
-                <form className="login-form" onSubmit={handleSubmit(logInUser)}>
-                  <div>
-                    <InputField
-                      type="email"
-                      name="email"
-                      autoComplete="off"
-                      {...register("email", {
-                        required: "Email is required",
-                      })}
-                      placeholder="Your email address"
-                    />
-                    {errors.email && (
-                      <span className="error-message">
-                        {errors.email.message}
-                      </span>
-                    )}
-                  </div>
+    
 
-                  <InputField
+      <div className="container">
+        <div className="row m-5 no-gutters shadow-lg">
+          <div className="col-md-6 d-none d-md-block">
+            <img
+              src="https://i.ibb.co/ystg5fH/guardian-digital-realm-mans-vigilance-login-gate-1134661-21407.jpg"
+              className="img-fluid rounded-3"
+              alt="Background"
+              style={{ minHeight: "100%" }}
+            />
+          </div>
+          <div className="col-md-6 bg-white p-5 rounded-3">
+            <div style={{ maxWidth: "60%", marginLeft: "90px" }}>
+              <img src={logo} alt="Logo" />
+            </div>
+
+            <h3 className="pb-3">Login Form</h3>
+            <div className="form-style">
+              <form onSubmit={handleSubmit(logInUser)}>
+                <div className="form-group pb-3">
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    className="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    {...register("email", { required: "Email is required" })}
+                  />
+                  {errors.email && (
+                    <span style={{ color: "red" }} className="error-message">
+                      {errors.email.message}
+                    </span>
+                  )}
+                </div>
+                <div className="form-group pb-3">
+                  <input
                     type="password"
-                    name="password"
-                    autoComplete="off"
-                    placeholder="Your password"
-                    {...register("password", {
-                      required: "Password is required",
-                    })}
+                    placeholder="Password"
+                    className="form-control"
+                    id="exampleInputPassword1"
+                    {...register("password", { required: "Password is required" })}
                   />
                   {errors.password && (
-                    <div className="error-message">
+                    <span style={{ color: "red" }} className="error-message">
                       {errors.password.message}
-                    </div>
+                    </span>
                   )}
+                </div>
+                <div className="d-flex align-items-center justify-content-between">
+                  <Link to="/changePassword">Forget Password?</Link>
+                </div>
+                <div className="pb-2">
+                  <button
+                    type="submit"
+                    className="btn btn-primary w-100 font-weight-bold mt-2 p-3"
+                  >
+                    Log In
+                    {loading && <Spin />}
+                  </button>
+                </div>
+              </form>
 
-                  <a href="#" className="forgot-password-link">
-                    Forgot password?
-                  </a>
-
-                  {loading ? (
-                    <button type="submit" className="login-button" disabled>
-                      <Spin />
-                    </button>
-                  ) : (
-                    <button type="submit" className="login-button">
-                      Log In
-                    </button>
-                  )}
-                </form>
-
-                <p className="signup-prompt">
-                  Don&apos;t have an account?{" "}
-                  <a href="#" className="signup-link">
-                    Sign up
-                  </a>
-                </p>
+              <div className="pt-4 text-center">
+                Don't Have an Account? <Link to="/enquiry">Sign Up</Link>
               </div>
             </div>
-          </>
-        )}
-
-        <ChangePasswordModal
-          open={showChangePasswordModal}
-          handleClose={handleCloseModal}
-        />
+          </div>
+        </div>
       </div>
+     {showChangePasswordModal && (
+      <ChangePasswordModal open={showChangePasswordModal} handleClose={handleCloseModal} currentPassword={oldPassword} />
+
+     )}
     </>
   );
-};
+}
 
 export default Login;
