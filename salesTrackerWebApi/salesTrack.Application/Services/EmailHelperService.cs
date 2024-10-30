@@ -113,7 +113,7 @@ namespace salesTrack.Application.Services
         public async Task<bool> SendForgotPasswordEmail(string email, int resetCode)
         {
             var subject = "Reset Password";
-            var link = $"http://salestern.com//reset-password?resetCode={resetCode}";
+            var link = $"http://salestern.com/reset-password?resetCode={resetCode}";
             var body = $"Hi,<br /><br />" +
                        $"We received a request to reset your password.<br /><br />" +
                        $"Please click on the below link to reset your password:<br /><br />" +

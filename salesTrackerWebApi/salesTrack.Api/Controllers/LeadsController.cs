@@ -86,7 +86,7 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
-        [HttpPut("Update-Lead")]
+        [HttpPost("Update-Lead")]
         public async Task<ApiResponse<LeadResponseModel>> UpdateLead(LeadUpdateModel model)
         {
             try 

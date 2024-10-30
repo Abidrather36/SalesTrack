@@ -15,7 +15,7 @@ export const deleteLead=async (leadId)=>{
     return res;
 }
 export const updateLead=async (lead)=>{
-    const res = await axiosObject.put(`${ApiUrl}Leads/Update-Lead`,lead).then(res=>res.data)
+    const res = await axiosObject.post(`${ApiUrl}Leads/Update-Lead`,lead).then(res=>res.data)
     return res;
 }
 export const addLeadProcessStep=async (leadProcessStep)=>{

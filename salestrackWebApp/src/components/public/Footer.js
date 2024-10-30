@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import logo from "../../utils/logo_salestrack_blue.png"
+import logo from "../../utils/WhatsApp Image 2024-10-30 at 14.27.14_88ae8d3e.jpg"
 
 function Footer() {
   return (
@@ -19,7 +19,7 @@ function Footer() {
                 // style={{ height: "30px", marginRight: "10px" }} 
               />
             </h4>
-            <p style={{ fontSize: "14px", color: "#6c757d" }}>
+            <p style={{ fontSize: "18px", color: "#6c757d",marginTop:"25px" }}>
               Salestern: Efficiently manage and track your sales leads, follow-ups, and client interactions with our comprehensive sales tracking system.
             </p>
             <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" ,marginTop:"10px"}}>
