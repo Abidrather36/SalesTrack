@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../../utils/logo_salestrack_blue.png"
+import logo from "../../utils/WhatsApp Image 2024-10-30 at 14.27.14_88ae8d3e.jpg"
 
 function Sidebar({ labels = [] }) {
   return (

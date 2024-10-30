@@ -552,7 +552,7 @@ namespace salesTrack.Application.Services
             }
         }
 
-        
+
         public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> ShowLeadFollowUpHistory(Guid leadId)
         {
 
@@ -593,36 +593,36 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<bool>> AddLeadFollowUpHistory(FollowUpReq model)
         {
-            var loggedInUser=contextService.UserId();
-            var result=await leadRepository.AddProcessStep(model);
-            if(result)
+            var loggedInUser = contextService.UserId();
+            var result = await leadRepository.AddProcessStep(model);
+            if (result)
             {
-                return ApiResponse<bool>.SuccessResponse(true,"Lead Managed Successfully",HttpStatusCodes.OK);
+                return ApiResponse<bool>.SuccessResponse(true, "Lead Managed Successfully", HttpStatusCodes.OK);
             }
             else
             {
-                return ApiResponse<bool>.ErrorResponse(ApiMessages.TechnicalError,HttpStatusCodes.BadRequest);
+                return ApiResponse<bool>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
 
             }
-           
+
 
         }
 
-        public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> TodaysFollowUpDate(TodaysFollowUpdateRequest  model)
+        public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> TodaysFollowUpDate(TodaysFollowUpdateRequest model)
         {
-           var todaysFollowUpdate=await leadRepository.TodaysFollowUpdate(model);
-            if(todaysFollowUpdate is null || !todaysFollowUpdate.Any())
+            var todaysFollowUpdate = await leadRepository.TodaysFollowUpdate(model);
+            if (todaysFollowUpdate is null || !todaysFollowUpdate.Any())
             {
-                return  ApiResponse< IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse("There is No Follow Up For Such Date", HttpStatusCodes.BadRequest);
+                return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse("There is No Follow Up For Such Date", HttpStatusCodes.BadRequest);
             }
             else
             {
-                return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(todaysFollowUpdate,$"{todaysFollowUpdate.Count()} Follow Up Found",HttpStatusCodes.Found
+                return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(todaysFollowUpdate, $"{todaysFollowUpdate.Count()} Follow Up Found", HttpStatusCodes.Found
 );
             }
         }
 
-        public async  Task<ApiResponse<TimeSheetRequestModel>> AddTimeSheet(TimeSheetRequestModel model)
+        public async Task<ApiResponse<TimeSheetRequestModel>> AddTimeSheet(TimeSheetRequestModel model)
         {
             var loggedInUser = contextService.UserId();
             var errorMessage = "";
@@ -635,17 +635,17 @@ namespace salesTrack.Application.Services
                     Date = model.Date,
                     ProcessStepName = model.ProcessStep,
                     Comment = model.Comment,
-                    HoursSpent=model.HoursSpent,
+                    HoursSpent = model.HoursSpent,
                     UserId = loggedInUser,
                     CreatedBy = loggedInUser,
                     CreatedDate = DateTimeOffset.Now,
                     ModifiedBy = Guid.Empty,
-                    IsActive=true
-                    
+                    IsActive = true
+
                 };
 
-               int res= await leadRepository.AddTimeSheet(timeSheet);
-                if(res > 0)
+                int res = await leadRepository.AddTimeSheet(timeSheet);
+                if (res > 0)
                 {
                     return ApiResponse<TimeSheetRequestModel>.SuccessResponse(model, "Time Sheet Created Successfully ", HttpStatusCodes.OK);
                 }
@@ -661,16 +661,63 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetAllTimeSheets()
         {
-           var user= contextService.UserId();
-            if(user ==Guid.Empty)
+            var user = contextService.UserId();
+            if (user == Guid.Empty)
             {
-                return  ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse("UnIdentitifed User ", HttpStatusCodes.BadRequest);
+                return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse("UnIdentitifed User ", HttpStatusCodes.BadRequest);
             }
-             var timeSheets= await leadRepository.GetAllTimeSheetsByUser(user);
+            var timeSheets = await leadRepository.GetAllTimeSheetsByUser(user);
             return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(timeSheets, $"{timeSheets.Count()} TimeSheets Found", HttpStatusCodes.OK);
         }
+
+        public async Task<ApiResponse<TimeSheetResponseModel>> UpdateTimeSheet(UpdateTimeSheetModel model)
+        {
+            try
+            {
+                var loggedInUser = contextService.UserId();
+                if (loggedInUser == Guid.Empty)
+                {
+                    return ApiResponse<TimeSheetResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                }
+
+                var timeSheet = await leadRepository.GetTimeSheetById(model.Id);
+                if (timeSheet is null)
+                {
+                    return ApiResponse<TimeSheetResponseModel>.ErrorResponse("TimeSheetNotFound", HttpStatusCodes.BadRequest);
+                }
+
+                timeSheet.Date = model.Date;
+                timeSheet.HoursSpent = model.HoursSpent;
+                timeSheet.Comment = model.Comment;
+                timeSheet.ModifiedBy = loggedInUser;
+                timeSheet.ModifiedDate = DateTime.Now;
+
+                var updateResult = await leadRepository.UpdateTimeSheet(timeSheet);
+                if (updateResult > 0)
+                {
+                    var timeSheetResponse = new TimeSheetResponseModel
+                    {
+                        Id = timeSheet.Id,
+                        Date = timeSheet.Date,
+                        DateString=timeSheet.Date.ToString(),
+                        HoursSpent = timeSheet.HoursSpent,
+                        Comment = timeSheet.Comment
+                    };
+                    return ApiResponse<TimeSheetResponseModel>.SuccessResponse(timeSheetResponse, "TimeSheetUpdatedSuccessfully", HttpStatusCodes.OK);
+                }
+                else
+                {
+                    return ApiResponse<TimeSheetResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<TimeSheetResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+            }
+        }
+
     }
-    }
+}
 public class FollowUpReq
 {
     public Guid LeadId { get; set; }

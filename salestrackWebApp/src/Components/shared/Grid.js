@@ -3,6 +3,7 @@ import Badge from "react-bootstrap/Badge";
 import TablePagination from "@mui/material/TablePagination";
 import ThreeDotMenu from "./ConextMenu";
 import { MDBBadge } from "mdb-react-ui-kit";
+import { FaClock, FaHourglassHalf ,FaRegClock} from "react-icons/fa";
 
 function Grid({
   headers = [],
@@ -130,7 +131,19 @@ function Grid({
                         </MDBBadge>
 
                         ) : null
-                      ) : (
+                      ) : header.key === "hoursSpent" ? (
+                        item[header.key] > 5 ? ( // Example condition: > 5 hours
+                          <span>
+                            <FaClock style={{ color: "orange" }} /> {item[header.key]} hrs
+                          </span>
+                        ) : (
+                          <span>
+                            <FaRegClock  style={{ color: "green" }} /> {item[header.key]} hrs
+                          </span>
+                        )
+                      ) : 
+                      
+                      (
                         item[header.key]
                       )}
                     </td>

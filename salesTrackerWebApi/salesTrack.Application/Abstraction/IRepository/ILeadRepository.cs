@@ -21,6 +21,7 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest models);
         Task<int> AddTimeSheet(TimeSheet model);
         Task<IEnumerable<TimeSheetResponseModel>> GetAllTimeSheetsByUser(Guid userId);
-
+        Task<int> UpdateTimeSheet(TimeSheet model);
+        Task<TimeSheet> GetTimeSheetById(Guid id);
     }
 }

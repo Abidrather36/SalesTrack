@@ -22,6 +22,9 @@ import TimeSheet from "./components/salesExecutive/TimeSheet"
 import LeadSource from "./components/salesExecutive/RegisterLeadSource"
 import LeadSourceList from "./components/salesExecutive/LeadSourceList"
 import TestimonialsComponent from "./components/public/TestimonialsComponent "
+import TimeSheetList from "./components/salesExecutive/TimeSheetList"
+import ForgetPassword from "./components/public/ForgetPassword"
+import ResetPassword from "./components/public/ResetPassword"
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -30,7 +33,10 @@ export const routerConfiguration = {
     { path: "contact", element: <Contact /> },
     { path: "enquiry", element: <RegisterEnquiry /> },
     { path: "login", element: < Login/> },
-    { path: "testimonial", element:<TestimonialsComponent/>}
+    { path: "testimonial", element:<TestimonialsComponent/>},
+    { path: "forgetPassword",element :<ForgetPassword/>},
+    {path:  "reset-Password",element:<ResetPassword/>}
+
   ],
   AdminRoutes: [
     { path: "/admin", element: <AdminDashboard /> },
@@ -63,6 +69,6 @@ export const routerConfiguration = {
     { path: "/salesExecutive/profile", element: <ProfilePage/> },
     { path : "/salesExecutive/registerLeadSource", element:<LeadSource/>},
     { path : "/salesExecutive/leadSourceList", element: <LeadSourceList/> },
-
+    { path : "/salesExecutive/timeSheetList",element :<TimeSheetList/>}
   ]
 }

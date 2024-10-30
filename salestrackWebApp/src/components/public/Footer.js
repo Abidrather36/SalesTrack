@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import logo from "../../utils/logo_salestrack_blue.png"
 
 function Footer() {
   return (
@@ -10,17 +11,16 @@ function Footer() {
       <div className="container">
         <div className="row">
           {/* About Section */}
-          <div className="col-lg-3 col-md-6">
+          <div className="col-lg-3 col-md-6" style={{marginTop:"-12px"}}>
             <h4 style={{ color: "#0077b6", fontWeight: "bold" }}>
               <img 
-                src="path-to-your-logo" 
+                src={logo} style={{maxHeight:"76px"}} 
                 alt="SkillTest Logo" 
-                style={{ height: "30px", marginRight: "10px" }} 
+                // style={{ height: "30px", marginRight: "10px" }} 
               />
-              Sales Track
             </h4>
             <p style={{ fontSize: "14px", color: "#6c757d" }}>
-              Sales Track: Efficiently manage and track your sales leads, follow-ups, and client interactions with our comprehensive sales tracking system.
+              Salestern: Efficiently manage and track your sales leads, follow-ups, and client interactions with our comprehensive sales tracking system.
             </p>
             <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" ,marginTop:"10px"}}>
               <i className="fas fa-envelope" style={{ color: "#0077b6", marginRight: "10px" }}></i>

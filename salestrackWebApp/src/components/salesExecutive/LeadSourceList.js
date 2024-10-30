@@ -24,7 +24,7 @@ function LeadSourceList() {
         currentRoute:"Register-New-SourceLead"
     }
     const headers=[
-        {key: "leadSourceName",label: "string",},
+        {key: "leadSourceName",label: "Lead Source Name",},
         {key :"description",label:"Description" },
     ]
     const btnList = [

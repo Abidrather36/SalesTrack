@@ -1,7 +1,7 @@
 import { PrimeIcons } from "primereact/api";
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../../utils/logo_salestrack_blue.png"
+import logo from "../../utils/WhatsApp Image 2024-10-30 at 14.27.14_88ae8d3e.jpg"
 
 let projectLogoName = "Sales Track";
 
@@ -98,7 +98,6 @@ function Navbar() {
             className="btn-getstarted"
             style={{
               color: "var(--contrast-color)",
-              background: "#5a5c98",
               fontSize: "14px",
               padding: "8px 25px",
               margin: "0 0 0 30px",

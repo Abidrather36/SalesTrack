@@ -7,7 +7,7 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';          
 import 'primeicons/primeicons.css';
 import "./toaster.css"
-import { updateLead } from "../Services/LeadService";
+import { updateLead, updateTimeSheet } from "../Services/LeadService";
 class Toaster{
 
 
@@ -93,6 +93,57 @@ class Toaster{
           } catch (error) {
             myToaster.showErrorToast("Failed to update lead");
           }
+        }
+      });
+    };
+
+    editTimeSheet = async (timeSheet = {}, fetchTimeSheetList) => {
+      console.log(timeSheet)
+      Swal.fire({
+        title: "Edit Time Sheet",
+        html: `
+          <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
+            <label for="swal-input-date" style="text-align:left">Date</label>
+            <input id="swal-input-date" type="date" class="swal2-input" style="width: 80%; margin-left:10px" value="${timeSheet.date}" />
+    
+            <label for="swal-input-hours" style="text-align:left">Hours Spent</label>
+            <input id="swal-input-hours" type="number" min="0" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Hours Spent" value="${timeSheet.hoursSpent || 0}" />
+    
+            <label for="swal-input-comment" style="text-align:left">Comment</label>
+            <input id="swal-input-comment" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Comment" value="${timeSheet.comment || ''}" />
+          </div>
+        `,
+        focusConfirm: false,
+        preConfirm: () => {
+          const date = document.getElementById("swal-input-date").value;
+          const hoursSpent = document.getElementById("swal-input-hours").value;
+          const comment = document.getElementById("swal-input-comment").value;
+    
+          // // Check for empty fields
+          // if (!date || hoursSpent === '' || !comment) {
+          //   Swal.showValidationMessage(`Please enter all fields`);
+          //   return null;
+          // }
+    
+          // Return the timesheet data to be updated
+          return { date, hoursSpent: Number(hoursSpent), comment };
+        },
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Update",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const updatedTimeSheet = { ...result.value, id: timeSheet.id };
+    
+            const res = await updateTimeSheet(updatedTimeSheet);  
+            if (res.isSuccess) {
+              myToaster.showSuccessToast(res.message);
+              fetchTimeSheetList(); 
+            } else {
+              myToaster.showErrorToast(res.message);
+            }
+          
         }
       });
     };

@@ -28,9 +28,9 @@ namespace salesTrack.Application.Services
                        $"<strong>Email:</strong> {emailAddress}<br /><br />" +
                        "Please check the admin panel for more details.<br /><br />" +
                        "Thanks,<br /><br />" +
-                       "Team Antern Sales <br />"; 
+                       "Team Antern Sales <br />";
 
-            var emailMessage = CreateMailMessage("abidrather36@gmail.com", subject, body); 
+            var emailMessage = CreateMailMessage("ramk@anterntech.com", subject, body);
             return await SendRegistrationEmail(emailMessage);
         }
         public async Task<bool> SendRegistrationEmail(MimeMessage emailMessage)
@@ -74,36 +74,46 @@ namespace salesTrack.Application.Services
             return email;
         }
 
-        public async Task<bool> AddRegistrationEmail(string email, string password,string name)
+        public async Task<bool> AddRegistrationEmail(string email, string password, string name)
         {
-         
-           
-                var subject = "Successfully Registered";
-                var body = $"Hi {name},<br /><br />" +
-                           $"You are successfully registered.<br /><br />" +
-                           $"Please find your login credentials below:<br /><br />" +
-                           $"<strong>Email:</strong> {email}<br /><br />" +
-                           $"<strong>Password:</strong> {password}<br /><br />" +
-                           "Please check the admin panel for more details.<br /><br />" +
-                           "Thanks, <br /><br/ >" +
-                           "Team Antern Sales Track <br />";
-                
-                try
-                {
 
-                   var mailMessage= CreateMailMessage(email, subject, body);
-                   return await SendRegistrationEmail(mailMessage);
-                }
-            catch (Exception ex)
-                {
-                throw;
-                }
+
+            var subject = "Successfully Registered";
+            var body = $"Hi {name},<br /><br />" +
+                     $"Thank you for registering with SalesTern.<br /><br />" +
+                     $"Your Login Credentials:<br />" +
+                     $"&nbsp;&nbsp;&nbsp;- <strong>Email:</strong> {email}<br />" +
+                     $"&nbsp;&nbsp;&nbsp;- <strong>Password:</strong> {password}<br /><br />" +
+                     "Next Steps:<br />" +
+                     "<ol>" +
+                     "<li>Log in to the <a href='https://www.salestern.com'>SalesTern platform</a> using the provided credentials.</li>" +
+                     "<li>Check the admin panel for additional details and setup instructions.</li>" +
+                     "<li>Explore the platform's features and resources.</li>" +
+                     "</ol><br />" +
+                     "Security Reminder:<br />" +
+                     "<ul>" +
+                     "<li>Change your password to a secure and unique one.</li>" +
+                     "<li>Keep your login credentials confidential.</li>" +
+                     "</ul><br />" +
+                     "If you have any questions or concerns, reply to this email or contact IAmInterviewed support.<br /><br />" +
+                     "Best regards,<br /><br />" +
+                     "Team SalesTern.com<br />";
+            try
+            {
+
+                var mailMessage = CreateMailMessage(email, subject, body);
+                return await SendRegistrationEmail(mailMessage);
             }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
         public async Task<bool> SendForgotPasswordEmail(string email, int resetCode)
         {
             var subject = "Reset Password";
-            var link = $"http://localhost:4200/api/auth/Reset-Password?resetCode={resetCode}";
+            var link = $"http://salestern.com//reset-password?resetCode={resetCode}";
             var body = $"Hi,<br /><br />" +
                        $"We received a request to reset your password.<br /><br />" +
                        $"Please click on the below link to reset your password:<br /><br />" +
@@ -128,7 +138,7 @@ namespace salesTrack.Application.Services
         {
             var request = httpContextAccessor.HttpContext?.Request;
             return request?.Scheme + "//" + request?.Host + "/" + "api/";
-           
+
         }
     }
 }

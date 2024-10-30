@@ -9,5 +9,7 @@ namespace salesTrack.Domain.Models.Response
 {
     public class TimeSheetResponseModel:TimeSheetRequestModel
     {
+        public Guid Id { get; set; }
+        public string? DateString { get; set; }
     }
 }

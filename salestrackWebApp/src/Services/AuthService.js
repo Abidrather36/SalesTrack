@@ -2,6 +2,7 @@ import React from "react";
 import { ApiUrl } from "./Shared";
 import axios from "axios";
 import storage from "../utils/storages";
+import axiosObject from "../utils/InterceptorService";
 
 export const loginUser = async (LoginRequestModel) => {
   return await axios
@@ -38,9 +39,22 @@ export const changePassword = async (changePasswordModel, bearerToken) => {
     })
     .then((res) => res.data);
 };
+export const forgetPassword=async (email)=>{
+    let res= await axiosObject.post(`${ApiUrl}Auth/Forgetpassword/${email}`,).then(res=>res.data)
+    return res;
+}
+export const resetPassword= async (resetPasswordModel)=>{
+    let res=await axiosObject.post(`${ApiUrl}Auth/Reset-Password`,resetPasswordModel).then(res=>res.data)
+    return res;
+}
 
 export const addUser = async (userSignUpModel) => {
   return await axios
     .post(`${ApiUrl}Auth/User-SignUp`, userSignUpModel)
     .then((res) => res.data);
 };
+
+export const registerEnquiry =async(enquiryModel) =>{
+      let res= await axiosObject.post(`${ApiUrl}Enquiry/register`,enquiryModel).then(res=>res.data);
+      return res;
+}

@@ -140,10 +140,13 @@ namespace salesTrack.Persistence.Repository
         {
             var res = await context.TimeSheets.Where(x => x.UserId == userId).Select(x => new TimeSheetResponseModel
             {
+                Id=x.Id,
                 ProcessStep = x.ProcessStepName,
                 HoursSpent = x.HoursSpent,
                 Comment = x.Comment,
-                Date = x.Date
+                Date = x.Date,
+                DateString= x.Date.ToString("dd/MM/yyyy")
+
             }).OrderBy(x=>x.Date).ToListAsync();
             return res;
         }
@@ -178,7 +181,11 @@ namespace salesTrack.Persistence.Repository
             return procStep;
         }
 
-       
+        public async Task<TimeSheet> GetTimeSheetById(Guid id)
+        {
+               return  await  context.TimeSheets.FindAsync(id);
+        }
+
         public async Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId)
         {
             var data = await context.Leads
@@ -245,6 +252,12 @@ namespace salesTrack.Persistence.Repository
         public async Task<int> UpdateLeadProcessStep(LeadProcessSteps model)
         {
             var processResponse = await Task.Run(() => context.LeadProcessSteps.Update(model));
+            return await context.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateTimeSheet(TimeSheet model)
+        {
+            var timeSheetRes=await Task.Run(()=>context.TimeSheets.Update(model));
             return await context.SaveChangesAsync();
         }
     }

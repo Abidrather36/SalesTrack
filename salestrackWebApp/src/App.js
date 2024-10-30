@@ -14,7 +14,7 @@ import { routerConfiguration } from "./route-config";
 import { PortalAdminsidebarLabels } from "./components/shared/SidebarLabels";
 import { CompanyAdminsidebarLabels } from "./components/shared/SidebarLabels";
 import { SalesExectivesidebarLabels } from "./components/shared/SidebarLabels";
-
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   return (
     <>

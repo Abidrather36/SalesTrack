@@ -1,9 +1,36 @@
 
-import React from 'react';
-import './login.css'; // Custom CSS for styling if needed
-import logo from "../../utils/logo_salestrack_blue.png"
+import React, { useState } from 'react';
+import './login.css';
+import logo from "../../utils/WhatsApp Image 2024-10-30 at 14.27.14_88ae8d3e.jpg"
+import { registerEnquiry } from '../../Services/AuthService';
+import myToaster from '../../utils/toaster';
+import { useForm } from "react-hook-form";
+import Spin from './Spin';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function RegisterEnquiry() {
+  const [loading,setLoading]=useState(false)
+  const navigate=useNavigate()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    setLoading(true)
+    const response= await registerEnquiry(data)
+    if(response.isSuccess){
+      myToaster.showSuccessToast(response.message);
+      navigate("/")
+    }
+    else{
+      myToaster.showErrorToast(response.message);
+    }
+    setLoading(false)
+
+  }
   return (
     <div className="container">
       <div className="row m-5 no-gutters shadow-lg">
@@ -22,43 +49,68 @@ function RegisterEnquiry() {
         </div>
           <h3 className="pb-3">Register Enquiry</h3>
           <div className="form-style">
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-group pb-3">
                 <input
                   type="text"
                   placeholder="Name"
                   className="form-control"
-                  id="exampleInputName"
+                  id="name"
+                {...register("name", { required: "Name is required" })}
+
                 />
+              {errors.name && <span className="text-danger">{errors.name.message}</span>}
+
               </div>
               <div className="form-group pb-3">
                 <input
                   type="email"
                   placeholder="Email"
                   className="form-control"
-                  id="exampleInputEmail"
+                  id="email"
                   aria-describedby="emailHelp"
+                  {...register("email", { required: "Email is required",})}
                 />
+                {errors.email && <span className="text-danger">{errors.email.message}</span>}
               </div>
               <div className="form-group pb-3">
                 <input
-                  type="tel"
+                  type="text"
                   placeholder="Phone Number"
                   className="form-control"
-                  id="exampleInputPhone"
+                  id="phoneNumber"
+                  {...register("phoneNumber",{required:"Phone Number is required"})}
                 />
+                {errors.phoneNumber &&  <span className="text-danger">{errors.phoneNumber.message}</span>}
+
               </div>
               <div className="pb-2">
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100 font-weight-bold mt-2"
-                >
-                  Send Enquiry
-                </button>
-              </div>
+                  <button
+                    type="submit"
+                    className="btn btn-primary w-100 font-weight-bold mt-2 p-3"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }} 
+                  >
+                    Register Now
+                    {loading && (
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginLeft: "8px",
+                        }}
+                      >
+                        <Spin />
+                      </span>
+                    )}
+                  </button>
+                </div>
             </form>
             <div className="pt-4 text-center">
-              Already a member? <a href="#">Login</a>
+              Already a member? <Link to ="/login" >Login</Link>
             </div>
           </div>
         </div>

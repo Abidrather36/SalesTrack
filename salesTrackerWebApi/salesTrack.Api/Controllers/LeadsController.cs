@@ -208,7 +208,7 @@ namespace salesTrack.Api.Controllers
 
             }
         }
-        [HttpGet("GetAllTimeSheets")]
+        [HttpGet("getTimeSheetList")]
         public async Task<IActionResult> GetAllTimeSheets()
         {
             try
@@ -220,6 +220,20 @@ namespace salesTrack.Api.Controllers
             {
                 throw new Exception(ex.Message);
             }
+        }
+        [HttpPut("UpdateTimeSheet")]
+        public async Task<IActionResult> UpdateTimeSheet(UpdateTimeSheetModel model)
+        {
+            try
+            {
+                var res = await leadService.UpdateTimeSheet(model);
+                return Ok(res);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
 
     }

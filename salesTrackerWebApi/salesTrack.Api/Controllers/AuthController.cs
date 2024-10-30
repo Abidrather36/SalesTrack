@@ -51,7 +51,7 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
-        [HttpPost("Forgetpassword")]
+        [HttpPost("forgetPassword/{email}")]
 
         public async Task<ApiResponse<string>> ForgetPassword(string email)
         {

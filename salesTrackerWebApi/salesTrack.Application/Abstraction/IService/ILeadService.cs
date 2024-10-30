@@ -22,6 +22,7 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> TodaysFollowUpDate(TodaysFollowUpdateRequest model);
         Task<ApiResponse<TimeSheetRequestModel>> AddTimeSheet(TimeSheetRequestModel model);
         Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetAllTimeSheets();
+        Task<ApiResponse<TimeSheetResponseModel>> UpdateTimeSheet(UpdateTimeSheetModel model);
 
 
     }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Card from "../shared/Card";
 import { useForm } from "react-hook-form";
-import { FaUsers, FaBriefcase, FaSyncAlt } from "react-icons/fa";
+import { FaEdit, FaPlus, FaTrash, FaUsers,FaBriefcase,FaSyncAlt,FaCog, FaHistory ,FaCalendarDay} from "react-icons/fa";
+
 import {
   getAllLeads as fetchAllLeads,
   todaysFollowUp,
@@ -33,6 +34,12 @@ export default function ExecutiveDashboard({ leadData }) {
       console.error("Error fetching leads:", error);
     }
   };
+const editFollowUp=(lead)=>{
+
+}
+const deleteFollowUp =(lead)=>{ 
+
+}
 
   const onSubmit = (data) => {
     setLeadTodayFollowUp([]);
@@ -258,6 +265,22 @@ export default function ExecutiveDashboard({ leadData }) {
           <p style={{ marginLeft: "32px" }}></p>
         ) : (
           <Grid
+          buttons={[
+            {
+              key: "edit",
+              title: "Edit",
+              className: "btn btn-primary",
+              onEditHandler: (lead) => editFollowUp(lead),
+              icon: <FaEdit />,
+            },
+            {
+              key: "delete",
+              title: "Delete",
+              className: "btn btn-danger",
+              onDeleteHandler: (lead) => deleteFollowUp(lead.id),
+              icon: <FaTrash />,
+            }
+          ]}
             headers={headers}
             data={Array.isArray(leadTodayFollowUp) ? leadTodayFollowUp : []}
             loading={loading}
