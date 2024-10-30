@@ -87,6 +87,7 @@ export default function BasicModal({
     { key: "email", label: "Email" },
     { key: "leadComments", label: "Lead Comments" },
     { key: "followUpDate", label: "FollowUp Date" },
+
   ];
 
   const fetchFollowUpHistory = async () => {
@@ -146,7 +147,6 @@ export default function BasicModal({
       setShowModel(false);
       setpopUpModel(false)
       setshowHistoryGrid(true)      
-
       fetchFollowUpHistory();
     } else {
       myToaster.showErrorToast(response.message);
