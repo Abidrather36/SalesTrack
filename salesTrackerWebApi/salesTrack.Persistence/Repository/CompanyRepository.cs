@@ -15,10 +15,12 @@ namespace salesTrack.Persistence.Repository
     public class CompanyRepository : BaseRepository<Company>, ICompanyRepository
     {
         private readonly SalesTrackDBContext context;
+        private readonly ILeadRepository leadRepository;
 
-        public CompanyRepository(SalesTrackDBContext context) : base(context)
+        public CompanyRepository(SalesTrackDBContext context,ILeadRepository leadRepository) : base(context)
         {
             this.context = context;
+            this.leadRepository = leadRepository;
         }
 
         public async Task<IEnumerable<CompanyResponseModel>> GetAllCompaniesAsync()
@@ -50,6 +52,22 @@ namespace salesTrack.Persistence.Repository
             return compactCompany!;
 
 
+        }
+
+        public async Task<IEnumerable<TimeSheetResponseModel>> GetTimeSheet(DateTimeOffset startDate, DateTimeOffset endDate, Guid id)
+        {
+            
+          var timeSheets=await leadRepository.GetAllTimeSheetsByUser(id);
+            var filteredUserTimeSheets = timeSheets.Where(ts => ts.Date >= startDate && ts.Date <= endDate).
+                 Select(ts => new TimeSheetResponseModel
+                 {
+                     Date = ts.Date,
+                     ProcessStep = ts.ProcessStep,
+                     HoursSpent = ts.HoursSpent,
+                     Comment = ts.Comment
+                 });
+            return filteredUserTimeSheets;
+            
         }
     }
 }

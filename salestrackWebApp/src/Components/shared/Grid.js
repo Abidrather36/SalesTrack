@@ -4,6 +4,7 @@ import TablePagination from "@mui/material/TablePagination";
 import ThreeDotMenu from "./ConextMenu";
 import { MDBBadge } from "mdb-react-ui-kit";
 import { FaClock, FaHourglassHalf ,FaRegClock} from "react-icons/fa";
+import "./Grid.css"
 
 function Grid({
   headers = [],

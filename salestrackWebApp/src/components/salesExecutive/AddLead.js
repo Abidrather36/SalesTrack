@@ -9,7 +9,7 @@ import InputField from "../public/InputField";
 import Spin from "../public/Spin";
 import { leadSources as getLeadSources } from "../../Services/LeadSource";
 import { UserLists } from "../../Services/UserService";
-
+import logo from "../../utils/illustrated-woman-being-intern-company_23-2148726151 (1).avif"
 const AddLead = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -81,16 +81,16 @@ const AddLead = () => {
           currentRoute: "Register-New-Lead",
         }}
       />
-      <div className="wrapper" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap", width: "100%" }}>
-        <div style={{ flex: 1, marginTop: "50px" }}>
+      <div className="wrapper" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap", width: "100%",padding:"50px",marginTop:"-0px" }}>
+        <div style={{ flex: 1, marginTop: "50px", }}>
           <img
-            src="https://i.ibb.co/F4JnXXX/people-checking-giant-check-list-background-23-2148086410.jpg"
-            style={{ width: "100%", height: "auto", borderRadius: "10px", marginRight: "100px" }}
+            src={logo}
+            style={{ width: "100%", borderRadius: "10px", marginRight: "100px" }}
             alt="Lead Registration"
           />
         </div>
 
-        <div style={{ flex: 1, padding: "20px" }}>
+        <div style={{ flex: 1, padding: "20px",marginTop:"-5px" }}>
           <div className="col-lg-8 mb-4-lg-0">
             <div
               className="login-container"

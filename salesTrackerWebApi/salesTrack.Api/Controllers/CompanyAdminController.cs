@@ -128,6 +128,11 @@ namespace salesTrack.Api.Controllers
             }
 
         }
+        [HttpPost("viewTimeSheet")]
+        public Task<IActionResult> GetTimeSheetForCompany()
+        {
+            return default;
+        }
 
 
       

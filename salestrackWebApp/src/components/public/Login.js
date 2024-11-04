@@ -1,25 +1,24 @@
-
-
-
 import "./login.css";
 import { Link } from "react-router-dom";
 import { React, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Spin from "./Spin";
-import InputField from "./InputField";
 import myToaster from "../../utils/toaster";
 import ChangePasswordModal from "../../Shared/PasswordChangeModel";
 import storage from "../../utils/storages";
 import { loginUser } from "../../Services/AuthService";
 import "./LoginComponent.css";
 import logo from "../../utils/WhatsApp Image 2024-10-30 at 14.27.14_88ae8d3e.jpg";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 function Login() {
   const [loading, setLoading] = useState(false);
   const [isPasswordTemporary, setIsPasswordTemporary] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // New state for password visibility
 
   const navigate = useNavigate();
 
@@ -66,6 +65,10 @@ function Login() {
     setShowChangePasswordModal(false);
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   return (
     <>
       <div className="container">
@@ -101,9 +104,9 @@ function Login() {
                     </span>
                   )}
                 </div>
-                <div className="form-group pb-3">
+                <div className="form-group pb-3 position-relative">
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     className="form-control"
                     id="exampleInputPassword1"
@@ -111,6 +114,13 @@ function Login() {
                       required: "Password is required",
                     })}
                   />
+                  <span
+                    className="position-absolute"
+                    style={{ right: "10px", top: "50%", transform: "translateY(-50%)", cursor: 'pointer' }}
+                    onClick={togglePasswordVisibility}
+                  >
+                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                  </span>
                   {errors.password && (
                     <span style={{ color: "red" }} className="error-message">
                       {errors.password.message}
@@ -128,8 +138,7 @@ function Login() {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-
-                    }} 
+                    }}
                   >
                     Log In
                     {loading && (

@@ -25,6 +25,7 @@ import TestimonialsComponent from "./components/public/TestimonialsComponent "
 import TimeSheetList from "./components/salesExecutive/TimeSheetList"
 import ForgetPassword from "./components/public/ForgetPassword"
 import ResetPassword from "./components/public/ResetPassword"
+import ViewTimeSheet from "./components/companyAdmin/ViewTimeSheet"
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -57,6 +58,7 @@ export const routerConfiguration = {
     { path: "/companyAdmin/add-new-user", element: <AddUser /> },
     { path: "/companyAdmin/profile", element: <ProfilePage/> },
     { path: "/companyAdmin/getAllProcess-steps", element: <GetProcessSteps /> },
+    { path: "/companyAdmin/view-time-sheet",element:<ViewTimeSheet/>}
 
   ],
 

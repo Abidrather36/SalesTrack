@@ -7,11 +7,15 @@ import {
   FaClipboardList,
   FaStream ,
   FaClock,
-  FaBullhorn 
+  FaBullhorn, 
+  FaSafari,
 } from "react-icons/fa";
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { Source } from "@mui/icons-material";
 import {CalendarTodayIcon } from '@mui/icons-material/CalendarToday';
 import EventNoteIcon from '@mui/icons-material/EventNote';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 export const PortalAdminsidebarLabels = [
   {
     id: 1,
@@ -69,6 +73,12 @@ export const CompanyAdminsidebarLabels = [
     link: "/companyAdmin/add-new-user",
     icon: <FaPlus />,
   },
+  {
+    id:4,
+    label:"Time Sheet",
+    link:"/companyAdmin/view-time-sheet",
+    icon: <FontAwesomeIcon icon={faEye} />
+  }
 ];
 
 export const SalesExectivesidebarLabels = [
@@ -92,9 +102,9 @@ export const SalesExectivesidebarLabels = [
   },
   {
     id: 4,
-    label: "Time Sheet",
+    label: "Add Time Sheet",
     link: "/salesExecutive/timeSheet",
-    icon: <FaClock />,
+    icon: <FaPlus />,
   },
   {
     id:5,

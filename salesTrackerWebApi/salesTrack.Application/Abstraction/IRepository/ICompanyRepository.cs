@@ -8,5 +8,6 @@ namespace salesTrack.Application.Abstraction.IRepository
     {
         Task<IEnumerable<CompanyResponseModel>> GetAllCompaniesAsync();
         Task<CompanyResponseModel> GetCompanyByIdAsync(Guid companyId);
+        Task<IEnumerable<TimeSheetResponseModel>> GetTimeSheet(DateTimeOffset startDate,DateTimeOffset endDate, Guid id);
     }
 }
