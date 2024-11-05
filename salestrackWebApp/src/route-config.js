@@ -15,9 +15,6 @@ import ProfilePage from "./components/shared/ProfileCard"
 import LeadList from "./components/salesExecutive/LeadList"
 import SalesExecutiveDashboard from  "./components/salesExecutive/ExecutiveDashboard"
 import AddLead from "./components/salesExecutive/AddLead"
-import AdminProcessStep from "./components/admin/AdminProcessStep"
-import GetProcessSteps from "./components/admin/GetProcessSteps"
-import DateTimePickers from "./components/salesExecutive/TodaysFollowUpdate"
 import TimeSheet from "./components/salesExecutive/TimeSheet"
 import LeadSource from "./components/salesExecutive/RegisterLeadSource"
 import LeadSourceList from "./components/salesExecutive/LeadSourceList"
@@ -26,6 +23,9 @@ import TimeSheetList from "./components/salesExecutive/TimeSheetList"
 import ForgetPassword from "./components/public/ForgetPassword"
 import ResetPassword from "./components/public/ResetPassword"
 import ViewTimeSheet from "./components/companyAdmin/ViewTimeSheet"
+import GetProcessSteps from "./components/companyAdmin/GetAdminProcessSteps"
+import AdminProcessStep from "./components/companyAdmin/AdminProcessStep"
+import GetAdminProcessSteps from "./components/companyAdmin/GetAdminProcessSteps"
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -46,8 +46,6 @@ export const routerConfiguration = {
     { path: "/admin/add-new-company", element: < AddCompany/> },
     { path: "/admin/profile", element: < ProfilePage/> },
     { path: "/admin/companylist", element: <CompanyList /> },
-    { path: "/admin/addProcessStep", element: < AdminProcessStep/> },
-    { path: "/admin/getProcessSteps", element:<GetProcessSteps/> }
 
 
   ],
@@ -58,7 +56,10 @@ export const routerConfiguration = {
     { path: "/companyAdmin/add-new-user", element: <AddUser /> },
     { path: "/companyAdmin/profile", element: <ProfilePage/> },
     { path: "/companyAdmin/getAllProcess-steps", element: <GetProcessSteps /> },
-    { path: "/companyAdmin/view-time-sheet",element:<ViewTimeSheet/>}
+    { path: "/companyAdmin/view-time-sheet",element:<ViewTimeSheet/>},
+    { path: "/companyAdmin/getProcessSteps" ,element:<GetAdminProcessSteps/>},
+    { path: "/companyAdmin/addProcessStep", element: <AdminProcessStep /> },
+
 
   ],
 

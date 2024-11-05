@@ -15,7 +15,7 @@ namespace salesTrack.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = nameof(UserRole.CompanyAdmin) + "," + nameof(UserRole.SalesExecutive) + ","+nameof(UserRole.PortalAdmin))] 
+   /* [Authorize(Roles = nameof(UserRole.CompanyAdmin) + "," + nameof(UserRole.SalesExecutive) + ","+nameof(UserRole.PortalAdmin))] */
     public class CompanyAdminController : ControllerBase
     {
         private readonly IAdminService adminService;
@@ -64,15 +64,16 @@ namespace salesTrack.Api.Controllers
         }
 
         [HttpPost("add-process-steps")]
-        public async Task<ApiResponse<AdminProcessStepResponseModel>> AddProcessStep(AdminProcessStepRequestModel model)
+        public async Task<IActionResult> AddProcessStep(AdminProcessStepRequestModel model)
         {
             try
             {
-                return await adminService.AddAdminProcessStep(model);
+                var res= await adminService.AddAdminProcessStep(model);
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -129,9 +130,17 @@ namespace salesTrack.Api.Controllers
 
         }
         [HttpPost("viewTimeSheet")]
-        public Task<IActionResult> GetTimeSheetForCompany()
+        public async Task<IActionResult> GetTimeSheetForCompany(DateTimeOffset startDate,DateTimeOffset endDate,Guid userId)
         {
-            return default;
+            try
+            {
+                var res = await adminService.GetTimeSheetByUser(startDate, endDate, userId);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception (ex.Message);
+            }
         }
 
 

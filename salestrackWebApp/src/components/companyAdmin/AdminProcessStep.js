@@ -5,7 +5,6 @@ import myToaster from "../../utils/toaster";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import InputField from "../public/InputField";
 import Spin from "../public/Spin";
-import storage from "../../utils/storages";
 import { addprocessStep } from "../../Services/UserService";
 
 const AdminProcessStep = () => {
@@ -25,7 +24,7 @@ const AdminProcessStep = () => {
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
         setLoading(false);
-        navigate("/admin/dashboard");     
+        navigate("/companyAdmin/dashboard");     
       } else {
         myToaster.showErrorToast(response.message);
       }

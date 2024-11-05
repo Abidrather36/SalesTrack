@@ -20,3 +20,11 @@ export const deleteCompanyById=async (companyId)=>{
     let res=await axiosObject.delete(`${ApiUrl}PortalAdmin/Delete-Company/${companyId}`).then(res=>res.data)
     return res;
 }
+export const getAllUsersByCompany=async()=>{
+    let res =await axiosObject.get(`${ApiUrl}CompanyAdmin/GetAllUsersByCompany`).then(res=>res.data);
+    return res;
+}
+export const viewTimeSheetByCompany=async(startDate,endDate,userId)=>{
+    let res =await axiosObject.post(`${ApiUrl}CompanyAdmin/viewTimeSheet`,startDate,endDate,userId).then(res=>res.data)
+    return res;
+}

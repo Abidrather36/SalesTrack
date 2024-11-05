@@ -10,6 +10,7 @@ namespace salesTrack.Application.Abstraction.IRepository
     public interface IAdminRepository:IBaseRepository<AdminProcessStep>
     {
         Task<int> AddAdmin(MasterUser model);
+        Task<int> AddAdminProcessStep(AdminProcessStep model);
 
     }
 }

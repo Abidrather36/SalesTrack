@@ -21,9 +21,11 @@ namespace salesTrack.Persistence.Repository
         {
             throw new NotImplementedException();
         }
-  
-     
 
-      
+        public async Task<int> AddAdminProcessStep(AdminProcessStep model)
+        {
+           await context.AdminProcessSteps.AddAsync(model);
+            return await context.SaveChangesAsync();
+        }
     }
 }

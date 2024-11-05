@@ -41,18 +41,6 @@ export const PortalAdminsidebarLabels = [
     link: "/admin/companylist",
     icon: <FaListAlt />,
   },
-  {
-    id: 5,
-    label: "Add Process Step",
-    link: "/admin/addProcessStep",
-    icon: <FaUsers />,
-  },
-  {
-    id: 6,
-    label: "Process Step List",
-    link: "/admin/getProcessSteps",
-    icon: <FaListAlt />,
-  },
 ];
 export const CompanyAdminsidebarLabels = [
   {
@@ -72,6 +60,18 @@ export const CompanyAdminsidebarLabels = [
     label: "Add New User",
     link: "/companyAdmin/add-new-user",
     icon: <FaPlus />,
+  },
+  {
+    id: 5,
+    label: "Add Process Step",
+    link: "/companyAdmin/addProcessStep",
+    icon: <FaUsers />,
+  },
+  {
+    id: 6,
+    label: "Process Step List",
+    link: "/companyAdmin/getProcessSteps",
+    icon: <FaListAlt />,
   },
   {
     id:4,

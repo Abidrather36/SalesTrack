@@ -5,7 +5,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getAllProcessSteps } from "../../Services/UserService";
 
-function GetProcessSteps() {
+function GetAdminProcessSteps() {
   const [processSteps, setProcessSteps] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -72,4 +72,4 @@ function GetProcessSteps() {
   );
 }
 
-export default GetProcessSteps;
+export default GetAdminProcessSteps;

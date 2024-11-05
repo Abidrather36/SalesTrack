@@ -1,0 +1,12 @@
+element.style {
+    padding: 20px;
+    min-width: 320px;
+    max-width: 300px;
+    text-align: left;
+    position: absolute;
+    inset: 0px 0px auto auto;
+    background-color: #000000;
+    margin: 0px;
+    font-size: medium;
+    transform: translate3d(0px, 52.4444px, 0px);
+}

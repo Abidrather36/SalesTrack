@@ -25,14 +25,16 @@ namespace salesTrack.Application.Services
         private readonly IContextService contextService;
         private readonly IEmailHelperService emailHelperService;
         private readonly ICompanyRepository companyRepository;
+        private readonly ILeadRepository leadRepository;
 
-        public AdminService(IUserRepository userRepository, IAdminRepository adminRepository, IContextService contextService, IEmailHelperService emailHelperService, ICompanyRepository companyRepository)
+        public AdminService(IUserRepository userRepository, IAdminRepository adminRepository, IContextService contextService, IEmailHelperService emailHelperService, ICompanyRepository companyRepository, ILeadRepository leadRepository)
         {
             this.userRepository = userRepository;
             this.adminRepository = adminRepository;
             this.contextService = contextService;
             this.emailHelperService = emailHelperService;
             this.companyRepository = companyRepository;
+            this.leadRepository = leadRepository;
         }
 
         public async Task<ApiResponse<UserResponseModel>> AddUser(UserRequestModel model)
@@ -152,54 +154,51 @@ namespace salesTrack.Application.Services
         {
             try
             {
-                var adminId = contextService.UserId();
-
-                if (adminId == Guid.Empty)
-                {
-                    return ApiResponse<AdminProcessStepResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
-                }
-                var alredyStepExists = await adminRepository.IsExistsAsync(x => x.StepName == model.StepName);
-                if (alredyStepExists)
+                var loggedInCompany = contextService.UserId();
+                
+                
+                if (await adminRepository.IsExistsAsync(
+                    x => x.StepName == model.StepName
+                ))
                 {
                     return ApiResponse<AdminProcessStepResponseModel>.ErrorResponse(ApiMessages.Process.ProcessStepAlreadyExists, HttpStatusCodes.BadRequest);
                 }
+
+                AdminProcessStep adminProcessStep = new()
+                {
+                    Id = Guid.NewGuid(),
+                    StepName = model.StepName,
+                    CompanyId = loggedInCompany, 
+                    CreatedBy = loggedInCompany,
+                    ModifiedBy = Guid.Empty,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    ModifiedDate = DateTime.Now,
+                    DeletedBy = Guid.Empty,
+                    DeletedDate = null,
+                };
+
+                var adminProcessStepAdded = await adminRepository.AddAdminProcessStep(adminProcessStep);
+
+                if (adminProcessStepAdded > 0)
+                {
+                    return ApiResponse<AdminProcessStepResponseModel>.SuccessResponse(new AdminProcessStepResponseModel
+                    {
+                        Id = adminProcessStep.Id,
+                        StepName = adminProcessStep.StepName,
+                    }, ApiMessages.Process.ProcessAddedSuccessfully, HttpStatusCodes.OK);
+                }
                 else
                 {
-                    AdminProcessStep adminProcessStep = new()
-                    {
-                        Id = Guid.NewGuid(),
-                        StepName = model.StepName,
-                        CreatedBy = adminId,
-                        ModifiedBy = Guid.Empty,
-                        CreatedDate = DateTime.Now,
-                        IsActive = true,
-                        ModifiedDate = DateTime.Now,
-                        DeletedBy = Guid.Empty,
-                        DeletedDate = null,
-                    };
-                    var adminProcessStepAdded = await adminRepository.InsertAsync(adminProcessStep);
-                    if (adminProcessStepAdded > 0)
-                    {
-                        return ApiResponse<AdminProcessStepResponseModel>.SuccessResponse(new AdminProcessStepResponseModel
-                        {
-                            Id = adminProcessStep.Id,
-                            StepName = adminProcessStep.StepName,
-
-
-                        }, ApiMessages.Process.ProcessAddedSuccessfully, HttpStatusCodes.OK);
-                    }
-                    else
-                    {
-                        return ApiResponse<AdminProcessStepResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
-                    }
+                    return ApiResponse<AdminProcessStepResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
                 }
             }
-
             catch (Exception ex)
             {
                 return ApiResponse<AdminProcessStepResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
             }
         }
+
 
 
 
@@ -355,15 +354,15 @@ namespace salesTrack.Application.Services
             }
 
             var userListWithReportsTo = new List<UserResponseModel>();
-            
+
             foreach (var user in dbSet)
             {
-              
+
                 string? reportsToName = null;
                 if (user.ReportsToId != null)
                 {
                     var reportsTo = await userRepository.GetMasterUserById(user.ReportsToId.Value);
-                    reportsToName = reportsTo?.Name ?? string.Empty; 
+                    reportsToName = reportsTo?.Name ?? string.Empty;
                 }
 
 
@@ -421,5 +420,29 @@ namespace salesTrack.Application.Services
         }
 
 
+
+        public async Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetTimeSheetByUser(DateTimeOffset startDate, DateTimeOffset endDate, Guid userId)
+        {
+            try
+            {
+
+                var companyUser = contextService.UserId();
+                if (startDate == null || endDate == null)
+                {
+                    var timeSheetByUser = await leadRepository.GetAllTimeSheetsByUser(userId);
+                    return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(timeSheetByUser, $" {timeSheetByUser.Count()} TimeSheeetsFound", HttpStatusCodes.OK);
+                }
+                else
+                {
+                    var res = await companyRepository.GetTimeSheet(startDate, endDate, userId);
+                    return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(res, $"{res.Count()}TimeSheets Found", HttpStatusCodes.OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message} ", HttpStatusCodes.BadRequest);
+
+            }
+        }
     }
 }

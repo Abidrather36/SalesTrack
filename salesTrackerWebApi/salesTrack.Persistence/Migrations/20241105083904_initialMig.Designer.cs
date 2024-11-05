@@ -12,8 +12,8 @@ using SalesTrack.Persistence.Data;
 namespace salesTrack.Persistence.Migrations
 {
     [DbContext(typeof(SalesTrackDBContext))]
-    [Migration("20241024050748_Initial")]
-    partial class Initial
+    [Migration("20241105083904_initialMig")]
+    partial class initialMig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,17 +86,17 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("472b1333-438f-41e1-8ab7-feafe3ba4710"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 10, 24, 10, 37, 48, 207, DateTimeKind.Unspecified).AddTicks(5173), new TimeSpan(0, 5, 30, 0, 0)),
+                            Id = new Guid("ff38f814-f7ba-4ca1-bcad-a6fe6876553b"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 11, 5, 14, 9, 3, 804, DateTimeKind.Unspecified).AddTicks(1835), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "Pgn/yW4QIqUxsf2qbyE8f8P+X2BOBjCAi0diKSx2Jnw=",
+                            Password = "2k6O8Q4HUlrKD73YDa/vBxj414NNsM98J8xMhxLgkt4=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 10, 24, 5, 22, 48, 207, DateTimeKind.Unspecified).AddTicks(5238), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "geN3n0129MkGsk1qb3YvAw==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 11, 5, 8, 54, 3, 804, DateTimeKind.Unspecified).AddTicks(1905), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "TFY0d3p8QCfQQmfWZeXLzQ==",
                             UserRole = (byte)1
                         });
                 });
@@ -105,6 +105,9 @@ namespace salesTrack.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CreatedBy")
@@ -132,6 +135,8 @@ namespace salesTrack.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("AdminProcessSteps");
                 });
@@ -479,8 +484,8 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<DateTimeOffset?>("ModifiedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ProcessStepName")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ProcessStepName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -532,6 +537,17 @@ namespace salesTrack.Persistence.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.AdminProcessStep", b =>
+                {
+                    b.HasOne("salesTrack.Domain.Entities.Company", "Company")
+                        .WithMany("AdminProcessSteps")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.Company", b =>
@@ -666,6 +682,8 @@ namespace salesTrack.Persistence.Migrations
 
             modelBuilder.Entity("salesTrack.Domain.Entities.Company", b =>
                 {
+                    b.Navigation("AdminProcessSteps");
+
                     b.Navigation("CompanyUser");
 
                     b.Navigation("Lead");

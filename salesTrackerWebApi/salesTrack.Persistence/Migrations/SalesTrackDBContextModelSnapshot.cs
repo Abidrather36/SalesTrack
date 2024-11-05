@@ -83,17 +83,17 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fdf7b964-b982-4953-997a-0ff1b7c5d186"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 10, 28, 10, 39, 15, 24, DateTimeKind.Unspecified).AddTicks(4325), new TimeSpan(0, 5, 30, 0, 0)),
+                            Id = new Guid("ff38f814-f7ba-4ca1-bcad-a6fe6876553b"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 11, 5, 14, 9, 3, 804, DateTimeKind.Unspecified).AddTicks(1835), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "UJvngTia3Wzs3XhebLHzEqwsakYXAplVdTEpgzaSREg=",
+                            Password = "2k6O8Q4HUlrKD73YDa/vBxj414NNsM98J8xMhxLgkt4=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 10, 28, 5, 24, 15, 24, DateTimeKind.Unspecified).AddTicks(4396), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "tzyUiMBamyvW+D0HGda2lg==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 11, 5, 8, 54, 3, 804, DateTimeKind.Unspecified).AddTicks(1905), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "TFY0d3p8QCfQQmfWZeXLzQ==",
                             UserRole = (byte)1
                         });
                 });
@@ -102,6 +102,9 @@ namespace salesTrack.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CreatedBy")
@@ -129,6 +132,8 @@ namespace salesTrack.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("AdminProcessSteps");
                 });
@@ -531,6 +536,17 @@ namespace salesTrack.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("salesTrack.Domain.Entities.AdminProcessStep", b =>
+                {
+                    b.HasOne("salesTrack.Domain.Entities.Company", "Company")
+                        .WithMany("AdminProcessSteps")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+                });
+
             modelBuilder.Entity("salesTrack.Domain.Entities.Company", b =>
                 {
                     b.HasOne("SalesTrack.Domain.Entities.MasterUser", "User")
@@ -663,6 +679,8 @@ namespace salesTrack.Persistence.Migrations
 
             modelBuilder.Entity("salesTrack.Domain.Entities.Company", b =>
                 {
+                    b.Navigation("AdminProcessSteps");
+
                     b.Navigation("CompanyUser");
 
                     b.Navigation("Lead");

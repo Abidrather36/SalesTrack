@@ -1,116 +1,156 @@
-import React, { useState, useEffect } from 'react';
-import { Calendar } from 'primereact/calendar';
-import { Button, Box, FormControl, InputLabel, Select, MenuItem, Typography, FormHelperText } from "@mui/material";
-import BreadcrumbComponent from '../shared/Breadcrumb';
-import { useForm } from 'react-hook-form';
+import React, { useState, useEffect } from "react";
+import {
+  Button,
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormHelperText,
+  TextField,
+} from "@mui/material";
+import BreadcrumbComponent from "../shared/Breadcrumb";
+import { getAllUsersByCompany, viewTimeSheetByCompany } from "../../Services/CompanyService";
+import { useForm } from "react-hook-form";
 import Spin from "../public/Spin";
+import { getAllUsers } from "../../Services/AuthService";
+import myToaster from "../../utils/toaster";
 
 const ViewTimeSheet = () => {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
-  
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
+  const [timeSheetData, setTimeSheetData] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       startDate: null,
       endDate: null,
-      user: ''
-    }
+      user: "",
+    },
   });
 
-  // Fetch users on component mount
   useEffect(() => {
     fetchUsers();
   }, []);
 
   const fetchUsers = async () => {
-    try {
-      // Mock data - replace with actual API call
-      const response = [{ id: 1, name: 'User 1' }, { id: 2, name: 'User 2' }];
-      setUsers(response);
-    } catch (error) {
-      console.error("Failed to fetch users:", error);
+    const response = await getAllUsersByCompany();
+    console.log(response);
+    if (response.result) {
+      setUsers(response.result);
+    } else {
+      myToaster.error(response.message);
     }
   };
 
-  const onSubmit = (data) => {
-    if (!data.startDate || !data.endDate || !data.user) {
-      alert("Please select start date, end date, and a user to view the timesheet.");
-      return;
-    }
+  const onSubmit =async  (data) => {
+    const { startDate, endDate, userId } = data;
 
+    const startDateOffset = new Date(startDate).toISOString();
+    const endDateOffset = new Date(endDate).toISOString();
     setLoading(true);
-
-    // Mock API call or processing function
-    setTimeout(() => {
+    const response =await viewTimeSheetByCompany(startDateOffset,endDateOffset,userId)
+    
+    if(response.isSuccess){
+      setTimeSheetData(response.result)
+    }
+    else{
+      myToaster.showErrorToast(response.message);
       setLoading(false);
-      alert("Timesheet data fetched successfully!");
-    }, 2000); // Simulate async operation
+    }
   };
 
   return (
     <div>
-      <BreadcrumbComponent labels={{ module: "companyAdmin", currentRoute: "View-Time-Sheet" }} />
-      
+      <BreadcrumbComponent
+        labels={{ module: "companyAdmin", currentRoute: "View-Time-Sheet" }}
+      />
+
       <div className="time-sheet-filter-container">
-        <Typography variant="h5" style={{ marginBottom: "20px" }}>View Time Sheet</Typography>
-
-        {/* Start Date Picker */}
-        <FormControl fullWidth margin="normal">
-          <label>Start Date</label>
-          <Calendar 
-            value=""
-            onChange={(e) => setValue('startDate', e.value)} 
-            showIcon 
-          />
-          {errors.startDate && <FormHelperText error>Please select a start date</FormHelperText>}
-        </FormControl>
-
-        {/* End Date Picker */}
-        <FormControl fullWidth margin="normal">
-          <label>End Date</label>
-          <Calendar 
-            value=""
-            onChange={(e) => setValue('endDate', e.value)} 
-            showIcon 
-          />
-          {errors.endDate && <FormHelperText error>Please select an end date</FormHelperText>}
-        </FormControl>
-
-        {/* User Selection Dropdown */}
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="user-select-label">Users</InputLabel>
-          <Select
-            labelId="user-select-label"
-            {...register("user", { required: "Please select a user" })}
-            onChange={(e) => setValue("user", e.target.value)}
-            error={Boolean(errors.user)}
+        <div className="flex-container">
+          <FormControl
+            margin="normal"
+            style={{ marginRight: "10px", width: "30%" }}
           >
+            <TextField
+              label="Start Date"
+              type="date"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              {...register("startDate", {
+                required: "Please select a start date",
+              })}
+              onChange={(e) => setValue("startDate", e.target.value)}
+              error={Boolean(errors.startDate)}
+              helperText={errors.startDate ? errors.startDate.message : ""}
+              fullWidth
+            />
+          </FormControl>
+
+          <FormControl
+            margin="normal"
+            style={{ marginRight: "10px", width: "30%" }}
+          >
+            <TextField
+              label="End Date"
+              type="date"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              {...register("endDate", {
+                required: "Please select an end date",
+              })}
+              onChange={(e) => setValue("endDate", e.target.value)}
+              error={Boolean(errors.endDate)}
+              helperText={errors.endDate ? errors.endDate.message : ""}
+              fullWidth
+            />
+          </FormControl>
+
+          <select
+            className="form-select mb-3"
+            style={{ marginRight: "10px", width: "30%" }}
+            defaultValue=""
+            {...register("userId", { required: "Please select a user" })}
+          >
+            <option value="">Select user</option>
             {users.map((user) => (
-              <MenuItem key={user.id} value={user.id}>{user.name}</MenuItem>
+              <option key={user.id} value={user.id}>
+                {user.name}
+              </option>
             ))}
-          </Select>
-          {errors.user && <FormHelperText error>{errors.user.message}</FormHelperText>}
-        </FormControl>
+          </select>
 
-        {/* Submit Button */}
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-          <Button 
-            variant="contained" 
-            color="primary" 
-            onClick={handleSubmit(onSubmit)} 
-            disabled={loading}
-            style={{ width: "150px", height: "40px" }}
-          >
-            {loading ? <Spin /> : "Submit"}
-          </Button>
-        </Box>
+          {/* Submit Button in the same row */}
+          <Box sx={{ marginLeft: "10px" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit(onSubmit)}
+              disabled={loading}
+              style={{ height: "40px", marginTop: "-40px" }}
+            >
+              {loading ? <Spin /> : "Search"}
+            </Button>
+          </Box>
+        </div>
       </div>
 
       <style jsx>{`
         .time-sheet-filter-container {
-          max-width: 600px;
+          max-width: 800px;
           margin: 0 auto;
           padding: 20px;
+        }
+
+        .flex-container {
+          display: flex;
+          align-items: flex-end; /* Aligns items to the bottom */
         }
       `}</style>
     </div>

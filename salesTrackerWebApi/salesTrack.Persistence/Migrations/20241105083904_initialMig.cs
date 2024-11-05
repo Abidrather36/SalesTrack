@@ -6,30 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace salesTrack.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initialMig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "AdminProcessSteps",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StepName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ModifiedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DeletedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AdminProcessSteps", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Enquiries",
                 columns: table => new
@@ -122,7 +103,33 @@ namespace salesTrack.Persistence.Migrations
                         column: x => x.Id,
                         principalTable: "MasterUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AdminProcessSteps",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StepName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ModifiedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdminProcessSteps", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AdminProcessSteps_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -151,13 +158,13 @@ namespace salesTrack.Persistence.Migrations
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Leads_LeadSources_LeadSourceId",
                         column: x => x.LeadSourceId,
                         principalTable: "LeadSources",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Leads_MasterUsers_Id",
                         column: x => x.Id,
@@ -190,7 +197,7 @@ namespace salesTrack.Persistence.Migrations
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Users_MasterUsers_Id",
                         column: x => x.Id,
@@ -223,13 +230,13 @@ namespace salesTrack.Persistence.Migrations
                         column: x => x.AdminProcessStepId,
                         principalTable: "AdminProcessSteps",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_LeadProcessSteps_Leads_LeadId",
                         column: x => x.LeadId,
                         principalTable: "Leads",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -238,7 +245,7 @@ namespace salesTrack.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProcessStepName = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ProcessStepName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     HoursSpent = table.Column<int>(type: "int", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -258,7 +265,7 @@ namespace salesTrack.Persistence.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -291,7 +298,7 @@ namespace salesTrack.Persistence.Migrations
                         column: x => x.LeadId,
                         principalTable: "Leads",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -323,13 +330,18 @@ namespace salesTrack.Persistence.Migrations
                         column: x => x.LeadId,
                         principalTable: "Leads",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.InsertData(
                 table: "MasterUsers",
                 columns: new[] { "Id", "CreatedBy", "CreatedDate", "DeletedBy", "DeletedDate", "Email", "IsActive", "IsPasswordTemporary", "ModifiedBy", "ModifiedDate", "Name", "Password", "PhoneNumber", "ResetCode", "ResetExpiry", "Salt", "UserRole" },
-                values: new object[] { new Guid("472b1333-438f-41e1-8ab7-feafe3ba4710"), null, new DateTimeOffset(new DateTime(2024, 10, 24, 10, 37, 48, 207, DateTimeKind.Unspecified).AddTicks(5173), new TimeSpan(0, 5, 30, 0, 0)), null, null, "ramrk@anterntech.com", false, true, null, null, "Ram", "Pgn/yW4QIqUxsf2qbyE8f8P+X2BOBjCAi0diKSx2Jnw=", "6545454543", 12345, new DateTimeOffset(new DateTime(2024, 10, 24, 5, 22, 48, 207, DateTimeKind.Unspecified).AddTicks(5238), new TimeSpan(0, 0, 0, 0, 0)), "geN3n0129MkGsk1qb3YvAw==", (byte)1 });
+                values: new object[] { new Guid("ff38f814-f7ba-4ca1-bcad-a6fe6876553b"), null, new DateTimeOffset(new DateTime(2024, 11, 5, 14, 9, 3, 804, DateTimeKind.Unspecified).AddTicks(1835), new TimeSpan(0, 5, 30, 0, 0)), null, null, "ramrk@anterntech.com", false, true, null, null, "Ram", "2k6O8Q4HUlrKD73YDa/vBxj414NNsM98J8xMhxLgkt4=", "6545454543", 12345, new DateTimeOffset(new DateTime(2024, 11, 5, 8, 54, 3, 804, DateTimeKind.Unspecified).AddTicks(1905), new TimeSpan(0, 0, 0, 0, 0)), "TFY0d3p8QCfQQmfWZeXLzQ==", (byte)1 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdminProcessSteps_CompanyId",
+                table: "AdminProcessSteps",
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FollowUpDates_LeadId",
