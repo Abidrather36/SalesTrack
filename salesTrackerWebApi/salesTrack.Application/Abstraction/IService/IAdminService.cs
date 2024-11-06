@@ -16,7 +16,7 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<IEnumerable<AdminProcessStepResponseModel>>> GetAllAdminProcessSteps();
         Task<ApiResponse<AdminProcessStepResponseModel>> GetAdminProcessStepById(Guid Id);
         Task<ApiResponse<DeleteAdminProcessStepResponseModel>> DeleteAdminProcessStep(Guid Id);
-        Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetTimeSheetByUser(DateTimeOffset startDate,DateTimeOffset endDate, Guid userId);
+        Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetTimeSheetByUser(DateTimeOffset? startDate,DateTimeOffset? endDate, Guid userId);
    
 
     }

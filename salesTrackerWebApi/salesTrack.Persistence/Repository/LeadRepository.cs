@@ -145,7 +145,7 @@ namespace salesTrack.Persistence.Repository
                 HoursSpent = x.HoursSpent,
                 Comment = x.Comment,
                 Date = x.Date,
-                DateString= x.Date.ToString("dd/MM/yyyy")
+                DateString= x.Date.ToString("dd/mm/yyyy")
 
             }).OrderBy(x=>x.Date).ToListAsync();
             return res;

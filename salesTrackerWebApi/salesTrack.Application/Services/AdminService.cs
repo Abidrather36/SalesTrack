@@ -421,28 +421,33 @@ namespace salesTrack.Application.Services
 
 
 
-        public async Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetTimeSheetByUser(DateTimeOffset startDate, DateTimeOffset endDate, Guid userId)
+        public async Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetTimeSheetByUser(DateTimeOffset? startDate, DateTimeOffset? endDate, Guid userId)
         {
             try
             {
-
                 var companyUser = contextService.UserId();
+
+                if (endDate < startDate)
+                {
+                    return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse("End date cannot be earlier than start date.", HttpStatusCodes.BadRequest);
+                }
+
                 if (startDate == null || endDate == null)
                 {
                     var timeSheetByUser = await leadRepository.GetAllTimeSheetsByUser(userId);
-                    return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(timeSheetByUser, $" {timeSheetByUser.Count()} TimeSheeetsFound", HttpStatusCodes.OK);
+                    return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(timeSheetByUser, $"{timeSheetByUser.Count()} TimeSheets Found", HttpStatusCodes.OK);
                 }
                 else
                 {
                     var res = await companyRepository.GetTimeSheet(startDate, endDate, userId);
-                    return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(res, $"{res.Count()}TimeSheets Found", HttpStatusCodes.OK);
+                    return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(res, $"{res.Count()} TimeSheets Found", HttpStatusCodes.OK);
                 }
             }
             catch (Exception ex)
             {
-                return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message} ", HttpStatusCodes.BadRequest);
-
+                return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
             }
         }
+
     }
 }

@@ -6,7 +6,7 @@ import BreadcrumbComponent from "../shared/Breadcrumb";
 import InputField from "../public/InputField";
 import Spin from "../public/Spin";
 import { addLeadSource, leadSources } from "../../Services/LeadSource";
-
+import logoSide from "../../utils/paid-idea-concept-illustration_114360-8185.jpg"
 const LeadSource = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -45,7 +45,7 @@ const LeadSource = () => {
       <div className="wrapper" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap", width: "100%" }}>
         <div style={{ flex: 1, marginTop: "50px" }}>
           <img
-            src="https://i.ibb.co/pnLd3VS/remote-business-management-concept-with-businessman-holding-tablet-showing-analytics-graphs-connecte.jpg" 
+            src={logoSide} 
             style={{ width: "100%", height: "auto", borderRadius: "10px", marginRight: "100px" }}
             alt="Lead Source Registration"
           />
@@ -67,11 +67,11 @@ const LeadSource = () => {
               <h2 className="form-title">Register New Lead Source</h2>
               <form className="login-form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                 <div className="row">
-                  <div className="col-lg-6 mb-3">
+                  <div className="col-lg-6 mb-3" style={{width:"100%"}}>
                     <InputField
                       type="text"
                       name="leadSourceName"
-                      style={{ padding: "0px 1.25rem 0 1.12rem"}}
+                      style={{ padding: "0px 1.25rem 0 1.12rem",width:"100%"}}
                       placeholder="Lead Source Name"
                       {...register("leadSourceName", { required: "Lead Source Name is required" })}
                     />

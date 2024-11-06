@@ -54,17 +54,18 @@ namespace salesTrack.Persistence.Repository
 
         }
 
-        public async Task<IEnumerable<TimeSheetResponseModel>> GetTimeSheet(DateTimeOffset startDate, DateTimeOffset endDate, Guid id)
+        public async Task<IEnumerable<TimeSheetResponseModel>> GetTimeSheet(DateTimeOffset? startDate, DateTimeOffset? endDate, Guid id)
         {
             
           var timeSheets=await leadRepository.GetAllTimeSheetsByUser(id);
             var filteredUserTimeSheets = timeSheets.Where(ts => ts.Date >= startDate && ts.Date <= endDate).
                  Select(ts => new TimeSheetResponseModel
-                 {
-                     Date = ts.Date,
+                 {   Id=ts.Id,
+                     Date=ts.Date,
                      ProcessStep = ts.ProcessStep,
                      HoursSpent = ts.HoursSpent,
-                     Comment = ts.Comment
+                     Comment = ts.Comment,
+                     DateString=ts.Date.ToString("dd/MM/yyyy")
                  });
             return filteredUserTimeSheets;
             

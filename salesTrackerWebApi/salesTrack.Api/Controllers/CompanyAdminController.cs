@@ -15,7 +15,7 @@ namespace salesTrack.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   /* [Authorize(Roles = nameof(UserRole.CompanyAdmin) + "," + nameof(UserRole.SalesExecutive) + ","+nameof(UserRole.PortalAdmin))] */
+    [Authorize(Roles = nameof(UserRole.CompanyAdmin) + "," + nameof(UserRole.SalesExecutive) + "," + nameof(UserRole.PortalAdmin))]
     public class CompanyAdminController : ControllerBase
     {
         private readonly IAdminService adminService;
@@ -130,7 +130,7 @@ namespace salesTrack.Api.Controllers
 
         }
         [HttpPost("viewTimeSheet")]
-        public async Task<IActionResult> GetTimeSheetForCompany(DateTimeOffset startDate,DateTimeOffset endDate,Guid userId)
+        public async Task<IActionResult> GetTimeSheetForCompany(DateTimeOffset? startDate,DateTimeOffset? endDate,Guid userId)
         {
             try
             {
