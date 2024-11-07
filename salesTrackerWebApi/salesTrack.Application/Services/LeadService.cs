@@ -91,9 +91,6 @@ namespace salesTrack.Application.Services
                     DeletedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
                     CompanyId = companyId,
-
-
-
                 };
 
                 var leadAdded = await leadRepository.InsertAsync(lead);
@@ -110,9 +107,6 @@ namespace salesTrack.Application.Services
                     sourceLead.AssignedTo = returnVal!.Name;
                     var returnCompany = await companyRepository.GetByIdAsync(lead.CompanyId);
                     sourceLead.CompanyName = returnCompany!.CompanyName;
-
-
-
 
                     return ApiResponse<LeadResponseModel>.SuccessResponse(sourceLead, ApiMessages.LeadManagement.LeadAddedSuccessfully, HttpStatusCodes.Created);
 

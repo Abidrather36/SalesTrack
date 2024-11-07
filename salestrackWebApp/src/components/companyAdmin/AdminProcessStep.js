@@ -24,7 +24,7 @@ const AdminProcessStep = () => {
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
         setLoading(false);
-        navigate("/companyAdmin/dashboard");     
+        navigate("/companyAdmin/getProcessSteps");     
       } else {
         myToaster.showErrorToast(response.message);
       }
@@ -37,7 +37,7 @@ const AdminProcessStep = () => {
 
   return (
     <>
-      <BreadcrumbComponent labels={{ module: "Admin", currentRoute: "Add-Process-Step" }} />
+      <BreadcrumbComponent labels={{ module: "companyAdmin", currentRoute: "Add-Process-Step" }} />
       <div className="row" style={{ display: "flex", flexDirection: "row", height: "100vh" }}>
         <div className="col-lg-6 mb-4 mb-lg-0">
           <img

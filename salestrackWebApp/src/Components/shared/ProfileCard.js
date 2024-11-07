@@ -8,8 +8,6 @@ import {
   MDBCardText,
   MDBCardBody,
   MDBCardImage,
-  MDBBreadcrumb,
-  MDBBreadcrumbItem,
 } from "mdb-react-ui-kit";
 import BreadcrumbComponent from "./Breadcrumb";
  function ProfilePage() {
@@ -18,7 +16,7 @@ import BreadcrumbComponent from "./Breadcrumb";
     return user || {};
   };
   const user = getUserData();
-
+  
   const Props = {
     fullName: user.fullName || "",
     email: user.email || "",

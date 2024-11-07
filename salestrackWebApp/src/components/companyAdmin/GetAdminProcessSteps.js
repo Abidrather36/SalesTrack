@@ -42,7 +42,7 @@ function GetAdminProcessSteps() {
   ];
 
   const addProcessStep = () => {
-    navigate("/admin/addProcessStep");
+    navigate("/companyAdmin/addProcessStep");
   };
 
   const fetchProcessSteps = async () => {

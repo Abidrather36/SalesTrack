@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import logoImg from "../../utils/WhatsApp Image 2024-11-07 at 10.47.28_009bb6b7.jpg"
 
 const Header = () => {
   const navigate = useNavigate();
@@ -49,15 +50,16 @@ const Header = () => {
                       <img
                         alt="User Avatar"
                         className="avatar avatar-rounded-circle"
-                        src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
+                        src={logoImg}
                         style={{
                           width: "50px",
                           height: "50px",
                           borderRadius: "50%",
                         }}
                       />
-                      <span className="avatar-child avatar-badge bg-success" />
+                    <span className="text-black">{user.fullName}</span>
                     </div>
+
                   </a>
 
                   <div
@@ -79,8 +81,7 @@ const Header = () => {
                       <img
                         alt="User Avatar"
                         className="avatar avatar-rounded-circle me-3"
-                        src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
-                        style={{
+                        src={ logoImg} style={{
                           width: "40px",
                           height: "40px",
                           borderRadius: "50%",

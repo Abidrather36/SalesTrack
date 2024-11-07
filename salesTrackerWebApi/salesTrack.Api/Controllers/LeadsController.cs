@@ -200,6 +200,7 @@ namespace salesTrack.Api.Controllers
         {
             try
             {
+                model.Date = model.Date.AddDays(1);
                 return await leadService.AddTimeSheet(model);
             }
             catch (Exception ex)

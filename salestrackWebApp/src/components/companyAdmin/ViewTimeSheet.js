@@ -43,34 +43,6 @@ const ViewTimeSheet = () => {
     }
   };
 
-  // const onSubmit = async (data) => {
-  //   const { startDate, endDate, userId } = data;
-  //   const startDateOffset = new Date(startDate).toISOString();
-  //   const endDateOffset = new Date(endDate).toISOString();
-
-  //   setLoading(true);
-  //   setSearchClicked(true); // Set searchClicked to true on search
-  //   try {
-  //     const response = await viewTimeSheetByCompany(
-  //       startDateOffset,
-  //       endDateOffset,
-  //       userId
-  //     );
-  //     if (endDateOffset < startDateOffset) {
-  //       myToaster.showErrorToast("End date cannot be earlier than start date.");
-  //     }
-  //     if (response.isSuccess) {
-  //       setTimeSheetData(response.result);
-  //     } else {
-  //       myToaster.showErrorToast(response.message);
-  //     }
-  //   } catch (error) {
-  //     myToaster.showErrorToast("An error occurred. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const onSubmit = async (data) => {
     const { startDate, endDate, userId } = data;
   
@@ -114,7 +86,7 @@ const ViewTimeSheet = () => {
   return (
     <div>
       <BreadcrumbComponent
-        labels={{ module: "companyAdmin", currentRoute: "View-Time-Sheet" }}
+        labels={{ module: "companyAdmin", currentRoute: "ViewTimeSheet" }}
       />
 
       <div className="time-sheet-filter-container">
@@ -181,71 +153,6 @@ const ViewTimeSheet = () => {
           </Box>
         </div>
       </div>
-      {/* <FormControl
-        margin="normal"
-        style={{ marginRight: "10px", width: "20%" }}
-      >
-        <TextField
-          label="Start Date"
-          type="date"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          {...register("startDate", {
-            required: "Please select a start date",
-          })}
-        />
-      </FormControl>
-
-      <FormControl
-        margin="normal"
-        style={{ marginRight: "10px", width: "20%" }}
-      >
-        <TextField
-          label="End Date"
-          type="date"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          {...register("endDate", {
-            required: "Please select an end date",
-          })}
-        />
-      </FormControl>
-
-      <FormControl
-        margin="normal"
-        style={{ marginRight: "10px", width: "20%" }}
-      >
-        <TextField
-          select
-          label="User"
-          variant="outlined"
-          style={{ height: "56px" }}
-          SelectProps={{
-            native: true,
-          }}
-          {...register("userId", { required: "Please select a user" })}
-        >
-          <option value="">Select user</option>
-          {users.map((user) => (
-            <option key={user.id} value={user.id}>
-              {user.name}
-            </option>
-          ))}
-        </TextField>
-        <Box sx={{ marginLeft: "300px" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit(onSubmit)}
-            disabled={loading}
-            style={{ height: "45px", marginTop: "-80px" }}
-          >
-            {loading ? <Spin /> : "Search"}
-          </Button>
-        </Box>
-      </FormControl> */}
 
       <style jsx>{`
         .time-sheet-filter-container {
@@ -288,7 +195,7 @@ const ViewTimeSheet = () => {
               headers={headers}
               data={Array.isArray(timeSheetData) ? timeSheetData : []}
               loading={loading}
-              tableName="View Time Sheet"
+              tableName="Time Sheet"
             />
           ))}
       </div>

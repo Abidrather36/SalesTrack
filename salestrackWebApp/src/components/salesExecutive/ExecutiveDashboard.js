@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Card from "../shared/Card";
 import { useForm } from "react-hook-form";
 import { FaEdit, FaPlus, FaTrash, FaUsers,FaBriefcase,FaSyncAlt,FaCog, FaHistory ,FaCalendarDay} from "react-icons/fa";
-import Grid from "../shared/Grid";
 import {
   getAllLeads as fetchAllLeads,
   todaysFollowUp,
@@ -11,6 +10,7 @@ import { leadSources as fetchLeadSources } from "../../Services/LeadSource";
 import InputField from "../public/InputField";
 import Spin from "../public/Spin";
 import myToaster from "../../utils/toaster";
+import Grid from "../shared/Grid";
 
 export default function ExecutiveDashboard({ leadData }) {
   const [leads, setLeads] = useState([]);
