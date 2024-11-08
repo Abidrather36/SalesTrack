@@ -21,14 +21,11 @@ const AddUser = () => {
     try {
       data.userType = Number(data.userType);
       const response = await registerUser(data);
-      if (response.isSuccess) 
-        {
+      if (response.isSuccess) {
         myToaster.showSuccessToast("user added successfully");
         setLoading(false);
         navigate("/companyAdmin/userList");
-      } 
-      else 
-      {
+      } else {
         myToaster.showErrorToast(response.message);
       }
     } catch (error) {
@@ -101,15 +98,26 @@ const AddUser = () => {
                   type="text"
                   name="phoneNumber"
                   placeholder="Phone Number"
-                  {...register("phoneNumber",{
-                    required:"phoneNumber is required",
-                    maxLength:10,
-                    minLength:10,
-                    message:"phoneNumber should be  10 digit "
+                  {...register("phoneNumber", {
+                    required: "Phone number is required",
+                    maxLength: {
+                      value: 10,
+                      message: "Phone number should be exactly 10 digits",
+                    },
+                    minLength: {
+                      value: 10,
+                      message: "Phone number should be exactly 10 digits",
+                    },
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: "Phone number should contain only digits",
+                    },
                   })}
                 />
-                 {errors.phoneNumber && (
-                  <span className="text-danger">{errors.phoneNumber.message}</span>
+                {errors.phoneNumber && (
+                  <span style={{color:"red"}}>
+                    {errors.phoneNumber.message}
+                  </span>
                 )}
               </div>
 
@@ -131,7 +139,6 @@ const AddUser = () => {
               </div>
 
               <div>
-               
                 <InputField
                   as="select"
                   name="reportsTo"
@@ -140,7 +147,7 @@ const AddUser = () => {
                   })}
                 >
                   <option value="">Select Reports To</option>
-                  <option value="FF38F814-F7BA-4CA1-BCAD-A6FE6876553B"> 
+                  <option value="FF38F814-F7BA-4CA1-BCAD-A6FE6876553B">
                     Ram
                   </option>
                 </InputField>

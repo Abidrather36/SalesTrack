@@ -16,7 +16,7 @@ import BreadcrumbComponent from "./Breadcrumb";
     return user || {};
   };
   const user = getUserData();
-  
+
   const Props = {
     fullName: user.fullName || "",
     email: user.email || "",
@@ -25,11 +25,11 @@ import BreadcrumbComponent from "./Breadcrumb";
     user.userRole === 1
       ? "Admin"
       : user.userRole === 2
-      ? "Company Admin"
+      ? "CompanyAdmin"
       : user.userRole === 3
-      ? "Sales Executive"
+      ? "SalesExecutive"
       : user.userRole === 4
-      ? "Sales Manager"
+      ? "SalesManager"
       : "Unknown", 
   };
 

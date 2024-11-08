@@ -9,8 +9,8 @@ const TestimonialsComponent = () => {
     return (
         <div className="testimonial-container">
             <div className="section-heading">
-                <h2>Testimonials</h2>
-                <p>Why companies choose SalesTern for fast sales tracking and seamless lead connections</p>
+                <h2 style={{marginTop: "20px"}}>Testimonials</h2>
+                <p style={{marginTop:"10px"}}>Why companies choose SalesTern for fast sales tracking and seamless lead connections</p>
             </div>
 
             <div className="testimonial-wrapper">

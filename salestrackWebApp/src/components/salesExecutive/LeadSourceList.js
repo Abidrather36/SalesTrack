@@ -18,11 +18,7 @@ function LeadSourceList() {
     useEffect(() => {
       fetchLeadSources()
     }, [])
-    
-    const breadcrumbLabels={
-        moudule:"salesExecutive",
-        currentRoute:"Register-New-SourceLead"
-    }
+  
     const headers=[
         {key: "leadSourceName",label: "Lead Source Name",},
         {key :"description",label:"Description" },
@@ -58,8 +54,11 @@ function LeadSourceList() {
         }
       }
   return (
+    <>
+<BreadcrumbComponent labels={{ module: "salesExecutive", currentRoute: "Register-New-Lead-Source" }} />
+
+
     <div>
-      <BreadcrumbComponent labels={breadcrumbLabels}/>
       {showSpinner ? (
         <div style={{display:"flex",justifyContent:"center",alignItems:"center",marginTop:"150px"}} >
         <CircularProgress  />
@@ -77,6 +76,7 @@ function LeadSourceList() {
         />
       )}
     </div>
+    </>
   )
 }
 
