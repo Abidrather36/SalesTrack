@@ -4,11 +4,15 @@ import BreadcrumbComponent from "../shared/Breadcrumb";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getAllProcessSteps } from "../../Services/UserService";
+import { getAdminProcessesByCompany } from "../../Services/CompanyService";
+import myToaster from "../../utils/toaster";
+import { CircularProgress } from "@mui/material";
 
 function GetAdminProcessSteps() {
   const [processSteps, setProcessSteps] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [showSpinner, setShowSpinner] = useState(true);
 
   useEffect(() => {
     fetchProcessSteps();
@@ -46,20 +50,29 @@ function GetAdminProcessSteps() {
   };
 
   const fetchProcessSteps = async () => {
-    try {
-      const response = await getAllProcessSteps();
-      setProcessSteps(response.result);
-    } catch (err) {
-      console.error("Failed to fetch process steps", err);
-    } finally {
+
+      const response = await getAdminProcessesByCompany();
+      if(response.isSuccess){
+        setProcessSteps(response.result);
+        setShowSpinner(false);
+      }
+      else{
+        myToaster.showErrorToast(response.message)
+      setShowSpinner(false);
+      }
       setLoading(false);
     }
-  };
 
   return (
     <>
       <BreadcrumbComponent labels={breadcrumbLabels} />
-      <Grid
+      {showSpinner ? (
+        <div style={{display:"flex",justifyContent:"center",alignItems:"center",marginTop:"150px"}} >
+        <CircularProgress  />
+
+        </div>
+      ):(
+        <Grid
         headers={headers}
         buttons={btnList}
         data={processSteps}
@@ -68,6 +81,8 @@ function GetAdminProcessSteps() {
         tableName="Process Steps"
         addButtonLabel="Add Process Step"
       />
+      )}
+   
     </>
   );
 }

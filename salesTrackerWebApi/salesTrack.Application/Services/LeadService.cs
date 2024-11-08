@@ -48,10 +48,7 @@ namespace salesTrack.Application.Services
                     return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
                 }
 
-                if (await userRepository.IsExistsAsync(x => x.Email == model.Email))
-                {
-                    return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.LeadManagement.LeadEmailExist, HttpStatusCodes.BadRequest);
-                }
+             
 
                 MasterUser user = new()
                 {
@@ -66,46 +63,27 @@ namespace salesTrack.Application.Services
                     DeletedDate = DateTime.UtcNow,
                     IsActive = true,
                     ModifiedDate = DateTime.UtcNow,
-
-
-
                 };
-
                 var userAdded = await userRepository.InsertAsync(user);
                 if (userAdded <= 0)
                 {
                     return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
                 }
+                model.CompanyId = companyId;
 
-                Lead lead = new()
-                {
-                    Id = user.Id,
-                    AssignTo = model.AssignTo,
-                    LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId : throw new ArgumentException("lead SouceId is Required"),
-                    IsActive = true,
-                    Comment = model.Comment,
-                    CreatedBy = salesExecutiveId,
-                    ModifiedBy = Guid.Empty,
-                    FinalStatus = FinalStatus.Open,
-                    CreatedDate = DateTime.Now,
-                    DeletedDate = DateTime.Now,
-                    ModifiedDate = DateTime.Now,
-                    CompanyId = companyId,
-                };
+                var leadAdded = await leadRepository.AddLead(model,user.Id);
 
-                var leadAdded = await leadRepository.InsertAsync(lead);
-
-                if (leadAdded <= 0)
+                if (leadAdded is null)
                 {
 
                     return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
                 }
                 else
                 {
-                    var sourceLead = await leadRepository.GetLeadById(lead!.Id);
+                    var sourceLead = await leadRepository.GetLeadById(leadAdded!.Id);
                     var returnVal = await userRepository.GetByIdAsync(sourceLead.AssignToId);
                     sourceLead.AssignedTo = returnVal!.Name;
-                    var returnCompany = await companyRepository.GetByIdAsync(lead.CompanyId);
+                    var returnCompany = await companyRepository.GetByIdAsync(leadAdded.CompanyId);
                     sourceLead.CompanyName = returnCompany!.CompanyName;
 
                     return ApiResponse<LeadResponseModel>.SuccessResponse(sourceLead, ApiMessages.LeadManagement.LeadAddedSuccessfully, HttpStatusCodes.Created);

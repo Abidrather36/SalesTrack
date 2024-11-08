@@ -102,6 +102,19 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
+        [HttpGet("getAll-Adminprocess-steps-ByCompany")]
+        public async Task<IActionResult> GetAllAdminProcessStepsByCompany()
+        {
+            try
+            {
+                var res = await adminService.GetAllAdminProcessStepsByCompany();
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         [HttpGet("GetById-process-step/{id:guid}")]
         public async Task<ApiResponse<AdminProcessStepResponseModel>> GetProcessStepById(Guid Id)

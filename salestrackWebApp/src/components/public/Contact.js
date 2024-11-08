@@ -29,7 +29,7 @@ const Contact = () => {
                   >
                     <i class="bi bi-geo-alt"></i>
                     <h3>Address</h3>
-                    <p> 100 Feet Rd, HRBR Layout,</p>
+                    <p>10M 226, ist Floor ,100 Feet Rd, HRBR Layout</p>
                     <p>Kalyan Nagar 560043</p>
                   </div>
                 </div>
@@ -55,8 +55,8 @@ const Contact = () => {
                   >
                     <i class="bi bi-envelope"></i>
                     <h3>Email Us</h3>
-                    <p>info@iaminterviewed.com</p>
-                    <p>antennsales@gmail.com</p>
+                    <p>salestern@</p>
+                    <p>gmail.com</p>
                   </div>
                 </div>
 

@@ -9,7 +9,7 @@ import InputField from "../public/InputField";
 import Spin from "../public/Spin";
 import { leadSources as getLeadSources } from "../../Services/LeadSource";
 import { UserLists } from "../../Services/UserService";
-import logo from "../../utils/illustrated-woman-being-intern-company_23-2148726151 (1).avif"
+import leadImage from "../../utils/illustrated-woman-being-intern-company_23-2148726151 (1).avif"
 const AddLead = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -84,7 +84,7 @@ const AddLead = () => {
       <div className="wrapper" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap", width: "100%",padding:"50px",marginTop:"-0px" }}>
         <div style={{ flex: 1, marginTop: "50px", }}>
           <img
-            src={logo}
+            src={leadImage}
             style={{ width: "100%", borderRadius: "10px", marginRight: "100px" }}
             alt="Lead Registration"
           />

@@ -14,10 +14,11 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<AdminProcessStepResponseModel>> AddAdminProcessStep(AdminProcessStepRequestModel model);
         Task<ApiResponse<AdminProcessStepResponseModel>> UpdateAdminProcessStep(UpdateAdminProcessStepModel model);
         Task<ApiResponse<IEnumerable<AdminProcessStepResponseModel>>> GetAllAdminProcessSteps();
+        Task<ApiResponse<IEnumerable<AdminProcessStepResponseModel>>> GetAllAdminProcessStepsByCompany();
         Task<ApiResponse<AdminProcessStepResponseModel>> GetAdminProcessStepById(Guid Id);
         Task<ApiResponse<DeleteAdminProcessStepResponseModel>> DeleteAdminProcessStep(Guid Id);
         Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetTimeSheetByUser(DateTimeOffset? startDate,DateTimeOffset? endDate, Guid userId);
-   
+    
 
     }
 }

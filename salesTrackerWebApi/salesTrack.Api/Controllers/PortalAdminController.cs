@@ -76,7 +76,7 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-        [HttpPut("Update-Company")]
+        [HttpPost("Update-Company")]
         public async Task<ApiResponse<CompanyResponseModel>> UpdateCompany(CompanyRequestUpdateModel model)
         {
             try

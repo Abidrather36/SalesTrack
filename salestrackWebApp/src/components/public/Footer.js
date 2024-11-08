@@ -25,7 +25,7 @@ function Footer() {
             <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" ,marginTop:"10px"}}>
               <i className="fas fa-envelope" style={{ color: "#0077b6", marginRight: "10px" }}></i>
               <a href="mailto:info@myskilltest.com" style={{ color: "#0077b6", textDecoration: "none" }}>
-                info@myskilltest.com
+                salestern@gmail.com
               </a>
             </div>
            

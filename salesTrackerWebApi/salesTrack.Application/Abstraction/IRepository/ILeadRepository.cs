@@ -3,11 +3,13 @@ using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Abstraction.IRepository;
 using SalesTrack.Application.Common;
+using System.ComponentModel.Design;
 
 namespace salesTrack.Application.Abstraction.IRepository
 {
     public interface ILeadRepository:IBaseRepository<Lead>
     {
+        Task<Lead> AddLead(LeadRequestModel model,Guid userId);
         Task<LeadResponseModel> GetLeadById(Guid leadId);
         Task<IEnumerable<LeadResponseModel>> GetAllLeadsByCompanyId(Guid id);
         Task<IEnumerable<LeadResponseModel>> GetAllLeadsAsync();

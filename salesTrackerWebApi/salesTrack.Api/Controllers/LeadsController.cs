@@ -23,15 +23,16 @@ namespace salesTrack.Api.Controllers
 
         [HttpPost("register")]
 
-        public async Task<ApiResponse<LeadResponseModel>> AddLead(LeadRequestModel model)
+        public async Task<IActionResult> AddLead(LeadRequestModel model)
         {
             try
             {
-                return await leadService.AddLead(model);
+                var res= await leadService.AddLead(model);
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return  BadRequest(ex.Message);
             }
         }
         [HttpGet("GetLeadById/{id:guid}")]
@@ -114,7 +115,7 @@ namespace salesTrack.Api.Controllers
         }
 
 
-        [HttpPut("updateLeadProcessStep")]
+        [HttpPost("updateLeadProcessStep")]
         public async Task<ApiResponse<LeadProcessResponseModel>> UpdateLeadProcessStep(LeadProcessUpdateModel model)
         {
             try
@@ -222,7 +223,7 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        [HttpPut("UpdateTimeSheet")]
+        [HttpPost("UpdateTimeSheet")]
         public async Task<IActionResult> UpdateTimeSheet(UpdateTimeSheetModel model)
         {
             try

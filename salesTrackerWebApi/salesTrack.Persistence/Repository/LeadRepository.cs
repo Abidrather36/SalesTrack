@@ -35,6 +35,44 @@ namespace salesTrack.Persistence.Repository
             await context.FollowUpDates.AddAsync(model);
             return await context.SaveChangesAsync();
         }
+        public async Task<Lead> AddLead(LeadRequestModel model,Guid userId)
+        {
+            try
+            {
+                var existingLead = await context.Leads
+                    .Include(l => l.User) 
+                    .FirstOrDefaultAsync(l => l.CompanyId == model.CompanyId && l.User.Email == model.Email);
+
+                if (existingLead != null)
+                {
+                    throw new Exception("A lead with this email already exists for this company.");
+                }
+
+                var newLead = new Lead
+                {
+                    Id = userId,
+                    LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId : throw new ArgumentException("lead SouceId is Required"),
+                    CompanyId = model.CompanyId,  
+                    Comment = model.Comment,  
+                    AssignTo = model.AssignTo,  
+                    CreatedBy = model.AssignTo,  
+                    CreatedDate = DateTime.UtcNow,  
+                    ModifiedDate = DateTime.UtcNow,  
+                    IsActive = true  
+                };
+
+                await context.Leads.AddAsync(newLead);
+                await context.SaveChangesAsync();
+                var lead=await  GetByIdAsync(newLead.Id);
+                return lead;  
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error adding lead: {ex.Message}");
+            }
+        }
+
+
 
         public async Task<int> AddLeadProcessStep(LeadProcessSteps model)
         {

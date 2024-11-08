@@ -13,7 +13,7 @@ export const getCompanies=(companyRequestModel)=>{
     return res;
 }
 export const updateCompany=async (companyRequestModel)=>{
-    let res= await axiosObject.put(`PortalAdmin/Update-Company`,companyRequestModel).then(res=>res.data)
+    let res= await axiosObject.post(`PortalAdmin/Update-Company`,companyRequestModel).then(res=>res.data)
     return res;
 }
 export const deleteCompanyById=async (companyId)=>{
@@ -39,5 +39,9 @@ export const viewTimeSheetByCompany = async (startDate, endDate, userId) => {
     let res = await axiosObject.post(url.toString()).then(res => res.data);
     return res;
 };
+export const getAdminProcessesByCompany=()=>{
+    let res =axiosObject.get(`${ApiUrl}CompanyAdmin/getAll-Adminprocess-steps-ByCompany`).then(res =>res.data)
+    return res;
+}
 
 

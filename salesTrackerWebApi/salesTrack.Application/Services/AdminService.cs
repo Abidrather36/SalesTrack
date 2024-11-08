@@ -13,6 +13,7 @@ using SalesTrack.Application.Common;
 using SalesTrack.Application.Shared;
 using SalesTrack.Domain.Entities;
 using SalesTrack.Domain.Entities.Models.Request;
+using System.ComponentModel.Design;
 using System.Data;
 using static SalesTrack.Application.Shared.ApiMessages;
 
@@ -431,15 +432,22 @@ namespace salesTrack.Application.Services
                 {
                     return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse("End date cannot be earlier than start date.", HttpStatusCodes.BadRequest);
                 }
+                
 
                 if (startDate == null || endDate == null)
                 {
                     var timeSheetByUser = await leadRepository.GetAllTimeSheetsByUser(userId);
-                    return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(timeSheetByUser, $"{timeSheetByUser.Count()} TimeSheets Found", HttpStatusCodes.OK);
+                    if (timeSheetByUser.Any())
+                    {
+                        return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(timeSheetByUser, $"{timeSheetByUser.Count()} TimeSheets Found", HttpStatusCodes.OK);
+
+                    }
+                    return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse("No TimeSheets Found For the User");
                 }
                 else
                 {
                     var res = await companyRepository.GetTimeSheet(startDate, endDate, userId);
+                  
                     return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(res, $"{res.Count()} TimeSheets Found", HttpStatusCodes.OK);
                 }
             }
@@ -449,5 +457,30 @@ namespace salesTrack.Application.Services
             }
         }
 
+        public async Task<ApiResponse<IEnumerable<AdminProcessStepResponseModel>>> GetAllAdminProcessStepsByCompany()
+        {
+            try
+            {
+                var companyId = contextService.UserId();
+
+                var steps = await companyRepository.GetAllAdminProcessStepsByCompanyId(companyId);
+
+
+                if (steps == null || !steps.Any())
+                {
+                    return ApiResponse<IEnumerable<AdminProcessStepResponseModel>>.ErrorResponse("No process steps found for this company.",HttpStatusCodes.BadRequest);
+                }
+                else
+                {
+                    return ApiResponse<IEnumerable<AdminProcessStepResponseModel>>.SuccessResponse(steps,$"{steps.Count()} found",HttpStatusCodes.OK);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<AdminProcessStepResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+        }
     }
 }

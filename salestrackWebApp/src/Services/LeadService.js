@@ -51,6 +51,6 @@ export const timeSheetList=async()=>{
     return res;
 }
 export const updateTimeSheet =async(updateTimeSheet)=>{
-    let res= await axiosObject.put(`${ApiUrl}Leads/updateTimeSheet`,updateTimeSheet).then(res =>res.data)
+    let res= await axiosObject.post(`${ApiUrl}Leads/updateTimeSheet`,updateTimeSheet).then(res =>res.data)
     return res;
 }

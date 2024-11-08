@@ -23,6 +23,17 @@ namespace salesTrack.Persistence.Repository
             this.leadRepository = leadRepository;
         }
 
+        public async Task<IEnumerable<AdminProcessStepResponseModel>> GetAllAdminProcessStepsByCompanyId(Guid id)
+        {
+          var res= await context.AdminProcessSteps.Where(x => x.CompanyId == id).Select(x => new AdminProcessStepResponseModel
+            {
+                Id=x.Id,
+                StepName=x.StepName,
+                
+            }).ToListAsync();
+            return res;
+        }
+
         public async Task<IEnumerable<CompanyResponseModel>> GetAllCompaniesAsync()
         {
             var companies = context.Companies.Select(company => new CompanyResponseModel
