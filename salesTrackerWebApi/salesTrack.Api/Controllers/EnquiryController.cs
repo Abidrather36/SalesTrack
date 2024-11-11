@@ -73,7 +73,7 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-        [HttpPut("UpdateEnquiry")]
+        [HttpPost("UpdateEnquiry")]
         public async Task<ApiResponse<EnquiryUpdateResponse>> EnquiryUpdate(EnquiryUpdateRequest model)
         {
             try
@@ -83,6 +83,19 @@ namespace salesTrack.Api.Controllers
             catch (Exception ex)
             {
                  throw;
+            }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteEnquiry(Guid id)
+        {
+            try
+            {
+                return Ok(await enquiryService.DeleteEnquiry(id));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }

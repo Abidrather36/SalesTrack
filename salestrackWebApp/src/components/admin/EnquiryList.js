@@ -3,6 +3,9 @@ import { getAllEnquiries } from "../../Services/AuthService";
 import Grid from "../shared/Grid";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import BreadcrumbComponent from "../shared/Breadcrumb";
+import { deleteEnquiryById, updateEnquiry, updateEnquiryById } from "../../Services/EnquiryService";
+import myToaster from "../../utils/toaster";
+import { ConfirmDialog } from "primereact/confirmdialog";
 function EnquiryList() {
   const [enquiries, setEnquiries] = useState([]);
   
@@ -23,14 +26,14 @@ function EnquiryList() {
       key: "edit",
       title: "Edit",
       className: "btn btn-primary",
-      onEditHandler: (data) => console.log(data),
+      onEditHandler: (data) => updateEnquiry(data),
       icon:<FaEdit/>
     },
     {
       key: "delete",
       title: "Delete",
       className: "btn btn-danger",
-      onDeleteHandler: (data) => console.log(data),
+      onDeleteHandler: (data) => deleteEnquiry(data),
       icon:<FaTrash/>
     },
   ];
@@ -50,6 +53,36 @@ function EnquiryList() {
       console.error("Failed to fetch enquiries", err);
     }
   };
+  const deleteEnquiryHandler = async (enquiryId) => {
+    try {
+        const res = await deleteEnquiryById(enquiryId);
+        if (res.isSuccess) {
+            myToaster.showSuccessToast("Enquiry deleted successfully");
+            fetchEnquiries();  
+        } else {
+            myToaster.showErrorToast(res.message);
+        }
+    } catch (error) {
+        myToaster.showErrorToast("Failed to delete the enquiry");
+    }
+};
+  const deleteEnquiry=(enquiry)=>{
+    myToaster.primereactDeleteConfirmEnquiry(enquiry,deleteEnquiryHandler)
+  }
+  const updateEnquiryHandler=async(updateModel)=>{
+      const response= await updateEnquiryById(updateModel);
+      if(response.isSuccess){
+        myToaster.showSuccessToast(response.message);
+        fetchEnquiries();
+      }
+      else{
+        myToaster.showErrorToast(response.message);
+      }
+  }
+  const updateEnquiry=(enquiry)=>{
+    console.log(enquiry)
+    myToaster.FireInputSwalEnquiry(enquiry,fetchEnquiries)
+  }
 
   useEffect(() => {
     fetchEnquiries();
@@ -67,7 +100,7 @@ function EnquiryList() {
         tableName="Enquiries"
         addButtonLabel="Enquiry"
          />
-
+    <ConfirmDialog/>
     </>
   );
 }

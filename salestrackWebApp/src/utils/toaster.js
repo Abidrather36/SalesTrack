@@ -9,6 +9,7 @@ import 'primeicons/primeicons.css';
 import "./toaster.css"
 import { updateLead, updateTimeSheet } from "../Services/LeadService";
 import { updateUser } from "../Services/UserService";
+import { updateEnquiryById } from "../Services/EnquiryService";
 class Toaster{
 
 
@@ -255,6 +256,55 @@ class Toaster{
         });
     };
     
+    FireInputSwalEnquiry = async (data = {}, fetchEnquiries) => {
+      console.log("enquiry data inside swal",data.name)
+      Swal.fire({
+          title: "Edit Enquiry",
+          html: `
+              <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
+                  <label for="swal-input1" style="text-align:left">Enquiry Name</label>
+                  <input id="swal-input1" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Name" value="${data.name}" />
+                  
+                  <label for="swal-input2" style="text-align:left">Email</label>
+                  <input id="swal-input2" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Email" value="${data.email}" />
+                  
+                  <label for="swal-input3" style="text-align:left">Phone Number</label>
+                  <input id="swal-input3" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Phone Number" value="${data.phoneNumber}" />
+              </div>
+          `,
+          focusConfirm: false,
+          preConfirm: () => {
+              const enquiryName = document.getElementById("swal-input1").value;
+              const email = document.getElementById("swal-input2").value;
+              const phoneNumber = document.getElementById("swal-input3").value;
+  
+              if (!enquiryName || !email || !phoneNumber) {
+                  Swal.showValidationMessage(`Please enter all fields`);
+                  return null;
+              }
+  
+              return { enquiryName, email, phoneNumber };
+          },
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Update",
+      }).then(async (result) => {
+          if (result.isConfirmed) {
+              const updatedEnquiry = result.value;
+              updatedEnquiry.id = data.id;  
+              
+              const res = await updateEnquiryById(updatedEnquiry);
+              if (res.isSuccess) {
+                  myToaster.showSuccessToast("Enquiry updated successfully");
+                  fetchEnquiries();  
+              } else {
+                  myToaster.showErrorToast(res.message);
+              }
+          }
+      });
+  };
+  
     
        primereactDeleteConfirm = (company,deleteSwalHandler) => {
         confirmDialog({
@@ -285,6 +335,19 @@ class Toaster{
          
       });
   };
+  primereactDeleteConfirmEnquiry = (enquiry, deleteEnquiryHandler) => {
+    confirmDialog({
+        message: `Are you sure you want to delete the enquiry "${enquiry.name}"?`,
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'Yes',
+        rejectLabel: 'No',
+        acceptClassName: 'p-button-secondary',
+        rejectClassName: 'p-button-danger',
+        className: 'custom-dialog',
+        accept: () => deleteEnquiryHandler(enquiry.id),  
+    });
+};
     primereactDeleteConfirmLead = (lead, deleteLeadHandler) => {
       confirmDialog({
           message: `Are you sure you want to delete the lead "${lead.name}"?`, 
