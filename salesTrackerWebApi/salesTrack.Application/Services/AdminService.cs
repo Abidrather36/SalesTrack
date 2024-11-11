@@ -482,5 +482,101 @@ namespace salesTrack.Application.Services
 
             }
         }
+
+        public async Task<ApiResponse<UserResponseModel>> UpdateUser(UserUpdateModel model)
+        {
+            try
+            {
+                var loggedInCompany = contextService.UserId();
+
+                var masterUser = await userRepository.GetMasterUserById(model.Id);
+                var user = await userRepository.GetUserById(model.Id);
+
+                if (user is null || masterUser is null)
+                {
+                    return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                }
+
+                masterUser.Name = model.Name;
+                masterUser.Email = model.Email;
+                masterUser.PhoneNumber = model.PhoneNumber;
+                masterUser.ModifiedBy = loggedInCompany;
+                masterUser.ModifiedDate= DateTime.Now;
+                var updatedMasterUser = await userRepository.UpdateAsync(masterUser);
+
+                if (updatedMasterUser > 0)
+                {
+                    UserResponseModel userResponse = new UserResponseModel
+                    {
+                        Id = masterUser.Id,
+                        Name = masterUser.Name,
+                        Email = masterUser.Email,
+                        PhoneNumber = masterUser.PhoneNumber,
+                        IsActive = user.IsActive,
+                    };
+
+                    return ApiResponse<UserResponseModel>.SuccessResponse(userResponse, "User updated successfully", HttpStatusCodes.OK);
+                }
+                else
+                {
+                    return ApiResponse<UserResponseModel>.ErrorResponse("Update Failed", HttpStatusCodes.BadRequest);
+                }
+            
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<UserResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+        }
+
+        public async Task<ApiResponse<UserResponseModel>> DeleteUser(Guid id)
+        {
+            try
+            {
+                var loggedInUser = contextService.UserId();
+                var masterUser = await userRepository.GetByIdAsync(id);
+                var user = await userRepository.GetUserById(id);
+                if (masterUser == null || user == null)
+                {
+                    return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+
+                }
+                else
+                {
+                    masterUser.IsActive = false;
+                    masterUser.ModifiedBy = loggedInUser;
+                    masterUser.ModifiedDate = DateTime.Now;
+
+                    user.IsActive = false;
+                    user.ModifiedBy = loggedInUser;
+                    user.ModifiedDate = DateTime.Now;
+
+                    var masterUserUpdated = await userRepository.UpdateAsync(masterUser);
+                    var userUpdated = await userRepository.UpdateUser(user);
+                    if (masterUserUpdated > 0 && userUpdated > 0)
+                    {
+                        var userDeleted = await userRepository.GetUserById(user.Id);
+                        UserResponseModel userResponseModel = new()
+                        {
+                            Id = userDeleted.Id,
+                            Name = userDeleted.MasterUser.Name,
+                            Email = userDeleted.MasterUser.Email,
+                            PhoneNumber = userDeleted.MasterUser.PhoneNumber,
+                            IsActive = userDeleted.IsActive,
+                        };
+                        return ApiResponse<UserResponseModel>.SuccessResponse(userResponseModel, "User Deleted Successfully", HttpStatusCodes.OK);
+                    }
+                    return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<UserResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+
+            }
+        }
     }
 }

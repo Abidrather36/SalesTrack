@@ -161,7 +161,7 @@ namespace salesTrack.Application.Services
                     var userUpdated = await companyRepository.UpdateAsync(user);
                     var companyUpdated = await companyRepository.UpdateAsync(company);
 
-                    if (userUpdated > 0 && companyUpdated > 0)
+                    if (userUpdated > 0 && companyUpdated > 0)  
                     {
                         var companyDeleted = await companyRepository.GetCompanyByIdAsync(company.Id);
                         return ApiResponse<CompanyResponseModel>.SuccessResponse(companyDeleted, "Company Deleted Successfully", HttpStatusCodes.OK);

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import Grid from "../shared/Grid";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import BreadcrumbComponent from "../shared/Breadcrumb";
-import { UserLists } from "../../Services/UserService";
+import { deleteUser, deleteUserById, UserLists } from "../../Services/UserService";
 import { useNavigate } from "react-router-dom";
 import myToaster from "../../utils/toaster";
 import { CircularProgress } from "@mui/material";
+import { ConfirmDialog } from "primereact/confirmdialog";
 
 function UserList() {
   const [users, setUsers] = useState([]);
@@ -37,14 +38,14 @@ function UserList() {
       key: "edit",
       title: "Edit",
       className: "btn btn-primary",
-      onEditHandler: (data) => console.log(data),
+      onEditHandler: (data) => updateUser(data),
       icon: <FaEdit />,
     },
     {
       key: "delete",
       title: "Delete",
       className: "btn btn-danger",
-      onDeleteHandler: (data) => console.log(data),
+      onDeleteHandler: (data) => deleteUser(data),
       icon: <FaTrash />,
     },
   ];
@@ -52,6 +53,28 @@ function UserList() {
   const addUser = () => {
     navigate("/companyAdmin/add-new-user");
   };
+
+  const updateUser=(user)=>{
+    console.log(user)
+   myToaster.FireInputSwalUser(user,fetchUsers)
+  }
+
+  const deletUserHandler=async (id)=>{
+    console.log(id)
+    const response =await deleteUserById(id)
+    if(response.isSuccess){
+      myToaster.showSuccessToast(response.message)
+      fetchUsers();
+    }
+    else{
+      myToaster.showErrorToast(response.message)
+    }
+  }
+
+  const deleteUser=(id)=>{
+    console.log(id);
+    myToaster.primereactDeleteConfirmUser(id,deletUserHandler)
+  }
 
   const fetchUsers = async () => {
     const response = await UserLists();
@@ -85,7 +108,9 @@ function UserList() {
           addButtonLabel="Add User"
         />
       )}
+           <ConfirmDialog />
     </>
+
   );
 }
 

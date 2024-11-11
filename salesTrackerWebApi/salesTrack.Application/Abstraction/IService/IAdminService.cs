@@ -11,6 +11,8 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<UserResponseModel>> AddUser(UserRequestModel model);
         Task<ApiResponse<IEnumerable<UserResponseModel>>> GetAllUsersByCompanyId();
         Task<ApiResponse<UserResponseModel>> GetUserById(Guid id);
+        Task<ApiResponse<UserResponseModel>> UpdateUser(UserUpdateModel model);
+        Task<ApiResponse<UserResponseModel>> DeleteUser(Guid id);
         Task<ApiResponse<AdminProcessStepResponseModel>> AddAdminProcessStep(AdminProcessStepRequestModel model);
         Task<ApiResponse<AdminProcessStepResponseModel>> UpdateAdminProcessStep(UpdateAdminProcessStepModel model);
         Task<ApiResponse<IEnumerable<AdminProcessStepResponseModel>>> GetAllAdminProcessSteps();

@@ -57,6 +57,11 @@ namespace salesTrack.Persistence.Repository
         {
             return await context.MasterUsers.FindAsync(id);
         }
+        public async Task<int> UpdateUser(User user)
+        {
+            var res= await Task.Run(()=> context.Users.Update(user));
+            return await context.SaveChangesAsync();
+        }
         
     }
 }

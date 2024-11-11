@@ -12,6 +12,7 @@ namespace SalesTrack.Application.Abstraction.IRepository
         /*  Task<Company> GetCompanyIdByUserId(Guid userId);*/
         Task<User> GetUserById(Guid id);
         Task<MasterUser> GetMasterUserById(Guid? id);
+        Task<int> UpdateUser(User user);
             
 
 }

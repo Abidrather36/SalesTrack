@@ -62,6 +62,31 @@ namespace salesTrack.Api.Controllers
                 throw;
             }
         }
+        [HttpPost("Update-User")]
+        public async Task<IActionResult> UpdateUser(UserUpdateModel model)
+        {
+            try
+            {
+                return Ok(await adminService.UpdateUser(model));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpDelete("delete-User/{id:guid}")]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+            try
+            {
+                return Ok(await adminService.DeleteUser(id));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         [HttpPost("add-process-steps")]
         public async Task<IActionResult> AddProcessStep(AdminProcessStepRequestModel model)

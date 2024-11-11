@@ -8,6 +8,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import "./toaster.css"
 import { updateLead, updateTimeSheet } from "../Services/LeadService";
+import { updateUser } from "../Services/UserService";
 class Toaster{
 
 
@@ -204,6 +205,56 @@ class Toaster{
           }
         });
       };
+      FireInputSwalUser = async (data = {}, fetchUsers) => {
+        Swal.fire({
+            title: "Edit User",
+            html: `
+                <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
+                    <label for="swal-input1" style="text-align:left">Name</label>
+                    <input id="swal-input1" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Name" value="${data.name}" />
+                    
+                    <label for="swal-input2" style="text-align:left">Email</label>
+                    <input id="swal-input2" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Email" value="${data.email}" />
+                    
+                    <label for="swal-input3" style="text-align:left">Phone Number</label>
+                    <input id="swal-input3" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Phone Number" value="${data.phoneNumber}" />
+                </div>
+            `,
+            focusConfirm: false,
+            preConfirm: () => {
+                const name = document.getElementById("swal-input1").value;
+                const email = document.getElementById("swal-input2").value;
+                const phoneNumber = document.getElementById("swal-input3").value;
+    
+                if (!name || !email || !phoneNumber) {
+                    Swal.showValidationMessage(`Please enter all fields`);
+                    return null;
+                }
+    
+                return { name, email, phoneNumber };
+            },
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Update",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const updatedUser = result.value;
+                updatedUser.id = data.id;
+    
+                if (updateUser !== null || []) {
+                    const res = await updateUser(updatedUser);
+                    if (res.isSuccess) {
+                        myToaster.showSuccessToast("User updated successfully");
+                        fetchUsers();
+                    } else {
+                        myToaster.showErrorToast(res.message);
+                    }
+                }
+            }
+        });
+    };
+    
     
        primereactDeleteConfirm = (company,deleteSwalHandler) => {
         confirmDialog({
@@ -219,6 +270,21 @@ class Toaster{
            
         });
     };
+    
+    primereactDeleteConfirmUser = (user,deletUserHandler) => {
+      confirmDialog({
+          message: `Are you sure you want to delete the user "${user.name}"?`,
+          header: 'Confirmation',
+          icon: 'pi pi-exclamation-triangle',
+          acceptLabel: 'Yes',
+          rejectLabel: 'No',
+          acceptClassName: 'p-button-secondary',
+          rejectClassName: 'p-button-danger',
+          className: 'custom-dialog',
+          accept:()=>deletUserHandler(user.id)
+         
+      });
+  };
     primereactDeleteConfirmLead = (lead, deleteLeadHandler) => {
       confirmDialog({
           message: `Are you sure you want to delete the lead "${lead.name}"?`, 
