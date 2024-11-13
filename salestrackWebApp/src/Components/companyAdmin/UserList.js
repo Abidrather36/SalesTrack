@@ -5,7 +5,6 @@ import BreadcrumbComponent from "../shared/Breadcrumb";
 import { deleteUser, deleteUserById, UserLists } from "../../Services/UserService";
 import { useNavigate } from "react-router-dom";
 import myToaster from "../../utils/toaster";
-import { CircularProgress } from "@mui/material";
 import { ConfirmDialog } from "primereact/confirmdialog";
 
 function UserList() {
@@ -94,7 +93,7 @@ function UserList() {
       <BreadcrumbComponent labels={breadcrumbLabels} />
       {showSpinner ? (
         <div style={{display:"flex",justifyContent:"center",alignItems:"center",marginTop:"150px"}} >
-        <CircularProgress  />
+        
 
         </div>
       ) : (
@@ -107,6 +106,7 @@ function UserList() {
           tableName="Users"
           addButtonLabel="Add User"
         />
+       
       )}
            <ConfirmDialog />
     </>

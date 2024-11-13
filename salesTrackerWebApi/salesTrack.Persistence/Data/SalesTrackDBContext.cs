@@ -22,7 +22,8 @@ namespace SalesTrack.Persistence.Data
         public DbSet<AdminProcessStep> AdminProcessSteps { get; set; }  
         public DbSet<LeadSource> LeadSources { get; set; }
         public DbSet<FollowUpDate> FollowUpDates { get; set; }
-        public DbSet<TimeSheet> TimeSheets { get; set; }    
+        public DbSet<TimeSheet> TimeSheets { get; set; }   
+        public DbSet<LeadCategory> LeadCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -236,6 +236,7 @@ namespace salesTrack.Application.Services
                 }
                 else
                 {
+                    lead.ContactPerson=model.ContactPerson;
                     lead.LeadSourceId = model.LeadSourceId;
                     lead.FinalStatus = model.FinalStatus;
                     lead.ModifiedBy = salesExecutiveId;
@@ -264,6 +265,7 @@ namespace salesTrack.Application.Services
                                 Id = lead.Id,
                                 Name = user.Name,
                                 Email = user.Email,
+                                ContactPerson= lead.ContactPerson,
                                 PhoneNumber = user.PhoneNumber,
                                 LeadSourceId = lead.LeadSourceId,
                                 LeadSourceName = leadSource.LeadSourceName,
@@ -685,6 +687,44 @@ namespace salesTrack.Application.Services
             catch (Exception ex)
             {
                 return ApiResponse<TimeSheetResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+            }
+        }
+
+        public async Task<ApiResponse<LeadCategoryResponse>> AddLeadCategory(LeadCategoryRequest model)
+        {
+            try
+            {
+                var loggedInUser = contextService.UserId();
+                if (model.LeadCategoryName == string.Empty && model.LeadCategoryDescription == string.Empty)
+                {
+                    return ApiResponse<LeadCategoryResponse>.ErrorResponse("please enter values", HttpStatusCodes.BadRequest);
+                }
+                var leadCategory = new LeadCategory()
+                {
+                    Id = Guid.NewGuid(),
+                    LeadCategoryName = model.LeadCategoryName,
+                    LeadCategoryDescription = model.LeadCategoryDescription,
+                    CreatedBy = loggedInUser,
+                    CreatedDate = DateTime.Now,
+                    IsActive=true,
+                };
+                var res = await leadRepository.AddLeadCategory(leadCategory);
+                if (res > 0)
+                {
+                    LeadCategoryResponse leadCategoryResponse = new()
+                    {
+                        Id = leadCategory.Id,
+                        LeadCategoryName = leadCategory.LeadCategoryName,
+                        LeadCategoryDescription = leadCategory.LeadCategoryDescription,
+                    };
+                    return  ApiResponse<LeadCategoryResponse>.SuccessResponse(leadCategoryResponse, "Lead Category Successfully Added", HttpStatusCodes.OK);
+                }
+                return ApiResponse<LeadCategoryResponse>.ErrorResponse("something went wrong please try again", HttpStatusCodes.BadRequest);
+            }
+            catch(Exception ex)
+            {
+                return ApiResponse<LeadCategoryResponse>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
             }
         }
 

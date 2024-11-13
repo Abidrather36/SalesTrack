@@ -1,4 +1,5 @@
 ﻿using Org.BouncyCastle.Utilities.Collections;
+using salesTrack.Domain.Entities;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Common;
@@ -23,7 +24,8 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<TimeSheetRequestModel>> AddTimeSheet(TimeSheetRequestModel model);
         Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetAllTimeSheets();
         Task<ApiResponse<TimeSheetResponseModel>> UpdateTimeSheet(UpdateTimeSheetModel model);
+        Task<ApiResponse<LeadCategoryResponse>> AddLeadCategory(LeadCategoryRequest model);
 
-
+    
     }
 }

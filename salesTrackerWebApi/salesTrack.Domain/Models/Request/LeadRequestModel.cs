@@ -17,6 +17,7 @@ namespace salesTrack.Domain.Models.Request
         [Phone(ErrorMessage = "Invalid phone number format.")]
         public string? PhoneNumber { get; set; }
 
+        public string? ContactPerson { get; set; }
         public Guid LeadSourceId { get; set; }
 
         public Guid CompanyId { get; set; }

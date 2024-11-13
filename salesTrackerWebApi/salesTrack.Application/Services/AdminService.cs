@@ -266,7 +266,10 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<IEnumerable<AdminProcessStepResponseModel>>> GetAllAdminProcessSteps()
         {
-            var adminProcessSteps = await adminRepository.GetAllAsync();
+            var userId =contextService.UserId();
+            var user =await userRepository.GetUserById(userId);
+            var adminProcessSteps = await companyRepository.GetAllAdminProcessStepsByCompanyId(user.CompanyId);
+
             if (adminProcessSteps is null)
             {
                 return ApiResponse<IEnumerable<AdminProcessStepResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
@@ -462,7 +465,7 @@ namespace salesTrack.Application.Services
             try
             {
                 var companyId = contextService.UserId();
-
+                               
                 var steps = await companyRepository.GetAllAdminProcessStepsByCompanyId(companyId);
 
 

@@ -5,5 +5,6 @@ namespace salesTrack.Domain.Models.Response
     public class LeadSourceResponseModel:LeadSourceRequestModel
     {
         public Guid Id { get; set; }
+        public bool IsActive { get; set; }
     }
 }

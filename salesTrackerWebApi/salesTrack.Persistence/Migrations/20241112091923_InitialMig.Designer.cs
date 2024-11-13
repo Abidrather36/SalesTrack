@@ -12,8 +12,8 @@ using SalesTrack.Persistence.Data;
 namespace salesTrack.Persistence.Migrations
 {
     [DbContext(typeof(SalesTrackDBContext))]
-    [Migration("20241105083904_initialMig")]
-    partial class initialMig
+    [Migration("20241112091923_InitialMig")]
+    partial class InitialMig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,17 +86,17 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ff38f814-f7ba-4ca1-bcad-a6fe6876553b"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 11, 5, 14, 9, 3, 804, DateTimeKind.Unspecified).AddTicks(1835), new TimeSpan(0, 5, 30, 0, 0)),
+                            Id = new Guid("8cfa587b-46f0-4bb7-b512-ee81f0d37676"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 11, 12, 14, 49, 22, 195, DateTimeKind.Unspecified).AddTicks(4505), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "2k6O8Q4HUlrKD73YDa/vBxj414NNsM98J8xMhxLgkt4=",
+                            Password = "XX7TqnyDRMzHWuCAUpCeAkX/EdpELfPf5L69gVB1hlg=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 11, 5, 8, 54, 3, 804, DateTimeKind.Unspecified).AddTicks(1905), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "TFY0d3p8QCfQQmfWZeXLzQ==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 11, 12, 9, 34, 22, 195, DateTimeKind.Unspecified).AddTicks(4572), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "6wjF+cwSZjRGUXUXV2Fczw==",
                             UserRole = (byte)1
                         });
                 });
@@ -284,6 +284,9 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ContactPerson")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -302,6 +305,9 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("LeadCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("LeadSourceId")
                         .HasColumnType("uniqueidentifier");
 
@@ -315,9 +321,49 @@ namespace salesTrack.Persistence.Migrations
 
                     b.HasIndex("CompanyId");
 
+                    b.HasIndex("LeadCategoryId");
+
                     b.HasIndex("LeadSourceId");
 
                     b.ToTable("Leads");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.LeadCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LeadCategoryDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LeadCategoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LeadCategories");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.LeadComments", b =>
@@ -592,6 +638,12 @@ namespace salesTrack.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("salesTrack.Domain.Entities.LeadCategory", "LeadCategory")
+                        .WithMany("Leads")
+                        .HasForeignKey("LeadCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("salesTrack.Domain.Entities.LeadSource", "LeadSource")
                         .WithMany("Leads")
                         .HasForeignKey("LeadSourceId")
@@ -599,6 +651,8 @@ namespace salesTrack.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
+
+                    b.Navigation("LeadCategory");
 
                     b.Navigation("LeadSource");
 
@@ -696,6 +750,11 @@ namespace salesTrack.Persistence.Migrations
                     b.Navigation("LeadComments");
 
                     b.Navigation("ProcessSteps");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.LeadCategory", b =>
+                {
+                    b.Navigation("Leads");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.LeadProcessSteps", b =>

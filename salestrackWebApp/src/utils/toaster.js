@@ -10,6 +10,7 @@ import "./toaster.css"
 import { updateLead, updateTimeSheet } from "../Services/LeadService";
 import { updateUser } from "../Services/UserService";
 import { updateEnquiryById } from "../Services/EnquiryService";
+import {  updateLeadSourceById } from "../Services/LeadSource";
 class Toaster{
 
 
@@ -26,16 +27,19 @@ class Toaster{
         html: `
           <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
             <label for="swal-input-name" style="text-align:left">Lead Name</label>
-            <input id="swal-input-name" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Lead Name" value="${lead.name}" />
+            <input id="swal-input-name" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Lead Name" value="${lead.name || ''}" />
             
             <label for="swal-input-email" style="text-align:left">Email</label>
-            <input id="swal-input-email" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Email" value="${lead.email}" />
+            <input id="swal-input-email" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Email" value="${lead.email || ''}" />
             
             <label for="swal-input-phone" style="text-align:left">Phone Number</label>
-            <input id="swal-input-phone" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Phone Number" value="${lead.phoneNumber}" />
+            <input id="swal-input-phone" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Phone Number" value="${lead.phoneNumber || ''}" />
+            
+            <label for="swal-input-contact-person" style="text-align:left">Contact Person</label>
+            <input id="swal-input-contact-person" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Contact Person" value="${lead.contactPerson || ''}" />
             
             <label for="swal-input-comment" style="text-align:left">Comment</label>
-            <input id="swal-input-comment" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Comment" value="${lead.comment}" />
+            <input id="swal-input-comment" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Comment" value="${lead.comment || ''}" />
             
             <label for="swal-input-assign" style="text-align:left">Assign To</label>
             <select id="swal-input-assign" class="swal2-input" style="width: 80%; margin-left:10px">
@@ -62,19 +66,18 @@ class Toaster{
           const name = document.getElementById("swal-input-name").value;
           const email = document.getElementById("swal-input-email").value;
           const phoneNumber = document.getElementById("swal-input-phone").value;
+          const contactPerson = document.getElementById("swal-input-contact-person").value;
           const comment = document.getElementById("swal-input-comment").value;
           const assignTo = document.getElementById("swal-input-assign").value;
           const leadSourceId = document.getElementById("swal-input-source").value;
           const finalStatus = Number(document.getElementById("swal-input-status").value);
     
-          // Check for empty fields
-          if (!name || !email || !phoneNumber || !assignTo || !leadSourceId || !finalStatus) {
+          if (!name || !email || !phoneNumber || !contactPerson || !assignTo || !leadSourceId || !finalStatus) {
             Swal.showValidationMessage(`Please enter all fields`);
             return null;
           }
     
-          // Return the lead data to be updated
-          return { name, email, phoneNumber, comment, assignTo, leadSourceId, finalStatus };
+          return { name, email, phoneNumber, contactPerson, comment, assignTo, leadSourceId, finalStatus };
         },
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -98,6 +101,7 @@ class Toaster{
         }
       });
     };
+    
 
     editTimeSheet = async (timeSheet = {}, fetchTimeSheetList) => {
       console.log(timeSheet)
@@ -173,15 +177,11 @@ class Toaster{
           `,
           focusConfirm: false,
           preConfirm: () => {
-            const name = document.getElementById("swal-input1").value;
-            const companyName = document.getElementById("swal-input2").value;
-            const email = document.getElementById("swal-input3").value;
-            const phoneNumber = document.getElementById("swal-input4").value;
+            const name = document.getElementById("swal-input1").value|| null;;
+            const companyName = document.getElementById("swal-input2").value|| null;
+            const email = document.getElementById("swal-input3").value|| null;
+            const phoneNumber = document.getElementById("swal-input4").value|| null;
       
-            if (!name || !companyName || !email || !phoneNumber) {
-              Swal.showValidationMessage(`Please enter all fields`);
-              return null;
-            }
       
             return { name, companyName, email, phoneNumber };
           },
@@ -305,6 +305,52 @@ class Toaster{
       });
   };
   
+   leadSourceEditSwal = async (data = {},fetchLeadSources ) => {
+    Swal.fire({
+        title: "Edit Lead Source",
+        html: `
+            <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
+                <label for="swal-input1" style="text-align:left">Lead Source Name</label>
+                <input id="swal-input1" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Lead Source Name" value="${data.leadSourceName}" />
+                
+                <label for="swal-input2" style="text-align:left">Description</label>
+                <input id="swal-input2" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Description" value="${data.description}" />
+            </div>
+        `,
+        focusConfirm: false,
+        preConfirm: () => {
+            const leadSourceName = document.getElementById("swal-input1").value;
+            const description = document.getElementById("swal-input2").value;
+
+            // if (!leadSourceName || !description) {
+            //     Swal.showValidationMessage(`Please enter all fields`);
+            //     return null;
+            // }
+
+            return { leadSourceName, description };
+        },
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Update",
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const updatedLeadSource = result.value;
+            updatedLeadSource.id = data.id;  
+
+            if (updatedLeadSource !== null && updatedLeadSource !== undefined) {
+                const res = await updateLeadSourceById(updatedLeadSource);
+                if (res.isSuccess) {
+                    myToaster.showSuccessToast(res.message);
+                    fetchLeadSources();  
+                } else {
+                    myToaster.showErrorToast(res.message);
+                }
+            }
+        }
+    });
+};
+
     
        primereactDeleteConfirm = (company,deleteSwalHandler) => {
         confirmDialog({
@@ -348,6 +394,19 @@ class Toaster{
         accept: () => deleteEnquiryHandler(enquiry.id),  
     });
 };
+primereactDeleteLeadSource =(leadSource,deleteLeadSourceHandler)=>{
+  confirmDialog({
+    message: `Are you sure you want to delete the enquiry "${leadSource.name}"?`,
+    header: 'Confirmation',
+    icon: 'pi pi-exclamation-triangle',
+    acceptLabel: 'Yes',
+    rejectLabel: 'No',
+    acceptClassName: 'p-button-secondary',
+    rejectClassName: 'p-button-danger',
+    className: 'custom-dialog',
+    accept: () => deleteLeadSourceHandler(leadSource.id),  
+});
+}
     primereactDeleteConfirmLead = (lead, deleteLeadHandler) => {
       confirmDialog({
           message: `Are you sure you want to delete the lead "${lead.name}"?`, 

@@ -7,14 +7,7 @@ import Modal from "@mui/material/Modal";
 import { Margin, TroubleshootTwoTone } from "@mui/icons-material";
 import Grid from "../shared/Grid";
 import { addManageLead, leadFollowUpHistory } from "../../Services/LeadService";
-import {
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormHelperText,
-} from "@mui/material";
+import {TextField,FormControl,InputLabel,Select,MenuItem,FormHelperText,} from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import {
@@ -23,9 +16,10 @@ import {
   addLeadProcessStep,
 } from "../../Services/LeadService";
 import myToaster from "../../utils/toaster";
-import { getAllProcessSteps } from "../../Services/UserService";
+import { getAllProcessSteps, getAllProcessStepsByCompany } from "../../Services/UserService";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import BreadcrumbComponent from "../shared/Breadcrumb";
 const style = {
   position: "absolute",
   top: "50%",
@@ -73,7 +67,9 @@ export default function BasicModal({
       onClose()
     } else {
      setshowHistoryGrid(true)
+
     }
+  
   };
   const handleManageLeadClick = () => {
     setpopUpModel(true);
@@ -123,13 +119,14 @@ export default function BasicModal({
   };
 
   const fetchProcessSteps = async () => {
-    try {
       const response = await getAllProcessSteps();
-      setProcessSteps(response.result);
-    } catch (error) {
-      myToaster.showErrorToast("Failed to fetch process steps.");
+      if (response.isSuccess) {
+        setProcessSteps(response.result);
+      }
+      else{
+        myToaster.showErrorToast(response.message)
+      }
     }
-  };
 
   const onSubmit = async (data) => {
     console.log("save btn clicked");
@@ -155,6 +152,12 @@ export default function BasicModal({
 
   return (
     <div>
+          <BreadcrumbComponent
+        labels={{
+          module: "salesExecutive",
+          currentRoute: "Manage-Lead",
+        }}
+      />
       {popUpModel && (
         <Modal
           open={open}
@@ -263,3 +266,5 @@ export default function BasicModal({
     </div>
   );
 }
+
+

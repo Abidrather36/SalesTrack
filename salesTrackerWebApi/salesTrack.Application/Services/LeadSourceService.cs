@@ -73,9 +73,41 @@ namespace salesTrack.Application.Services
             }
         }
 
-        public Task<ApiResponse<LeadSourceResponseModel>> DeleteLeadSource(Guid id)
+        public async Task<ApiResponse<LeadSourceResponseModel>> DeleteLeadSource(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var loggedInUser = contextService.UserId();
+                var leadSource = await leadSourceRepository.GetByIdAsync(id);
+                if (leadSource is null)
+                {
+                    return ApiResponse<LeadSourceResponseModel>.ErrorResponse("No such Lead Source", HttpStatusCodes.BadRequest);
+                }
+                leadSource.IsActive = false;
+                leadSource.ModifiedBy = loggedInUser;
+                leadSource.ModifiedDate = DateTime.Now;
+
+                var delResponse = await leadSourceRepository.UpdateAsync(leadSource);
+                if (delResponse > 0)
+                {
+                    var leadSourceDeleted = await leadSourceRepository.GetByIdAsync(leadSource.Id);
+                    LeadSourceResponseModel model = new()
+                    {
+                        Id = leadSourceDeleted.Id,
+                        LeadSourceName = leadSourceDeleted.LeadSourceName,
+                        Description = leadSourceDeleted.Description,
+                    };
+                    return ApiResponse<LeadSourceResponseModel>.SuccessResponse(model, "Lead Source Deleted Successfully", HttpStatusCodes.OK);
+                }
+                return ApiResponse<LeadSourceResponseModel>.ErrorResponse("Something went wrong can't delete", HttpStatusCodes.BadRequest);
+
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<LeadSourceResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError}: {ex.Message}", HttpStatusCodes.InternalServerError);
+
+            }
+
         }
 
         public async Task<ApiResponse<IEnumerable<LeadSourceResponseModel>>> GetAllLeadSoucres()
@@ -90,6 +122,7 @@ namespace salesTrack.Application.Services
                         Id = leadSource.Id,
                         LeadSourceName = leadSource.LeadSourceName,
                         Description = leadSource.Description,
+                        IsActive=leadSource.IsActive,
                     });
                     return ApiResponse<IEnumerable<LeadSourceResponseModel>>.SuccessResponse(LeadSourceList, ApiMessages.LeadSourceManagement.LeadSourceListRetrievedSuccessfully, HttpStatusCodes.OK);
 
@@ -126,10 +159,56 @@ namespace salesTrack.Application.Services
             }
         }
 
-        public Task<ApiResponse<LeadSourceResponseModel>> UpdateLeadSource(LeadSourceRequestModel model)
+        public async Task<ApiResponse<LeadSourceResponseModel>> UpdateLeadSource(LeadSourceUpdate model)
         {
-            throw new NotImplementedException();
+
+            try
+            {
+
+                var loggedInUser = contextService.UserId();
+
+                if (string.IsNullOrEmpty(model.LeadSourceName) || string.IsNullOrEmpty(model.Description))
+                {
+                    return ApiResponse<LeadSourceResponseModel>.ErrorResponse("Update failed. Please try again.", HttpStatusCodes.BadRequest);
+                }
+
+                var leadSource = await leadSourceRepository.GetByIdAsync(model.Id);
+
+                if (leadSource is null)
+                {
+                    return ApiResponse<LeadSourceResponseModel>.ErrorResponse("Lead source not found.", HttpStatusCodes.BadRequest);
+                }
+
+                leadSource.LeadSourceName = model.LeadSourceName;
+                leadSource.Description = model.Description;
+                leadSource.ModifiedBy = loggedInUser;
+                leadSource.ModifiedDate = DateTime.Now;
+
+                var res = await leadSourceRepository.UpdateAsync(leadSource);
+                if (res > 0)
+                {
+                    var responseModel = new LeadSourceResponseModel
+                    {
+                        Id = leadSource.Id,
+                        LeadSourceName = leadSource.LeadSourceName,
+                        Description = leadSource.Description
+                    };
+
+                    return ApiResponse<LeadSourceResponseModel>.SuccessResponse(responseModel, "Lead source updated successfully.");
+                }
+                else
+                {
+                    return ApiResponse<LeadSourceResponseModel>.ErrorResponse("Failed to update lead source. Please try again.", HttpStatusCodes.InternalServerError);
+                }
+            
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<LeadSourceResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError}: {ex.Message}", HttpStatusCodes.InternalServerError);
+
+            }
         }
+
     }
-    }
+}
 

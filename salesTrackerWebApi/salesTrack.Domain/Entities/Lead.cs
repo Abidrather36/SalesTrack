@@ -8,10 +8,12 @@ namespace salesTrack.Domain.Entities
     public  class Lead:BaseModel
     {
         public string? Comment { get; set; }
+        public string? ContactPerson { get; set; }
         public Guid AssignTo { get; set; }
         public Guid LeadSourceId { get; set; }
         public FinalStatus FinalStatus { get; set; }=FinalStatus.Open;
         public Guid CompanyId { get; set; }
+        public Guid LeadCategoryId { get; set; }
 
         #region navigation
 
@@ -23,9 +25,12 @@ namespace salesTrack.Domain.Entities
 
         [ForeignKey(nameof(Id))]
         public MasterUser? User { get; set; }
-       public ICollection<LeadProcessSteps>? ProcessSteps { get; set; }
-       public ICollection<FollowUpDate>? FollowUpDate { get; set; }
-       public ICollection<LeadComments>? LeadComments { get; set; }
+
+        [ForeignKey(nameof(LeadCategoryId))]
+        public LeadCategory? LeadCategory { get; set; }
+        public ICollection<LeadProcessSteps>? ProcessSteps { get; set; }
+        public ICollection<FollowUpDate>? FollowUpDate { get; set; }
+        public ICollection<LeadComments>? LeadComments { get; set; }
         #endregion
     }
 }

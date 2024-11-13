@@ -18,13 +18,11 @@ export default function ExecutiveDashboard({ leadData }) {
   const [leadTodayFollowUp, setLeadTodayFollowUp] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch leads and lead sources on component mount
   useEffect(() => {
     getAllLeads();
     fetchAllLeadSources();
   }, []);
 
-  // Fetch leads
   const getAllLeads = async () => {
     try {
       const response = await fetchAllLeads();
@@ -45,7 +43,6 @@ const deleteFollowUp =(lead)=>{
     onfetchFollowUpHistory(data);
   };
 
-  // Fetch lead sources
   const fetchAllLeadSources = async () => {
     try {
       const response = await fetchLeadSources();
@@ -96,19 +93,17 @@ const deleteFollowUp =(lead)=>{
     }
   };
 
-  // React Hook Form
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  // Refresh button handler
   const handleRefresh = () => {
-    getAllLeads(); // Fetch the latest leads
-    fetchAllLeadSources(); // Fetch the latest lead sources
+    getAllLeads(); 
+    fetchAllLeadSources(); 
     if (leadTodayFollowUp.length > 0) {
-      setLeadTodayFollowUp([]); // Clear previous follow-ups if necessary
+      setLeadTodayFollowUp([]); 
       setLeads([]);
     }
   };
@@ -283,7 +278,7 @@ const deleteFollowUp =(lead)=>{
             headers={headers}
             data={Array.isArray(leadTodayFollowUp) ? leadTodayFollowUp : []}
             loading={loading}
-            tableName="Today's Follow-up"
+            tableName="Follow-up History"
           />
         )}
       </div>

@@ -237,6 +237,19 @@ namespace salesTrack.Api.Controllers
             }
 
         }
+        [HttpPost("Add-LeadCategory")]
+        public async Task<IActionResult> AddLeadCategory(LeadCategoryRequest model)
+        {
+            try
+            {
+               return Ok(await leadService.AddLeadCategory(model));
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

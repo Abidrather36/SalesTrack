@@ -131,6 +131,16 @@ const AddLead = () => {
                     />
                     {errors.email && <span className="error-message">{errors.email.message}</span>}
                   </div>
+                  <div className="col-lg-6 mb-3">
+                    <InputField
+                      type="text"
+                      name="contactPerson"
+                      style={{ padding: "0px 1.25rem 0 1.12rem" }}
+                      placeholder="Contact Person"
+                      {...register("contactPerson", { required: "Contact Person is required" })}
+                    />
+                    {errors.name && <span className="error-message">{errors.contactPerson.message}</span>}
+                  </div>
 
                   <div className="col-lg-6 mb-3">
                     <InputField

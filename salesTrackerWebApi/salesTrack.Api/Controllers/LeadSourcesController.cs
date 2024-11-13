@@ -60,5 +60,30 @@ namespace salesTrack.Api.Controllers
             }
 
         }
+        [HttpPost("updateLeadSource")]
+        public async Task<IActionResult> UpdateLeadSource(LeadSourceUpdate model)
+        {
+            try
+            {
+                return Ok(await leadSourceService.UpdateLeadSource(model));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [HttpDelete("deleteLeadSource/{id:guid}")]
+        public async Task<IActionResult> DeleteLeadSource(Guid id)
+        {
+            try
+            {
+                return Ok(await leadSourceService.DeleteLeadSource(id));
+            }
+            catch (Exception  ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+        }
     }
 }

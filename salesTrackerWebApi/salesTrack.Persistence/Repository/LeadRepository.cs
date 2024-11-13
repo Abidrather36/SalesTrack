@@ -58,7 +58,8 @@ namespace salesTrack.Persistence.Repository
                     CreatedBy = model.AssignTo,  
                     CreatedDate = DateTime.UtcNow,  
                     ModifiedDate = DateTime.UtcNow,  
-                    IsActive = true  
+                    IsActive = true ,
+                    ContactPerson=model.ContactPerson
                 };
 
                 await context.Leads.AddAsync(newLead);
@@ -72,7 +73,11 @@ namespace salesTrack.Persistence.Repository
             }
         }
 
-
+        public async Task<int> AddLeadCategory(LeadCategory model)
+        {
+           await context.LeadCategories.AddAsync(model);
+           return await context.SaveChangesAsync();
+        }
 
         public async Task<int> AddLeadProcessStep(LeadProcessSteps model)
         {
@@ -138,6 +143,7 @@ namespace salesTrack.Persistence.Repository
             {
                 Id = lead.Id,
                 Name = lead.User!.Name,
+                ContactPerson=lead.ContactPerson,
                 Email = lead.User!.Email,
                 PhoneNumber = lead.User!.PhoneNumber,
                 Comment = lead.Comment,
@@ -160,6 +166,7 @@ namespace salesTrack.Persistence.Repository
             {
                 Id = lead.Id,
                 Name = lead!.User!.Name,
+                ContactPerson=lead.ContactPerson,
                 Email = lead.User!.Email,
                 PhoneNumber = lead.User!.PhoneNumber,
                 Comment = lead.Comment,

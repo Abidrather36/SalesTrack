@@ -1,6 +1,4 @@
-import React from "react";
 import { ApiUrl } from "./Shared";
-import axios from "axios";
 import axiosObject from "../utils/InterceptorService";
 
 export const addCompany=(companyRequestModel)=>{
@@ -13,7 +11,7 @@ export const getCompanies=(companyRequestModel)=>{
     return res;
 }
 export const updateCompany=async (companyRequestModel)=>{
-    let res= await axiosObject.post(`PortalAdmin/Update-Company`,companyRequestModel).then(res=>res.data)
+    let res= await axiosObject.post(`${ApiUrl}PortalAdmin/Update-Company`,companyRequestModel).then(res=>res.data)
     return res;
 }
 export const deleteCompanyById=async (companyId)=>{

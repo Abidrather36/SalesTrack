@@ -10,6 +10,6 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<IEnumerable<LeadSourceResponseModel>>>GetAllLeadSoucres();
         Task<ApiResponse<LeadSourceResponseModel>> GetLeadSourceById(Guid id);
         Task<ApiResponse<LeadSourceResponseModel>> DeleteLeadSource(Guid id);
-        Task<ApiResponse<LeadSourceResponseModel>> UpdateLeadSource(LeadSourceRequestModel model);
+        Task<ApiResponse<LeadSourceResponseModel>> UpdateLeadSource(LeadSourceUpdate model);
     }
 }
