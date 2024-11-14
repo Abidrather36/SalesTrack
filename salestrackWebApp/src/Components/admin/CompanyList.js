@@ -74,14 +74,14 @@ function CompanyList() {
   };
 
   const fetchComapnies = async () => {
-    try {
       const response = await getCompanies();
-      setCompanies(response.result);
-      console.log(companies);
-    } catch (err) {
-      myToaster.showErrorToast(err.message);
+      if(response.isSuccess){
+        setCompanies(response.result);
+      }
+      else{
+        myToaster.showErrorToast(response.message);
+      }
     }
-  };
 
   useEffect(() => {
     fetchComapnies();

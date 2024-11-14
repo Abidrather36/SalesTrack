@@ -26,5 +26,6 @@ namespace salesTrack.Domain.Models.Response
         public bool IsActive { get; set; }
         public string? CompanyName { get; set; }
         public Guid CompanyId { get; set; }
+        public Guid LeadCategoryId { get; set; }
     }
 }

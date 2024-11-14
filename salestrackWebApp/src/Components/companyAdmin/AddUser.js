@@ -269,7 +269,6 @@ const AddUser = () => {
     const response = await UserLists();
     if (response.isSuccess) {
       setUsers(response.result);
-      myToaster.showSuccessToast(response.message);
     } else {
       myToaster.showErrorToast(response.message);
     }
@@ -390,7 +389,7 @@ const AddUser = () => {
                   })}
                 >
                   <option value="">Select Reports To</option>
-                  <option value="FF38F814-F7BA-4CA1-BCAD-A6FE6876553B">
+                  <option value="E68F38AB-997E-414F-BEDD-ABE6242DA185">
                     Ram
                   </option>
                   {filteredUsers?.map((user) => (

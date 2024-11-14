@@ -59,7 +59,8 @@ namespace salesTrack.Persistence.Repository
                     CreatedDate = DateTime.UtcNow,  
                     ModifiedDate = DateTime.UtcNow,  
                     IsActive = true ,
-                    ContactPerson=model.ContactPerson
+                    ContactPerson=model.ContactPerson,
+                    LeadCategoryId=model.LeadCategoryId
                 };
 
                 await context.Leads.AddAsync(newLead);
@@ -220,6 +221,27 @@ namespace salesTrack.Persistence.Repository
 
         }
 
+        public async Task<IEnumerable<LeadCategoryResponse>> GetLeadCategories()
+        {
+            var leadCategories = await context.LeadCategories.ToListAsync();
+
+            var leadCategoryResponses = leadCategories.Select(category => new LeadCategoryResponse
+            {
+                Id=category.Id,
+                LeadCategoryName = category.LeadCategoryName,
+                LeadCategoryDescription = category.LeadCategoryDescription,
+                IsActive=category.IsActive,
+                
+            });
+
+            return leadCategoryResponses;
+        }
+
+        public async Task<LeadCategory?> GetLeadCategoryById(Guid? id)
+        {
+           return await context.LeadCategories.FindAsync(id);
+        }
+
         public async Task<LeadProcessSteps?> GetLeadProcessStepById(Guid id)
         {
             var procStep = await context.LeadProcessSteps.FindAsync(id);
@@ -293,6 +315,11 @@ namespace salesTrack.Persistence.Repository
             return followUpsForToday;
         }
 
+        public async Task<int> UpdateLeadCategory(LeadCategory model)
+        {
+            await Task.Run(() => context.LeadCategories.Update(model));
+            return await context.SaveChangesAsync();
+        }
 
         public async Task<int> UpdateLeadProcessStep(LeadProcessSteps model)
         {

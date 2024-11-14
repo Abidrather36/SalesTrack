@@ -21,6 +21,7 @@ namespace salesTrack.Domain.Models.Request
         public Guid LeadSourceId { get; set; }
 
         public Guid CompanyId { get; set; }
+        public Guid LeadCategoryId { get; set; }
 
         [Required]
         public string? Comment { get; set; }

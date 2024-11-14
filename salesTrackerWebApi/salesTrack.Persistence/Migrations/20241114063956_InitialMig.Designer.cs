@@ -12,7 +12,7 @@ using SalesTrack.Persistence.Data;
 namespace salesTrack.Persistence.Migrations
 {
     [DbContext(typeof(SalesTrackDBContext))]
-    [Migration("20241112091923_InitialMig")]
+    [Migration("20241114063956_InitialMig")]
     partial class InitialMig
     {
         /// <inheritdoc />
@@ -86,17 +86,17 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8cfa587b-46f0-4bb7-b512-ee81f0d37676"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 11, 12, 14, 49, 22, 195, DateTimeKind.Unspecified).AddTicks(4505), new TimeSpan(0, 5, 30, 0, 0)),
+                            Id = new Guid("e68f38ab-997e-414f-bedd-abe6242da185"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 11, 14, 12, 9, 40, 442, DateTimeKind.Unspecified).AddTicks(4692), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "XX7TqnyDRMzHWuCAUpCeAkX/EdpELfPf5L69gVB1hlg=",
+                            Password = "oieEiS6DXGrPZcW9LMJEE7PHT2Pc1XEYlw+rncsjonU=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 11, 12, 9, 34, 22, 195, DateTimeKind.Unspecified).AddTicks(4572), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "6wjF+cwSZjRGUXUXV2Fczw==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 11, 14, 6, 54, 40, 442, DateTimeKind.Unspecified).AddTicks(4757), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "a0yerka8oiL8WRM31EDibQ==",
                             UserRole = (byte)1
                         });
                 });

@@ -2,7 +2,7 @@ import { ApiUrl } from "./Shared";
 import axiosObject from "../utils/InterceptorService";
 
 export const addCompany=(companyRequestModel)=>{
-    let res= axiosObject.post("PortalAdmin/AddCompany",companyRequestModel).then(res=>res.data)
+    let res= axiosObject.post(`${ApiUrl}PortalAdmin/AddCompany`,companyRequestModel).then(res=>res.data)
     return res;
 }
 
@@ -37,9 +37,16 @@ export const viewTimeSheetByCompany = async (startDate, endDate, userId) => {
     let res = await axiosObject.post(url.toString()).then(res => res.data);
     return res;
 };
-export const getAdminProcessesByCompany=()=>{
-    let res =axiosObject.get(`${ApiUrl}CompanyAdmin/getAll-Adminprocess-steps-ByCompany`).then(res =>res.data)
+    export const getAdminProcessesByCompany=()=>{
+        let res =axiosObject.get(`${ApiUrl}CompanyAdmin/getAll-Adminprocess-steps-ByCompany`).then(res =>res.data)
+        return res;
+    }
+
+    export const addLeadCategory =async(model)=>{
+    let res= await axiosObject.post(`${ApiUrl}Leads/Add-LeadCategory`,model).then(res =>res.data)
     return res;
-}
-
-
+    }
+    export const leadCategoryList =async()=>{
+        let res= await axiosObject.get(`${ApiUrl}Leads/getAll-LeadCategories`,).then(res =>res.data)
+        return res;
+    }

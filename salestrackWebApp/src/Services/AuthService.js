@@ -5,9 +5,8 @@ import storage from "../utils/storages";
 import axiosObject from "../utils/InterceptorService";
 
 export const loginUser = async (LoginRequestModel) => {
-  return await axios
-    .post(`${ApiUrl}Auth/login`, LoginRequestModel)
-    .then((res) => res.data);
+  let res=await axios.post(`${ApiUrl}Auth/login`,LoginRequestModel).then((res) => res.data);
+  return res;
 };
 export const signUpUser = async (userSignUpRequestModel) => {
   return await axios

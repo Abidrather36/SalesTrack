@@ -26,5 +26,8 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<int> UpdateTimeSheet(TimeSheet model);
         Task<TimeSheet> GetTimeSheetById(Guid id);
         Task<int> AddLeadCategory(LeadCategory model);
+        Task<IEnumerable<LeadCategoryResponse>> GetLeadCategories();
+        Task<LeadCategory?> GetLeadCategoryById(Guid? id);
+        Task<int> UpdateLeadCategory(LeadCategory model);
     }
 }

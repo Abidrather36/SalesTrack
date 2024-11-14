@@ -81,6 +81,7 @@ namespace salesTrack.Application.Services
                             ModifiedBy = Guid.Empty,
                             PhoneNumber = masterUser.PhoneNumber,
                             ModifiedDate = DateTime.Now,
+                            
                         };
                         var companyAdded = await companyRepository.InsertAsync(company);
                         var isEmailSent = await emailHelperService.AddRegistrationEmail(company.Email!, newPassword, company.CompanyName!);

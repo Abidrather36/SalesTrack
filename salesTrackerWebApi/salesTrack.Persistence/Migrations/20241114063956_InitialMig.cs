@@ -258,13 +258,13 @@ namespace salesTrack.Persistence.Migrations
                         column: x => x.AdminProcessStepId,
                         principalTable: "AdminProcessSteps",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_LeadProcessSteps_Leads_LeadId",
                         column: x => x.LeadId,
                         principalTable: "Leads",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -326,7 +326,7 @@ namespace salesTrack.Persistence.Migrations
                         column: x => x.LeadId,
                         principalTable: "Leads",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -364,7 +364,7 @@ namespace salesTrack.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "MasterUsers",
                 columns: new[] { "Id", "CreatedBy", "CreatedDate", "DeletedBy", "DeletedDate", "Email", "IsActive", "IsPasswordTemporary", "ModifiedBy", "ModifiedDate", "Name", "Password", "PhoneNumber", "ResetCode", "ResetExpiry", "Salt", "UserRole" },
-                values: new object[] { new Guid("8cfa587b-46f0-4bb7-b512-ee81f0d37676"), null, new DateTimeOffset(new DateTime(2024, 11, 12, 14, 49, 22, 195, DateTimeKind.Unspecified).AddTicks(4505), new TimeSpan(0, 5, 30, 0, 0)), null, null, "ramrk@anterntech.com", false, true, null, null, "Ram", "XX7TqnyDRMzHWuCAUpCeAkX/EdpELfPf5L69gVB1hlg=", "6545454543", 12345, new DateTimeOffset(new DateTime(2024, 11, 12, 9, 34, 22, 195, DateTimeKind.Unspecified).AddTicks(4572), new TimeSpan(0, 0, 0, 0, 0)), "6wjF+cwSZjRGUXUXV2Fczw==", (byte)1 });
+                values: new object[] { new Guid("e68f38ab-997e-414f-bedd-abe6242da185"), null, new DateTimeOffset(new DateTime(2024, 11, 14, 12, 9, 40, 442, DateTimeKind.Unspecified).AddTicks(4692), new TimeSpan(0, 5, 30, 0, 0)), null, null, "ramrk@anterntech.com", false, true, null, null, "Ram", "oieEiS6DXGrPZcW9LMJEE7PHT2Pc1XEYlw+rncsjonU=", "6545454543", 12345, new DateTimeOffset(new DateTime(2024, 11, 14, 6, 54, 40, 442, DateTimeKind.Unspecified).AddTicks(4757), new TimeSpan(0, 0, 0, 0, 0)), "a0yerka8oiL8WRM31EDibQ==", (byte)1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdminProcessSteps_CompanyId",

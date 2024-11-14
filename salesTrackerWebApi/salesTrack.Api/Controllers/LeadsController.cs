@@ -11,7 +11,7 @@ namespace salesTrack.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = nameof(UserRole.SalesExecutive))]
+    //[Authorize(Roles = nameof(UserRole.SalesExecutive))]
     public class LeadsController : ControllerBase
     {
         private readonly ILeadService leadService;
@@ -27,12 +27,12 @@ namespace salesTrack.Api.Controllers
         {
             try
             {
-                var res= await leadService.AddLead(model);
+                var res = await leadService.AddLead(model);
                 return Ok(res);
             }
             catch (Exception ex)
             {
-                return  BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
         [HttpGet("GetLeadById/{id:guid}")]
@@ -41,7 +41,7 @@ namespace salesTrack.Api.Controllers
         {
             try
             {
-                var res= await leadService.GetLeadById(id);
+                var res = await leadService.GetLeadById(id);
                 return Ok(res);
             }
             catch (Exception ex)
@@ -69,7 +69,7 @@ namespace salesTrack.Api.Controllers
             {
                 return await leadService.GetAllLeadsByCompany();
             }
-            catch   (Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -82,7 +82,7 @@ namespace salesTrack.Api.Controllers
             {
                 return await leadService.DeleteLead(id);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -90,11 +90,11 @@ namespace salesTrack.Api.Controllers
         [HttpPost("Update-Lead")]
         public async Task<ApiResponse<LeadResponseModel>> UpdateLead(LeadUpdateModel model)
         {
-            try 
+            try
             {
                 return await leadService.UpdateLead(model);
             }
-            catch( Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -129,7 +129,7 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-      
+
 
         [HttpPost("addLeadComment")]
         public async Task<ApiResponse<LeadCommentsResponseModel>> AddLeadComment(LeadCommentsRequestModel model)
@@ -145,7 +145,7 @@ namespace salesTrack.Api.Controllers
         }
 
         [HttpPost("addLeadFollowUpdate")]
-        public async Task<ApiResponse<LeadFollowUpdateResponse>> AddLeadFollowUpdate( LeadFollowUpdateRequest model)
+        public async Task<ApiResponse<LeadFollowUpdateResponse>> AddLeadFollowUpdate(LeadFollowUpdateRequest model)
         {
             try
             {
@@ -174,7 +174,7 @@ namespace salesTrack.Api.Controllers
         {
             try
             {
-             return  await leadService.AddLeadFollowUpHistory(model);
+                return await leadService.AddLeadFollowUpHistory(model);
             }
             catch (Exception)
             {
@@ -183,7 +183,7 @@ namespace salesTrack.Api.Controllers
             }
         }
         [HttpPost("TodaysFollowUpDate")]
-        public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> TodaysFollowUpDate(TodaysFollowUpdateRequest model) 
+        public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> TodaysFollowUpDate(TodaysFollowUpdateRequest model)
         {
             try
             {
@@ -231,7 +231,7 @@ namespace salesTrack.Api.Controllers
                 var res = await leadService.UpdateTimeSheet(model);
                 return Ok(res);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -242,7 +242,7 @@ namespace salesTrack.Api.Controllers
         {
             try
             {
-               return Ok(await leadService.AddLeadCategory(model));
+                return Ok(await leadService.AddLeadCategory(model));
 
             }
             catch (Exception ex)
@@ -250,6 +250,43 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        [HttpGet("getAll-LeadCategories")]
+        public async Task<IActionResult> GetAllLeadCategories()
+        {
+            try
+            {
+                return Ok(await leadService.GetAllLeadCategories());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
 
+            }
+        }
+        [HttpPost("UpdateLeadCategory")]
+        public async Task<IActionResult> UpdateLeadCategory(UpdateLeadCategory model)
+        {
+            try
+            {
+                return Ok(await leadService.UpdateLeadCategory(model));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+        }
+        [HttpDelete("deleteLeadCategory/{id:guid}")]
+        public async Task<IActionResult> DeleteLeadCategory(Guid id)
+        {
+            try
+            {
+                return Ok(await leadService.DeleteLeadCategory(id));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

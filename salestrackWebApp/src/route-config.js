@@ -27,6 +27,7 @@ import GetProcessSteps from "./components/companyAdmin/GetAdminProcessSteps"
 import AdminProcessStep from "./components/companyAdmin/AdminProcessStep"
 import GetAdminProcessSteps from "./components/companyAdmin/GetAdminProcessSteps"
 import LeadCategory from "./components/companyAdmin/LeadCategory"
+import LeadCategoryList from "./components/companyAdmin/LeadCategoryList"
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -60,7 +61,8 @@ export const routerConfiguration = {
     { path: "/companyAdmin/view-time-sheet",element:<ViewTimeSheet/>},
     { path: "/companyAdmin/getProcessSteps" ,element:<GetAdminProcessSteps/>},
     { path: "/companyAdmin/addProcessStep", element: <AdminProcessStep /> },
-    { path: "/companyAdmin/add-lead-category",element:<LeadCategory/>}
+    { path: "/companyAdmin/add-lead-category",element:<LeadCategory/>},
+    { path: "/companyAdmin/leadCategoryList",element:<LeadCategoryList/>}
 
 
   ],
