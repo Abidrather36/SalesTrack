@@ -60,6 +60,7 @@ namespace salesTrack.Persistence.Repository
                     ModifiedDate = DateTime.UtcNow,  
                     IsActive = true ,
                     ContactPerson=model.ContactPerson,
+                    LeadRank=model.LeadRank,
                     LeadCategoryId=model.LeadCategoryId
                 };
 
@@ -178,6 +179,8 @@ namespace salesTrack.Persistence.Repository
                 CompanyName = lead.Company!.CompanyName,
                 AssignToId = lead.AssignTo,
                 LeadSourceName = lead.LeadSource!.LeadSourceName,
+                LeadRank=lead.LeadRank,
+                LeadCategoryName=lead.LeadCategory.LeadCategoryName,
             }).ToListAsync();
             return leads;
         }

@@ -581,5 +581,144 @@ namespace salesTrack.Application.Services
 
             }
         }
+        public async Task<ApiResponse<LeadCategoryResponse>> AddLeadCategory(LeadCategoryRequest model)
+        {
+            try
+            {
+                var loggedInUser = contextService.UserId();
+                if (model.LeadCategoryName == string.Empty && model.LeadCategoryDescription == string.Empty)
+                {
+                    return ApiResponse<LeadCategoryResponse>.ErrorResponse("please enter values", HttpStatusCodes.BadRequest);
+                }
+                var leadCategories = await leadRepository.GetLeadCategories();
+
+                if (leadCategories.Any(x => x.LeadCategoryName == model.LeadCategoryName))
+                {
+                    return ApiResponse<LeadCategoryResponse>.ErrorResponse("Lead Category Already Exits", HttpStatusCodes.BadRequest);
+
+                }
+                var leadCategory = new LeadCategory()
+                {
+                    Id = Guid.NewGuid(),
+                    LeadCategoryName = model.LeadCategoryName,
+                    LeadCategoryDescription = model.LeadCategoryDescription,
+                    CreatedBy = loggedInUser,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                };
+                var res = await leadRepository.AddLeadCategory(leadCategory);
+                if (res > 0)
+                {
+                    LeadCategoryResponse leadCategoryResponse = new()
+                    {
+                        Id = leadCategory.Id,
+                        LeadCategoryName = leadCategory.LeadCategoryName,
+                        LeadCategoryDescription = leadCategory.LeadCategoryDescription,
+                        IsActive = leadCategory.IsActive
+                    };
+                    return ApiResponse<LeadCategoryResponse>.SuccessResponse(leadCategoryResponse, "Lead Category Successfully Added", HttpStatusCodes.OK);
+                }
+                return ApiResponse<LeadCategoryResponse>.ErrorResponse("something went wrong please try again", HttpStatusCodes.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<LeadCategoryResponse>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+        }
+        public async Task<ApiResponse<IEnumerable<LeadCategoryResponse>>> GetAllLeadCategories()
+        {
+            try
+            {
+                var loggedInUser = contextService.UserId();
+                var leadCategories = await leadRepository.GetLeadCategories();
+                if (!leadCategories.Any())
+                {
+                    return ApiResponse<IEnumerable<LeadCategoryResponse>>.ErrorResponse("No Lead Category Found", HttpStatusCodes.BadRequest);
+                }
+                return ApiResponse<IEnumerable<LeadCategoryResponse>>.SuccessResponse(leadCategories, $"{leadCategories.Count()} Lead Categories Found", HttpStatusCodes.OK);
+
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<LeadCategoryResponse>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+        }
+
+        public async Task<ApiResponse<LeadCategoryResponse>> UpdateLeadCategory(UpdateLeadCategory model)
+        {
+            try
+            {
+                var loggeInUser = contextService.UserId();
+                var leadCategory = await leadRepository.GetLeadCategoryById(model.Id);
+                if (leadCategory is null)
+                {
+                    return ApiResponse<LeadCategoryResponse>.ErrorResponse("No Such Lead Category ", HttpStatusCodes.BadRequest);
+                }
+                leadCategory.LeadCategoryName = model.LeadCategoryName;
+                leadCategory.LeadCategoryDescription = model.LeadCategoryDescription;
+                leadCategory.ModifiedBy = loggeInUser;
+                leadCategory.ModifiedDate = DateTime.Now;
+
+                var leadCategoryUpdated = await leadRepository.UpdateLeadCategory(leadCategory);
+                if (leadCategoryUpdated > 0)
+                {
+                    LeadCategoryResponse res = new()
+                    {
+                        Id = leadCategory.Id,
+                        LeadCategoryDescription = leadCategory.LeadCategoryDescription,
+                        LeadCategoryName = leadCategory.LeadCategoryName,
+                        IsActive = leadCategory.IsActive,
+                    };
+                    return ApiResponse<LeadCategoryResponse>.SuccessResponse(res, "Lead Category Updated Successfully", HttpStatusCodes.BadRequest);
+
+                }
+                return ApiResponse<LeadCategoryResponse>.ErrorResponse("Can't Update Please try Again", HttpStatusCodes.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<LeadCategoryResponse>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+
+        }
+
+        public async Task<ApiResponse<LeadCategoryResponse>> DeleteLeadCategory(Guid id)
+        {
+            try
+            {
+                var loggedInUser = contextService.UserId();
+                var leadCategory = await leadRepository.GetLeadCategoryById(id);
+                if (leadRepository is null)
+                {
+                    return ApiResponse<LeadCategoryResponse>.ErrorResponse("No Such Lead Category ", HttpStatusCodes.BadRequest);
+
+                }
+                leadCategory.IsActive = false;
+                leadCategory.ModifiedBy = loggedInUser;
+                leadCategory.ModifiedDate = DateTime.Now;
+                var leadCategoryDeleted = await leadRepository.UpdateLeadCategory(leadCategory);
+                if (leadCategoryDeleted > 0)
+                {
+                    LeadCategoryResponse res = new()
+                    {
+                        Id = leadCategory.Id,
+                        LeadCategoryDescription = leadCategory.LeadCategoryDescription,
+                        LeadCategoryName = leadCategory.LeadCategoryName,
+                        IsActive = leadCategory.IsActive,
+                    };
+                    return ApiResponse<LeadCategoryResponse>.SuccessResponse(res, "Lead Deleted Successfully", HttpStatusCodes.BadRequest);
+
+                }
+                return ApiResponse<LeadCategoryResponse>.ErrorResponse("Can't Delete Please Try Again ", HttpStatusCodes.BadRequest);
+
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<LeadCategoryResponse>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import Swal from "sweetalert2"
-import { updateCompany ,deleteCompanyById} from "../Services/CompanyService";
+import { updateCompany ,deleteCompanyById, updateAdminProcessStep} from "../Services/CompanyService";
 import { confirmDialog } from 'primereact/confirmdialog'; 
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import 'primereact/resources/themes/saga-blue/theme.css';
@@ -304,6 +304,48 @@ class Toaster{
           }
       });
   };
+  FireInputSwalAdminProcessStep = async (data = {}, fetchProcessSteps) => {
+    console.log("admin process step data inside swal", data.stepName);
+
+    Swal.fire({
+        title: "Edit Process Step",
+        html: `
+            <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
+                <label for="swal-input1" style="text-align:left">Process Step Name</label>
+                <input id="swal-input1" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Step Name" value="${data.stepName}" />
+            </div>
+        `,
+        focusConfirm: false,
+        preConfirm: () => {
+            const stepName = document.getElementById("swal-input1").value;
+
+            if (!stepName) {
+                Swal.showValidationMessage(`Please enter a valid step name`);
+                return null;
+            }
+
+            return { stepName };
+        },
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Update",
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const updatedProcessStep = result.value;
+            updatedProcessStep.id = data.id; // Preserve the ID of the step
+
+            const res = await updateAdminProcessStep(updatedProcessStep);
+            if (res.isSuccess) {
+                myToaster.showSuccessToast("Process step updated successfully");
+                fetchProcessSteps(); // Refresh the list of process steps
+            } else {
+                myToaster.showErrorToast(res.message);
+            }
+        }
+    });
+};
+
   
    leadSourceEditSwal = async (data = {},fetchLeadSources ) => {
     Swal.fire({
@@ -420,6 +462,8 @@ primereactDeleteLeadSource =(leadSource,deleteLeadSourceHandler)=>{
           accept: () => deleteLeadHandler(lead.id) 
       });
   };
+  
+
   
       
       

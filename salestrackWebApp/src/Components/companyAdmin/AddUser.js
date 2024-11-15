@@ -231,11 +231,13 @@ import { registerUser, UserLists } from "../../Services/UserService";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import InputField from "../public/InputField";
 import Spin from "../public/Spin";
+import { leadCategoryList } from "../../Services/CompanyService";
 
 const AddUser = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -274,6 +276,7 @@ const AddUser = () => {
     }
     setLoading(false);
   };
+
 
   const filteredUsers = users?.filter((user) => user.userType === 2);
 
@@ -389,7 +392,7 @@ const AddUser = () => {
                   })}
                 >
                   <option value="">Select Reports To</option>
-                  <option value="E68F38AB-997E-414F-BEDD-ABE6242DA185">
+                  <option value="B5272613-A724-4E95-9B06-05DD9E298CD9">
                     Ram
                   </option>
                   {filteredUsers?.map((user) => (

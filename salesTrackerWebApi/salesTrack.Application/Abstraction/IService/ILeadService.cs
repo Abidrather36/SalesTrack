@@ -22,10 +22,8 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<TimeSheetRequestModel>> AddTimeSheet(TimeSheetRequestModel model);
         Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetAllTimeSheets();
         Task<ApiResponse<TimeSheetResponseModel>> UpdateTimeSheet(UpdateTimeSheetModel model);
-        Task<ApiResponse<LeadCategoryResponse>> AddLeadCategory(LeadCategoryRequest model);
-        Task<ApiResponse<IEnumerable<LeadCategoryResponse>>> GetAllLeadCategories();
-        Task<ApiResponse<LeadCategoryResponse>> UpdateLeadCategory(UpdateLeadCategory model);
-        Task<ApiResponse<LeadCategoryResponse>> DeleteLeadCategory(Guid id);
+       
+     
     
     }
 }

@@ -33,7 +33,7 @@ function GetAdminProcessSteps() {
       key: "edit",
       title: "Edit",
       className: "btn btn-primary",
-      onEditHandler: (data) => console.log(data),
+      onEditHandler: (data) => editAdminProcessStep(data),
       icon: <FaEdit />,
     },
     {
@@ -48,7 +48,9 @@ function GetAdminProcessSteps() {
   const addProcessStep = () => {
     navigate("/companyAdmin/addProcessStep");
   };
-
+  const editAdminProcessStep =(adminPorcesStepModel)=>{
+    myToaster.FireInputSwalAdminProcessStep(adminPorcesStepModel,fetchProcessSteps)
+  }
   const fetchProcessSteps = async () => {
 
       const response = await getAdminProcessesByCompany();

@@ -7,7 +7,6 @@ using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
-using salesTrack.Persistence.Repository;
 using SalesTrack.Application.Common;
 using SalesTrack.Domain.Entities.Models.Request;
 
@@ -102,7 +101,7 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-        [HttpPut("update-process-step")]
+        [HttpPost("update-process-step")]
         public async Task<ApiResponse<AdminProcessStepResponseModel>> UpdateProcessStep(UpdateAdminProcessStepModel model)
         {
             try
@@ -180,8 +179,59 @@ namespace salesTrack.Api.Controllers
                 throw new Exception (ex.Message);
             }
         }
+        [HttpPost("Add-LeadCategory")]
+        public async Task<IActionResult> AddLeadCategory(LeadCategoryRequest model)
+        {
+            try
+            {
+                return Ok(await adminService.AddLeadCategory(model));
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [HttpGet("getAll-LeadCategories")]
+        public async Task<IActionResult> GetAllLeadCategories()
+        {
+            try
+            {
+                return Ok(await adminService.GetAllLeadCategories());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+        }
+        [HttpPost("UpdateLeadCategory")]
+        public async Task<IActionResult> UpdateLeadCategory(UpdateLeadCategory model)
+        {
+            try
+            {
+                return Ok(await adminService.UpdateLeadCategory(model));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+        }
+        [HttpDelete("deleteLeadCategory/{id:guid}")]
+        public async Task<IActionResult> DeleteLeadCategory(Guid id)
+        {
+            try
+            {
+                return Ok(await adminService.DeleteLeadCategory(id));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
 
-      
+
     }
 }

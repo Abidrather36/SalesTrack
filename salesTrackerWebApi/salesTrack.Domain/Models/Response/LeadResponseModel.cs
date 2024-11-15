@@ -18,6 +18,7 @@ namespace salesTrack.Domain.Models.Response
         public string? PhoneNumber { get; set; }
         public Guid LeadSourceId { get; set; }
         public string? LeadSourceName { get; set; }
+        public string? LeadCategoryName { get; set; }
         public string? Comment { get; set; }
         public string? AssignedTo { get; set; }
         public Guid AssignToId { get; set; }
@@ -27,5 +28,6 @@ namespace salesTrack.Domain.Models.Response
         public string? CompanyName { get; set; }
         public Guid CompanyId { get; set; }
         public Guid LeadCategoryId { get; set; }
+        public int LeadRank { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace salesTrack.Domain.Entities
         public FinalStatus FinalStatus { get; set; }=FinalStatus.Open;
         public Guid CompanyId { get; set; }
         public Guid LeadCategoryId { get; set; }
+        public int LeadRank { get; set; }
 
         #region navigation
 

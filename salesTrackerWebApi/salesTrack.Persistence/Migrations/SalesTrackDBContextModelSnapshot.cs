@@ -83,17 +83,17 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e68f38ab-997e-414f-bedd-abe6242da185"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 11, 14, 12, 9, 40, 442, DateTimeKind.Unspecified).AddTicks(4692), new TimeSpan(0, 5, 30, 0, 0)),
+                            Id = new Guid("b5272613-a724-4e95-9b06-05dd9e298cd9"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 11, 15, 12, 3, 9, 431, DateTimeKind.Unspecified).AddTicks(8453), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "oieEiS6DXGrPZcW9LMJEE7PHT2Pc1XEYlw+rncsjonU=",
+                            Password = "GBkot+lyZuOh61q7ARO+aiQWBEKrbVhVTcSaKt2pm7g=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 11, 14, 6, 54, 40, 442, DateTimeKind.Unspecified).AddTicks(4757), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "a0yerka8oiL8WRM31EDibQ==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 11, 15, 6, 48, 9, 431, DateTimeKind.Unspecified).AddTicks(8559), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "UbDgpCXcnVzKfKQD4lzVSg==",
                             UserRole = (byte)1
                         });
                 });
@@ -304,6 +304,9 @@ namespace salesTrack.Persistence.Migrations
 
                     b.Property<Guid>("LeadCategoryId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("LeadRank")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("LeadSourceId")
                         .HasColumnType("uniqueidentifier");

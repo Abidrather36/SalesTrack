@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -9,17 +8,20 @@ import InputField from "../public/InputField";
 import Spin from "../public/Spin";
 import { leadSources as getLeadSources } from "../../Services/LeadSource";
 import { UserLists } from "../../Services/UserService";
-import leadImage from "../../utils/illustrated-woman-being-intern-company_23-2148726151 (1).avif"
+import leadImage from "../../utils/build/assets/img/illustrated-woman-being-intern-company_23-2148726151.avif"
+import { leadCategoryList } from "../../Services/CompanyService";
 const AddLead = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [leadSources, setLeadSources] = useState([]);
   const [users, setUsers] = useState([]);
+  const [leadCategories, setLeadCategories] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       await fetchLeadSources();
       await fetchUsers();
+      await fetchLeadCategories();
     };
     fetchData();
   }, []);
@@ -55,9 +57,17 @@ const AddLead = () => {
       myToaster.showErrorToast("Failed to load users.");
     }
   };
-
+  const fetchLeadCategories = async () => {
+    const response = await leadCategoryList();
+    if (response.isSuccess) {
+      setLeadCategories(response.result);
+    } else {
+      myToaster.showErrorToast(response.message);
+    }
+  };
   const onSubmit = async (data) => {
     setLoading(true);
+    data.leadRank = Number(data.leadRank);
     try {
       const response = await addLead(data);
       if (response.isSuccess) {
@@ -81,16 +91,31 @@ const AddLead = () => {
           currentRoute: "Register-New-Lead",
         }}
       />
-      <div className="wrapper" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap", width: "100%",padding:"50px",marginTop:"-0px" }}>
-        <div style={{ flex: 1, marginTop: "50px", }}>
+      <div
+        className="wrapper"
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          width: "100%",
+          padding: "50px",
+          marginTop: "-0px",
+        }}
+      >
+        <div style={{ flex: 1, marginTop: "50px" }}>
           <img
             src={leadImage}
-            style={{ width: "100%", borderRadius: "10px", marginRight: "100px" }}
+            style={{
+              width: "100%",
+              borderRadius: "10px",
+              marginRight: "100px",
+            }}
             alt="Lead Registration"
           />
         </div>
 
-        <div style={{ flex: 1, padding: "20px",marginTop:"-5px" }}>
+        <div style={{ flex: 1, padding: "20px", marginTop: "-5px" }}>
           <div className="col-lg-8 mb-4-lg-0">
             <div
               className="login-container"
@@ -104,7 +129,11 @@ const AddLead = () => {
               }}
             >
               <h2 className="form-title">Register New Lead</h2>
-              <form className="login-form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+              <form
+                className="login-form"
+                onSubmit={handleSubmit(onSubmit)}
+                autoComplete="off"
+              >
                 <div className="row">
                   <div className="col-lg-6 mb-3">
                     <InputField
@@ -112,9 +141,15 @@ const AddLead = () => {
                       name="name"
                       style={{ padding: "0px 1.25rem 0 1.12rem" }}
                       placeholder="Lead Name"
-                      {...register("name", { required: "Lead Name is required" })}
+                      {...register("name", {
+                        required: "Lead Name is required",
+                      })}
                     />
-                    {errors.name && <span className="error-message">{errors.name.message}</span>}
+                    {errors.name && (
+                      <span className="error-message">
+                        {errors.name.message}
+                      </span>
+                    )}
                   </div>
 
                   <div className="col-lg-6 mb-3">
@@ -126,10 +161,16 @@ const AddLead = () => {
                       {...register("email", {
                         required: "Email is required",
                         validate: (value) =>
-                          /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(value) || "Invalid email address",
+                          /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(
+                            value
+                          ) || "Invalid email address",
                       })}
                     />
-                    {errors.email && <span className="error-message">{errors.email.message}</span>}
+                    {errors.email && (
+                      <span className="error-message">
+                        {errors.email.message}
+                      </span>
+                    )}
                   </div>
                   <div className="col-lg-6 mb-3">
                     <InputField
@@ -137,9 +178,15 @@ const AddLead = () => {
                       name="contactPerson"
                       style={{ padding: "0px 1.25rem 0 1.12rem" }}
                       placeholder="Contact Person"
-                      {...register("contactPerson", { required: "Contact Person is required" })}
+                      {...register("contactPerson", {
+                        required: "Contact Person is required",
+                      })}
                     />
-                    {errors.name && <span className="error-message">{errors.contactPerson.message}</span>}
+                    {errors.name && (
+                      <span className="error-message">
+                        {errors.contactPerson.message}
+                      </span>
+                    )}
                   </div>
 
                   <div className="col-lg-6 mb-3">
@@ -157,7 +204,9 @@ const AddLead = () => {
                       as="select"
                       name="leadSourceId"
                       style={{ padding: "0px 1.25rem 0 1.12rem" }}
-                      {...register("leadSourceId", { required: "Lead Source is required" })}
+                      {...register("leadSourceId", {
+                        required: "Lead Source is required",
+                      })}
                     >
                       <option value="">Select Lead Source</option>
                       {leadSources.map((source) => (
@@ -166,14 +215,23 @@ const AddLead = () => {
                         </option>
                       ))}
                     </InputField>
-                    {errors.leadSourceId && <span className="error-message">{errors.leadSourceId.message}</span>}
+                    {errors.leadSourceId && (
+                      <span className="error-message">
+                        {errors.leadSourceId.message}
+                      </span>
+                    )}
                   </div>
 
                   {/* Updated Comment Field as textarea */}
                   <div className="col-lg-6 mb-3">
                     <textarea
                       name="comment"
-                      style={{ padding: "0px 1.25rem 0 1.12rem", width: "100%", borderRadius: "5px", border: "1px solid #ccc" }}
+                      style={{
+                        padding: "0px 1.25rem 0 1.12rem",
+                        width: "100%",
+                        borderRadius: "5px",
+                        border: "1px solid #ccc",
+                      }}
                       placeholder="Comment"
                       {...register("comment")}
                     />
@@ -184,7 +242,9 @@ const AddLead = () => {
                       as="select"
                       name="assignTo"
                       style={{ padding: "0px 1.25rem 0 1.12rem" }}
-                      {...register("assignTo", { required: "Assign To is required" })}
+                      {...register("assignTo", {
+                        required: "Assign To is required",
+                      })}
                     >
                       <option value="">Assign To</option>
                       {users.map((user) => (
@@ -193,7 +253,59 @@ const AddLead = () => {
                         </option>
                       ))}
                     </InputField>
-                    {errors.assignTo && <span className="error-message">{errors.assignTo.message}</span>}
+                    {errors.assignTo && (
+                      <span className="error-message">
+                        {errors.assignTo.message}
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-lg-6 mb-3">
+                    <InputField
+                      as="select" 
+                      name="leadRank"
+                      style={{ padding: "0px 1.25rem 0 1.12rem" }}
+                      {...register("leadRank", {
+                        required: "Lead Rank is required",
+                        valueAsNumber: true, 
+                      })}
+                    >
+                      <option value="">Select Lead Rank</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </InputField>
+                    {errors.leadRank && (
+                      <span className="error-message">
+                        {errors.leadRank.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="col-lg-6 mb-3">
+                    <InputField
+                      as="select"
+                      name="leadCategoryId" // Update here to bind to leadCategoryId
+                      style={{ padding: "0px 1.25rem 0 1.12rem" }}
+                      {...register("leadCategoryId", {
+                        required: "Lead Category is required",
+                      })}
+                    >
+                      <option value="">Lead Category</option>
+                      {leadCategories.map((leadCategory) => (
+                        <option key={leadCategory.id} value={leadCategory.id}>
+                          {" "}
+                          {/* Bind the ID */}
+                          {leadCategory.leadCategoryName}
+                        </option>
+                      ))}
+                    </InputField>
+                    {errors.leadCategoryId && (
+                      <span className="error-message">
+                        {errors.leadCategoryId.message}
+                      </span>
+                    )}
                   </div>
                 </div>
 

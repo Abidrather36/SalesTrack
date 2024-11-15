@@ -7,6 +7,7 @@ import BreadcrumbComponent from "../shared/Breadcrumb";
 import myToaster from "../../utils/toaster";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { leadCategoryList } from "../../Services/CompanyService";
+import { CircularProgress } from "@mui/material";
 
 function LeadCategoryList() {
   const [leadCategories, setLeadCategories] = useState([]);
@@ -92,7 +93,9 @@ function LeadCategoryList() {
         tableName="Lead Categories"
         addButtonLabel="Add Lead Category"
       />
+      
       <ConfirmDialog />
+     
     </>
   );
 }

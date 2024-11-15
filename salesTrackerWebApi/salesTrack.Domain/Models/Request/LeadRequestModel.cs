@@ -31,5 +31,6 @@ namespace salesTrack.Domain.Models.Request
 
         [Required(ErrorMessage = "Final status is required.")]
         public FinalStatus FinalStatus { get; set; }
+        public int LeadRank { get; set; }
     }
 }
