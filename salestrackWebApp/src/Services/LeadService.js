@@ -54,3 +54,11 @@ export const updateTimeSheet =async(updateTimeSheet)=>{
     let res= await axiosObject.post(`${ApiUrl}Leads/updateTimeSheet`,updateTimeSheet).then(res =>res.data)
     return res;
 }
+export const addLeadCompanyName=async(model)=>{
+    let res= await axiosObject.post(`${ApiUrl}Leads/registerLeadCompany`,model).then(res=>res.data)
+    return res;
+}
+export const getAllLeadCompanies=async()=>{
+    let res=await axiosObject.get(`${ApiUrl}Leads/getAllLeadCompanyNames`).then(res=>res.data);
+    return res;
+}

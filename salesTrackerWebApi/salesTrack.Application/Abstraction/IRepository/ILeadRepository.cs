@@ -29,5 +29,8 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<IEnumerable<LeadCategoryResponse>> GetLeadCategories();
         Task<LeadCategory?> GetLeadCategoryById(Guid? id);
         Task<int> UpdateLeadCategory(LeadCategory model);
+        Task<int> AddLeadCompanyName(LeadCompany model); 
+        Task<LeadCompany> GetLeadCompanyNameById(Guid? id); 
+        Task<IEnumerable<LeadCompanyNameResponse>> GetAllLeadCompanyNames();
     }
 }

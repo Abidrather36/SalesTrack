@@ -540,7 +540,7 @@ export default function ExecutiveDashboard({ leadData }) {
         {loading ? (
           <p style={{ marginLeft: "32px" }}>Loading...</p>
         ) : leadTodayFollowUp.length === 0 ? (
-          <p style={{ marginLeft: "32px" }}>No follow-up history found Today.</p>
+          <p style={{ marginLeft: "32px" }}></p>
         ) : (
           <Grid
             buttons={[
@@ -562,7 +562,7 @@ export default function ExecutiveDashboard({ leadData }) {
             headers={headers}
             data={Array.isArray(leadTodayFollowUp) ? leadTodayFollowUp : []}
             loading={loading}
-            tableName="Current Follow-up History"
+            tableName="Todays's Follow-up History"
           />
         )}
       </div>

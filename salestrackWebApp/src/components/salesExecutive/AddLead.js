@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import myToaster from "../../utils/toaster";
-import { addLead } from "../../Services/LeadService";
+import { addLead, getAllLeadCompanies } from "../../Services/LeadService";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import InputField from "../public/InputField";
 import Spin from "../public/Spin";
 import { leadSources as getLeadSources } from "../../Services/LeadSource";
 import { UserLists } from "../../Services/UserService";
-import leadImage from "../../utils/build/assets/img/illustrated-woman-being-intern-company_23-2148726151.avif"
+import leadImage from "../../utils/build/assets/img/illustrated-woman-being-intern-company_23-2148726151.avif";
 import { leadCategoryList } from "../../Services/CompanyService";
 const AddLead = () => {
   const navigate = useNavigate();
@@ -16,12 +16,15 @@ const AddLead = () => {
   const [leadSources, setLeadSources] = useState([]);
   const [users, setUsers] = useState([]);
   const [leadCategories, setLeadCategories] = useState([]);
+  const [leadCompanyList, setLeadCompanyList] = useState([]);
+  const [showSpinner, setShowSpinner] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       await fetchLeadSources();
       await fetchUsers();
       await fetchLeadCategories();
+      await fetchLeadCompanies();
     };
     fetchData();
   }, []);
@@ -32,6 +35,15 @@ const AddLead = () => {
     formState: { errors },
   } = useForm();
 
+  const fetchLeadCompanies = async () => {
+    const response = await getAllLeadCompanies();
+    if (response.isSuccess) {
+      setLeadCompanyList(response.result);
+      setShowSpinner(false);
+    } else {
+      myToaster.showErrorToast(response.message);
+    }
+  };
   const fetchLeadSources = async () => {
     try {
       const res = await getLeadSources();
@@ -137,17 +149,23 @@ const AddLead = () => {
                 <div className="row">
                   <div className="col-lg-6 mb-3">
                     <InputField
-                      type="text"
-                      name="name"
+                      as="select"
+                      name="leadCompanyId"
                       style={{ padding: "0px 1.25rem 0 1.12rem" }}
-                      placeholder="Lead Name"
-                      {...register("name", {
-                        required: "Lead Name is required",
+                      {...register("leadCompanyId", {
+                        required: "Lead Company is required",
                       })}
-                    />
-                    {errors.name && (
+                    >
+                      <option value="">Select Lead Company</option>
+                      {leadCompanyList.map((company) => (
+                        <option key={company.id} value={company.id}>
+                          {company.leadCompanyName}
+                        </option>
+                      ))}
+                    </InputField>
+                    {errors.leadCompanyId && (
                       <span className="error-message">
-                        {errors.name.message}
+                        {errors.leadCompanyId.message}
                       </span>
                     )}
                   </div>
@@ -175,16 +193,16 @@ const AddLead = () => {
                   <div className="col-lg-6 mb-3">
                     <InputField
                       type="text"
-                      name="contactPerson"
+                      name="name"
                       style={{ padding: "0px 1.25rem 0 1.12rem" }}
-                      placeholder="Contact Person"
-                      {...register("contactPerson", {
-                        required: "Contact Person is required",
+                      placeholder="Enter name "
+                      {...register("name", {
+                        required: "name is required",
                       })}
                     />
                     {errors.name && (
                       <span className="error-message">
-                        {errors.contactPerson.message}
+                        {errors.name.message}
                       </span>
                     )}
                   </div>
@@ -261,12 +279,12 @@ const AddLead = () => {
                   </div>
                   <div className="col-lg-6 mb-3">
                     <InputField
-                      as="select" 
+                      as="select"
                       name="leadRank"
                       style={{ padding: "0px 1.25rem 0 1.12rem" }}
                       {...register("leadRank", {
                         required: "Lead Rank is required",
-                        valueAsNumber: true, 
+                        valueAsNumber: true,
                       })}
                     >
                       <option value="">Select Lead Rank</option>

@@ -236,7 +236,7 @@ namespace salesTrack.Application.Services
                 }
                 else
                 {
-                    lead.ContactPerson=model.ContactPerson;
+                    lead.LeadName = model.Name;
                     lead.LeadSourceId = model.LeadSourceId;
                     lead.FinalStatus = model.FinalStatus;
                     lead.ModifiedBy = salesExecutiveId;
@@ -265,7 +265,7 @@ namespace salesTrack.Application.Services
                                 Id = lead.Id,
                                 Name = user.Name,
                                 Email = user.Email,
-                                ContactPerson= lead.ContactPerson,
+                                LeadCompanyName = lead.LeadCompany.LeadCompanyName,
                                 PhoneNumber = user.PhoneNumber,
                                 LeadSourceId = lead.LeadSourceId,
                                 LeadSourceName = leadSource.LeadSourceName,
@@ -690,9 +690,65 @@ namespace salesTrack.Application.Services
             }
         }
 
-      
+        public async  Task<ApiResponse<LeadCompanyNameResponse>> AddLeadCompanyName(LeadCompanyNameRequest model)
+        {
+            try
+            {
+                var salesExecutiveId = contextService.UserId();
+                var salesEx = await userRepository.GetUserById(salesExecutiveId);
+                var companyId = salesEx!.CompanyId;
 
-       
+                if (model.LeadCompanyName == string.Empty && model.Description == string.Empty)
+                {
+                    return ApiResponse<LeadCompanyNameResponse>.ErrorResponse("please enter values", HttpStatusCodes.BadRequest);
+                }
+                var leadCompanyNames = await leadRepository.GetAllLeadCompanyNames();
+                if (leadCompanyNames.Any(x => x.LeadCompanyName == model.LeadCompanyName))
+                {
+                    return ApiResponse<LeadCompanyNameResponse>.ErrorResponse("Lead CompanyName Already Exits", HttpStatusCodes.BadRequest);
+                }
+                LeadCompany leadCompanyName = new()
+                {
+                    Id = Guid.NewGuid(),
+                    LeadCompanyName = model.LeadCompanyName,
+                    Description = model.Description,
+                    IsActive = true,
+                    CreatedBy = salesExecutiveId,
+                    CreatedDate = DateTime.Now,
+                };
+                var res = await leadRepository.AddLeadCompanyName(leadCompanyName);
+                if (res > 0)
+                {
+                    LeadCompanyNameResponse leadCompanyNameResponse = new()
+                    {
+                        Id = leadCompanyName.Id,
+                        LeadCompanyName = leadCompanyName.LeadCompanyName,
+                        Description = leadCompanyName.Description,
+                        IsActive = true,
+                    };
+                    return ApiResponse<LeadCompanyNameResponse>.SuccessResponse(leadCompanyNameResponse, "LeadCompany Added Successfully", HttpStatusCodes.OK);
+                }
+                return ApiResponse<LeadCompanyNameResponse>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<LeadCompanyNameResponse>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+        }
+
+        public async Task<ApiResponse<IEnumerable<LeadCompanyNameResponse>>> GetAllCompaniesLeads()
+        {
+            var salesExeutiveId = contextService.UserId();
+
+           var leadCompanies=await leadRepository.GetAllLeadCompanyNames();
+            if (leadCompanies.Any())
+            {
+                return ApiResponse<IEnumerable<LeadCompanyNameResponse>>.SuccessResponse(leadCompanies,$"{leadCompanies.Count()} Found", HttpStatusCodes.OK);
+            }
+            return ApiResponse<IEnumerable<LeadCompanyNameResponse>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+        }
     }
 }
 public class FollowUpReq

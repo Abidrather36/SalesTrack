@@ -59,9 +59,9 @@ namespace salesTrack.Persistence.Repository
                     CreatedDate = DateTime.UtcNow,  
                     ModifiedDate = DateTime.UtcNow,  
                     IsActive = true ,
-                    ContactPerson=model.ContactPerson,
                     LeadRank=model.LeadRank,
-                    LeadCategoryId=model.LeadCategoryId
+                    LeadCategoryId=model.LeadCategoryId,
+                    LeadCompanyId=model.LeadCompanyId
                 };
 
                 await context.Leads.AddAsync(newLead);
@@ -79,6 +79,12 @@ namespace salesTrack.Persistence.Repository
         {
            await context.LeadCategories.AddAsync(model);
            return await context.SaveChangesAsync();
+        }
+
+        public async Task<int> AddLeadCompanyName(LeadCompany model)
+        {
+           await context.LeadCompanies.AddAsync(model);
+            return await context.SaveChangesAsync();
         }
 
         public async Task<int> AddLeadProcessStep(LeadProcessSteps model)
@@ -139,13 +145,25 @@ namespace salesTrack.Persistence.Repository
             return  await context.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<LeadCompanyNameResponse>> GetAllLeadCompanyNames()
+        {
+           var res=await context.LeadCompanies.Select(x => new LeadCompanyNameResponse
+            {
+                Id = x.Id,
+                LeadCompanyName = x.LeadCompanyName,
+                Description = x.Description,
+                IsActive = x.IsActive,
+            }).ToListAsync();
+            return  res;
+        }
+
         public async Task<IEnumerable<LeadResponseModel>> GetAllLeadsAsync()
         {
             var Leads = await context.Leads.Select(lead => new LeadResponseModel
             {
                 Id = lead.Id,
                 Name = lead.User!.Name,
-                ContactPerson=lead.ContactPerson,
+                LeadCompanyName=lead.LeadCompany.LeadCompanyName,
                 Email = lead.User!.Email,
                 PhoneNumber = lead.User!.PhoneNumber,
                 Comment = lead.Comment,
@@ -168,7 +186,7 @@ namespace salesTrack.Persistence.Repository
             {
                 Id = lead.Id,
                 Name = lead!.User!.Name,
-                ContactPerson=lead.ContactPerson,
+                LeadCompanyName =lead.LeadCompany.LeadCompanyName,
                 Email = lead.User!.Email,
                 PhoneNumber = lead.User!.PhoneNumber,
                 Comment = lead.Comment,
@@ -243,6 +261,11 @@ namespace salesTrack.Persistence.Repository
         public async Task<LeadCategory?> GetLeadCategoryById(Guid? id)
         {
            return await context.LeadCategories.FindAsync(id);
+        }
+
+        public async Task<LeadCompany?> GetLeadCompanyNameById(Guid? id)
+        {
+           return await context.LeadCompanies.FindAsync(id);
         }
 
         public async Task<LeadProcessSteps?> GetLeadProcessStepById(Guid id)

@@ -3,7 +3,7 @@ import BreadcrumbComponent from "../shared/Breadcrumb";
 import InputField from "../public/InputField";
 import { useForm } from "react-hook-form";
 import Spin from "../public/Spin";
-import { addCompany } from "../../Services/CompanyService"; // Replace with your API call
+import { addLeadCompanyName } from "../../Services/LeadService"; // Adjust to your actual service
 import myToaster from "../../utils/toaster";
 import { useNavigate } from "react-router-dom";
 import companyImage from "../../utils/55991.jpg"; // Replace with an appropriate image path
@@ -19,13 +19,14 @@ function AddSalesCompany() {
   } = useForm();
 
   const onSubmit = async (data) => {
+    console.log(data)
     setLoading(true);
     try {
-      const response = await addCompany(data); 
-
+      const response = await addLeadCompanyName(data); // Adjust API call as needed
+      console.log(data)
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
-        navigate("/"); 
+        navigate("/salesExecutive/leadCompanyList"); // Adjust navigation as needed
       } else {
         myToaster.showErrorToast(response.message);
       }
@@ -92,7 +93,13 @@ function AddSalesCompany() {
                     <label
                       htmlFor="companyName"
                       className="form-label"
-                      style={{ marginRight: "10px", whiteSpace: "nowrap",fontSize:"16px" ,fontFamily:"sans-serif",fontWeight:"bold"}}
+                      style={{
+                        marginRight: "10px",
+                        whiteSpace: "nowrap",
+                        fontSize: "16px",
+                        fontFamily: "sans-serif",
+                        fontWeight: "bold",
+                      }}
                     >
                       Company Name:
                     </label>
@@ -100,16 +107,16 @@ function AddSalesCompany() {
                   <div className="col-lg-8">
                     <InputField
                       type="text"
-                      name="companyName"
+                      name="leadCompanyName"
                       id="companyName"
                       placeholder="Enter Company Name"
-                      {...register("companyName", {
+                      {...register("leadCompanyName", {
                         required: "Company Name is required",
                       })}
                     />
-                    {errors.companyName && (
+                    {errors.leadCompanyName && (
                       <span className="error-message">
-                        {errors.companyName.message}
+                        {errors.leadCompanyName.message}
                       </span>
                     )}
                   </div>
@@ -119,9 +126,15 @@ function AddSalesCompany() {
                 <div className="row mb-3">
                   <div className="col-lg-4 d-flex align-items-center">
                     <label
-                      htmlFor="companyDescription"
+                      htmlFor="description"
                       className="form-label"
-                      style={{ marginRight: "10px",fontSize:"16px", whiteSpace: "nowrap",fontFamily:"sans-serif",fontWeight:"bolder" }}
+                      style={{
+                        marginRight: "10px",
+                        fontSize: "16px",
+                        whiteSpace: "nowrap",
+                        fontFamily: "sans-serif",
+                        fontWeight: "bolder",
+                      }}
                     >
                       Description:
                     </label>
@@ -129,16 +142,16 @@ function AddSalesCompany() {
                   <div className="col-lg-8">
                     <InputField
                       type="text"
-                      name="companyDescription"
-                      id="companyDescription"
+                      name="description"
+                      id="description"
                       placeholder="Enter Description"
-                      {...register("companyDescription", {
+                      {...register("description", {
                         required: "Description is required",
                       })}
                     />
-                    {errors.companyDescription && (
+                    {errors.description && (
                       <span className="error-message">
-                        {errors.companyDescription.message}
+                        {errors.description.message}
                       </span>
                     )}
                   </div>

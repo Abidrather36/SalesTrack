@@ -29,6 +29,7 @@ import GetAdminProcessSteps from "./components/companyAdmin/GetAdminProcessSteps
 import LeadCategory from "./components/companyAdmin/LeadCategory"
 import LeadCategoryList from "./components/companyAdmin/LeadCategoryList"
 import AddSalesCompany from "./components/salesExecutive/AddSalesCompany"
+import LeadCompanieList from "./components/salesExecutive/LeadCompanieList"
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -78,6 +79,7 @@ export const routerConfiguration = {
     { path : "/salesExecutive/registerLeadSource", element:<LeadSource/>},
     { path : "/salesExecutive/leadSourceList", element: <LeadSourceList/> },
     { path : "/salesExecutive/timeSheetList",element :<TimeSheetList/>},
-    { path : "/salesExecutive/addCompany",element :<AddSalesCompany/>},
+    { path : "/salesExecutive/addLeadCompany",element :<AddSalesCompany/>},
+    { path : "/salesExecutive/leadCompanyList",element :<LeadCompanieList/>},  
   ]
 }

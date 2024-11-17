@@ -154,9 +154,10 @@ export default function BasicModal({
     <div>
           <BreadcrumbComponent
         labels={{
-          module: "salesExecutive",
-          currentRoute: "followUp-history",
+          module: { path: "/salesExecutive/leadList", label: "Lead List" },
+          currentRoute: "Follow-Up History",
         }}
+        onNavigate={(path) => navigate(path)}
       />
       {popUpModel && (
         <Modal

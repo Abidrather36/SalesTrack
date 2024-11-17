@@ -16,13 +16,11 @@ namespace salesTrack.Domain.Models.Request
         [Required(ErrorMessage = "Phone number is required.")]
         [Phone(ErrorMessage = "Invalid phone number format.")]
         public string? PhoneNumber { get; set; }
-
-        public string? ContactPerson { get; set; }
-        public Guid LeadSourceId { get; set; }
+        public Guid LeadSourceId { get; set;}
 
         public Guid CompanyId { get; set; }
         public Guid LeadCategoryId { get; set; }
-
+        public Guid LeadCompanyId {  get; set; }
         [Required]
         public string? Comment { get; set; }
 

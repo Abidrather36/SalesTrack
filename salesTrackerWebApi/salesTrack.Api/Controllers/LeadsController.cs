@@ -237,6 +237,34 @@ namespace salesTrack.Api.Controllers
             }
 
         }
+        [HttpPost("registerLeadCompany")]
+        public async Task<IActionResult> AddLeadCompany(LeadCompanyNameRequest  model)
+        {
+            try
+            {
+                var res = await leadService.AddLeadCompanyName(model);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+        [HttpGet("getAllLeadCompanyNames")]
+        public async Task<IActionResult> GetAllLeadCompanyNames()
+        {
+            try
+            {
+                var res = await leadService.GetAllCompaniesLeads();
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
 
     }
 }

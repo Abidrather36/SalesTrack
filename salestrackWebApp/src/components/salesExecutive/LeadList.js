@@ -53,13 +53,14 @@ function LeadList(props) {
   };
 
   const headers = [
+    { key: "leadCompanyName", label: "Company Name" },
     { key: "name", label: "Lead Name" },
     { key: "email", label: "Email" },
-    { key: "contactPerson", label: "Contact Person" },
     { key: "phoneNumber", label: "Phone Number" },
     { key: "leadSourceName", label: "Lead Source" },
     { key: "assignedTo", label: "Assigned To" },
     { key: "finalStatus", label: "Lead Status" },
+    { key: "isActive" ,label:"IsActive"},
     { key :"leadCategoryName",label:"Lead Category Name"},
     { key: "leadRank", label: "Lead Rank"},
   ];

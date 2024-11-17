@@ -18,6 +18,7 @@ namespace SalesTrack.Persistence.Data
         public DbSet<Enquiry> Enquiries { get; set; }
         public DbSet<LeadProcessSteps> LeadProcessSteps { get; set; }
         public DbSet<Lead> Leads { get; set; }
+        public DbSet<LeadCompany> LeadCompanies { get; set; }
         public DbSet<LeadComments> LeadComments { get; set; }
         public DbSet<AdminProcessStep> AdminProcessSteps { get; set; }  
         public DbSet<LeadSource> LeadSources { get; set; }
