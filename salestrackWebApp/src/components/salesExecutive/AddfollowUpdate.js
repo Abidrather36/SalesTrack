@@ -155,7 +155,7 @@ export default function BasicModal({
           <BreadcrumbComponent
         labels={{
           module: "salesExecutive",
-          currentRoute: "Manage-Lead",
+          currentRoute: "followUp-history",
         }}
       />
       {popUpModel && (
@@ -268,3 +268,249 @@ export default function BasicModal({
 }
 
 
+// import React from "react";
+// import Box from "@mui/material/Box";
+// import Button from "@mui/material/Button";
+// import { FaCog } from "react-icons/fa";
+// import Typography from "@mui/material/Typography";
+// import Modal from "@mui/material/Modal";
+// import { Margin, TroubleshootTwoTone } from "@mui/icons-material";
+// import Grid from "../shared/Grid";
+// import { addManageLead, leadFollowUpHistory } from "../../Services/LeadService";
+// import {TextField,FormControl,InputLabel,Select,MenuItem,FormHelperText,} from "@mui/material";
+// import { useForm } from "react-hook-form";
+// import { useState } from "react";
+// import {
+//   addFollowUpdate,
+//   addLeadComment,
+//   addLeadProcessStep,
+// } from "../../Services/LeadService";
+// import myToaster from "../../utils/toaster";
+// import { getAllProcessSteps, getAllProcessStepsByCompany } from "../../Services/UserService";
+// import { useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import BreadcrumbComponent from "../shared/Breadcrumb";
+
+// const style = {
+//   position: "absolute",
+//   top: "50%",
+//   left: "50%",
+//   transform: "translate(-50%, -50%)",
+//   width: 500,
+//   bgcolor: "background.paper",
+//   boxShadow: 24,
+//   p: 4,
+// };
+
+// export default function BasicModal({
+//   leadData,
+//   onClose,
+//   showFallowup = false,
+//   showFoloowUpHistory = false,
+//   popupForm = false,
+//   showHistory = true,
+// }) {
+//   const [loading, setLoading] = useState(false);
+//   const [processSteps, setProcessSteps] = useState([]);
+//   const [followUpHistory, setFollowUpHistory] = useState([]);
+//   const [isModalOpen, setIsModalOpen] = useState(popupForm);
+//   const [isHistoryGridVisible, setIsHistoryGridVisible] = useState(showHistory);
+
+//   const navigate = useNavigate();
+//   const { register, handleSubmit, formState: { errors } } = useForm();
+
+//   useEffect(() => {
+//     fetchProcessSteps();
+//     fetchFollowUpHistory();
+//   }, []);
+
+//   const handleCloseModal = () => {
+//     setIsModalOpen(false);
+//     setIsHistoryGridVisible(true);
+//     onClose();
+//   };
+
+//   const handleManageLeadClick = () => {
+//     setIsModalOpen(true);
+//     setIsHistoryGridVisible(false);
+//   };
+
+//   const fetchFollowUpHistory = async () => {
+//     setLoading(true);
+//     try {
+//       const response = await leadFollowUpHistory(leadData?.id);
+//       if (response.isSuccess) {
+//         const formattedHistory = response.result
+//           .map((history) => ({
+//             ...history,
+//             followUpDate: history.followUpDate
+//               ? new Date(history.followUpDate).toLocaleDateString()
+//               : "",
+//           }))
+//           .sort((a, b) => new Date(b.followUpDate) - new Date(a.followUpDate));
+
+//         setFollowUpHistory(formattedHistory);
+//       } else {
+//         myToaster.showErrorToast(response.message);
+//       }
+//     } catch (error) {
+//       myToaster.showErrorToast("Failed to fetch follow-up history.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const fetchProcessSteps = async () => {
+//     try {
+//       const response = await getAllProcessSteps();
+//       if (response.isSuccess) {
+//         setProcessSteps(response.result);
+//       } else {
+//         myToaster.showErrorToast(response.message);
+//       }
+//     } catch (error) {
+//       myToaster.showErrorToast("Failed to fetch process steps.");
+//     }
+//   };
+
+//   const handleFormSubmit = async (data) => {
+//     const manageLeadData = {
+//       date: data.date,
+//       time: `${data.time}:00`,
+//       leadId: leadData?.id,
+//       adminProcessStepId: data.adminProcessStepId,
+//       comment: data.comments || "",
+//     };
+
+//     try {
+//       const response = await addManageLead(manageLeadData);
+//       if (response.isSuccess) {
+//         myToaster.showSuccessToast("Follow-up history added successfully!");
+//         setIsModalOpen(false);
+//         fetchFollowUpHistory();
+//       } else {
+//         myToaster.showErrorToast(response.message);
+//       }
+//     } catch (error) {
+//       myToaster.showErrorToast("Failed to add follow-up history.");
+//     }
+//   };
+
+//   const followupColumns = [
+//     { key: "clientName", label: "Client Name" },
+//     { key: "leadProcessStep", label: "Lead Process Step" },
+//     { key: "phoneNumber", label: "Phone Number" },
+//     { key: "email", label: "Email" },
+//     { key: "leadComments", label: "Lead Comments" },
+//     { key: "followUpDate", label: "Follow-Up Date" },
+//   ];
+
+//   return (
+//     <div>
+//       <BreadcrumbComponent
+//         labels={{
+//           module: "salesExecutive",
+//           currentRoute: "followUp-history",
+//         }}
+//       />
+
+//       {isModalOpen && (
+//         <Modal
+//           open={isModalOpen}
+//           onClose={handleCloseModal}
+//           aria-labelledby="modal-title"
+//           aria-describedby="modal-description"
+//         >
+//           <Box sx={style}>
+//             <Typography id="modal-title" variant="h6">
+//               Manage Lead
+//             </Typography>
+//             <Box
+//               component="form"
+//               onSubmit={handleSubmit(handleFormSubmit)}
+//               sx={{ mt: 2 }}
+//             >
+//               <TextField
+//                 label="Follow-Up Date"
+//                 type="date"
+//                 {...register("date", { required: "Follow-up date is required" })}
+//                 error={Boolean(errors.date)}
+//                 helperText={errors.date?.message}
+//                 fullWidth
+//                 sx={{ mb: 2 }}
+//               />
+//               <TextField
+//                 label="Follow-Up Time"
+//                 type="time"
+//                 {...register("time", { required: "Follow-up time is required" })}
+//                 error={Boolean(errors.time)}
+//                 helperText={errors.time?.message}
+//                 fullWidth
+//                 sx={{ mb: 2 }}
+//               />
+//               <FormControl fullWidth sx={{ mb: 2 }}>
+//                 <InputLabel>Process Step</InputLabel>
+//                 <Select
+//                   {...register("adminProcessStepId", {
+//                     required: "Process step is required",
+//                   })}
+//                   error={Boolean(errors.adminProcessStepId)}
+//                 >
+//                   {processSteps.map((step) => (
+//                     <MenuItem key={step.id} value={step.id}>
+//                       {step.stepName}
+//                     </MenuItem>
+//                   ))}
+//                 </Select>
+//                 {errors.adminProcessStepId && (
+//                   <FormHelperText error>
+//                     {errors.adminProcessStepId.message}
+//                   </FormHelperText>
+//                 )}
+//               </FormControl>
+//               <TextField
+//                 label="Comments"
+//                 multiline
+//                 rows={4}
+//                 {...register("comments")}
+//                 fullWidth
+//                 sx={{ mb: 2 }}
+//               />
+//               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+//                 <Button variant="contained" type="submit">
+//                   Save
+//                 </Button>
+//                 <Button
+//                   variant="outlined"
+//                   onClick={handleCloseModal}
+//                   sx={{ backgroundColor: "red", color: "white" }}
+//                 >
+//                   Cancel
+//                 </Button>
+//               </Box>
+//             </Box>
+//           </Box>
+//         </Modal>
+//       )}
+
+//       {isHistoryGridVisible && (
+//         <Grid
+//           headers={followupColumns}
+//           data={followUpHistory}
+//           tableName="Follow-Up History"
+//           addButtonLabel="Add Follow-Up History"
+//           onAdd={handleManageLeadClick}
+//           buttons={[
+//             {
+//               key: "manageLead",
+//               title: "Manage Lead",
+//               className: "btn btn-warning",
+//               icon: <FaCog />,
+//               onClick: handleManageLeadClick,
+//             },
+//           ]}
+//         />
+//       )}
+//     </div>
+//   );
+// }

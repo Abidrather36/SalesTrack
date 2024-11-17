@@ -93,6 +93,12 @@ export const SalesExectivesidebarLabels = [
     icon: <FaTachometerAlt />,
   },
   {
+    id:7,
+    label:"Add Company",
+    link:"/salesExecutive/addCompany",
+    icon:<FaPlus />
+  },
+  {
     id: 2,
     label: "Leads List",
     link: "/salesExecutive/leadList",
