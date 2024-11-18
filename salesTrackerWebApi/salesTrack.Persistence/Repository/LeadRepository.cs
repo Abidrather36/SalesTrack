@@ -162,7 +162,7 @@ namespace salesTrack.Persistence.Repository
             var Leads = await context.Leads.Select(lead => new LeadResponseModel
             {
                 Id = lead.Id,
-                Name = lead.User!.Name,
+                LeadName = lead.User!.Name,
                 LeadCompanyName=lead.LeadCompany.LeadCompanyName,
                 Email = lead.User!.Email,
                 PhoneNumber = lead.User!.PhoneNumber,
@@ -180,12 +180,12 @@ namespace salesTrack.Persistence.Repository
             return Leads;
         }
 
-        public async Task<IEnumerable<LeadResponseModel>> GetAllLeadsByCompanyId(Guid id)
+        public async Task<IEnumerable<LeadResponseModel>> GetAllLeadsByCompanyId(Guid id,Guid assignTo)
         {
-            var leads = await context.Leads.Where(lead => lead.CompanyId == id).Select(lead => new LeadResponseModel
+            var leads = await context.Leads.Where(lead => lead.CompanyId == id && lead.AssignTo ==assignTo).Select(lead => new LeadResponseModel
             {
                 Id = lead.Id,
-                Name = lead!.User!.Name,
+                LeadName = lead!.User!.Name,
                 LeadCompanyName =lead.LeadCompany.LeadCompanyName,
                 Email = lead.User!.Email,
                 PhoneNumber = lead.User!.PhoneNumber,
@@ -224,7 +224,7 @@ namespace salesTrack.Persistence.Repository
             var detailsModel = await context.Leads.Where(x => x.Id == leadId).Select(x => new LeadResponseModel
             {
                 Id = x.Id,
-                Name = x.User!.Name,
+                LeadName = x.User!.Name,
                 Email = x.User.Email,
                 PhoneNumber = x.User.PhoneNumber,
                 Comment = x.Comment,
@@ -339,6 +339,13 @@ namespace salesTrack.Persistence.Repository
                 .ToListAsync(); 
 
             return followUpsForToday;
+        }
+
+        public async Task<int> UpdateLeadCompany(LeadCompany model)
+        {
+           await Task.Run(()=> context.LeadCompanies.Update(model));
+           return await context.SaveChangesAsync(); 
+
         }
 
         public async Task<int> UpdateLeadCategory(LeadCategory model)

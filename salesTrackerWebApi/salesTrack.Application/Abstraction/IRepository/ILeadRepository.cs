@@ -2,8 +2,6 @@
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Abstraction.IRepository;
-using SalesTrack.Application.Common;
-using System.ComponentModel.Design;
 
 namespace salesTrack.Application.Abstraction.IRepository
 {
@@ -11,7 +9,7 @@ namespace salesTrack.Application.Abstraction.IRepository
     {
         Task<Lead> AddLead(LeadRequestModel model,Guid userId);
         Task<LeadResponseModel> GetLeadById(Guid leadId);
-        Task<IEnumerable<LeadResponseModel>> GetAllLeadsByCompanyId(Guid id);
+        Task<IEnumerable<LeadResponseModel>> GetAllLeadsByCompanyId(Guid id,Guid assignTo);
         Task<IEnumerable<LeadResponseModel>> GetAllLeadsAsync();
         Task<int> AddLeadProcessStep(LeadProcessSteps model);
         Task<int> UpdateLeadProcessStep(LeadProcessSteps model);
@@ -32,5 +30,6 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<int> AddLeadCompanyName(LeadCompany model); 
         Task<LeadCompany> GetLeadCompanyNameById(Guid? id); 
         Task<IEnumerable<LeadCompanyNameResponse>> GetAllLeadCompanyNames();
+        Task<int> UpdateLeadCompany(LeadCompany model);
     }
 }

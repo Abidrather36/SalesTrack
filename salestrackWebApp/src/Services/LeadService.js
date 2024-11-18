@@ -62,3 +62,11 @@ export const getAllLeadCompanies=async()=>{
     let res=await axiosObject.get(`${ApiUrl}Leads/getAllLeadCompanyNames`).then(res=>res.data);
     return res;
 }
+export const deletLeadCompanyById=(id)=>{
+    let res=axiosObject.delete(`${ApiUrl}Leads/deleteLeadCompanyById/${id}`).then(res=>res.data);
+    return res;
+} 
+export const updateLeadCompany= (model)=>{
+    let res=axiosObject.post(`${ApiUrl}Leads/updateLeadCompany`,model).then(res=>res.data)
+    return res;
+}

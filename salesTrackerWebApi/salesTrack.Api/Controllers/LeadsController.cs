@@ -265,6 +265,30 @@ namespace salesTrack.Api.Controllers
             }
 
         }
+        [HttpPost("updateLeadCompany")]
+        public async Task<IActionResult> UpdateLeadCompany(UpdateLeadCompany model)
+        {
+            try
+            {
+               return  Ok(await leadService.UpdateLeadCompany(model));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [HttpDelete("deleteLeadCompanyById/{id:guid}")]
+        public async Task<IActionResult> DeleteCompany(Guid id)
+        {
+            try
+            {
+                return Ok(await leadService.DeleteLeadCompany(id));
+            }
+            catch (Exception ex )
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

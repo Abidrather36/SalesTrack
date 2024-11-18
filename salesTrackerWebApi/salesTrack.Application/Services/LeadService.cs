@@ -183,7 +183,6 @@ namespace salesTrack.Application.Services
                 var compactLead = await leadRepository.GetLeadById(leadId);
                 if (compactLead is null)
                 {
-
                     return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.LeadManagement.LeadNotFound, HttpStatusCodes.BadRequest);
                 }
                 else
@@ -210,7 +209,7 @@ namespace salesTrack.Application.Services
                 var salesExecutiveId = contextService.UserId();
                 var user = await userRepository.GetByIdAsync(model.Id);
                 var lead = await leadRepository.GetByIdAsync(model.Id);
-
+                var leadCompany = await leadRepository.GetLeadCompanyNameById(lead.LeadCompanyId);
 
                 if (user is null)
                 {
@@ -219,7 +218,7 @@ namespace salesTrack.Application.Services
                 }
                 else
                 {
-                    user.Name = model.Name;
+                    user.Name = model.LeadName;
                     user.Email = model.Email;
                     user.CreatedBy = salesExecutiveId;
                     user.ModifiedBy = salesExecutiveId;
@@ -234,9 +233,12 @@ namespace salesTrack.Application.Services
                 {
                     return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.LeadManagement.LeadNotFound, HttpStatusCodes.BadRequest);
                 }
+                if(leadCompany is null)
+                {
+                    return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.LeadManagement.LeadNotFound, HttpStatusCodes.BadRequest);
+                }
                 else
                 {
-                    lead.LeadName = model.Name;
                     lead.LeadSourceId = model.LeadSourceId;
                     lead.FinalStatus = model.FinalStatus;
                     lead.ModifiedBy = salesExecutiveId;
@@ -263,7 +265,7 @@ namespace salesTrack.Application.Services
                             LeadResponseModel leadResponseModel = new()
                             {
                                 Id = lead.Id,
-                                Name = user.Name,
+                                LeadName = user.Name,
                                 Email = user.Email,
                                 LeadCompanyName = lead.LeadCompany.LeadCompanyName,
                                 PhoneNumber = user.PhoneNumber,
@@ -501,7 +503,8 @@ namespace salesTrack.Application.Services
         {
             var executiveId = contextService.UserId();
             var user = await userRepository.GetUserById(executiveId);
-            var leads = await leadRepository.GetAllLeadsByCompanyId(user.CompanyId);
+            var assignTo=user.Id;
+            var leads = await leadRepository.GetAllLeadsByCompanyId(user.CompanyId,assignTo);
             if (leads == null || !leads.Any())
             {
                 return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"no Leads Found", HttpStatusCodes.NotFound);
@@ -748,6 +751,77 @@ namespace salesTrack.Application.Services
                 return ApiResponse<IEnumerable<LeadCompanyNameResponse>>.SuccessResponse(leadCompanies,$"{leadCompanies.Count()} Found", HttpStatusCodes.OK);
             }
             return ApiResponse<IEnumerable<LeadCompanyNameResponse>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+        }
+
+        public async Task<ApiResponse<LeadCompanyNameResponse>> DeleteLeadCompany(Guid id)
+        {
+          var salesExectiveId= contextService.UserId();
+           var companyName=await leadRepository.GetLeadCompanyNameById(id);
+            if(companyName is null)
+            {
+                return ApiResponse<LeadCompanyNameResponse>.ErrorResponse("company Name not Found", HttpStatusCodes.BadRequest);
+            }
+            companyName.IsActive = false;
+            companyName.ModifiedBy = salesExectiveId;
+            companyName.DeletedDate = DateTime.UtcNow;
+
+           var res=await leadRepository.UpdateLeadCompany(companyName);
+            if(res > 0)
+            {
+                return ApiResponse<LeadCompanyNameResponse>.SuccessResponse(new LeadCompanyNameResponse
+                {
+                    Id=companyName.Id,
+                    LeadCompanyName=companyName.LeadCompanyName,
+                    Description=companyName.Description,
+                    IsActive=companyName.IsActive,
+                },"Company Deleted Successfully", HttpStatusCodes.BadRequest);
+
+            }
+
+            return ApiResponse<LeadCompanyNameResponse>.ErrorResponse("Can't Delete Company,please try again", HttpStatusCodes.BadRequest);
+        }
+
+        public async Task<ApiResponse<UpdateLeadCompany>> UpdateLeadCompany(UpdateLeadCompany model)
+        {
+            try
+            {
+                var salesExecutiveId = contextService.UserId();
+                var companyName = await leadRepository.GetLeadCompanyNameById(model.Id);
+                if (companyName is null)
+                {
+                    return ApiResponse<UpdateLeadCompany>.ErrorResponse("company Name not Found", HttpStatusCodes.BadRequest);
+
+                }
+                if (model.LeadCompanyName == string.Empty || model.Description == string.Empty)
+                {
+                    return ApiResponse<UpdateLeadCompany>.ErrorResponse("textbox can't be empty", HttpStatusCodes.BadRequest);
+                }
+                companyName.LeadCompanyName = model.LeadCompanyName;
+                companyName.Description = model.Description;
+                companyName.ModifiedBy = salesExecutiveId;
+                companyName.ModifiedDate = DateTime.Now.Date;
+
+                var companyNameUpdated = await leadRepository.UpdateLeadCompany(companyName);
+                if (companyNameUpdated > 0)
+                {
+                    UpdateLeadCompany updateLeadCompany = new()
+                    {
+                        Id = companyName.Id,
+                        LeadCompanyName = companyName.LeadCompanyName,
+                        Description = companyName.Description,
+
+                    };
+                    return ApiResponse<UpdateLeadCompany>.SuccessResponse(updateLeadCompany, "Lead Company updated Successfully", HttpStatusCodes.OK);
+
+                }
+                return ApiResponse<UpdateLeadCompany>.ErrorResponse("Can't Update Please try again", HttpStatusCodes.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<UpdateLeadCompany>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+
         }
     }
 }

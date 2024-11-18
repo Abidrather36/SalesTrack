@@ -286,11 +286,11 @@
 //   );
 // }
 
-
+///Current in use 
 import React, { useState, useEffect } from "react";
 import Card from "../shared/Card";
 import { useForm } from "react-hook-form";
-import { FaEdit, FaPlus, FaTrash, FaUsers, FaBriefcase, FaSyncAlt } from "react-icons/fa";
+import { FaEdit, FaPlus, FaCog,FaTrash, FaUsers, FaBriefcase, FaSyncAlt } from "react-icons/fa";
 import {
   getAllLeads as fetchAllLeads,
   todaysFollowUp,
@@ -311,7 +311,7 @@ export default function ExecutiveDashboard({ leadData }) {
   useEffect(() => {
     getAllLeads();
     fetchAllLeadSources();
-    fetchTodayFollowUp(); // Automatically fetch today's follow-up history
+    fetchTodayFollowUp(); 
   }, []);
 
   // Fetch today's follow-up history
@@ -328,7 +328,9 @@ export default function ExecutiveDashboard({ leadData }) {
       console.error("Error fetching leads:", error);
     }
   };
-
+  const manageFollowUpHistory=(lead)=>{
+    console.log(lead)
+  }
   const fetchAllLeadSources = async () => {
     try {
       const response = await fetchLeadSources();
@@ -338,7 +340,6 @@ export default function ExecutiveDashboard({ leadData }) {
     }
   };
 
-  // Fetch follow-up history by date
   const onfetchFollowUpHistory = async (data) => {
     setLoading(true);
     try {
@@ -558,6 +559,13 @@ export default function ExecutiveDashboard({ leadData }) {
                 onDeleteHandler: (lead) => console.log("Delete:", lead),
                 icon: <FaTrash />,
               },
+              {
+                key: "manage followUp history",
+                title: "Manage FollowUp-History",
+                className: "btn btn-warning",
+                onAddFollowUpHistory: (lead) => manageFollowUpHistory(lead),
+                icon: <FaCog />,
+              }
             ]}
             headers={headers}
             data={Array.isArray(leadTodayFollowUp) ? leadTodayFollowUp : []}
@@ -569,6 +577,7 @@ export default function ExecutiveDashboard({ leadData }) {
     </>
   );
 }
+
 
 
 

@@ -8,7 +8,7 @@ import InputField from "../public/InputField";
 import Spin from "../public/Spin";
 import { leadSources as getLeadSources } from "../../Services/LeadSource";
 import { UserLists } from "../../Services/UserService";
-import leadImage from "../../utils/build/assets/img/illustrated-woman-being-intern-company_23-2148726151.avif";
+import leadImage from "../../utils/build/assets/img/illustrated-woman-being-intern-company_23-2148726151 (1).avif"
 import { leadCategoryList } from "../../Services/CompanyService";
 const AddLead = () => {
   const navigate = useNavigate();

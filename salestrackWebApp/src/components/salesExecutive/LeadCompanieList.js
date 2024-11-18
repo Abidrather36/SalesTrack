@@ -7,7 +7,8 @@ import { CircularProgress } from "@mui/material";
 import myToaster from "../../utils/toaster";
 import { useNavigate } from "react-router-dom";
 import { ConfirmDialog } from "primereact/confirmdialog";
-import { getAllLeadCompanies } from "../../Services/LeadService";
+import { deletLeadCompanyById, getAllLeadCompanies, updateLeadCompany } from "../../Services/LeadService";
+import { deleteCompanyById } from "../../Services/CompanyService";
 
 function LeadCompanieList() {
   const [leadCompanyList, setLeadCompanyList] = useState([]);
@@ -31,14 +32,14 @@ function LeadCompanieList() {
       key: "edit",
       title: "Edit",
       className: "btn btn-primary",
-    //   onEditHandler: (data) => editLeadCompany(data),
+      onEditHandler: (data) => editLeadCompany(data),
       icon: <FaEdit />,
     },
     {
       key: "delete",
       title: "Delete",
       className: "btn btn-danger",
-    //   onDeleteHandler: (data) => deleteLeadCompany(data),
+      onDeleteHandler: (data) => deleteLeadCompany(data),
       icon: <FaTrash />,
     },
   ];
@@ -47,20 +48,20 @@ function LeadCompanieList() {
     navigate("/salesExecutive/addLeadCompany");
   };
 
-//   const updateLeadCompanyHandler = async (updateModel) => {
-//     const response = await updateLeadCompanyById(updateModel);
-//     if (response.isSuccess) {
-//       myToaster.showSuccessToast(response.message);
-//       fetchLeadCompanies();
-//     } else {
-//       myToaster.showErrorToast(response.message);
-//     }
-//   };
+  const updateLeadCompanyHandler = async (updateModel) => {
+    const response = await updateLeadCompany(updateModel);
+    if (response.isSuccess) {
+      myToaster.showSuccessToast(response.message);
+      fetchLeadCompanies();
+    } else {
+      myToaster.showErrorToast(response.message);
+    }
+  };
 
-//   const editLeadCompany = (leadCompany) => {
-//     console.log(leadCompany);
-//     myToaster.leadCompanyEditSwal(leadCompany, fetchLeadCompanies);
-//   };
+  const editLeadCompany = (leadCompany) => {
+    console.log(leadCompany);
+    myToaster.leadCompanyEditSwal(leadCompany, fetchLeadCompanies);
+  };
 
   const fetchLeadCompanies = async () => {
     const response = await getAllLeadCompanies();
@@ -72,25 +73,21 @@ function LeadCompanieList() {
     }
   };
 
-//   const deleteLeadCompanyHandler = async (id) => {
-//     try {
-//       console.log(id);
-//       const result = await deleteLeadCompanyById(id);
-//       if (result.isSuccess) {
-//         myToaster.showSuccessToast(result.message);
-//         fetchLeadCompanies();
-//       } else {
-//         myToaster.showErrorToast(result.message);
-//       }
-//     } catch (error) {
-//       myToaster.showErrorToast("Failed to delete the company");
-//     }
-//   };
+  const deleteLeadCompanyHandler = async (id) => {
+      console.log(id);
+      const result = await deletLeadCompanyById(id);
+      if (result.isSuccess) {
+        myToaster.showSuccessToast(result.message);
+        fetchLeadCompanies();
+      } else {
+        myToaster.showErrorToast(result.message);
+      }
+  };
 
-//   const deleteLeadCompany = async (leadCompany) => {
-//     console.log(leadCompany);
-//     myToaster.primereactDeleteLeadCompany(leadCompany, deleteLeadCompanyHandler);
-//   };
+  const deleteLeadCompany = async (leadCompany) => {
+    console.log(leadCompany);
+    myToaster.primereactDeleteLeadCompany(leadCompany, deleteLeadCompanyHandler);
+  };
 
   return (
     <>

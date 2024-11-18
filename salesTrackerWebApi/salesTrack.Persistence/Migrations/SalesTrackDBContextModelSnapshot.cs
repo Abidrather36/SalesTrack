@@ -83,17 +83,17 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2e44b1a7-5a44-4212-86e5-96336e5bb70a"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 11, 17, 17, 56, 36, 595, DateTimeKind.Unspecified).AddTicks(4630), new TimeSpan(0, 5, 30, 0, 0)),
+                            Id = new Guid("7c1bc0b5-780e-40c1-9a6d-56de225e21b9"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 11, 18, 12, 37, 28, 376, DateTimeKind.Unspecified).AddTicks(1660), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "p+glSAUfyYPbkt6izrbzGbx4CI4lJLdPTEKH9q3nxJc=",
+                            Password = "f/7IFCmM4PdudHJAJ1O4zmiVYzqiVD7W4kJpOimvG5E=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 11, 17, 12, 41, 36, 595, DateTimeKind.Unspecified).AddTicks(4692), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "L4VNMLLEFZv1vporsG4ztA==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 11, 18, 7, 22, 28, 376, DateTimeKind.Unspecified).AddTicks(1723), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "oStdkdZKVM3TfAWLmocY1g==",
                             UserRole = (byte)1
                         });
                 });
@@ -304,9 +304,6 @@ namespace salesTrack.Persistence.Migrations
 
                     b.Property<Guid?>("LeadCompanyId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("LeadName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LeadRank")
                         .HasColumnType("int");

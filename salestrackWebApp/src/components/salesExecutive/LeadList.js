@@ -49,12 +49,13 @@ function LeadList(props) {
   };
 
   const editLead = (lead) => {
+    console.log(lead)
     myToaster.editLeadSwal(lead, userAssignTo, leadSources, fetchAllLeads);
   };
 
   const headers = [
     { key: "leadCompanyName", label: "Company Name" },
-    { key: "name", label: "Lead Name" },
+    { key: "leadName", label: "Lead Name" },
     { key: "email", label: "Email" },
     { key: "phoneNumber", label: "Phone Number" },
     { key: "leadSourceName", label: "Lead Source" },
@@ -110,6 +111,7 @@ function LeadList(props) {
   const mangeClosePopup = () => {
     setFollowUpdatePopup(false);
     setShowGrid(true);
+    
   };
 
   const fetchFollowUpHistoryHandler = (lead) => {

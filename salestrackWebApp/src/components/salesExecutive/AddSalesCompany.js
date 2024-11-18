@@ -26,7 +26,7 @@ function AddSalesCompany() {
       console.log(data)
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
-        navigate("/salesExecutive/leadCompanyList"); // Adjust navigation as needed
+        navigate("/salesExecutive/leadCompanyList"); 
       } else {
         myToaster.showErrorToast(response.message);
       }

@@ -12,7 +12,7 @@ namespace salesTrack.Domain.Models.Response
     public class LeadResponseModel
     {
         public Guid Id { get; set; }
-        public string? Name { get; set; }
+        public string? LeadName { get; set; }
         public string? LeadCompanyName{ get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }

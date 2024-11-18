@@ -94,7 +94,7 @@ export const SalesExectivesidebarLabels = [
   },
   {
     id:7,
-    label:"Add Company",
+    label:"Add Lead Company",
     link:"/salesExecutive/addLeadCompany",
     icon:<FaPlus />
   },
@@ -105,16 +105,16 @@ export const SalesExectivesidebarLabels = [
     icon: <FaUsers />,
   },
   {
-    id: 2,
-    label: "Leads List",
-    link: "/salesExecutive/leadList",
-    icon: <FaUsers />,
-  },
-  {
     id: 3,
     label: "Add New Lead",
     link: "/salesExecutive/add-new-lead",
     icon: <FaPlus />,
+  },
+  {
+    id: 2,
+    label: "Leads List",
+    link: "/salesExecutive/leadList",
+    icon: <FaUsers />,
   },
   {
     id: 4,

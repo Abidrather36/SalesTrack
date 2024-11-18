@@ -7,7 +7,7 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';          
 import 'primeicons/primeicons.css';
 import "./toaster.css"
-import { updateLead, updateTimeSheet } from "../Services/LeadService";
+import { updateLead, updateLeadCompany, updateTimeSheet } from "../Services/LeadService";
 import { updateUser } from "../Services/UserService";
 import { updateEnquiryById } from "../Services/EnquiryService";
 import {  updateLeadSourceById } from "../Services/LeadSource";
@@ -21,38 +21,116 @@ class Toaster{
         toast.error(message)
     }
    
+    // editLeadSwal = async (lead = {}, userAssignTo, leadSources, fetchLeads) => {
+    //   Swal.fire({
+    //     title: "Edit Lead",
+    //     html: `
+    //       <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
+    //         <label for="swal-input-name" style="text-align:left">Lead Name</label>
+    //         <input id="swal-input-name" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Lead Company Name" value="${lead.leadCompanyName || ''}" />
+            
+    //         <label for="swal-input-email" style="text-align:left">Email</label>
+    //         <input id="swal-input-email" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Email" value="${lead.email || ''}" />
+            
+    //         <label for="swal-input-phone" style="text-align:left">Phone Number</label>
+    //         <input id="swal-input-phone" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Phone Number" value="${lead.phoneNumber || ''}" />
+            
+    //         <label for="swal-input-contact-person" style="text-align:left">Contact Person</label>
+    //         <input id="swal-input-contact-person" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Contact Person" value="${lead.name || ''}" />
+            
+    //         <label for="swal-input-comment" style="text-align:left">Comment</label>
+    //         <input id="swal-input-comment" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Comment" value="${lead.comment || ''}" />
+            
+    //         <label for="swal-input-assign" style="text-align:left">Assign To</label>
+    //         <select id="swal-input-assign" class="swal2-input" style="width: 80%; margin-left:10px">
+    //           ${lead.assignTo ? `<option value="${lead.assignTo.id}">${lead.assignTo.name}</option>` : ""}
+    //           ${userAssignTo.map(user => `<option value="${user.id}">${user.name}</option>`).join("")}
+    //         </select>
+            
+    //         <label for="swal-input-source" style="text-align:left">Lead Source</label>
+    //         <select id="swal-input-source" class="swal2-input" style="width: 80%; margin-left:10px">
+    //           ${lead.leadSourceId ? `<option value="${lead.leadSourceId}">${lead.leadSourceName}</option>` : ""}
+    //           ${leadSources.map(source => `<option value="${source.id}">${source.leadSourceName}</option>`).join("")}
+    //         </select>
+            
+    //         <label for="swal-input-status" style="text-align:left">Final Status</label>
+    //         <select id="swal-input-status" class="swal2-input" style="width: 80%; margin-left:10px">
+    //           <option value="1" ${lead.finalStatus === 1 ? "selected" : ""}>Open</option>
+    //           <option value="2" ${lead.finalStatus === 2 ? "selected" : ""}>Close</option>
+    //           <option value="3" ${lead.finalStatus === 3 ? "selected" : ""}>Success</option>
+    //         </select>
+    //       </div>
+    //     `,
+    //     focusConfirm: false,
+    //     preConfirm: () => {
+    //       const name = document.getElementById("swal-input-name").value;
+    //       const email = document.getElementById("swal-input-email").value;
+    //       const phoneNumber = document.getElementById("swal-input-phone").value;
+    //       const contactPerson = document.getElementById("swal-input-contact-person").value;
+    //       const comment = document.getElementById("swal-input-comment").value;
+    //       const assignTo = document.getElementById("swal-input-assign").value;
+    //       const leadSourceId = document.getElementById("swal-input-source").value;
+    //       const finalStatus = Number(document.getElementById("swal-input-status").value);
+    
+        
+    
+    //       return { name, email, phoneNumber, contactPerson, comment, assignTo, leadSourceId, finalStatus };
+    //     },
+    //     showCancelButton: true,
+    //     confirmButtonColor: "#3085d6",
+    //     cancelButtonColor: "#d33",
+    //     confirmButtonText: "Update",
+    //   }).then(async (result) => {
+    //     if (result.isConfirmed) {
+    //       const updatedLead = { ...result.value, id: lead.id };
+    
+    //       try {
+    //         const res = await updateLead(updatedLead);
+    //         if (res.isSuccess) {
+    //           myToaster.showSuccessToast("Lead updated successfully");
+    //           fetchLeads(); 
+    //         } else {
+    //           myToaster.showErrorToast(res.message);
+    //         }
+    //       } catch (error) {
+    //         myToaster.showErrorToast("Failed to update lead");
+    //       }
+    //     }
+    //   });
+    // };
+    
     editLeadSwal = async (lead = {}, userAssignTo, leadSources, fetchLeads) => {
+      console.log("swal lead",lead)
       Swal.fire({
         title: "Edit Lead",
         html: `
           <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
-            <label for="swal-input-name" style="text-align:left">Lead Name</label>
-            <input id="swal-input-name" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Lead Name" value="${lead.name || ''}" />
-            
+            <label for="swal-input-leadName" style="text-align:left">Lead Name</label>
+            <input id="swal-input-leadName" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Lead Name" value="${lead.leadName || ''}" />
+    
             <label for="swal-input-email" style="text-align:left">Email</label>
             <input id="swal-input-email" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Email" value="${lead.email || ''}" />
-            
+    
             <label for="swal-input-phone" style="text-align:left">Phone Number</label>
             <input id="swal-input-phone" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Phone Number" value="${lead.phoneNumber || ''}" />
-            
-            <label for="swal-input-contact-person" style="text-align:left">Contact Person</label>
-            <input id="swal-input-contact-person" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Contact Person" value="${lead.contactPerson || ''}" />
-            
+    
             <label for="swal-input-comment" style="text-align:left">Comment</label>
             <input id="swal-input-comment" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Comment" value="${lead.comment || ''}" />
-            
+    
             <label for="swal-input-assign" style="text-align:left">Assign To</label>
             <select id="swal-input-assign" class="swal2-input" style="width: 80%; margin-left:10px">
               ${lead.assignTo ? `<option value="${lead.assignTo.id}">${lead.assignTo.name}</option>` : ""}
               ${userAssignTo.map(user => `<option value="${user.id}">${user.name}</option>`).join("")}
             </select>
-            
+    
             <label for="swal-input-source" style="text-align:left">Lead Source</label>
             <select id="swal-input-source" class="swal2-input" style="width: 80%; margin-left:10px">
               ${lead.leadSourceId ? `<option value="${lead.leadSourceId}">${lead.leadSourceName}</option>` : ""}
               ${leadSources.map(source => `<option value="${source.id}">${source.leadSourceName}</option>`).join("")}
             </select>
-            
+    
+      
+    
             <label for="swal-input-status" style="text-align:left">Final Status</label>
             <select id="swal-input-status" class="swal2-input" style="width: 80%; margin-left:10px">
               <option value="1" ${lead.finalStatus === 1 ? "selected" : ""}>Open</option>
@@ -63,21 +141,15 @@ class Toaster{
         `,
         focusConfirm: false,
         preConfirm: () => {
-          const name = document.getElementById("swal-input-name").value;
+          const leadName = document.getElementById("swal-input-leadName").value;
           const email = document.getElementById("swal-input-email").value;
           const phoneNumber = document.getElementById("swal-input-phone").value;
-          const contactPerson = document.getElementById("swal-input-contact-person").value;
           const comment = document.getElementById("swal-input-comment").value;
           const assignTo = document.getElementById("swal-input-assign").value;
           const leadSourceId = document.getElementById("swal-input-source").value;
           const finalStatus = Number(document.getElementById("swal-input-status").value);
     
-          if (!name || !email || !phoneNumber || !contactPerson || !assignTo || !leadSourceId || !finalStatus) {
-            Swal.showValidationMessage(`Please enter all fields`);
-            return null;
-          }
-    
-          return { name, email, phoneNumber, contactPerson, comment, assignTo, leadSourceId, finalStatus };
+          return { leadName, email, phoneNumber, comment, assignTo, leadSourceId, finalStatus };
         },
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -90,7 +162,7 @@ class Toaster{
           try {
             const res = await updateLead(updatedLead);
             if (res.isSuccess) {
-              myToaster.showSuccessToast("Lead updated successfully");
+              myToaster.showSuccessToast(res.message);
               fetchLeads(); 
             } else {
               myToaster.showErrorToast(res.message);
@@ -392,6 +464,49 @@ class Toaster{
         }
     });
 };
+ leadCompanyEditSwal = async (data = {}, fetchLeadCompanies) => {
+  Swal.fire({
+      title: "Edit Lead Company",
+      html: `
+          <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
+              <label for="swal-input1" style="text-align:left">Lead Company Name</label>
+              <input id="swal-input1" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Lead Company Name" value="${data.leadCompanyName}" />
+              
+              <label for="swal-input2" style="text-align:left">Description</label>
+              <input id="swal-input2" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Description" value="${data.description}" />
+          </div>
+      `,
+      focusConfirm: false,
+      preConfirm: () => {
+          const leadCompanyName = document.getElementById("swal-input1").value;
+          const description = document.getElementById("swal-input2").value;
+
+          return { leadCompanyName, description };
+      },
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Update",
+  }).then(async (result) => {
+      if (result.isConfirmed) {
+          const updatedLeadCompany = result.value;
+          updatedLeadCompany.id = data.id;  
+
+          if (updatedLeadCompany) {
+              const res = await updateLeadCompany(updatedLeadCompany); 
+              if (res.isSuccess) {
+                  myToaster.showSuccessToast(res.message);
+                  fetchLeadCompanies();  
+              } else {
+                  myToaster.showErrorToast(res.message);
+              }
+          }
+      }
+  });
+};
+
+
+
 
     
        primereactDeleteConfirm = (company,deleteSwalHandler) => {
@@ -461,7 +576,21 @@ primereactDeleteLeadSource =(leadSource,deleteLeadSourceHandler)=>{
           className: 'custom-dialog',
           accept: () => deleteLeadHandler(lead.id) 
       });
+    
   };
+  primereactDeleteLeadCompany =(leadCompany,deleteLeadCompanyHandler)=>{
+    confirmDialog({
+      message: `Are you sure you want to delete the lead company "${leadCompany.leadCompanyName}"?`,
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Yes',
+      rejectLabel: 'No',
+      acceptClassName: 'p-button-secondary',
+      rejectClassName: 'p-button-danger',
+      className: 'custom-dialog',
+      accept: () => deleteLeadCompanyHandler(leadCompany.id)
+  })
+  }
   
 
   
