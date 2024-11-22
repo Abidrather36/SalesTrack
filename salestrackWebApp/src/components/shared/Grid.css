@@ -4,3 +4,144 @@
     font-family: sans-serif;
     font-size:medium;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Grid.css */
+
+/* Main container styling */
+.grid-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  /* Header styling */
+  .grid-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .grid-header .header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .grid-header h5 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  
+  .grid-header .grid-add-button {
+    background-color: #0077b6;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .grid-header .grid-add-button:hover {
+    background-color: #005f8d;
+  }
+  
+  .grid-header .header-right .grid-search {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+    font-size: 0.9rem;
+  }
+  
+  /* Table wrapper */
+  .grid-table-wrapper {
+    overflow-x: auto;
+  }
+  
+  /* Table styling */
+  .grid-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+  }
+  
+  .grid-table th {
+    background-color: #f7f7f7;
+    color: #333;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .grid-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .grid-table tbody tr:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+  }
+  
+  /* Empty data row styling */
+  .grid-no-data {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+  }
+  
+  /* Badge customization */
+  .grid-badge {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    border-radius: 12px;
+    display: inline-block;
+  }
+  
+  .grid-badge.success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .grid-badge.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .grid-badge.warning {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .grid-badge.primary {
+    background-color: #cce5ff;
+    color: #004085;
+  }
+  
+  /* Pagination styling */
+  .MuiTablePagination-root {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  

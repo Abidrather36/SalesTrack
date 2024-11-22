@@ -8,7 +8,7 @@ import InputField from "../public/InputField";
 import Spin from "../public/Spin";
 import { leadSources as getLeadSources } from "../../Services/LeadSource";
 import { UserLists } from "../../Services/UserService";
-import leadImage from "../../utils/build/assets/img/illustrated-woman-being-intern-company_23-2148726151 (1).avif"
+import leadImage from "../../utils/build/assets/img/illustrated-woman-being-intern-company_23-2148726151 (1).avif";
 import { leadCategoryList } from "../../Services/CompanyService";
 const AddLead = () => {
   const navigate = useNavigate();
@@ -103,31 +103,25 @@ const AddLead = () => {
           currentRoute: "Register-New-Lead",
         }}
       />
-      <div
-        className="wrapper"
+ <div
+      className="wrapper"
+      style={{
+        marginTop:"-50px",
+        display: "flex",             
+        justifyContent: "center",    
+        alignItems: "center",        
+        height: "100vh",            
+        padding: "50px",              
+        overflowX: "hidden",   
+      }}
+    >
+         <div
         style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          width: "100%",
-          padding: "50px",
-          marginTop: "-0px",
+          padding: "20px",
+          width: "100%",               
+          maxWidth: "900px",           
         }}
       >
-        <div style={{ flex: 1, marginTop: "50px" }}>
-          <img
-            src={leadImage}
-            style={{
-              width: "100%",
-              borderRadius: "10px",
-              marginRight: "100px",
-            }}
-            alt="Lead Registration"
-          />
-        </div>
-
-        <div style={{ flex: 1, padding: "20px", marginTop: "-5px" }}>
           <div className="col-lg-8 mb-4-lg-0">
             <div
               className="login-container"
@@ -211,10 +205,22 @@ const AddLead = () => {
                     <InputField
                       type="text"
                       name="phoneNumber"
+                      maxLength="10"
                       style={{ padding: "0px 1.25rem 0 1.12rem" }}
                       placeholder="Phone Number"
-                      {...register("phoneNumber")}
+                      {...register("phoneNumber", {
+                        required: "Phone number is required",
+                        pattern: {
+                          value: /^[0-9]{10}$/, 
+                          message: "Phone number must be 10 digits",
+                        },
+                      })}
                     />
+                    {errors.phoneNumber && (
+                      <span className="error-message">
+                        {errors.phoneNumber.message}
+                      </span>
+                    )}
                   </div>
 
                   <div className="col-lg-6 mb-3">

@@ -571,6 +571,8 @@ namespace salesTrack.Application.Services
         public async Task<ApiResponse<bool>> AddLeadFollowUpHistory(FollowUpReq model)
         {
             var loggedInUser = contextService.UserId();
+            var lead = await leadRepository.GetByIdAsync(model.LeadId);
+            model.LeadCompanyId= lead.LeadCompanyId;
             var result = await leadRepository.AddProcessStep(model);
             if (result)
             {
@@ -588,6 +590,7 @@ namespace salesTrack.Application.Services
         public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> TodaysFollowUpDate(TodaysFollowUpdateRequest model)
         {
             var todaysFollowUpdate = await leadRepository.TodaysFollowUpdate(model);
+            
             if (todaysFollowUpdate is null || !todaysFollowUpdate.Any())
             {
                 return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.ErrorResponse("There is No Follow Up For Such Date", HttpStatusCodes.BadRequest);
@@ -610,7 +613,7 @@ namespace salesTrack.Application.Services
                 TimeSheet timeSheet = new()
                 {
                     Date = model.Date,
-                    ProcessStepName = model.ProcessStep,
+                    TimeSheetStepName = model.TimeSheetStepName,
                     Comment = model.Comment,
                     HoursSpent = model.HoursSpent,
                     UserId = loggedInUser,
@@ -828,6 +831,7 @@ namespace salesTrack.Application.Services
 public class FollowUpReq
 {
     public Guid LeadId { get; set; }
+    public Guid LeadCompanyId { get; set; }
     public Guid AdminProcessStepId { get; set; }
     public string? Comment { get; set; }
     public TimeSpan Time { get; set; }

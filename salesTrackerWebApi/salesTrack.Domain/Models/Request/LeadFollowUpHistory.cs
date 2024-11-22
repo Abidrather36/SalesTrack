@@ -8,6 +8,7 @@ namespace salesTrack.Domain.Models.Request
 {
     public class LeadFollowUpHistoryResponse
     {
+        public string? LeadCompanyName { get; set; }
         public string? ClientName { get; set; }
         public string? LeadProcessStep { get; set;  }
         public string? PhoneNumber { get; set; }

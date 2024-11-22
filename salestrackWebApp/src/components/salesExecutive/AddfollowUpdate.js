@@ -282,8 +282,8 @@ import { addManageLead } from "../../Services/LeadService";
 import myToaster from "../../utils/toaster";
 import { getAllProcessSteps } from "../../Services/UserService";
 import { useNavigate } from "react-router-dom";
+import Breadcrumbs from "../auth/BreadCrumbs";
 import BreadcrumbComponent from "../shared/Breadcrumb";
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -319,7 +319,14 @@ export default function BasicModal({
   }, []);
 
   const { register, handleSubmit, formState: errors } = useForm();
+  const currentPath = window.location.pathname; // e.g., "salesExective/leadList/followUp"
+  const pathParts = currentPath.split("/").filter(Boolean); // ["salesExective", "leadList", "followUp"]
 
+  // Breadcrumb labels for the modal
+  const breadcrumbLabels = {
+    module: pathParts[0], // "salesExective"
+    currentRoute: pathParts[pathParts.length - 1], // "followUp"
+  };
   // Handle Close button of Manage Lead modal
   const handleClose = () => {
     setShowManageLeadModal(false); // Close the Manage Lead modal
@@ -337,6 +344,7 @@ export default function BasicModal({
 
   // Define the columns for the Follow-up History grid
   const followupColumns = [
+    { key: "leadCompanyName",label:"Lead Company Name"},
     { key: "clientName", label: "Client Name" },
     { key: "leadProcessStep", label: "Lead Process Step" },
     { key: "phoneNumber", label: "Phone Number" },
@@ -364,10 +372,8 @@ export default function BasicModal({
           );
         setFollowUpHistory(formattedHistory);
       } else {
-        // Handle error
       }
     } catch (error) {
-      // Handle error
     } finally {
       setLoading(false);
     }
@@ -395,23 +401,19 @@ export default function BasicModal({
     const response = await addManageLead(manageLeadData);
     if (response.isSuccess) {
       myToaster.showSuccessToast("Follow-up history added");
-      setShowManageLeadModal(false); // Close the modal after saving
-      setShowHistoryGrid(true); // Show the follow-up history grid again
-      setShowLeadList(false); // Optionally hide the lead list
+      setShowManageLeadModal(false); 
+      setShowHistoryGrid(true); 
+      setShowLeadList(false); 
       fetchFollowUpHistory();
     } else {
       myToaster.showErrorToast(response.message);
     }
   };
 
+
   return (
     <div>
-      <BreadcrumbComponent
-        labels={{
-          module: "SalesExecutive",
-          currentRoute: "Follow-Up History",
-        }}
-      />
+       <BreadcrumbComponent labels={breadcrumbLabels} />
       {/* Manage Lead Modal */}
       {showManageLeadModal && (
         <Modal

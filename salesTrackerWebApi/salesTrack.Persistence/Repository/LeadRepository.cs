@@ -109,14 +109,14 @@ namespace salesTrack.Persistence.Repository
             };
             var folowUp = new FollowUpDate
             {
-                
+    
                 LeadProcessStepId = model.LeadId,
                 Time = model.Time,
                 Date = model.Date,
                 LeadId = model.LeadId,
                 CreatedDate = DateTime.Now,
-                CreatedBy = loggedInUser
-
+                CreatedBy = loggedInUser,
+                LeadCompanyId=model.LeadCompanyId
 
             };
             var leadProcessStep = new LeadProcessSteps
@@ -208,7 +208,7 @@ namespace salesTrack.Persistence.Repository
             var res = await context.TimeSheets.Where(x => x.UserId == userId).Select(x => new TimeSheetResponseModel
             {
                 Id=x.Id,
-                ProcessStep = x.ProcessStepName,
+                TimeSheetStepName = x.TimeSheetStepName,
                 HoursSpent = x.HoursSpent,
                 Comment = x.Comment,
                 Date = x.Date,
@@ -290,6 +290,7 @@ namespace salesTrack.Persistence.Repository
                     .ThenInclude(lc => lc.LeadComment)
                       .Include(l => l.ProcessSteps!) 
             .ThenInclude(lc => lc.ProcessStepAdmin)
+                       .Include(l=>l.LeadCompany)
                 .FirstOrDefaultAsync();
 
             if (data == null || data.ProcessSteps == null)
@@ -304,7 +305,8 @@ namespace salesTrack.Persistence.Repository
                 LeadProcessStep = ps.ProcessStepAdmin?.StepName ?? "No step name", 
                 FollowUpDate = ps.LeadFollowUpDate?.FirstOrDefault()?.Date ?? DateTime.MinValue, 
                 Email = ps.Lead?.User?.Email ?? "No email",
-                PhoneNumber = ps.Lead?.User?.PhoneNumber ?? "No phone number"
+                PhoneNumber = ps.Lead?.User?.PhoneNumber ?? "No phone number",
+                LeadCompanyName=ps.Lead?.LeadCompany?.LeadCompanyName?? "No Company Name"
             });
 
             return results;
@@ -321,6 +323,7 @@ namespace salesTrack.Persistence.Repository
                     .ThenInclude(ps => ps.LeadComment)
                 .Include(l => l.ProcessSteps!)
                     .ThenInclude(ps => ps.ProcessStepAdmin)
+                 .Include(l=>l.LeadCompany)
                 .Where(l => l.ProcessSteps != null
                              && l.ProcessSteps.Any(ps => ps.LeadFollowUpDate != null
                                                           && ps.LeadFollowUpDate.Any(fd => fd.Date.Date == model.Date.Date)))
@@ -334,7 +337,9 @@ namespace salesTrack.Persistence.Repository
                         PhoneNumber = ps.Lead.User.PhoneNumber ?? "No Phone Number",
                         LeadComments = ps.LeadComment!.FirstOrDefault()!.Text ?? "No Comment Here",
                         LeadProcessStep = ps.ProcessStepAdmin!.StepName ?? "No Step Name",
-                        FollowUpDate = ps.LeadFollowUpDate!.FirstOrDefault()!.Date
+                        FollowUpDate = ps.LeadFollowUpDate!.FirstOrDefault()!.Date,
+                        LeadCompanyName = ps.Lead!.LeadCompany!.LeadCompanyName ?? "No Lead Company Name "
+
                     }))
                 .ToListAsync(); 
 

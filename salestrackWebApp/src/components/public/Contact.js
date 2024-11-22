@@ -55,8 +55,7 @@ const Contact = () => {
                   >
                     <i class="bi bi-envelope"></i>
                     <h3>Email Us</h3>
-                    <p>salestern@</p>
-                    <p>gmail.com</p>
+                    <p>salestern@gmail.com</p>
                   </div>
                 </div>
 

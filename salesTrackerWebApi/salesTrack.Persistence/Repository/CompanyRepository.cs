@@ -73,7 +73,7 @@ namespace salesTrack.Persistence.Repository
                  Select(ts => new TimeSheetResponseModel
                  {   Id=ts.Id,
                      Date=ts.Date,
-                     ProcessStep = ts.ProcessStep,
+                     TimeSheetStepName = ts.TimeSheetStepName,
                      HoursSpent = ts.HoursSpent,
                      Comment = ts.Comment,
                      DateString=ts.Date.ToString("dd/MM/yyyy")

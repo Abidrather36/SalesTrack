@@ -51,8 +51,16 @@ const ViewTimeSheet = () => {
       return;
     }
   
+    // Adjust start and end dates
     const startDateOffset = startDate ? new Date(startDate).toISOString() : null;
-    const endDateOffset = endDate ? new Date(endDate).toISOString() : null;
+    
+    let endDateOffset = null;
+    if (endDate) {
+      // Convert endDate to ISO string and adjust to the end of the day (23:59:59)
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999); // Set time to 23:59:59
+      endDateOffset = end.toISOString();
+    }
   
     if (startDate && endDate && endDateOffset < startDateOffset) {
       myToaster.showErrorToast("End date cannot be earlier than start date.");
@@ -80,6 +88,7 @@ const ViewTimeSheet = () => {
       setLoading(false);
     }
   };
+  
   
   
   

@@ -49,7 +49,7 @@ const TimeSheet = () => {
     if (selectedDay === 1) {
       const startOfWeekDate = getStartOfWeek(new Date(date));
       const endOfWeekDate = new Date(startOfWeekDate);
-      endOfWeekDate.setDate(startOfWeekDate.getDate() + 5); // Saturday of the same week
+      endOfWeekDate.setDate(startOfWeekDate.getDate() + 5); 
       setMinDate(startOfWeekDate);
       setMaxDate(endOfWeekDate);
     } else {
@@ -166,12 +166,12 @@ const TimeSheet = () => {
 
             {/* Process Step Dropdown */}
             <FormControl fullWidth sx={{ mb: 2 }}>
-              <InputLabel id="process-step-label">Process Step</InputLabel>
+              <InputLabel id="process-step-label">Time Sheet Step</InputLabel>
               <Select
-                labelId="process-step-label"
-                id="processStep"
-                label="Process Step"
-                {...register("processStep", { required: true })}
+                labelId="time-Sheet-StepName"
+                id="timeSheetStepName"
+                label="Time Sheet StepName"
+                {...register("timeSheetStepName", { required: true })}
                 error={Boolean(errors.processStep)}
               >
                 {processSteps.map((step) => (

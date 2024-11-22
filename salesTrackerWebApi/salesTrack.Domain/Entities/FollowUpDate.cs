@@ -9,8 +9,11 @@ namespace salesTrack.Domain.Entities
       
         public DateTime Date { get; set; }
         public TimeSpan Time { get; set; }
-
         public Guid LeadId { get; set; }
+        public Guid LeadCompanyId { get; set; }
+
+        [ForeignKey(nameof(LeadCompanyId))]
+        public LeadCompany? LeadCompany { get; set; }
 
         [ForeignKey(nameof(LeadId))]
         public Lead? Lead { get; set; }

@@ -38,7 +38,7 @@ const LeadSource = () => {
     <>
       <BreadcrumbComponent
         labels={{
-          module: "leadSource",
+          module: "salesExecutive",
           currentRoute: "Register-New-LeadSource",
         }}
       />

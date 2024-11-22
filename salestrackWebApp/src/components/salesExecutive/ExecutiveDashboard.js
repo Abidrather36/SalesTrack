@@ -1,296 +1,7 @@
-// import React, { useState, useEffect } from "react";
-// import Card from "../shared/Card";
-// import { useForm } from "react-hook-form";
-// import { FaEdit, FaPlus, FaTrash, FaUsers,FaBriefcase,FaSyncAlt,FaCog, FaHistory ,FaCalendarDay} from "react-icons/fa";
-// import {
-//   getAllLeads as fetchAllLeads,
-//   todaysFollowUp,
-// } from "../../Services/LeadService";
-// import { leadSources as fetchLeadSources } from "../../Services/LeadSource";
-// import InputField from "../public/InputField";
-// import Spin from "../public/Spin";
-// import myToaster from "../../utils/toaster";
-// import Grid from "../shared/Grid";
-
-// export default function ExecutiveDashboard({ leadData }) {
-//   const [leads, setLeads] = useState([]);
-//   const [leadSources, setLeadSources] = useState([]);
-//   const [leadTodayFollowUp, setLeadTodayFollowUp] = useState([]);
-//   const [loading, setLoading] = useState(false);
-
-//   useEffect(() => {
-//     getAllLeads();
-//     fetchAllLeadSources();
-//   }, []);
-
-//   const getAllLeads = async () => {
-//     try {
-//       const response = await fetchAllLeads();
-//       setLeads(response.result || []);
-//     } catch (error) {
-//       console.error("Error fetching leads:", error);
-//     }
-//   };
-// const editFollowUp=(lead)=>{
-
-// }
-// const deleteFollowUp =(lead)=>{ 
-
-// }
-
-//   const onSubmit = (data) => {
-//     setLeadTodayFollowUp([]);
-//     onfetchFollowUpHistory(data);
-//   };
-
-//   const fetchAllLeadSources = async () => {
-//     try {
-//       const response = await fetchLeadSources();
-//       setLeadSources(response.result || []);
-//     } catch (error) {
-//       console.error("Error fetching lead sources:", error);
-//     }
-//   };
-
-//   // Fetch today's follow-up data
-//   const onfetchFollowUpHistory = async (data) => {
-//     setLoading(true);
-//     try {
-//       const response = await todaysFollowUp(data);
-//       if (response.isSuccess) {
-//         const result = Array.isArray(response.result)
-//           ? response.result
-//           : [response.result];
-//         const formattedResult = result
-//           .map((item) => {
-//             const date = item.followUpDate
-//               ? item.followUpDate.split("T")[0]
-//               : null;
-//             const formattedDate = date
-//               ? date.split("-").reverse().join("-")
-//               : "";
-//             return {
-//               ...item,
-//               followUpDate: formattedDate,
-//             };
-//           })
-//           .sort(
-//             (a, b) =>
-//               new Date(b.followUpDate.split("-").reverse().join("-")) -
-//               new Date(a.followUpDate.split("-").reverse().join("-"))
-//           );
-//         setLeadTodayFollowUp(formattedResult);
-//         myToaster.showSuccessToast(response.message);
-//       } else {
-//         myToaster.showErrorToast(response.message);
-//       }
-//     } catch (error) {
-//       console.error("Error fetching follow-up history:", error);
-//       setLeadTodayFollowUp([]); // Clear follow-up history on error
-//       myToaster.showErrorToast("Failed to fetch follow-up data.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm();
-
-//   const handleRefresh = () => {
-//     getAllLeads(); 
-//     fetchAllLeadSources(); 
-//     if (leadTodayFollowUp.length > 0) {
-//       setLeadTodayFollowUp([]); 
-//       setLeads([]);
-//     }
-//   };
-
-//   const headers = [
-//     { key: "clientName", label: "Client Name" },
-//     { key: "leadProcessStep", label: "Lead Process Step" },
-//     { key: "phoneNumber", label: "Phone Number" },
-//     { key: "email", label: "Email" },
-//     { key: "leadComments", label: "Lead Comments" },
-//     { key: "followUpDate", label: "Follow-up Date" },
-//   ];
-
-//   const myProps = [
-//     {
-//       title: "Total Leads",
-//       number: leads.length,
-//       icon: <FaUsers />,
-//       link: "/salesExecutive/leadList",
-//     },
-//     {
-//       title: "Total Lead Sources",
-//       number: leadSources.length,
-//       icon: <FaUsers />,
-//       link: "/salesExecutive/leadSourceList",
-//     },
-//     {
-//       title: "Today's Follow Up",
-//       number: leadTodayFollowUp.length,
-//       icon: <FaBriefcase />,
-//     },
-//   ];
-
-//   return (
-//     <>
-//       <Card props={myProps} />
-//       <h1
-//         className="text-primary"
-//         style={{
-//           fontSize: "1.3em",
-//           textAlign: "left",
-//           marginTop: "20px",
-//           marginBottom: "20px",
-//           marginLeft: "30px",
-//         }}
-//       > 
-//         <div >
-//           <span >Search Follow-Up History</span>
-//           <i
-//             className="fas fa-arrow-down"
-//             style={{ display: "block", marginTop: "5px",marginLeft:"80px"}}
-//           ></i>
-//         </div>
-//       </h1>
-
-//       <div
-//         style={{ marginLeft: "30px" }}
-//         className="d-flex justify-content-between align-items-start mb-3"
-//       >
-//         <div style={{ marginRight: "400px" }} className="col-lg-6 ml-3">
-//           <form
-//             className="login-form"
-//             onSubmit={handleSubmit(onSubmit)}
-//             autoComplete="off"
-//           >
-//             <div
-//               style={{
-//                 display: "flex",
-//                 flexDirection: "row",
-//                 gap: "20px",
-//                 alignItems: "center",
-//               }}
-//             >
-//               {/* Date Input Field */}
-//               <div style={{ marginBottom: "22px" }}>
-//                 <label
-//                   style={{ marginBottom: "20px" }}
-//                   className="h6 font-semibold text-primary text-sm d-block mb-2"
-//                 >
-//                   Select Date
-//                 </label>
-
-//                 {/* Move the error message above the input field */}
-//                 {errors.date && (
-//                   <span
-//                     className="error-message"
-//                     style={{ color: "red", marginBottom: "5px" }}
-//                   >
-//                     {errors.date.message}
-//                   </span>
-//                 )}
-
-//                 <InputField
-//                   type="date"
-//                   style={{
-//                     padding: "0px 1.25rem 0 1.12rem",
-//                     maxWidth: "300px",
-//                   }}
-//                   {...register("date", { required: "Date is required" })}
-//                 />
-//               </div>
-
-//               {/* Submit Button */}
-//               <div style={{ marginBottom: "22px", alignSelf: "flex-end" }}>
-//                 <button
-//                   type="submit"
-//                   className="btn btn-primary"
-//                   disabled={loading}
-//                   style={{ marginBottom: "25px", height: "50px" }}
-//                 >
-//                   {loading ? <Spin /> : "Search"}
-//                 </button>
-//               </div>
-
-//               {/* Conditionally rendered Refresh Button */}
-//               {leadTodayFollowUp.length > 0 && (
-//                 <div
-//                   style={{
-//                     marginBottom: "22px",
-//                     alignSelf: "flex-end",
-//                     marginBottom: "22px",
-//                     marginLeft: "auto",
-//                   }}
-//                 >
-//                   <button
-//                     type="button"
-//                     className="btn btn-secondary d-flex align-items-center justify-content-center"
-//                     onClick={handleRefresh}
-//                     style={{
-//                       marginTop: "-30px",
-//                       height: "50px",
-//                       width: "50px",
-//                       borderRadius: "8px", // Makes the button circular
-//                       padding: "10px",
-//                       position: "absolute",
-//                       marginLeft: "500px",
-//                     }}
-//                   >
-//                     <FaSyncAlt style={{ fontSize: "1.2rem" }} />
-//                   </button>
-//                 </div>
-//               )}
-//             </div>
-//           </form>
-//         </div>
-//       </div>
-
-//       {/* Follow-up History Grid */}
-//       <div>
-//         {loading ? (
-//           <p style={{ marginLeft: "32px" }}>Loading...</p>
-//         ) : leadTodayFollowUp.length === 0 ? (
-//           <p style={{ marginLeft: "32px" }}></p>
-//         ) : (
-//           <Grid
-//           buttons={[
-//             {
-//               key: "edit",
-//               title: "Edit",
-//               className: "btn btn-primary",
-//               onEditHandler: (lead) => editFollowUp(lead),
-//               icon: <FaEdit />,
-//             },
-//             {
-//               key: "delete",
-//               title: "Delete",
-//               className: "btn btn-danger",
-//               onDeleteHandler: (lead) => deleteFollowUp(lead.id),
-//               icon: <FaTrash />,
-//             }
-//           ]}
-//             headers={headers}
-//             data={Array.isArray(leadTodayFollowUp) ? leadTodayFollowUp : []}
-//             loading={loading}
-//             tableName="Follow-up History"
-//           />
-//         )}
-//       </div>
-//     </>
-//   );
-// }
-
-///Current in use 
 import React, { useState, useEffect } from "react";
 import Card from "../shared/Card";
 import { useForm } from "react-hook-form";
-import { FaEdit, FaPlus, FaCog,FaTrash, FaUsers, FaBriefcase, FaSyncAlt } from "react-icons/fa";
+import { FaEdit, FaPlus, FaCog, FaTrash, FaUsers, FaBriefcase, FaSyncAlt } from "react-icons/fa";
 import {
   getAllLeads as fetchAllLeads,
   todaysFollowUp,
@@ -300,23 +11,29 @@ import InputField from "../public/InputField";
 import Spin from "../public/Spin";
 import myToaster from "../../utils/toaster";
 import Grid from "../shared/Grid";
+import { CircularProgress } from "@mui/material"; // Import CircularProgress for the spinner
 
-export default function ExecutiveDashboard({ leadData }) {
+export default function ExecutiveDashboard() {
   const [leads, setLeads] = useState([]);
   const [leadSources, setLeadSources] = useState([]);
   const [leadTodayFollowUp, setLeadTodayFollowUp] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [date, setDate] = useState("");
-  // Fetch leads and lead sources on mount
+  const [date, setDate] = useState(""); // Date selected by the user
+  const [hasFollowUpHistory, setHasFollowUpHistory] = useState(false); // Flag to track if there are follow-ups
+
+  // This useEffect will trigger fetching of today's follow-up history
   useEffect(() => {
+    // Fetching all leads and lead sources
     getAllLeads();
     fetchAllLeadSources();
-    fetchTodayFollowUp(); 
+    
+    // Fetch today's follow-up history immediately when the page loads
+    fetchTodayFollowUp();
   }, []);
 
   // Fetch today's follow-up history
   const fetchTodayFollowUp = async () => {
-    const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split("T")[0]; // Today's date in YYYY-MM-DD format
     await onfetchFollowUpHistory({ date: today });
   };
 
@@ -328,9 +45,7 @@ export default function ExecutiveDashboard({ leadData }) {
       console.error("Error fetching leads:", error);
     }
   };
-  const manageFollowUpHistory=(lead)=>{
-    console.log(lead)
-  }
+
   const fetchAllLeadSources = async () => {
     try {
       const response = await fetchLeadSources();
@@ -342,38 +57,38 @@ export default function ExecutiveDashboard({ leadData }) {
 
   const onfetchFollowUpHistory = async (data) => {
     setLoading(true);
+    setHasFollowUpHistory(false); // Reset the flag before fetching
+
     try {
       const response = await todaysFollowUp(data);
       if (response.isSuccess) {
-        const result = Array.isArray(response.result)
-          ? response.result
-          : [response.result];
+        const result = Array.isArray(response.result) ? response.result : [response.result];
         const formattedResult = result
           .map((item) => {
-            const date = item.followUpDate
-              ? item.followUpDate.split("T")[0]
-              : null;
-            const formattedDate = date
-              ? date.split("-").reverse().join("-")
-              : "";
-            return {
-              ...item,
-              followUpDate: formattedDate,
-            };
+            const date = item.followUpDate ? item.followUpDate.split("T")[0] : null;
+            const formattedDate = date ? date.split("-").reverse().join("-") : "";
+            return { ...item, followUpDate: formattedDate };
           })
           .sort(
             (a, b) =>
               new Date(b.followUpDate.split("-").reverse().join("-")) -
               new Date(a.followUpDate.split("-").reverse().join("-"))
           );
+
         setLeadTodayFollowUp(formattedResult);
-        myToaster.showSuccessToast(response.message);
+        setHasFollowUpHistory(formattedResult.length > 0); // Set flag based on whether any follow-ups exist
+
+        if (formattedResult.length === 0) {
+          myToaster.showErrorToast("No follow-up history found Today");
+        } else {
+        }
       } else {
-        myToaster.showErrorToast(response.message);
+        setHasFollowUpHistory(false); // Ensure the flag is false if no success
       }
     } catch (error) {
       console.error("Error fetching follow-up history:", error);
       setLeadTodayFollowUp([]);
+      setHasFollowUpHistory(false);
       myToaster.showErrorToast("Failed to fetch follow-up data.");
     } finally {
       setLoading(false);
@@ -389,8 +104,9 @@ export default function ExecutiveDashboard({ leadData }) {
   const handleRefresh = () => {
     getAllLeads();
     fetchAllLeadSources();
-    setDate("")
-    fetchTodayFollowUp(); // Reload today's follow-up data
+    setDate(""); 
+    fetchTodayFollowUp(); 
+    setHasFollowUpHistory(false); 
     if (leadTodayFollowUp.length > 0) {
       setLeadTodayFollowUp([]);
       setLeads([]);
@@ -398,6 +114,7 @@ export default function ExecutiveDashboard({ leadData }) {
   };
 
   const headers = [
+    { key: "leadCompanyName", label :"Lead Company Name"},
     { key: "clientName", label: "Client Name" },
     { key: "leadProcessStep", label: "Lead Process Step" },
     { key: "phoneNumber", label: "Phone Number" },
@@ -426,69 +143,55 @@ export default function ExecutiveDashboard({ leadData }) {
     },
   ];
 
+  const formatDate = (dateString) => {
+    if (!dateString) return ""; 
+
+    const dateObj = new Date(dateString);
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0"); 
+    const year = dateObj.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
+  // Handle date selection
+  const onDateChange = (e) => {
+    const selectedDate = e.target.value;
+    setDate(selectedDate); // Set the date when the user selects a date
+  };
+
+  const manageFollowUpHistory = (lead) => {
+    console.log(lead);
+  };
+
   return (
     <>
       <Card props={myProps} />
-      <h1
-        className="text-primary"
-        style={{
-          fontSize: "1.3em",
-          textAlign: "left",
-          marginTop: "20px",
-          marginBottom: "20px",
-          marginLeft: "30px",
-        }}
-      >
+      <h1 className="text-primary" style={{ fontSize: "1.3em", textAlign: "left", marginTop: "20px", marginBottom: "20px", marginLeft: "30px" }}>
         <div>
           <span>Search Follow-Up History</span>
-          <i
-            className="fas fa-arrow-down"
-            style={{ display: "block", marginTop: "5px", marginLeft: "80px" }}
-          ></i>
+          <i className="fas fa-arrow-down" style={{ display: "block", marginTop: "5px", marginLeft: "80px" }}></i>
         </div>
       </h1>
 
       {/* Search Form */}
       <div style={{ marginLeft: "30px" }} className="d-flex justify-content-between align-items-start mb-3">
         <div style={{ marginRight: "400px" }} className="col-lg-6 ml-3">
-          <form
-            className="login-form"
-            onSubmit={handleSubmit(onfetchFollowUpHistory)}
-            autoComplete="off"
-          >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: "20px",
-                alignItems: "center",
-              }}
-            >
+          <form className="login-form" onSubmit={handleSubmit(onfetchFollowUpHistory)} autoComplete="off">
+            <div style={{ display: "flex", flexDirection: "row", gap: "20px", alignItems: "center" }}>
               {/* Date Input Field */}
               <div style={{ marginBottom: "22px" }}>
-                <label
-                  style={{ marginBottom: "20px" }}
-                  className="h6 font-semibold text-primary text-sm d-block mb-2"
-                >
+                <label style={{ marginBottom: "20px" }} className="h6 font-semibold text-primary text-sm d-block mb-2">
                   Select Date
                 </label>
 
-                {errors.date && (
-                  <span
-                    className="error-message"
-                    style={{ color: "red", marginBottom: "5px" }}
-                  >
-                    {errors.date.message}
-                  </span>
-                )}
+                {errors.date && <span className="error-message" style={{ color: "red", marginBottom: "5px" }}>{errors.date.message}</span>}
 
                 <InputField
                   type="date"
-                  style={{
-                    padding: "0px 1.25rem 0 1.12rem",
-                    maxWidth: "300px",
-                  }}
+                  value={date}
+                  style={{ padding: "0px 1.25rem 0 1.12rem", maxWidth: "300px" }}
                   {...register("date", { required: "Date is required" })}
+                  onChange={onDateChange} // Update date state on date change
                 />
               </div>
 
@@ -539,38 +242,26 @@ export default function ExecutiveDashboard({ leadData }) {
       {/* Follow-up History Grid */}
       <div>
         {loading ? (
-          <p style={{ marginLeft: "32px" }}>Loading...</p>
-        ) : leadTodayFollowUp.length === 0 ? (
-          <p style={{ marginLeft: "32px" }}></p>
+          <div className="d-flex justify-content-center align-items-center" style={{ marginTop: "30px" }}>
+            <CircularProgress />
+          </div>
+        ) : !hasFollowUpHistory ? (
+          <p style={{ marginLeft: "32px" }}>No follow-up history found Today.</p>
         ) : (
           <Grid
             buttons={[
               {
-                key: "edit",
-                title: "Edit",
-                className: "btn btn-primary",
-                onEditHandler: (lead) => console.log("Edit:", lead),
-                icon: <FaEdit />,
-              },
-              {
-                key: "delete",
-                title: "Delete",
-                className: "btn btn-danger",
-                onDeleteHandler: (lead) => console.log("Delete:", lead),
-                icon: <FaTrash />,
-              },
-              {
                 key: "manage followUp history",
-                title: "Manage FollowUp-History",
+                title: "Manage History",
                 className: "btn btn-warning",
                 onAddFollowUpHistory: (lead) => manageFollowUpHistory(lead),
                 icon: <FaCog />,
-              }
+              },
             ]}
             headers={headers}
-            data={Array.isArray(leadTodayFollowUp) ? leadTodayFollowUp : []}
+            data={leadTodayFollowUp}
             loading={loading}
-            tableName="Todays's Follow-up History"
+            tableName={date ? `Follow-up History for ${formatDate(date)}` : "Today's Follow-up History"}
           />
         )}
       </div>
@@ -579,294 +270,3 @@ export default function ExecutiveDashboard({ leadData }) {
 }
 
 
-
-
-
-
-
-// import React, { useState, useEffect } from "react";
-// import Card from "../shared/Card";
-// import { useForm } from "react-hook-form";
-// import { FaEdit, FaPlus, FaTrash, FaUsers, FaBriefcase, FaSyncAlt } from "react-icons/fa";
-// import {
-//   getAllLeads as fetchAllLeads,
-//   todaysFollowUp,
-// } from "../../Services/LeadService";
-// import { leadSources as fetchLeadSources } from "../../Services/LeadSource";
-// import InputField from "../public/InputField";
-// import Spin from "../public/Spin";
-// import myToaster from "../../utils/toaster";
-// import Grid from "../shared/Grid";
-
-// export default function ExecutiveDashboard({ leadData }) {
-//   const [leads, setLeads] = useState([]);
-//   const [leadSources, setLeadSources] = useState([]);
-//   const [leadTodayFollowUp, setLeadTodayFollowUp] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [date, setDate] = useState(""); // State to control calendar input
-
-  
-//   useEffect(() => {
-//     getAllLeads();
-//     fetchAllLeadSources();
-//     fetchTodayFollowUp(); 
-//   }, []);
-
-  
-//   const fetchTodayFollowUp = async () => {
-//     const today = new Date().toISOString().split("T")[0]; 
-//     setDate(today); 
-//     await onfetchFollowUpHistory({ date: today });
-//   };
-
-//   const getAllLeads = async () => {
-//     try {
-//       const response = await fetchAllLeads();
-//       setLeads(response.result || []);
-//     } catch (error) {
-//       console.error("Error fetching leads:", error);
-//     }
-//   };
-
-//   const fetchAllLeadSources = async () => {
-//     try {
-//       const response = await fetchLeadSources();
-//       setLeadSources(response.result || []);
-//     } catch (error) {
-//       console.error("Error fetching lead sources:", error);
-//     }
-//   };
-
-//   // Fetch follow-up history by date
-//   const onfetchFollowUpHistory = async (data) => {
-//     setLoading(true);
-//     try {
-//       const response = await todaysFollowUp(data);
-//       if (response.isSuccess) {
-//         const result = Array.isArray(response.result)
-//           ? response.result
-//           : [response.result];
-//         const formattedResult = result
-//           .map((item) => {
-//             const date = item.followUpDate
-//               ? item.followUpDate.split("T")[0]
-//               : null;
-//             const formattedDate = date
-//               ? date.split("-").reverse().join("-")
-//               : "";
-//             return {
-//               ...item,
-//               followUpDate: formattedDate,
-//             };
-//           })
-//           .sort(
-//             (a, b) =>
-//               new Date(b.followUpDate.split("-").reverse().join("-")) -
-//               new Date(a.followUpDate.split("-").reverse().join("-"))
-//           );
-//         setLeadTodayFollowUp(formattedResult);
-//         myToaster.showSuccessToast(response.message);
-//       } else {
-//         myToaster.showErrorToast(response.message);
-//       }
-//     } catch (error) {
-//       console.error("Error fetching follow-up history:", error);
-//       setLeadTodayFollowUp([]);
-//       myToaster.showErrorToast("Failed to fetch follow-up data.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleRefresh = () => {
-//     getAllLeads();
-//     fetchAllLeadSources();
-//     fetchTodayFollowUp(); 
-//     setDate(""); 
-//     if (leadTodayFollowUp.length > 0) {
-//       setLeadTodayFollowUp([]);
-//       setLeads([]);
-//     }
-//   };
-
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm();
-
-//   const headers = [
-//     { key: "clientName", label: "Client Name" },
-//     { key: "leadProcessStep", label: "Lead Process Step" },
-//     { key: "phoneNumber", label: "Phone Number" },
-//     { key: "email", label: "Email" },
-//     { key: "leadComments", label: "Lead Comments" },
-//     { key: "followUpDate", label: "Follow-up Date" },
-//   ];
-
-//   const myProps = [
-//     {
-//       title: "Total Leads",
-//       number: leads.length,
-//       icon: <FaUsers />,
-//       link: "/salesExecutive/leadList",
-//     },
-//     {
-//       title: "Total Lead Sources",
-//       number: leadSources.length,
-//       icon: <FaUsers />,
-//       link: "/salesExecutive/leadSourceList",
-//     },
-//     {
-//       title: "Today's Follow Up",
-//       number: leadTodayFollowUp.length,
-//       icon: <FaBriefcase />,
-//     },
-//   ];
-
-//   return (
-//     <>
-//       <Card props={myProps} />
-//       <h1
-//         className="text-primary"
-//         style={{
-//           fontSize: "1.3em",
-//           textAlign: "left",
-//           marginTop: "20px",
-//           marginBottom: "20px",
-//           marginLeft: "30px",
-//         }}
-//       >
-//         <div>
-//           <span>Search Follow-Up History</span>
-//           <i
-//             className="fas fa-arrow-down"
-//             style={{ display: "block", marginTop: "5px", marginLeft: "80px" }}
-//           ></i>
-//         </div>
-//       </h1>
-
-//       {/* Search Form */}
-//       <div style={{ marginLeft: "30px" }} className="d-flex justify-content-between align-items-start mb-3">
-//         <div style={{ marginRight: "400px" }} className="col-lg-6 ml-3">
-//           <form
-//             className="login-form"
-//             onSubmit={handleSubmit(onfetchFollowUpHistory)}
-//             autoComplete="off"
-//           >
-//             <div
-//               style={{
-//                 display: "flex",
-//                 flexDirection: "row",
-//                 gap: "20px",
-//                 alignItems: "center",
-//               }}
-//             >
-//               {/* Date Input Field */}
-//               <div style={{ marginBottom: "22px" }}>
-//                 <label
-//                   style={{ marginBottom: "20px" }}
-//                   className="h6 font-semibold text-primary text-sm d-block mb-2"
-//                 >
-//                   Select Date
-//                 </label>
-
-//                 {errors.date && (
-//                   <span
-//                     className="error-message"
-//                     style={{ color: "red", marginBottom: "5px" }}
-//                   >
-//                     {errors.date.message}
-//                   </span>
-//                 )}
-
-//                 <InputField
-//                   type="date"
-//                   value={date} 
-//                   onChange={(e) => setDate(e.target.value)} 
-//                   style={{
-//                     padding: "0px 1.25rem 0 1.12rem",
-//                     maxWidth: "300px",
-//                   }}
-//                   {...register("date", { required: "Date is required" })}
-//                 />
-//               </div>
-
-//               {/* Submit Button */}
-//               <div style={{ marginBottom: "22px", alignSelf: "flex-end" }}>
-//                 <button
-//                   type="submit"
-//                   className="btn btn-primary"
-//                   disabled={loading}
-//                   style={{ marginBottom: "25px", height: "50px" }}
-//                 >
-//                   {loading ? <Spin /> : "Search"}
-//                 </button>
-//               </div>
-
-//               {/* Refresh Button */}
-//               {leadTodayFollowUp.length > 0 && (
-//                 <div
-//                   style={{
-//                     marginBottom: "22px",
-//                     alignSelf: "flex-end",
-//                     marginLeft: "auto",
-//                   }}
-//                 >
-//                   <button
-//                     type="button"
-//                     className="btn btn-secondary d-flex align-items-center justify-content-center"
-//                     onClick={handleRefresh}
-//                     style={{
-//                       marginTop: "-30px",
-//                       height: "50px",
-//                       width: "50px",
-//                       borderRadius: "8px",
-//                       padding: "10px",
-//                       position: "absolute",
-//                       marginLeft: "500px",
-//                     }}
-//                   >
-//                     <FaSyncAlt style={{ fontSize: "1.2rem" }} />
-//                   </button>
-//                 </div>
-//               )}
-//             </div>
-//           </form>
-//         </div>
-//       </div>
-
-//       {/* Follow-up History Grid */}
-//       <div>
-//         {loading ? (
-//           <p style={{ marginLeft: "32px" }}>Loading...</p>
-//         ) : leadTodayFollowUp.length === 0 ? (
-//           <p style={{ marginLeft: "32px" }}>No follow-up history found.</p>
-//         ) : (
-//           <Grid
-//             buttons={[
-//               {
-//                 key: "edit",
-//                 title: "Edit",
-//                 className: "btn btn-primary",
-//                 onEditHandler: (lead) => console.log("Edit:", lead),
-//                 icon: <FaEdit />,
-//               },
-//               {
-//                 key: "delete",
-//                 title: "Delete",
-//                 className: "btn btn-danger",
-//                 onDeleteHandler: (lead) => console.log("Delete:", lead),
-//                 icon: <FaTrash />,
-//               },
-//             ]}
-//             headers={headers}
-//             data={Array.isArray(leadTodayFollowUp) ? leadTodayFollowUp : []}
-//             loading={loading}
-//             tableName="Follow-up History"
-//           />
-//         )}
-//       </div>
-//     </>
-//   );
-// }

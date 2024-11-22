@@ -18,7 +18,7 @@ function TimeSheetList() {
 
   const headers = [
     { key: "dateString", label: "Date" },
-    { key: "processStep", label: "Process Step" },
+    { key: "timeSheetStepName", label: "Time Sheet StepName" },
     { key: "hoursSpent", label: "Hours Spent" },
     { key: "comment", label: "Comment" },
   ];

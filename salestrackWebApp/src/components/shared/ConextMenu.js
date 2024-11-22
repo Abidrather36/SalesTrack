@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const ThreeDotMenu = ({ options, handleEdit, handleDelete,handleManageLead,handleFollowUpHistory,handleTodaysFollowUpDate }) => {
+const ThreeDotMenu = ({ options, handleEdit, handleDelete,handleManageLead,handleFollowUpHistory,handleTodaysFollowUpDate,onAddFollowUpHistory }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -49,6 +49,9 @@ const ThreeDotMenu = ({ options, handleEdit, handleDelete,handleManageLead,handl
       }
       else if(option.title === "Follow Up History"){
         handleFollowUpHistory();
+      }
+      else if(option.title === "Manage FollowUp-History"){
+        onAddFollowUpHistory();
       }
       handleClose();
     }}

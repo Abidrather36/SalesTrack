@@ -50,7 +50,14 @@
             let res= await axiosObject.get(`${ApiUrl}CompanyAdmin/getAll-LeadCategories`).then(res =>res.data)
             return res;
         }
-
+        export const updateLeadCategory =async(model)=>{
+            let res= await axiosObject.post(`${ApiUrl}CompanyAdmin/UpdateLeadCategory`,model).then(res=>res.data);
+            return res;
+        }
+        export const deleteLeadCategoryById =async(categoryId)=>{
+            let res= await axiosObject.delete(`${ApiUrl}CompanyAdmin/deleteLeadCategory/${categoryId}`).then(res=>res.data)
+            return res;
+        }
         export const updateAdminProcessStep=async(updateModel)=>{
             let res =await axiosObject.post(`${ApiUrl}CompanyAdmin/update-process-step`,updateModel).then(res =>res.data)
             return res;

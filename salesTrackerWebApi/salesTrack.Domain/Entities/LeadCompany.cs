@@ -13,5 +13,6 @@ namespace salesTrack.Domain.Entities
         public string? Description { get; set; }
 
         public ICollection<Lead>? Leads { get; set; }
+        public ICollection<FollowUpDate>? FollowUpDates { get; set; }
     }
 }

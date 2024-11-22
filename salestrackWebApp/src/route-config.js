@@ -30,6 +30,7 @@ import LeadCategory from "./components/companyAdmin/LeadCategory"
 import LeadCategoryList from "./components/companyAdmin/LeadCategoryList"
 import AddSalesCompany from "./components/salesExecutive/AddSalesCompany"
 import LeadCompanieList from "./components/salesExecutive/LeadCompanieList"
+import { addFollowUpdate } from "./Services/LeadService"
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -73,6 +74,7 @@ export const routerConfiguration = {
     { path:"/salesExecutive",element:<SalesExecutiveDashboard/>},
     { path:"/salesExecutive/dashboard",element:<SalesExecutiveDashboard/>},
     { path: "/salesExecutive/leadList", element: <LeadList /> },
+    { path: "/salesExecutive/leadLists", element: <LeadList /> },
     { path: "/salesExecutive/add-new-lead", element: <AddLead /> },
     { path :"/salesExecutive/timeSheet",element:<TimeSheet/>},
     { path: "/salesExecutive/profile", element: <ProfilePage/> },

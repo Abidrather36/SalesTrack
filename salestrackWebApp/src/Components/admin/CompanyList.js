@@ -8,11 +8,12 @@ import myToaster from "../../utils/toaster";
 import { useLocation } from "react-router-dom";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { deleteCompanyById } from "../../Services/CompanyService";
-
+import { CircularProgress } from "@mui/material";
 function CompanyList() {
   const [companies, setCompanies] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const [showSpinner, setShowSpinner] = useState(true);
 
   const headers = [
     { key: "adminName", label: "Admin Name" },
@@ -77,6 +78,7 @@ function CompanyList() {
       const response = await getCompanies();
       if(response.isSuccess){
         setCompanies(response.result);
+        setShowSpinner(false);
       }
       else{
         myToaster.showErrorToast(response.message);
@@ -90,6 +92,12 @@ function CompanyList() {
   return (
     <>
       <BreadcrumbComponent labels={breadcrumbLabels} />
+      {showSpinner ? (
+        <div style={{display:"flex",justifyContent:"center",alignItems:"center",marginTop:"150px"}} >
+            <CircularProgress/>
+
+        </div>
+      ) : (
       <Grid
         headers={headers}
         buttons={btnList}
@@ -98,6 +106,7 @@ function CompanyList() {
         tableName="Companies"
         addButtonLabel="Add company"
       />
+      )}
       <ConfirmDialog />
     </>
   );

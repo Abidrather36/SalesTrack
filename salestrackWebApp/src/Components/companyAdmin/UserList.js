@@ -5,6 +5,7 @@ import BreadcrumbComponent from "../shared/Breadcrumb";
 import { deleteUser, deleteUserById, UserLists } from "../../Services/UserService";
 import { useNavigate } from "react-router-dom";
 import myToaster from "../../utils/toaster";
+import { CircularProgress } from "@mui/material";
 import { ConfirmDialog } from "primereact/confirmdialog";
 
 function UserList() {
@@ -70,9 +71,9 @@ function UserList() {
     }
   }
 
-  const deleteUser=(id)=>{
-    console.log(id);
-    myToaster.primereactDeleteConfirmUser(id,deletUserHandler)
+  const deleteUser=(lead)=>{
+    console.log(lead);
+    myToaster.primereactDeleteConfirmUser(lead,deletUserHandler)
   }
 
   const fetchUsers = async () => {
@@ -93,7 +94,7 @@ function UserList() {
       <BreadcrumbComponent labels={breadcrumbLabels} />
       {showSpinner ? (
         <div style={{display:"flex",justifyContent:"center",alignItems:"center",marginTop:"150px"}} >
-        
+            <CircularProgress/>
 
         </div>
       ) : (
@@ -108,6 +109,7 @@ function UserList() {
         />
        
       )}
+   
            <ConfirmDialog />
     </>
 

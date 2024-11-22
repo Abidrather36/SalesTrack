@@ -6,7 +6,7 @@ namespace salesTrack.Domain.Entities
     public class TimeSheet:BaseModel
     {
         public DateTime Date { get; set; }
-        public string? ProcessStepName { get; set; }
+        public string? TimeSheetStepName { get; set; }
         public int HoursSpent { get; set; }
         public string? Comment { get; set; }
         public Guid UserId { get; set; }

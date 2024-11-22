@@ -7,6 +7,93 @@ element.style {
     inset: 0px 0px auto auto;
     background-color: #000000;
     margin: 0px;
-    font-size: medium;
+    font-size: large;
     transform: translate3d(0px, 52.4444px, 0px);
 }
+
+.profile-card {
+    padding: 20px;
+    min-width: 320px;
+    max-width: 300px;
+    text-align: left;
+    background-color: #ffffff; /* Keep the card's background white */
+  }
+  
+  .profile-card .profile-header {
+    font-size: large; /* Font size for the profile name and logout */
+    color: #f0f0f0; /* Set color for text */
+  }
+  
+  .profile-card .profile-header .role-text {
+    font-size: medium; /* Slightly smaller for subtitle (role description) */
+    color: #b0b0b0; /* Lighter gray for role description */
+  }
+  
+  .profile-card .profile-actions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .profile-card .profile-actions a {
+    font-size: large; /* Larger font size for action links */
+    color: #f0f0f0; /* Set text color */
+    text-decoration: none; /* Remove underline */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Add spacing between icon and text */
+  }
+  
+  .profile-card .profile-actions a:hover {
+    color: #90e0ef; /* Add hover effect for links */
+  }
+  body {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .profile-card {
+    border: none;
+    border-radius: 12px;
+    background-color: #ffffff;
+    transition: transform 0.3s ease;
+  }
+  
+  .profile-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .font-weight-bold {
+    font-weight: 600;
+  }
+  
+  .shadow-sm {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-muted {
+    font-size: 0.95rem;
+    color: #6c757d !important;
+  }
+  
+  hr {
+    border-color: #dee2e6;
+    margin: 0.75rem 0;
+  }
+  
+  h5 {
+    font-weight: 500;
+    margin: 0.5rem 0;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.2s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  

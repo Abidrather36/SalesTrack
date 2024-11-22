@@ -12,7 +12,7 @@ namespace salesTrack.Domain.Models.Request
         public Guid Id { get; set; }
         public DateTime Date { get; set; }
 
-        public string? ProcessStep { get; set; }
+        public string? TimeSheetStepName { get; set; }
 
         public int HoursSpent { get; set; }
 

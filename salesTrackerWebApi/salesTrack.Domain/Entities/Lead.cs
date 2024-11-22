@@ -8,7 +8,7 @@ namespace salesTrack.Domain.Entities
     public  class Lead:BaseModel
     {
         public string? Comment { get; set; }
-        public Guid? LeadCompanyId { get; set; }
+        public Guid LeadCompanyId { get; set; }
         public int MyProperty { get; set; }
         public Guid AssignTo { get; set; }
         public Guid LeadSourceId { get; set; }
@@ -33,7 +33,7 @@ namespace salesTrack.Domain.Entities
 
         [ForeignKey(nameof(LeadCategoryId))]
         public LeadCategory? LeadCategory { get; set; }
-        public ICollection<LeadProcessSteps>? ProcessSteps { get; set; }
+        public ICollection<LeadProcessSteps>?   ProcessSteps { get; set; }
         public ICollection<FollowUpDate>? FollowUpDate { get; set; }
         public ICollection<LeadComments>? LeadComments { get; set; }
 
