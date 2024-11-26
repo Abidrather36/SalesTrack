@@ -25,6 +25,7 @@ namespace SalesTrack.Persistence.Data
         public DbSet<FollowUpDate> FollowUpDates { get; set; }
         public DbSet<TimeSheet> TimeSheets { get; set; }   
         public DbSet<LeadCategory> LeadCategories { get; set; }
+        public DbSet<AppFiles> AppFiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

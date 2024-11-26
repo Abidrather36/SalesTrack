@@ -24,7 +24,7 @@ namespace salesTrack.Api.Controllers
             this.adminService = adminService;
         }
         [HttpPost("register-User")]
-        public async Task<ApiResponse<UserResponseModel>> AddUser(UserRequestModel model)
+        public async Task<ApiResponse<UserResponseModel>> AddUser([FromForm] UserRequestModel model)
         {
             try
             {

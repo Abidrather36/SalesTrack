@@ -1,14 +1,37 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Card({ props }) { 
+export default function Card({ props }) {
   return (
     <main className="py-6 bg-surface-secondary">
+      <style>
+        {`
+          .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+          }
+          .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+          }
+          .card .card-body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+          }
+          .card:hover .card-body {
+            background-color: #f8f9fa; /* Slightly lighter background */
+          }
+          .card .icon {
+            transition: transform 0.3s ease;
+          }
+          .card:hover .icon {
+            transform: scale(1.1); /* Slightly enlarge the icon */
+          }
+        `}
+      </style>
       <div className="container-fluid">
         <div className="row g-6 mb-6">
           {props.map((prop, index) => (
             <div key={index} className="col-xl-4 col-sm-6 col-12">
-              {prop.link ? ( 
+              {prop.link ? (
                 <Link to={prop.link} className="text-decoration-none">
                   <div className="card shadow border-0">
                     <div className="card-body">

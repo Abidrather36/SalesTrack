@@ -9,7 +9,7 @@ namespace salesTrack.Domain.Entities
     {
         public UserType UserType { get; set; }
         public Guid? ReportsTo { get; set; }
-
+        public string? FilePath { get; set; }
         public Guid CompanyId { get; set; }
 
         [ForeignKey(nameof(Id))]

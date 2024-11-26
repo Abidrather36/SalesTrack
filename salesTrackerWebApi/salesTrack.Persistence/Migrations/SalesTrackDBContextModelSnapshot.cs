@@ -83,17 +83,17 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b438c57d-0aed-4d26-a209-063700c543ee"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 11, 20, 17, 2, 38, 236, DateTimeKind.Unspecified).AddTicks(3132), new TimeSpan(0, 5, 30, 0, 0)),
+                            Id = new Guid("c3188984-f7c5-4460-9d77-18d550740e57"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 11, 26, 12, 31, 19, 421, DateTimeKind.Unspecified).AddTicks(2032), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "2V1nOyT/Y3RV0ddpM3RdiEE9U7A6hO4qFHpK7eOwsMY=",
+                            Password = "yFiQi1TNYwnUUQq0j/xj8e+In6Pbf4Atw1RlmtTywWo=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 11, 20, 11, 47, 38, 236, DateTimeKind.Unspecified).AddTicks(3191), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "+Fl/RLZjAOF1GieK+jPVsQ==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 11, 26, 7, 16, 19, 421, DateTimeKind.Unspecified).AddTicks(2124), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "ukpDRWn6O2nkDCulzVzPkw==",
                             UserRole = (byte)1
                         });
                 });
@@ -136,6 +136,48 @@ namespace salesTrack.Persistence.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("AdminProcessSteps");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.AppFiles", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("EntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Module")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppFiles");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.Company", b =>
@@ -610,6 +652,9 @@ namespace salesTrack.Persistence.Migrations
 
                     b.Property<DateTimeOffset?>("DeletedDate")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");

@@ -8,7 +8,7 @@ namespace salesTrack.Application
 {
     public static  class AssembyReference
     {
-        public static IServiceCollection AddApplicationService(this IServiceCollection services)
+        public static IServiceCollection AddApplicationService(this IServiceCollection services,string webRootPath)
         {
 
             services.AddScoped<IEmailHelperService, EmailHelperService>();
@@ -19,6 +19,8 @@ namespace salesTrack.Application
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IEnquiryService, EnquiryService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddSingleton < IStorageService>(new StorageService(webRootPath)) ;
+            services.AddScoped<IFileService, FileService>();
             return services;
         }
 

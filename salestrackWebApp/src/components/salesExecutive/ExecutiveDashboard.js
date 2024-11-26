@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Card from "../shared/Card";
 import { useForm } from "react-hook-form";
-import { FaEdit, FaPlus, FaCog, FaTrash, FaUsers, FaBriefcase, FaSyncAlt } from "react-icons/fa";
+import {
+  FaEdit,
+  FaPlus,
+  FaCog,
+  FaTrash,
+  FaUsers,
+  FaBriefcase,
+  FaSyncAlt,
+} from "react-icons/fa";
 import {
   getAllLeads as fetchAllLeads,
   todaysFollowUp,
@@ -11,7 +19,8 @@ import InputField from "../public/InputField";
 import Spin from "../public/Spin";
 import myToaster from "../../utils/toaster";
 import Grid from "../shared/Grid";
-import { CircularProgress } from "@mui/material"; // Import CircularProgress for the spinner
+import { CircularProgress } from "@mui/material";
+import BasicModal from "./AddfollowUpdate"; // Import the BasicModal component
 
 export default function ExecutiveDashboard() {
   const [leads, setLeads] = useState([]);
@@ -20,16 +29,24 @@ export default function ExecutiveDashboard() {
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState(""); // Date selected by the user
   const [hasFollowUpHistory, setHasFollowUpHistory] = useState(false); // Flag to track if there are follow-ups
+  const [followUpdatePopup, setFollowUpdatePopup] = useState(false); // Flag to show follow-up modal
+  const [showGrid, setShowGrid] = useState(true); // Flag to show the grid
+  const [leadData, setLeadData] = useState({}); // To store the selected lead data
+  const [followUpHistory, setFollowUpHistory] = useState([]); // Store follow-up history data
 
-  // This useEffect will trigger fetching of today's follow-up history
   useEffect(() => {
-    // Fetching all leads and lead sources
-    getAllLeads();
-    fetchAllLeadSources();
-    
-    // Fetch today's follow-up history immediately when the page loads
-    fetchTodayFollowUp();
+    getAllLeads(); // Fetch all leads
+    fetchAllLeadSources(); // Fetch all lead sources
+    fetchTodayFollowUp(); // Fetch today's follow-up history immediately
   }, []);
+
+  // Handle click on "Manage Lead" button
+  const manageLead = (lead) => {
+    setLeadData(lead); // Store the selected lead data
+    setFollowUpdatePopup(true); // Show the "Manage Lead" modal
+    setShowGrid(false); // Hide the grid
+    setFollowUpHistory(false);
+  };
 
   // Fetch today's follow-up history
   const fetchTodayFollowUp = async () => {
@@ -62,11 +79,17 @@ export default function ExecutiveDashboard() {
     try {
       const response = await todaysFollowUp(data);
       if (response.isSuccess) {
-        const result = Array.isArray(response.result) ? response.result : [response.result];
+        const result = Array.isArray(response.result)
+          ? response.result
+          : [response.result];
         const formattedResult = result
           .map((item) => {
-            const date = item.followUpDate ? item.followUpDate.split("T")[0] : null;
-            const formattedDate = date ? date.split("-").reverse().join("-") : "";
+            const date = item.followUpDate
+              ? item.followUpDate.split("T")[0]
+              : null;
+            const formattedDate = date
+              ? date.split("-").reverse().join("-")
+              : "";
             return { ...item, followUpDate: formattedDate };
           })
           .sort(
@@ -80,7 +103,6 @@ export default function ExecutiveDashboard() {
 
         if (formattedResult.length === 0) {
           myToaster.showErrorToast("No follow-up history found Today");
-        } else {
         }
       } else {
         setHasFollowUpHistory(false); // Ensure the flag is false if no success
@@ -104,9 +126,9 @@ export default function ExecutiveDashboard() {
   const handleRefresh = () => {
     getAllLeads();
     fetchAllLeadSources();
-    setDate(""); 
-    fetchTodayFollowUp(); 
-    setHasFollowUpHistory(false); 
+    setDate("");
+    fetchTodayFollowUp();
+    setHasFollowUpHistory(false);
     if (leadTodayFollowUp.length > 0) {
       setLeadTodayFollowUp([]);
       setLeads([]);
@@ -114,7 +136,7 @@ export default function ExecutiveDashboard() {
   };
 
   const headers = [
-    { key: "leadCompanyName", label :"Lead Company Name"},
+    { key: "leadCompanyName", label: "Lead Company Name" },
     { key: "clientName", label: "Client Name" },
     { key: "leadProcessStep", label: "Lead Process Step" },
     { key: "phoneNumber", label: "Phone Number" },
@@ -144,11 +166,11 @@ export default function ExecutiveDashboard() {
   ];
 
   const formatDate = (dateString) => {
-    if (!dateString) return ""; 
+    if (!dateString) return "";
 
     const dateObj = new Date(dateString);
     const day = String(dateObj.getDate()).padStart(2, "0");
-    const month = String(dateObj.getMonth() + 1).padStart(2, "0"); 
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
     const year = dateObj.getFullYear();
     return `${day}-${month}-${year}`;
   };
@@ -156,40 +178,75 @@ export default function ExecutiveDashboard() {
   // Handle date selection
   const onDateChange = (e) => {
     const selectedDate = e.target.value;
-    setDate(selectedDate); // Set the date when the user selects a date
-  };
-
-  const manageFollowUpHistory = (lead) => {
-    console.log(lead);
+    setDate(selectedDate);
   };
 
   return (
     <>
       <Card props={myProps} />
-      <h1 className="text-primary" style={{ fontSize: "1.3em", textAlign: "left", marginTop: "20px", marginBottom: "20px", marginLeft: "30px" }}>
+      <h1
+        className="text-primary"
+        style={{
+          fontSize: "1.3em",
+          textAlign: "left",
+          marginTop: "20px",
+          marginBottom: "20px",
+          marginLeft: "30px",
+        }}
+      >
         <div>
-          <span>Search Follow-Up History</span>
-          <i className="fas fa-arrow-down" style={{ display: "block", marginTop: "5px", marginLeft: "80px" }}></i>
+          <span>Search Follow-Up History </span>
+          <i
+            className="fas fa-arrow-down"
+            style={{ display: "block", marginTop: "5px", marginLeft: "80px" }}
+          ></i>
         </div>
       </h1>
 
       {/* Search Form */}
-      <div style={{ marginLeft: "30px" }} className="d-flex justify-content-between align-items-start mb-3">
+      <div
+        style={{ marginLeft: "30px" }}
+        className="d-flex justify-content-between align-items-start mb-3"
+      >
         <div style={{ marginRight: "400px" }} className="col-lg-6 ml-3">
-          <form className="login-form" onSubmit={handleSubmit(onfetchFollowUpHistory)} autoComplete="off">
-            <div style={{ display: "flex", flexDirection: "row", gap: "20px", alignItems: "center" }}>
+          <form
+            className="login-form"
+            onSubmit={handleSubmit(onfetchFollowUpHistory)}
+            autoComplete="off"
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "20px",
+                alignItems: "center",
+              }}
+            >
               {/* Date Input Field */}
               <div style={{ marginBottom: "22px" }}>
-                <label style={{ marginBottom: "20px" }} className="h6 font-semibold text-primary text-sm d-block mb-2">
+                <label
+                  style={{ marginBottom: "20px" }}
+                  className="h6 font-semibold text-primary text-sm d-block mb-2"
+                >
                   Select Date
                 </label>
 
-                {errors.date && <span className="error-message" style={{ color: "red", marginBottom: "5px" }}>{errors.date.message}</span>}
+                {errors.date && (
+                  <span
+                    className="error-message"
+                    style={{ color: "red", marginBottom: "5px" }}
+                  >
+                    {errors.date.message}
+                  </span>
+                )}
 
                 <InputField
                   type="date"
                   value={date}
-                  style={{ padding: "0px 1.25rem 0 1.12rem", maxWidth: "300px" }}
+                  style={{
+                    padding: "0px 1.25rem 0 1.12rem",
+                    maxWidth: "300px",
+                  }}
                   {...register("date", { required: "Date is required" })}
                   onChange={onDateChange} // Update date state on date change
                 />
@@ -213,24 +270,15 @@ export default function ExecutiveDashboard() {
                   style={{
                     marginBottom: "22px",
                     alignSelf: "flex-end",
-                    marginLeft: "auto",
                   }}
                 >
                   <button
                     type="button"
-                    className="btn btn-secondary d-flex align-items-center justify-content-center"
+                    className="btn btn-primary"
                     onClick={handleRefresh}
-                    style={{
-                      marginTop: "-30px",
-                      height: "50px",
-                      width: "50px",
-                      borderRadius: "8px",
-                      padding: "10px",
-                      position: "absolute",
-                      marginLeft: "500px",
-                    }}
+                    style={{ marginBottom: "25px", height: "50px" }}
                   >
-                    <FaSyncAlt style={{ fontSize: "1.2rem" }} />
+                    <FaSyncAlt /> Refresh
                   </button>
                 </div>
               )}
@@ -239,32 +287,52 @@ export default function ExecutiveDashboard() {
         </div>
       </div>
 
-      {/* Follow-up History Grid */}
+      {/* Follow-up History Table */}
       <div>
         {loading ? (
-          <div className="d-flex justify-content-center align-items-center" style={{ marginTop: "30px" }}>
+          <div
+            className="d-flex justify-content-center align-items-center"
+            style={{ marginTop: "30px" }}
+          >
             <CircularProgress />
           </div>
         ) : !hasFollowUpHistory ? (
-          <p style={{ marginLeft: "32px" }}>No follow-up history found Today.</p>
+          date ? (
+            <p style={{marginLeft:"30px"}}>No follow-up history found for {formatDate(date)}.</p>
+          ) : (
+            <p>No follow-up history found Today.</p>
+          )
         ) : (
           <Grid
             buttons={[
               {
-                key: "manage followUp history",
-                title: "Manage History",
+                key: "add",
+                title: "Manage Lead",
                 className: "btn btn-warning",
-                onAddFollowUpHistory: (lead) => manageFollowUpHistory(lead),
+                onAddFollowUpdate: (lead) => manageLead(lead), // Open the modal on "Manage Lead"
                 icon: <FaCog />,
               },
             ]}
             headers={headers}
             data={leadTodayFollowUp}
             loading={loading}
-            tableName={date ? `Follow-up History for ${formatDate(date)}` : "Today's Follow-up History"}
+            tableName={
+              date
+                ? `Follow-up History for ${formatDate(date)}`
+                : "Today's Follow-up History"
+            }
           />
         )}
       </div>
+
+      {/* Follow-up Modal */}
+      {followUpdatePopup && (
+        <BasicModal
+          leadData={leadData} // Pass the selected lead data to the modal
+          onClose={() => setFollowUpdatePopup(false)}
+          popupForm={true}
+        />
+      )}
     </>
   );
 }

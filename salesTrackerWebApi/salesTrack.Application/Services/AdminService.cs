@@ -27,8 +27,9 @@ namespace salesTrack.Application.Services
         private readonly IEmailHelperService emailHelperService;
         private readonly ICompanyRepository companyRepository;
         private readonly ILeadRepository leadRepository;
+        private readonly IFileService fileService;
 
-        public AdminService(IUserRepository userRepository, IAdminRepository adminRepository, IContextService contextService, IEmailHelperService emailHelperService, ICompanyRepository companyRepository, ILeadRepository leadRepository)
+        public AdminService(IUserRepository userRepository, IAdminRepository adminRepository, IContextService contextService, IEmailHelperService emailHelperService, ICompanyRepository companyRepository, ILeadRepository leadRepository,IFileService fileService)
         {
             this.userRepository = userRepository;
             this.adminRepository = adminRepository;
@@ -36,6 +37,7 @@ namespace salesTrack.Application.Services
             this.emailHelperService = emailHelperService;
             this.companyRepository = companyRepository;
             this.leadRepository = leadRepository;
+            this.fileService = fileService;
         }
 
         public async Task<ApiResponse<UserResponseModel>> AddUser(UserRequestModel model)
@@ -45,7 +47,10 @@ namespace salesTrack.Application.Services
             try
             {
 
-                var companyId = contextService.UserId();
+                var companyIdUser = contextService.UserId();
+                 var usera =await userRepository.GetUserById(companyIdUser);
+                var company =await companyRepository.GetCompanyByIdAsync(usera.CompanyId);
+               var companyId=company.Id;
                 if (await userRepository.IsExistsAsync(x => x.Email == model.Email))
                 {
                     return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.AlreadyAvailable, HttpStatusCodes.BadRequest);
@@ -61,7 +66,7 @@ namespace salesTrack.Application.Services
                         Name = model.Name,
                         Email = model.Email,
                         PhoneNumber = model.PhoneNumber,
-                        CreatedBy = companyId,
+                        CreatedBy = companyIdUser,
                         ModifiedBy = Guid.Empty,
                         CreatedDate = DateTime.Now,
                         DeletedBy = Guid.Empty,
@@ -79,7 +84,7 @@ namespace salesTrack.Application.Services
                             {
                                 Id = user.Id,
                                 ReportsTo = model.ReportsTo,
-                                CreatedBy = companyId,
+                                CreatedBy = companyIdUser,
                                 CreatedDate = DateTime.Now,
                                 DeletedBy = Guid.Empty,
                                 DeletedDate = DateTime.Now,
@@ -89,11 +94,14 @@ namespace salesTrack.Application.Services
                                 UserType = UserType.SalesExecutive,
                                 CompanyId = companyId,
                             };
+                            var fileresponse=  await fileService.UploadFileAsync(AppModule.User, salesExecutive.Id, model.File);
+                            salesExecutive.FilePath= fileresponse.FilePath;
                             var salesExecutiveAdded = await userRepository.AddUser(salesExecutive);
 
                         }
                         else
                         {
+                            
                             var salesManager = new Domain.Entities.User()
                             {
                                 Id = user.Id,
@@ -107,8 +115,9 @@ namespace salesTrack.Application.Services
                                 IsActive = true,
                                 UserType = UserType.SalesManager,
                                 CompanyId = companyId,
-
                             };
+                            var fileresponse=  await fileService.UploadFileAsync(AppModule.User, salesManager.Id, model.File);
+                            salesManager.FilePath = fileresponse.FilePath;
                             var salesManagerAdded = await userRepository.AddUser(salesManager);
 
 

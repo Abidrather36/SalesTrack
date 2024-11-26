@@ -21,6 +21,7 @@ namespace salesTrack.Persistence
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddDbContextPool<SalesTrackDBContext>(options => options.UseSqlServer(configuration.GetConnectionString(nameof(SalesTrackDBContext))));
+            services.AddScoped<IFileRepository, FileRepository>();
             return services;
         }
     }

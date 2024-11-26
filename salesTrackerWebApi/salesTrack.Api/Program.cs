@@ -18,7 +18,7 @@ namespace salesTrack.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddApiService(builder.Configuration)
-                            .AddApplicationService()
+                            .AddApplicationService(builder.Environment.WebRootPath)
                             .AddInfrastructureService(builder.Configuration)
                             .AddPersistenceService(builder.Configuration);
             builder.Services.AddCors(options =>
@@ -45,6 +45,7 @@ namespace salesTrack.Api
                   c.SwaggerEndpoint("/swagger/v2/swagger.json", "PostAPI");
                   c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
               });*/
+            app.UseStaticFiles();
             app.UseCors();
             app.UseAuthorization();
 

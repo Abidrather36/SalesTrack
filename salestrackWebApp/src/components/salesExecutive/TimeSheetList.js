@@ -6,6 +6,8 @@ import BreadcrumbComponent from '../shared/Breadcrumb';
 import Grid from '../shared/Grid';
 import { FaEdit,FaTrash} from "react-icons/fa";
 import { Navigate, useNavigate } from 'react-router-dom';
+import { CircularProgress } from "@mui/material";
+
 
 function TimeSheetList() {
   const [timesheetList, setTimeSheetList] = useState([]);
@@ -15,6 +17,7 @@ function TimeSheetList() {
   const [comment,setComment]=useState("")
   const [date,setDate]=useState("")
   const navigate =useNavigate();
+  const [showSpinner,setShowSpinner]=useState(true)
 
   const headers = [
     { key: "dateString", label: "Date" },
@@ -40,6 +43,7 @@ function TimeSheetList() {
       const response = await timeSheetList();
       if (response.isSuccess) {
         setTimeSheetList(response.result);
+        setShowSpinner(false)
       } else {
         myToaster.showErrorToast(response.message);
       }
@@ -49,6 +53,12 @@ function TimeSheetList() {
   return (
     <div>
       <BreadcrumbComponent labels={{ module: "SalesExecutive", currentRoute: "TimeSheetList" }} />
+      {showSpinner ? (
+        <div style={{display:"flex",justifyContent:"center",alignItems:"center",marginTop:"150px"}} >
+            <CircularProgress/>
+
+        </div>
+      ):(
       <Grid
       buttons={[
         {
@@ -74,6 +84,7 @@ function TimeSheetList() {
         tableName="Time Sheet List"
         addButtonLabel="Add Time Sheet"   
       />
+    )}
       
     </div>
   );

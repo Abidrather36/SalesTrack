@@ -1,4 +1,5 @@
-﻿using salesTrack.Domain.Enums;
+﻿using Microsoft.AspNetCore.Http;
+using salesTrack.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace SalesTrack.Domain.Entities.Models.Request
@@ -16,6 +17,7 @@ namespace SalesTrack.Domain.Entities.Models.Request
         public UserType UserType { get; set; }
         [Required]
         public Guid ReportsTo { get; set; }
+        public IFormFile? File { get; set; }
 
 
     }
