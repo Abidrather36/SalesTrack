@@ -620,6 +620,9 @@ class Toaster {
       rejectClassName: "p-button-danger",
       className: "custom-dialog",
       accept: () => deleteSwalHandler(company.id),
+      reject: () => {
+        
+      }
     });
   };
 

@@ -45,7 +45,7 @@ function Login() {
             navigate("/admin/dashboard");
           } else if (response.result.userRole === 2) {
             navigate("/companyAdmin/dashboard");
-          } else if (response.result.userRole === 3) {
+          } else if (response.result.userRole === 3|| response.result.userRole===4) {
             navigate("/salesExecutive");
           }
         }

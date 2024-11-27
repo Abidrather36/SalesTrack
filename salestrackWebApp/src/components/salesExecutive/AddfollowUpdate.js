@@ -30,7 +30,6 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
 export default function BasicModal({
   leadData,
   onClose,
@@ -60,16 +59,21 @@ export default function BasicModal({
 
   const flag=false;
 
+  // const handleClose = () => {
+  //   setpopUpModel(false);
+  //   if (flag) {
+  //     setshowHistoryGrid(false);
+  //     onClose()
+  //   } else {
+  //    setshowHistoryGrid(true)
+
+  //   }
+  
+  // };
   const handleClose = () => {
     setpopUpModel(false);
-    if (flag) {
-      setshowHistoryGrid(false);
-      onClose()
-    } else {
-     setshowHistoryGrid(true)
-
-    }
-  
+    setshowHistoryGrid(followUpHistory);
+    if (onClose) onClose();
   };
   const handleManageLeadClick = () => {
     setpopUpModel(true);

@@ -1,11 +1,14 @@
 import { ApiUrl } from "./Shared";
 import axiosObject from "../utils/InterceptorService";
 
-export const registerUser=async (registerUserModel)=>{
-    let res=await axiosObject.post(`${ApiUrl}CompanyAdmin/register-User`,registerUserModel).then(res=>res.data)
-return res;
-}
- 
+export const registerUser=async (formData)=>{
+    const response = await axiosObject.post(`${ApiUrl}CompanyAdmin/register-User`, formData, {
+                headers: {
+                      "Content-Type": "multipart/form-data",
+                    },
+                  });
+                  return response.data;
+                }
 export const UserLists=async ()=>{
     let res=await axiosObject.get(`${ApiUrl}CompanyAdmin/GetAllUsersByCompany`).then(res=>res.data)
     return res;

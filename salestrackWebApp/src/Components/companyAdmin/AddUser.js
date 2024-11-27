@@ -1,4 +1,4 @@
-// import React, { useState } from "react";
+// import React, { useState, useEffect } from "react";
 // import { useForm } from "react-hook-form";
 // import { useNavigate } from "react-router-dom";
 // import myToaster from "../../utils/toaster";
@@ -6,11 +6,13 @@
 // import BreadcrumbComponent from "../shared/Breadcrumb";
 // import InputField from "../public/InputField";
 // import Spin from "../public/Spin";
-// import { useEffect } from "react";
+// import { leadCategoryList } from "../../Services/CompanyService";
+
 // const AddUser = () => {
 //   const navigate = useNavigate();
 //   const [users, setUsers] = useState([]);
 //   const [loading, setLoading] = useState(false);
+
 //   const {
 //     register,
 //     handleSubmit,
@@ -27,7 +29,7 @@
 //       data.userType = Number(data.userType);
 //       const response = await registerUser(data);
 //       if (response.isSuccess) {
-//         myToaster.showSuccessToast("user added successfully");
+//         myToaster.showSuccessToast("User added successfully");
 //         setLoading(false);
 //         navigate("/companyAdmin/userList");
 //       } else {
@@ -39,20 +41,19 @@
 //       setLoading(false);
 //     }
 //   };
+
 //   const fetchUsers = async () => {
 //     const response = await UserLists();
 //     if (response.isSuccess) {
-//       console.log(response.result);
 //       setUsers(response.result);
-//       myToaster.showSuccessToast(response.message);
 //     } else {
 //       myToaster.showErrorToast(response.message);
 //     }
 //     setLoading(false);
 //   };
-//   const filteredUsers = users?.filter(
-//     (user) => user.userType === "SalesManager"
-//   );
+
+//   const filteredUsers = users?.filter((user) => user.userType === 2);
+
 //   return (
 //     <>
 //       <BreadcrumbComponent
@@ -156,25 +157,6 @@
 //                 )}
 //               </div>
 
-//               {/* <div>
-//                 <InputField
-//                   as="select"
-//                   name="reportsTo"
-//                   {...register("reportsTo", {
-//                     required: "Reports To is required",
-//                   })}
-//                 >
-//                   <option value="">Select Reports To</option>
-//                   <option value="FF38F814-F7BA-4CA1-BCAD-A6FE6876553B">
-//                     Ram
-//                   </option>
-//                 </InputField>
-//                 {errors.reportsTo && (
-//                   <span className="error-message">
-//                     {errors.reportsTo.message}
-//                   </span>
-//                 )}
-//               </div> */}
 //               <div>
 //                 <InputField
 //                   as="select"
@@ -184,10 +166,11 @@
 //                   })}
 //                 >
 //                   <option value="">Select Reports To</option>
-//                   <option value="FF38F814-F7BA-4CA1-BCAD-A6FE6876553B">
+//                   {/* <option value="BAEB4883-428A-46D8-A0E5-8C5CEC0488E3"> */}
+//                   <option value="c3188984-f7c5-4460-9d77-18d550740e57">
 //                     Ram
 //                   </option>
-//                   {users?.map((user) => (
+//                   {filteredUsers?.map((user) => (
 //                     <option key={user.id} value={user.id}>
 //                       {user.name}
 //                     </option>
@@ -197,6 +180,12 @@
 //                   <span className="error-message">
 //                     {errors.reportsTo.message}
 //                   </span>
+//                 )}
+//               </div>
+//               <div>
+//                 <InputField type="file" name="file" {...register("file")} />
+//                 {errors.file && (
+//                   <span className="text-danger">{errors.file.message}</span>
 //                 )}
 //               </div>
 
@@ -231,7 +220,6 @@ import { registerUser, UserLists } from "../../Services/UserService";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import InputField from "../public/InputField";
 import Spin from "../public/Spin";
-import { leadCategoryList } from "../../Services/CompanyService";
 
 const AddUser = () => {
   const navigate = useNavigate();
@@ -251,11 +239,19 @@ const AddUser = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      data.userType = Number(data.userType);
-      const response = await registerUser(data);
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("phoneNumber", data.phoneNumber);
+      formData.append("userType", Number(data.userType));
+      formData.append("reportsTo", data.reportsTo);
+
+      if (data.file && data.file[0]) {
+        formData.append("file", data.file[0]);
+      }
+      const response = await registerUser(formData);
       if (response.isSuccess) {
         myToaster.showSuccessToast("User added successfully");
-        setLoading(false);
         navigate("/companyAdmin/userList");
       } else {
         myToaster.showErrorToast(response.message);
@@ -274,9 +270,7 @@ const AddUser = () => {
     } else {
       myToaster.showErrorToast(response.message);
     }
-    setLoading(false);
   };
-
 
   const filteredUsers = users?.filter((user) => user.userType === 2);
 
@@ -285,11 +279,8 @@ const AddUser = () => {
       <BreadcrumbComponent
         labels={{ module: "companyAdmin", currentRoute: "Register-New-User" }}
       />
-      <div
-        className="row"
-        style={{ display: "flex", flexDirection: "row", height: "100vh" }}
-      >
-        <div className="col-lg-6 mb-4 mb-lg-0">
+      <div className="row" style={{ height: "100vh", display: "flex" }}>
+        <div className="col-lg-6">
           <img
             src="https://i.ibb.co/k8TBpyy/illustration-sign-up-log-wireframe-idea-showcasing-various-ui-elements-1278800-10890.jpg"
             alt="Registration Illustration"
@@ -297,14 +288,13 @@ const AddUser = () => {
             style={{
               maxWidth: "100%",
               height: "65%",
-              marginLeft: "10px",
-              marginTop: "40px",
+              margin: "40px 10px 0",
               borderRadius: "10px",
             }}
           />
         </div>
 
-        <div className="col-lg-6 mb-4-lg-0">
+        <div className="col-lg-6">
           <div className="login-container">
             <h2 className="form-title">Register New User</h2>
             <form
@@ -329,9 +319,7 @@ const AddUser = () => {
                   type="email"
                   name="email"
                   placeholder="Email"
-                  {...register("email", {
-                    required: "Email is required",
-                  })}
+                  {...register("email", { required: "Email is required" })}
                 />
                 {errors.email && (
                   <span className="text-danger">{errors.email.message}</span>
@@ -360,9 +348,7 @@ const AddUser = () => {
                   })}
                 />
                 {errors.phoneNumber && (
-                  <span style={{ color: "red" }}>
-                    {errors.phoneNumber.message}
-                  </span>
+                  <span className="text-danger">{errors.phoneNumber.message}</span>
                 )}
               </div>
 
@@ -384,43 +370,48 @@ const AddUser = () => {
               </div>
 
               <div>
-                <InputField
-                  as="select"
-                  name="reportsTo"
+            <InputField
+                   as="select"
+                   name="reportsTo"
                   {...register("reportsTo", {
-                    required: "Reports To is required",
-                  })}
-                >
-                  <option value="">Select Reports To</option>
-                  <option value="BAEB4883-428A-46D8-A0E5-8C5CEC0488E3">
-                    Ram
-                  </option>
-                  {filteredUsers?.map((user) => (
-                    <option key={user.id} value={user.id}>
-                      {user.name}
-                    </option>
-                  ))}
-                </InputField>
-                {errors.reportsTo && (
-                  <span className="error-message">
-                    {errors.reportsTo.message}
-                  </span>
+                                         required: "Reports To is required",
+                   })}
+                 >
+                   <option value="">Select Reports To</option>
+                   {/* <option value="BAEB4883-428A-46D8-A0E5-8C5CEC0488E3"> */}
+                   <option value="c3188984-f7c5-4460-9d77-18d550740e57">
+                     Ram
+                   </option>
+                   {filteredUsers?.map((user) => (
+                     <option key={user.id} value={user.id}>
+                       {user.name}
+                     </option>
+                   ))}
+                 </InputField>
+                 {errors.reportsTo && (
+                   <span className="error-message">
+                     {errors.reportsTo.message}
+                   </span>
                 )}
+               </div>
+
+              <div>
+                <InputField
+                  type="file"
+                  name="file"
+                  {...register("file")}
+                />
+                <span className="form-text">File upload is optional</span>
               </div>
 
-              {loading ? (
-                <button type="submit" className="login-button" disabled>
-                  <Spin />
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  style={{ width: "100%" }}
-                >
-                  Register User
-                </button>
-              )}
+              <button
+                type="submit"
+                className="btn btn-primary"
+                style={{ width: "100%" }}
+                disabled={loading}
+              >
+                {loading ? <Spin /> : "Register User"}
+              </button>
             </form>
           </div>
         </div>
@@ -430,3 +421,4 @@ const AddUser = () => {
 };
 
 export default AddUser;
+

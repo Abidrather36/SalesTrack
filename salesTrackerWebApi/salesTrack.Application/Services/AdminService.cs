@@ -40,29 +40,143 @@ namespace salesTrack.Application.Services
             this.fileService = fileService;
         }
 
+        /* public async Task<ApiResponse<UserResponseModel>> AddUser(UserRequestModel model)
+         {
+
+
+             try
+             {
+
+                 var companyIdUser = contextService.UserId();
+                  var usera =await userRepository.GetUserById(companyIdUser);
+                 var company =await companyRepository.GetCompanyByIdAsync(usera.CompanyId);
+                var companyId=company.Id;
+                 if (await userRepository.IsExistsAsync(x => x.Email == model.Email))
+                 {
+                     return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.AlreadyAvailable, HttpStatusCodes.BadRequest);
+
+                 }
+
+                 else
+                 {
+                     var newPassword = AppEncryption.GenerateRandomPassword(model.Email!);
+                     MasterUser user = new MasterUser()
+                     {
+
+                         Name = model.Name,
+                         Email = model.Email,
+                         PhoneNumber = model.PhoneNumber,
+                         CreatedBy = companyIdUser,
+                         ModifiedBy = Guid.Empty,
+                         CreatedDate = DateTime.Now,
+                         DeletedBy = Guid.Empty,
+                         IsActive = true,
+                         UserRole = model.UserType == UserType.SalesExecutive ? UserRole.SalesExecutive : UserRole.SalesManager,
+                     };
+                     user.Salt = AppEncryption.GenerateSalt();
+                     user.Password = AppEncryption.CreatePassword(newPassword, user.Salt);
+                     var dbUser = await userRepository.InsertAsync(user);
+                     if (dbUser > 0)
+                     {
+                         if (model.UserType == UserType.SalesExecutive)
+                         {
+                             var salesExecutive = new Domain.Entities.User()
+                             {
+                                 Id = user.Id,
+                                 ReportsTo = model.ReportsTo,
+                                 CreatedBy = companyIdUser,
+                                 CreatedDate = DateTime.Now,
+                                 DeletedBy = Guid.Empty,
+                                 DeletedDate = DateTime.Now,
+                                 ModifiedBy = Guid.Empty,
+                                 ModifiedDate = DateTime.Now,
+                                 IsActive = true,
+                                 UserType = UserType.SalesExecutive,
+                                 CompanyId = companyId,
+                             };
+                             var fileresponse=  await fileService.UploadFileAsync(AppModule.User, salesExecutive.Id, model.File);
+                             salesExecutive.FilePath= fileresponse.FilePath;
+                             var salesExecutiveAdded = await userRepository.AddUser(salesExecutive);
+
+                         }
+                         else
+                         {
+
+                             var salesManager = new Domain.Entities.User()
+                             {
+                                 Id = user.Id,
+                                 ReportsTo = model.ReportsTo,
+                                 CreatedBy = companyId,
+                                 CreatedDate = DateTime.Now,
+                                 DeletedBy = Guid.Empty,
+                                 DeletedDate = DateTime.Now,
+                                 ModifiedBy = Guid.Empty,
+                                 ModifiedDate = DateTime.Now,
+                                 IsActive = true,
+                                 UserType = UserType.SalesManager,
+                                 CompanyId = companyId,
+                             };
+                             var fileresponse=  await fileService.UploadFileAsync(AppModule.User, salesManager.Id, model.File);
+                             salesManager.FilePath = fileresponse.FilePath;
+                             var salesManagerAdded = await userRepository.AddUser(salesManager);
+
+
+                         }
+                         var isEmailSent = await emailHelperService.AddRegistrationEmail(user.Email!, newPassword, user.Name!);
+                         if (isEmailSent)
+                         {
+                             var reporter = await userRepository.GetByIdAsync(model.ReportsTo);
+                             return ApiResponse<UserResponseModel>.SuccessResponse(new UserResponseModel
+                             {
+                                 Id = user.Id,
+                                 Name = user.Name,
+                                 Email = user.Email,
+                                 PhoneNumber = user.PhoneNumber,
+                                 UserRole = user.UserRole,
+                                 UserType = model.UserType,
+                                 ReportsToId = model.ReportsTo,
+                                 ReportsToName = reporter!.Name!,
+                                 IsPasswordTemporary = user.IsPasswordTemporary,
+                                 IsActive = user.IsActive,
+
+                             }, ApiMessages.User.UserAddedSuccessfully, HttpStatusCodes.Created);
+                         }
+                         else
+                         {
+                             return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                         }
+                     }
+                     else
+                     {
+                         return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                     }
+                 }
+
+             }
+
+             catch (Exception ex)
+             {
+                 throw;
+             }
+         }*/
         public async Task<ApiResponse<UserResponseModel>> AddUser(UserRequestModel model)
         {
-
-
             try
             {
-
                 var companyIdUser = contextService.UserId();
-                 var usera =await userRepository.GetUserById(companyIdUser);
-                var company =await companyRepository.GetCompanyByIdAsync(usera.CompanyId);
-               var companyId=company.Id;
+                var usera = await userRepository.GetMasterUserById(companyIdUser);
+                var company = await companyRepository.GetCompanyByIdAsync(usera.Id);
+                var companyId = company.Id;
+
                 if (await userRepository.IsExistsAsync(x => x.Email == model.Email))
                 {
                     return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.AlreadyAvailable, HttpStatusCodes.BadRequest);
-
                 }
-
                 else
                 {
                     var newPassword = AppEncryption.GenerateRandomPassword(model.Email!);
                     MasterUser user = new MasterUser()
                     {
-
                         Name = model.Name,
                         Email = model.Email,
                         PhoneNumber = model.PhoneNumber,
@@ -75,6 +189,7 @@ namespace salesTrack.Application.Services
                     };
                     user.Salt = AppEncryption.GenerateSalt();
                     user.Password = AppEncryption.CreatePassword(newPassword, user.Salt);
+
                     var dbUser = await userRepository.InsertAsync(user);
                     if (dbUser > 0)
                     {
@@ -94,14 +209,17 @@ namespace salesTrack.Application.Services
                                 UserType = UserType.SalesExecutive,
                                 CompanyId = companyId,
                             };
-                            var fileresponse=  await fileService.UploadFileAsync(AppModule.User, salesExecutive.Id, model.File);
-                            salesExecutive.FilePath= fileresponse.FilePath;
-                            var salesExecutiveAdded = await userRepository.AddUser(salesExecutive);
 
+                            if (model.File != null)
+                            {
+                                var fileResponse = await fileService.UploadFileAsync(AppModule.User, salesExecutive.Id, model.File);
+                                salesExecutive.FilePath = fileResponse.FilePath;
+                            }
+
+                            var salesExecutiveAdded = await userRepository.AddUser(salesExecutive);
                         }
                         else
                         {
-                            
                             var salesManager = new Domain.Entities.User()
                             {
                                 Id = user.Id,
@@ -116,12 +234,16 @@ namespace salesTrack.Application.Services
                                 UserType = UserType.SalesManager,
                                 CompanyId = companyId,
                             };
-                            var fileresponse=  await fileService.UploadFileAsync(AppModule.User, salesManager.Id, model.File);
-                            salesManager.FilePath = fileresponse.FilePath;
+
+                            if (model.File != null)
+                            {
+                                var fileResponse = await fileService.UploadFileAsync(AppModule.User, salesManager.Id, model.File);
+                                salesManager.FilePath = fileResponse.FilePath;
+                            }
+
                             var salesManagerAdded = await userRepository.AddUser(salesManager);
-
-
                         }
+
                         var isEmailSent = await emailHelperService.AddRegistrationEmail(user.Email!, newPassword, user.Name!);
                         if (isEmailSent)
                         {
@@ -138,7 +260,6 @@ namespace salesTrack.Application.Services
                                 ReportsToName = reporter!.Name!,
                                 IsPasswordTemporary = user.IsPasswordTemporary,
                                 IsActive = user.IsActive,
-
                             }, ApiMessages.User.UserAddedSuccessfully, HttpStatusCodes.Created);
                         }
                         else
@@ -151,9 +272,7 @@ namespace salesTrack.Application.Services
                         return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
                     }
                 }
-
             }
-
             catch (Exception ex)
             {
                 throw;

@@ -18,7 +18,5 @@ namespace SalesTrack.Domain.Entities.Models.Request
         [Required]
         public Guid ReportsTo { get; set; }
         public IFormFile? File { get; set; }
-
-
     }
 }

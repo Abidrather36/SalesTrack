@@ -24,17 +24,16 @@ namespace salesTrack.Api.Controllers
             this.adminService = adminService;
         }
         [HttpPost("register-User")]
-        public async Task<ApiResponse<UserResponseModel>> AddUser([FromForm] UserRequestModel model)
+        public async Task<IActionResult> AddUser([FromForm] UserRequestModel model)
         {
             try
             {
-                return await adminService.AddUser(model);
+                return Ok( await adminService.AddUser(model));
             }
-
 
             catch (Exception ex)
             {
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         [HttpGet("GetAllUsersByCompany")]
