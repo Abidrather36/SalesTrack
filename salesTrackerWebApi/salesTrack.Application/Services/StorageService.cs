@@ -26,8 +26,12 @@ namespace salesTrack.Application.Services
             throw new NotImplementedException();
         }
 
-        public async  Task<string> UploadFileAsync(IFormFile file)
+        public async  Task<string> UploadFileAsync(IFormFile? file)
         {
+            if (file == null)
+            {
+                return string.Empty;
+            }
             var dirPath = GetPhysicalDirectoryPath();
             ValidateFile(file);
             string newFileName = string.Concat(Guid.NewGuid(), file.FileName);
@@ -41,8 +45,12 @@ namespace salesTrack.Application.Services
         {
             throw new NotImplementedException();
         }
-        private bool ValidateFile(IFormFile file)
+        private bool ValidateFile(IFormFile? file)
         {
+            if (file == null)
+            {
+                return true;
+            }
             if (file == null)
                 throw new Exception("File cannot be null.");
 

@@ -9,7 +9,7 @@ namespace salesTrack.Application.Abstraction.IService
 {
     public interface IStorageService
     {
-        Task<string> UploadFileAsync(IFormFile file);
+        Task<string> UploadFileAsync(IFormFile? file);
         Task<bool> UploadFilesAsync(IFormFileCollection files);
         Task<bool> DeleteFileAsync(string filePath);
         Task<bool> DeleteFilesAsync(List<string> filePaths);
