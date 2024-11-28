@@ -332,13 +332,15 @@ namespace salesTrack.Persistence.Repository
                                  && ps.LeadFollowUpDate.Any(fd => fd.Date.Date == model.Date.Date))
                     .Select(ps => new LeadFollowUpHistoryResponse
                     {
+                        LeadId   =ps.LeadId,
                         ClientName = ps.Lead!.User!.Name ?? "N/A",
                         Email = ps.Lead.User.Email ?? "No Email",
                         PhoneNumber = ps.Lead.User.PhoneNumber ?? "No Phone Number",
                         LeadComments = ps.LeadComment!.FirstOrDefault()!.Text ?? "No Comment Here",
                         LeadProcessStep = ps.ProcessStepAdmin!.StepName ?? "No Step Name",
                         FollowUpDate = ps.LeadFollowUpDate!.FirstOrDefault()!.Date,
-                        LeadCompanyName = ps.Lead!.LeadCompany!.LeadCompanyName ?? "No Lead Company Name "
+                        LeadCompanyName = ps.Lead!.LeadCompany!.LeadCompanyName ?? "No Lead Company Name ",
+                        
 
                     }))
                 .ToListAsync(); 

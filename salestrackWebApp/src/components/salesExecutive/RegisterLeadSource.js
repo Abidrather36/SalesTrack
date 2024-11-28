@@ -42,15 +42,8 @@ const LeadSource = () => {
           currentRoute: "Register-New-LeadSource",
         }}
       />
-      <div className="wrapper" style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap", width: "100%" }}>
-        <div style={{ flex: 1, marginTop: "50px" }}>
-          <img
-            src={logoSide} 
-            style={{ width: "100%", height: "auto", borderRadius: "10px", marginRight: "100px" }}
-            alt="Lead Source Registration"
-          />
-        </div>
-
+      <div style={{ alignContent: "center",width: "100%", }}>
+      
         <div style={{ flex: 1, padding: "20px" }}>
           <div className="col-lg-8 mb-4-lg-0">
             <div
@@ -60,8 +53,10 @@ const LeadSource = () => {
                 padding: "35px",
                 borderRadius: "10px",
                 boxShadow: "0 0 15px rgba(0,0,0,0.1)",
-                width: "130%",
+                width: "50%",
                 height: "auto",
+                alignContent:"center",
+                marginLeft:"400px"
               }}
             >
               <h2 className="form-title">Register New Lead Source</h2>

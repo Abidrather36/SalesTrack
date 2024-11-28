@@ -37,6 +37,8 @@ export default function BasicModal({
   showFoloowUpHistory,
   popupForm,
   showHistory,
+  leadIdKey = "id", // Default to "id" if not provided,
+  context
 }) {
   console.log(leadData);
   const [open, setOpen] = useState(TroubleshootTwoTone);
@@ -131,13 +133,15 @@ export default function BasicModal({
         myToaster.showErrorToast(response.message)
       }
     }
-
   const onSubmit = async (data) => {
     console.log("save btn clicked");
+    console.log(data)
     const manageLeadData = {
       date: data.date,
       time: `${data.time}:00`,
-      leadId: leadData?.id,
+      // leadId: leadData?.leadId, //salesExecutive
+      // leadId: leadData?.id, //for leadlist
+      leadId: leadData?.leadId || leadData?.id, 
       adminProcessStepId: data.adminProcessStepId,
       comment: data.comments || "",
     };
@@ -227,7 +231,7 @@ export default function BasicModal({
                 label="Comments"
                 multiline
                 rows={4}
-                {...register("comments", { required: false })}
+                {...register("comments", { required: true })}
                 fullWidth
                 sx={{ mb: 2 }}
               />

@@ -45,27 +45,13 @@ function AddSalesCompany() {
       <div
         className="wrapper"
         style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
+          display: "center",
           flexWrap: "wrap",
           width: "100%",
           padding: "50px",
-          marginTop: "-20px",
+          alignContent:"center"
         }}
       >
-        {/* Image Section */}
-        <div style={{ flex: 1, marginTop: "50px" }}>
-          <img
-            src={companyImage}
-            style={{
-              width: "100%",
-              borderRadius: "10px",
-              marginRight: "50px",
-            }}
-            alt="Add Company"
-          />
-        </div>
 
         {/* Form Section */}
         <div style={{ flex: 1, padding: "20px", marginTop: "-5px" }}>
@@ -77,8 +63,10 @@ function AddSalesCompany() {
                 padding: "35px",
                 borderRadius: "10px",
                 boxShadow: "0 0 15px rgba(0,0,0,0.1)",
-                width: "130%",
                 height: "auto",
+                alignContent:"center",
+                display:"center",
+                marginLeft:"300px"
               }}
             >
               <h2 className="form-title">Add Company</h2>

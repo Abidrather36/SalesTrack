@@ -83,34 +83,16 @@ function LeadList(props) {
       myToaster.primereactDeleteConfirmLead(lead,deleteLeadHandler)
   };
 
-  // const fetchAllLeads = async () => {
-  //   setLoading(true);  
-  //   const response = await getAllLeads();
-  //   if (response.result) {
-  //     setLeads(response.result);
-  //   } else {
-  //     myToaster.showErrorToast(response.message);
-  //   }
-  //   setLoading(false);  
-  // };
   const fetchAllLeads = async () => {
-    setLoading(true);
+    setLoading(true);  
     const response = await getAllLeads();
     if (response.result) {
-      // Ensure API response has the required fields
-      const mappedLeads = response.result.map((lead) => ({
-        ...lead,
-        leadRank: lead.leadRank || "", // Map or fallback values
-        leadCategoryName: lead.leadCategoryName || "",
-        processStepName: lead.processStepName || "",
-      }));
-      setLeads(mappedLeads);
+      setLeads(response.result);
     } else {
       myToaster.showErrorToast(response.message);
     }
-    setLoading(false);
+    setLoading(false);  
   };
-  
 
   const fetchAssignTo = async () => {
     try {
@@ -206,10 +188,13 @@ function LeadList(props) {
       )}
 
       {showFollowupHistoryGrid && (
+           
         <BasicModal
           leadData={leadData}
           popupForm={false}
           showHistory={true}
+          leadIdKey="id"
+          context="leadList" 
         />
       )}
     </>

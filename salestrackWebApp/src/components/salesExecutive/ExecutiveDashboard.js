@@ -328,9 +328,11 @@ export default function ExecutiveDashboard() {
       {/* Follow-up Modal */}
       {followUpdatePopup && (
         <BasicModal
-          leadData={leadData} // Pass the selected lead data to the modal
+          leadData={leadData} 
           onClose={() => setFollowUpdatePopup(false)}
           popupForm={true}
+          leadIdKey="leadId"
+          context="salesExecutive"
         />
       )}
     </>
