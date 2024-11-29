@@ -50,10 +50,10 @@ const AddLead = () => {
       if (res && res.result) {
         setLeadSources(res.result);
       } else {
-        myToaster.showErrorToast("No lead sources found.");
+        // myToaster.showErrorToast("No lead sources found.");
       }
     } catch (error) {
-      myToaster.showErrorToast("Failed to load lead sources.");
+      // myToaster.showErrorToast("Failed to load lead sources.");
     }
   };
 
@@ -63,10 +63,10 @@ const AddLead = () => {
       if (res && res.result) {
         setUsers(res.result);
       } else {
-        myToaster.showErrorToast("No users found.");
+        // myToaster.showErrorToast("No users found.");
       }
     } catch (error) {
-      myToaster.showErrorToast("Failed to load users.");
+      // myToaster.showErrorToast("Failed to load users.");
     }
   };
   const fetchLeadCategories = async () => {
@@ -74,7 +74,7 @@ const AddLead = () => {
     if (response.isSuccess) {
       setLeadCategories(response.result);
     } else {
-      myToaster.showErrorToast(response.message);
+      // myToaster.showErrorToast(response.message);
     }
   };
   const onSubmit = async (data) => {
@@ -86,10 +86,10 @@ const AddLead = () => {
         myToaster.showSuccessToast(response.message);
         navigate("/salesExecutive/leadList");
       } else {
-        myToaster.showErrorToast(response.message);
+        // myToaster.showErrorToast(response.message);
       }
     } catch (error) {
-      myToaster.showErrorToast("Failed to register lead. Please try again.");
+      // myToaster.showErrorToast("Failed to register lead. Please try again.");
     } finally {
       setLoading(false);
     }

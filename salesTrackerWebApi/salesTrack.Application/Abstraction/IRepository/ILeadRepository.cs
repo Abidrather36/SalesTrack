@@ -7,6 +7,7 @@ namespace salesTrack.Application.Abstraction.IRepository
 {
     public interface ILeadRepository:IBaseRepository<Lead>
     {
+        Task<IEnumerable<Lead>> AddLeadsAsync(IEnumerable<LeadRequestModel> models, Guid userId);
         Task<Lead> AddLead(LeadRequestModel model,Guid userId);
         Task<LeadResponseModel> GetLeadById(Guid leadId);
         Task<IEnumerable<LeadResponseModel>> GetAllLeadsByCompanyId(Guid id,Guid assignTo);

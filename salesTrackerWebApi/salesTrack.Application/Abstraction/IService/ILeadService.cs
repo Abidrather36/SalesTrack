@@ -6,6 +6,7 @@ namespace salesTrack.Application.Abstraction.IService
 {
     public interface ILeadService
     {
+        Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddLeads(List<LeadRequestModel> models);
         Task<ApiResponse<LeadResponseModel>> AddLead(LeadRequestModel model);
         Task<ApiResponse<LeadResponseModel>> DeleteLead(Guid id);   
         Task<ApiResponse<LeadResponseModel>> GetLeadById(Guid leadId);

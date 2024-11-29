@@ -826,6 +826,89 @@ namespace salesTrack.Application.Services
             }
 
         }
+
+        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddLeads(List<LeadRequestModel> models)
+        {
+            try
+            {
+                var salesExecutiveId = contextService.UserId();
+                var salesEx = await userRepository.GetUserById(salesExecutiveId);
+
+                if (salesEx == null || salesExecutiveId == Guid.Empty)
+                {
+                    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                }
+
+                var companyId = salesEx.CompanyId;
+                if (models == null || !models.Any())
+                {
+                    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("No leads provided for bulk addition.", HttpStatusCodes.BadRequest);
+                }
+
+                var addedLeads = new List<LeadResponseModel>();
+
+                foreach (var model in models)
+                {
+                    try
+                    {
+                        // Create and insert the user
+                        MasterUser user = new()
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = model.Name,
+                            Email = model.Email,
+                            PhoneNumber = model.PhoneNumber,
+                            Password = AppEncryption.GenerateRandomPassword(model.Email!),
+                            Salt = AppEncryption.GenerateSalt(),
+                            UserRole = UserRole.Lead,
+                            CreatedDate = DateTime.UtcNow,
+                            DeletedDate = DateTime.UtcNow,
+                            IsActive = true,
+                            ModifiedDate = DateTime.UtcNow,
+                        };
+
+                        var userAdded = await userRepository.InsertAsync(user);
+                        if (userAdded <= 0)
+                        {
+                            continue; 
+                        }
+
+                        model.CompanyId = companyId;
+
+                        // Add the lead
+                        var leadAdded = await leadRepository.AddLead(model, user.Id);
+
+                        if (leadAdded != null)
+                        {
+                            var sourceLead = await leadRepository.GetLeadById(leadAdded.Id);
+                            var returnVal = await userRepository.GetByIdAsync(sourceLead.AssignToId);
+                            sourceLead.AssignedTo = returnVal?.Name;
+
+                            var returnCompany = await companyRepository.GetByIdAsync(leadAdded.CompanyId);
+                            sourceLead.CompanyName = returnCompany?.CompanyName;
+
+                            addedLeads.Add(sourceLead);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        continue; 
+                    }
+                }
+
+                if (!addedLeads.Any())
+                {
+                    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("No leads were added.", HttpStatusCodes.BadRequest);
+                }
+
+                return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(addedLeads, $"{addedLeads.Count} leads added successfully.", HttpStatusCodes.Created);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
+            }
+        }
+
     }
 }
 public class FollowUpReq

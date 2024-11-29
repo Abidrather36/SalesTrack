@@ -68,7 +68,7 @@ function LeadSourceList() {
             setShowSpinner(false)
         }
         else{
-            myToaster.showErrorToast(response.message)
+          setShowSpinner(false)
         }
       }
       const deleteLeadSourceHandler = async (id) => {

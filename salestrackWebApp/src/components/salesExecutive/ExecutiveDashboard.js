@@ -111,7 +111,6 @@ export default function ExecutiveDashboard() {
       console.error("Error fetching follow-up history:", error);
       setLeadTodayFollowUp([]);
       setHasFollowUpHistory(false);
-      myToaster.showErrorToast("Failed to fetch follow-up data.");
     } finally {
       setLoading(false);
     }

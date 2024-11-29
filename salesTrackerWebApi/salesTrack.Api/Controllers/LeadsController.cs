@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using salesTrack.Application.Abstraction.IService;
+using salesTrack.Application.Services;
+using salesTrack.Domain.Entities;
 using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
@@ -19,6 +21,20 @@ namespace salesTrack.Api.Controllers
         public LeadsController(ILeadService leadService)
         {
             this.leadService = leadService;
+        }
+
+        [HttpPost("addLeads")]
+        public async Task<IActionResult> AddLeads([FromBody]List<LeadRequestModel> models)
+        {
+            try
+            {
+                return Ok(await leadService.AddLeads(models));
+               
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message); 
+            }
         }
 
         [HttpPost("register")]

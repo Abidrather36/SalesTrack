@@ -61,7 +61,7 @@ const App = () => {
           path="/salesExecutive"
           element={
             <PrivateRoute>
-              <ProtectedRoute allowedRoles={[UserRole.SalesExecutive]}>
+              <ProtectedRoute allowedRoles={[UserRole.SalesExecutive, UserRole.SalesManager]}>
                 <DashboardLayout labelList={SalesExectivesidebarLabels} />
               </ProtectedRoute>
             </PrivateRoute>

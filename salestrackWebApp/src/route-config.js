@@ -31,6 +31,7 @@ import LeadCategoryList from "./components/companyAdmin/LeadCategoryList"
 import AddSalesCompany from "./components/salesExecutive/AddSalesCompany"
 import LeadCompanieList from "./components/salesExecutive/LeadCompanieList"
 import { addFollowUpdate } from "./Services/LeadService"
+import BulkInsert from "./components/salesExecutive/bulkExample"
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -82,6 +83,7 @@ export const routerConfiguration = {
     { path : "/salesExecutive/leadSourceList", element: <LeadSourceList/> },
     { path : "/salesExecutive/timeSheetList",element :<TimeSheetList/>},
     { path : "/salesExecutive/addLeadCompany",element :<AddSalesCompany/>},
-    { path : "/salesExecutive/leadCompanyList",element :<LeadCompanieList/>},  
+    { path : "/salesExecutive/leadCompanyList",element :<LeadCompanieList/>}, 
+    { path : "/salesExecutive/bulkInsert",element :<BulkInsert/>},
   ]
 }
