@@ -17,7 +17,8 @@ namespace salesTrack.Domain.Entities
 
         public ICollection<User>? CompanyUser { get; set; }
         public ICollection<Lead>? Lead {  get; set; }
-        public ICollection<AdminProcessStep>? AdminProcessSteps { get; set; }    
+        public ICollection<AdminProcessStep>? AdminProcessSteps { get; set; }
+        public ICollection<LeadCompany>? LeadCompany { get; set; }
 
         #endregion
     }

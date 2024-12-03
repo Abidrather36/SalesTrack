@@ -708,7 +708,7 @@ namespace salesTrack.Application.Services
                 {
                     return ApiResponse<LeadCompanyNameResponse>.ErrorResponse("please enter values", HttpStatusCodes.BadRequest);
                 }
-                var leadCompanyNames = await leadRepository.GetAllLeadCompanyNames();
+                var leadCompanyNames = await leadRepository.GetAllLeadCompanyNames(companyId);
                 if (leadCompanyNames.Any(x => x.LeadCompanyName == model.LeadCompanyName))
                 {
                     return ApiResponse<LeadCompanyNameResponse>.ErrorResponse("Lead CompanyName Already Exits", HttpStatusCodes.BadRequest);
@@ -721,6 +721,7 @@ namespace salesTrack.Application.Services
                     IsActive = true,
                     CreatedBy = salesExecutiveId,
                     CreatedDate = DateTime.Now,
+                    CompanyId=companyId
                 };
                 var res = await leadRepository.AddLeadCompanyName(leadCompanyName);
                 if (res > 0)
@@ -731,6 +732,7 @@ namespace salesTrack.Application.Services
                         LeadCompanyName = leadCompanyName.LeadCompanyName,
                         Description = leadCompanyName.Description,
                         IsActive = true,
+                        CompanyId=leadCompanyName.CompanyId,
                     };
                     return ApiResponse<LeadCompanyNameResponse>.SuccessResponse(leadCompanyNameResponse, "LeadCompany Added Successfully", HttpStatusCodes.OK);
                 }
@@ -747,8 +749,10 @@ namespace salesTrack.Application.Services
         public async Task<ApiResponse<IEnumerable<LeadCompanyNameResponse>>> GetAllCompaniesLeads()
         {
             var salesExeutiveId = contextService.UserId();
+            var user = await userRepository.GetUserById(salesExeutiveId);
+           var companyId= user.CompanyId;
 
-           var leadCompanies=await leadRepository.GetAllLeadCompanyNames();
+           var leadCompanies=await leadRepository.GetAllLeadCompanyNames(companyId);
             if (leadCompanies.Any())
             {
                 return ApiResponse<IEnumerable<LeadCompanyNameResponse>>.SuccessResponse(leadCompanies,$"{leadCompanies.Count()} Found", HttpStatusCodes.OK);

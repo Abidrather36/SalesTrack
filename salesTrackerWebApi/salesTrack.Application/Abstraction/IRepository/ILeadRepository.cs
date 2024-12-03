@@ -30,7 +30,7 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<int> UpdateLeadCategory(LeadCategory model);
         Task<int> AddLeadCompanyName(LeadCompany model); 
         Task<LeadCompany> GetLeadCompanyNameById(Guid? id); 
-        Task<IEnumerable<LeadCompanyNameResponse>> GetAllLeadCompanyNames();
+        Task<IEnumerable<LeadCompanyNameResponse>> GetAllLeadCompanyNames(Guid companyId);
         Task<int> UpdateLeadCompany(LeadCompany model);
     }
 }

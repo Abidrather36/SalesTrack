@@ -65,6 +65,7 @@ function LeadList(props) {
     { key: "isActive" ,label:"IsActive"},
     { key :"leadCategoryName",label:"Lead Category Name"},
     { key: "leadRank", label: "Lead Rank"},
+    { key: "createdDate", label: "Date of Creation" },
   ];
 
   const deleteLeadHandler =async (id)=>{
@@ -87,6 +88,7 @@ function LeadList(props) {
     setLoading(true);  
     const response = await getAllLeads();
     if (response.result) {
+      console.log("leadList Date",response.result)
       setLeads(response.result);
     } else {
       myToaster.showErrorToast(response.message);
@@ -106,7 +108,7 @@ function LeadList(props) {
   const manageLead = (lead) => {
     setLeadData(lead);
     setFollowUpdatePopup(true);
-    setShowGrid(false);
+    setShowGrid(true);
   };
 
   const mangeClosePopup = () => {

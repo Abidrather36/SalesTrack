@@ -143,19 +143,44 @@ export default function ExecutiveDashboard() {
     { key: "leadComments", label: "Lead Comments" },
     { key: "followUpDate", label: "Follow-up Date" },
   ];
-
+  const user = JSON.parse(localStorage.getItem("user"));
+  // const myProps = [
+  //   {
+  //     title: "Total Leads",
+  //     number: leads.length,
+  //     icon: <FaUsers />,
+  //     link: "/salesExecutive/leadList",
+  //   },
+  //   {
+  //     title: "Total Lead Sources",
+  //     number: leadSources.length,
+  //     icon: <FaUsers />,
+  //     link: "/salesExecutive/leadSourceList",
+  //   },
+  //   {
+  //     title: "Today's Follow Up",
+  //     number: leadTodayFollowUp.length,
+  //     icon: <FaBriefcase />,
+  //   },
+  // ];
   const myProps = [
     {
       title: "Total Leads",
       number: leads.length,
       icon: <FaUsers />,
-      link: "/salesExecutive/leadList",
+      link:
+        user?.userRole === 3
+          ? "/salesExecutive/leadList"
+          : "/salesManager/leadList",
     },
     {
       title: "Total Lead Sources",
       number: leadSources.length,
       icon: <FaUsers />,
-      link: "/salesExecutive/leadSourceList",
+      link:
+        user?.userRole === 3
+          ? "/salesExecutive/leadSourceList"
+          : "/salesManager/leadSourceList",
     },
     {
       title: "Today's Follow Up",
@@ -163,7 +188,6 @@ export default function ExecutiveDashboard() {
       icon: <FaBriefcase />,
     },
   ];
-
   const formatDate = (dateString) => {
     if (!dateString) return "";
 

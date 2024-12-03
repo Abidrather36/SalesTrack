@@ -209,9 +209,9 @@ namespace salesTrack.Persistence.Repository
             return  await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<LeadCompanyNameResponse>> GetAllLeadCompanyNames()
+        public async Task<IEnumerable<LeadCompanyNameResponse>> GetAllLeadCompanyNames(Guid companyId)
         {
-           var res=await context.LeadCompanies.Select(x => new LeadCompanyNameResponse
+           var res=await context.LeadCompanies.Where(lc=> lc.CompanyId ==companyId).Select(x => new LeadCompanyNameResponse
             {
                 Id = x.Id,
                 LeadCompanyName = x.LeadCompanyName,
@@ -238,7 +238,8 @@ namespace salesTrack.Persistence.Repository
                 AssignToId = lead.AssignTo,
                 IsActive = lead.IsActive,
                 CompanyName = lead.Company!.CompanyName,
-                CompanyId = lead.CompanyId
+                CompanyId = lead.CompanyId,
+                CreatedDate = lead.CreatedDate.ToString()
             }).ToListAsync();
 
             return Leads;
@@ -263,6 +264,9 @@ namespace salesTrack.Persistence.Repository
                 LeadSourceName = lead.LeadSource!.LeadSourceName,
                 LeadRank=lead.LeadRank,
                 LeadCategoryName=lead.LeadCategory.LeadCategoryName,
+                CreatedDate = lead.CreatedDate.HasValue
+                ? lead.CreatedDate.Value.ToString("dd-MM-yyyy")
+                : null
             }).ToListAsync();
             return leads;
         }

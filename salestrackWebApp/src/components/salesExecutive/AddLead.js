@@ -103,25 +103,25 @@ const AddLead = () => {
           currentRoute: "Register-New-Lead",
         }}
       />
- <div
-      className="wrapper"
-      style={{
-        marginTop:"-50px",
-        display: "flex",             
-        justifyContent: "center",    
-        alignItems: "center",        
-        height: "100vh",            
-        padding: "50px",              
-        overflowX: "hidden",   
-      }}
-    >
-         <div
+      <div
+        className="wrapper"
         style={{
-          padding: "20px",
-          width: "100%",               
-          maxWidth: "900px",           
+          marginTop: "-80px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          padding: "50px",
+          overflowX: "auto",
         }}
       >
+        <div
+          style={{
+            padding: "20px",
+            width: "100%",
+            maxWidth: "900px",
+          }}
+        >
           <div className="col-lg-8 mb-4-lg-0">
             <div
               className="login-container"
@@ -130,11 +130,24 @@ const AddLead = () => {
                 padding: "35px",
                 borderRadius: "10px",
                 boxShadow: "0 0 15px rgba(0,0,0,0.1)",
-                width: "130%",
-                height: "auto",
+                maxWidth: "900px",
+                width: "100%",
+                alignContent: "center",
+                display: "center",
+                marginLeft: "140px",
               }}
             >
-              <h2 className="form-title">Register New Lead</h2>
+           <h2
+  className="form-title"
+  style={{
+    fontFamily: "'tungstenw05-medium', 'Oswald', sans-serif",
+    fontSize: '2rem',
+    fontWeight: 'bold',
+  }}
+>
+  Register New Lead
+</h2>
+
               <form
                 className="login-form"
                 onSubmit={handleSubmit(onSubmit)}
@@ -211,7 +224,7 @@ const AddLead = () => {
                       {...register("phoneNumber", {
                         required: "Phone number is required",
                         pattern: {
-                          value: /^[0-9]{10}$/, 
+                          value: /^[0-9]{10}$/,
                           message: "Phone number must be 10 digits",
                         },
                       })}

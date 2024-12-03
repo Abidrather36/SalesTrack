@@ -230,7 +230,18 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-
+     /*   [HttpGet("getAllLeads")]
+        public Task<IActionResult> getAllLeads()
+        {
+            try
+            {
+                return Ok(await (id));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }*/
 
     }
 }

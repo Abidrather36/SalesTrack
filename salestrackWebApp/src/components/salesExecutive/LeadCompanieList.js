@@ -70,6 +70,7 @@ function LeadCompanieList() {
       setShowSpinner(false);
     } else {
       myToaster.showErrorToast(response.message);
+      setShowSpinner(false);
     }
   };
 

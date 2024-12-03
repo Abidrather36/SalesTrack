@@ -30,7 +30,11 @@ namespace SalesTrack.Persistence.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<LeadCompany>()
+          .HasOne(lc => lc.Company)  
+          .WithMany(c => c.LeadCompany)  
+          .HasForeignKey(lc => lc.CompanyId)  
+          .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.SeedUsers();
         }
     }

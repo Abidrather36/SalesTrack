@@ -29,5 +29,7 @@ namespace salesTrack.Domain.Models.Response
         public Guid CompanyId { get; set; }
         public Guid LeadCategoryId { get; set; }
         public int LeadRank { get; set; }
+        public string? CreatedDate { get; set; }
+
     }
 }
