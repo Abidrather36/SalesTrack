@@ -142,3 +142,59 @@ export const SalesExectivesidebarLabels = [
     icon:<EventNoteIcon/>
   }
 ];
+export const SalesManagersidebarLabels = [
+  {
+    id: 1,
+    label: "Dashboard",
+    link: "/salesManager/dashboard",
+    icon: <FaTachometerAlt />,
+  },
+  {
+    id: 7,
+    label: "Add Lead Company",
+    link: "/salesManager/addLeadCompany",
+    icon: <FaPlus />,
+  },
+  {
+    id: 8,
+    label: "Lead Company List",
+    link: "/salesManager/leadCompanyList",
+    icon: <FaUsers />,
+  },
+  {
+    id: 3,
+    label: "Add New Lead",
+    link: "/salesManager/add-new-lead",
+    icon: <FaPlus />,
+  },
+  {
+    id: 2,
+    label: "Leads List",
+    link: "/salesManager/leadList",
+    icon: <FaUsers />,
+  },
+  {
+    id: 4,
+    label: "Add Time Sheet",
+    link: "/salesManager/timeSheet",
+    icon: <FaPlus />,
+  },
+  {
+    id: 5,
+    label: "Register Lead Source",
+    link: "/salesManager/registerLeadSource",
+    icon: <FaPlus />,
+  },
+  {
+    id: 6,
+    label: "Lead Source List",
+    link: "/salesManager/leadSourceList",
+    icon: <Source />,
+  },
+  {
+    id: 7,
+    label: "Time Sheet List",
+    link: "/salesManager/timeSheetList",
+    icon: <EventNoteIcon />,
+  },
+];

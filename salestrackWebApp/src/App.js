@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import PublicLayout from "./components/shared/PublicLayout";
 import DashboardLayout from "./components/shared/DashboardLayout";
 import { routerConfiguration } from "./route-config";
-import { PortalAdminsidebarLabels } from "./components/shared/SidebarLabels";
+import { PortalAdminsidebarLabels, SalesManagersidebarLabels } from "./components/shared/SidebarLabels";
 import { CompanyAdminsidebarLabels } from "./components/shared/SidebarLabels";
 import { SalesExectivesidebarLabels } from "./components/shared/SidebarLabels";
 import PrivateRoute from "./components/auth/PrivateRoute";
@@ -61,13 +61,27 @@ const App = () => {
           path="/salesExecutive"
           element={
             <PrivateRoute>
-              <ProtectedRoute allowedRoles={[UserRole.SalesExecutive, UserRole.SalesManager]}>
+              <ProtectedRoute allowedRoles={[UserRole.SalesExecutive]}>
                 <DashboardLayout labelList={SalesExectivesidebarLabels} />
               </ProtectedRoute>
             </PrivateRoute>
           }
         >
           {routerConfiguration.SalesExecutiveRoutes.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element} />
+          ))}
+        </Route>
+        <Route
+          path="/salesManager"
+          element={
+            <PrivateRoute>
+              <ProtectedRoute allowedRoles={[ UserRole.SalesManager]}>
+                <DashboardLayout labelList={SalesManagersidebarLabels} />
+              </ProtectedRoute>
+            </PrivateRoute>
+          }
+        >
+          {routerConfiguration.SalesManagerRoutes.map((route, index) => (
             <Route key={index} path={route.path} element={route.element} />
           ))}
         </Route>
@@ -79,9 +93,6 @@ const App = () => {
 };
 
 export default App;
-
-
-
 
 
 // import React from 'react';

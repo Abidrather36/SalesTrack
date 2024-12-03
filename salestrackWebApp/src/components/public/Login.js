@@ -45,9 +45,13 @@ function Login() {
             navigate("/admin/dashboard");
           } else if (response.result.userRole === 2) {
             navigate("/companyAdmin/dashboard");
-          } else if (response.result.userRole === 3|| response.result.userRole === 4) {
+          } else if (response.result.userRole === 3 ) {
             navigate("/salesExecutive");
           }
+          else if(response.result.userRole === 4){
+            navigate("/salesManager");
+          }
+          
         }
       } else {
         myToaster.showErrorToast(response.message);

@@ -72,18 +72,39 @@ export const routerConfiguration = {
   ],
 
   SalesExecutiveRoutes:[
-    { path:"/salesExecutive",element:<SalesExecutiveDashboard/>},
-    { path:"/salesExecutive/dashboard",element:<SalesExecutiveDashboard/>},
-    { path: "/salesExecutive/leadList", element: <LeadList /> },
-    { path: "/salesExecutive/leadLists", element: <LeadList /> },
-    { path: "/salesExecutive/add-new-lead", element: <AddLead /> },
-    { path :"/salesExecutive/timeSheet",element:<TimeSheet/>},
-    { path: "/salesExecutive/profile", element: <ProfilePage/> },
+    { path : "/salesExecutive",element:<SalesExecutiveDashboard/>},
+    { path : "/salesExecutive/dashboard",element:<SalesExecutiveDashboard/>},
+    { path : "/salesExecutive/leadList", element: <LeadList /> },
+    { path : "/salesExecutive/leadLists", element: <LeadList /> },
+    { path : "/salesExecutive/add-new-lead", element: <AddLead /> },
+    { path : "/salesExecutive/timeSheet",element:<TimeSheet/>},
+    { path : "/salesExecutive/profile", element: <ProfilePage/> },
     { path : "/salesExecutive/registerLeadSource", element:<LeadSource/>},
     { path : "/salesExecutive/leadSourceList", element: <LeadSourceList/> },
     { path : "/salesExecutive/timeSheetList",element :<TimeSheetList/>},
     { path : "/salesExecutive/addLeadCompany",element :<AddSalesCompany/>},
     { path : "/salesExecutive/leadCompanyList",element :<LeadCompanieList/>}, 
     { path : "/salesExecutive/bulkInsert",element :<BulkInsert/>},
+  ]
+  ,
+  SalesManagerRoutes:[
+    { path : "/salesManager",element:<SalesExecutiveDashboard/>},
+    { path : "/salesManager/dashboard",element:<SalesExecutiveDashboard/>},
+    { path : "/salesManager/leadList", element: <LeadList /> },
+    { path : "/salesManager/add-new-lead", element: <AddLead /> },
+    { path : "/salesManager/timeSheet",element:<TimeSheet/>},
+    { path:  "/salesManager/profile", element: <ProfilePage/>},
+    { path : "/salesManager/leadCompanyList",element :<LeadCompanieList/>}, 
+    { path : "/salesManager/registerLeadSource", element:<LeadSource/>},
+    { path : "/salesManager/addLeadCompany",element :<AddSalesCompany/>},
+    { path : "/salesManager/timeSheet",element:<TimeSheet/>},
+    { path : "/salesManager/leadSourceList", element: <LeadSourceList/> },
+    { path : "/salesManager/timeSheetList",element :<TimeSheetList/>},
+
+
+
+
+
+
   ]
 }

@@ -13,7 +13,7 @@ namespace salesTrack.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = nameof(UserRole.SalesExecutive))]
+    [Authorize(Roles = nameof(UserRole.SalesExecutive) + "," + nameof(UserRole.SalesManager))]
     public class LeadsController : ControllerBase
     {
         private readonly ILeadService leadService;
