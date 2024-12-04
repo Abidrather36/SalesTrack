@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Calendar } from "primereact/calendar";
-import {Button, Modal, Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, Snackbar, FormHelperText} from "@mui/material";
+import {
+  Button,
+  Modal,
+  Box,
+  Typography,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Snackbar,
+  FormHelperText,
+} from "@mui/material";
 import Spin from "../public/Spin";
 import MuiAlert from "@mui/material/Alert";
 import { useForm } from "react-hook-form";
@@ -9,6 +21,7 @@ import myToaster from "../../utils/toaster";
 import { addTimeSheet } from "../../Services/LeadService";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import { useNavigate } from "react-router-dom";
+import InputField from "../public/InputField";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -27,13 +40,17 @@ const TimeSheet = () => {
   const [processSteps, setProcessSteps] = useState([]);
   const [minDate, setMinDate] = useState(null);
   const [maxDate, setMaxDate] = useState(null);
-  const navigate =useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchProcessSteps();
   }, []);
 
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm();
 
   const getStartOfWeek = (date) => {
     const day = date.getDay();
@@ -49,7 +66,7 @@ const TimeSheet = () => {
     if (selectedDay === 1) {
       const startOfWeekDate = getStartOfWeek(new Date(date));
       const endOfWeekDate = new Date(startOfWeekDate);
-      endOfWeekDate.setDate(startOfWeekDate.getDate() + 5); 
+      endOfWeekDate.setDate(startOfWeekDate.getDate() + 5);
       setMinDate(startOfWeekDate);
       setMaxDate(endOfWeekDate);
     } else {
@@ -76,7 +93,9 @@ const TimeSheet = () => {
   const handleSubmitDate = () => {
     if (!formDate || !processSteps || !comments) {
       setSnackbarSeverity("error");
-      setSnackbarMessage("Please select a valid date, process step, and comments.");
+      setSnackbarMessage(
+        "Please select a valid date, process step, and comments."
+      );
       setSnackbarOpen(true);
       return;
     }
@@ -91,25 +110,16 @@ const TimeSheet = () => {
     setSnackbarOpen(false);
   };
 
-  const fetchProcessSteps = async () => {
-    try {
-      const response = await getAllProcessSteps();
-      setProcessSteps(response.result);
-    } catch (error) {
-      myToaster.showErrorToast("Failed to fetch process steps.");
-    }
-  };
-
   const onSubmit = async (timeSheet) => {
     setLoading(true);
-    timeSheet.date=new Date(timeSheet.date);
+    timeSheet.date = new Date(timeSheet.date);
     timeSheet.hoursSpent = Number(timeSheet.hoursSpent);
-    console.log(timeSheet)
+    console.log(timeSheet);
     const response = await addTimeSheet(timeSheet);
-    console.log(response.result)
+    console.log(response.result);
     if (response.isSuccess) {
       myToaster.showSuccessToast(response.message);
-      navigate("/salesExecutive/timeSheetList")
+      navigate("/salesExecutive/timeSheetList");
     } else {
       myToaster.showErrorToast(response.message);
     }
@@ -125,30 +135,54 @@ const TimeSheet = () => {
         }}
       />
       <div className="time-sheet-container">
-    
         {/* Calendar */}
-        <div className="calendar-container" >
-          <label style={{marginRight:"10px"}}>Select Date </label>
-          <Calendar value={selectedDate} onChange={(e) => handleDateSelect(e.value)} showIcon />
+        <div className="calendar-container">
+          <label style={{ marginRight: "10px" }}>Select Date </label>
+          <Calendar
+            value={selectedDate}
+            onChange={(e) => handleDateSelect(e.value)}
+            showIcon
+          />
         </div>
 
         {/* Add New Button - Visible only if Monday is selected */}
         {isMonday && (
           <div className="mt-3">
-            <button className="btn btn-primary p-2 " onClick={showDialog} disabled={loading} >
+            <button
+              className="btn btn-primary p-2 "
+              onClick={showDialog}
+              disabled={loading}
+            >
               {loading ? <Spin /> : "Add Time sheet"}
             </button>
           </div>
         )}
 
         {/* Modal for Adding New Entry */}
-        <Modal open={open} onClose={hideDialog} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+        <Modal
+          open={open}
+          onClose={hideDialog}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
           <Box
-            sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 500, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4 }}
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 500,
+              bgcolor: "background.paper",
+              border: "2px solid #000",
+              boxShadow: 24,
+              p: 4,
+            }}
             component="form"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <Typography id="modal-modal-title" variant="h6" component="h2">Add New Time Sheet</Typography>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Add New Time Sheet
+            </Typography>
             <br />
 
             {/* Calendar restricted to the selected week's range */}
@@ -157,41 +191,43 @@ const TimeSheet = () => {
               <Calendar
                 minDate={minDate}
                 maxDate={maxDate}
-                {...register("date",{required:true})}
+                {...register("date", { required: true })}
                 showIcon
                 panelClassName="modal-calendar"
               />
-              {errors.date && <span className="text-danger">{errors.date.message}</span>}
+              {errors.date && (
+                <span className="text-danger">{errors.date.message}</span>
+              )}
             </div>
 
             {/* Process Step Dropdown */}
-            <FormControl fullWidth sx={{ mb: 2 }}>
-              <InputLabel id="process-step-label">Time Sheet Step</InputLabel>
-              <Select
-                labelId="time-Sheet-StepName"
+            <div className="mb-3">
+              <TextField
                 id="timeSheetStepName"
-                label="Time Sheet StepName"
-                {...register("timeSheetStepName", { required: true })}
-                error={Boolean(errors.processStep)}
-              >
-                {processSteps.map((step) => (
-                  <MenuItem key={step.id} value={step.stepName}>{step.stepName}</MenuItem>
-                ))}
-              </Select>
-              {errors.adminProcessStepId && <FormHelperText error>{errors.adminProcessStepId.message}</FormHelperText>}
-            </FormControl>
+                name="timeSheetStepName"
+                type="text"
+                variant="outlined"
+                placeholder="Enter Time Sheet Step"
+                {...register("timeSheetStepName", {
+                  required: "Time Sheet Step is required",
+                })}
+                error={Boolean(errors.timeSheetStepName)}
+                helperText={errors.timeSheetStepName?.message || ""}
+                fullWidth
+                sx={{ mt: 1 }}
+              />
+            </div>
 
             <TextField
-            id="hoursSpent"
-            label="Hours Spent"
-            type="number"
-            {...register("hoursSpent", { required: false })}
-            fullWidth
-            sx={{ mb: 2 }}
-            placeholder="Enter Hours Spent"
-            required="Hours is required"
-           
-          />
+              id="hoursSpent"
+              label="Hours Spent"
+              type="number"
+              {...register("hoursSpent", { required: false })}
+              fullWidth
+              sx={{ mb: 2 }}
+              placeholder="Enter Hours Spent"
+              required="Hours is required"
+            />
 
             <TextField
               id="comment"
@@ -207,17 +243,39 @@ const TimeSheet = () => {
             />
 
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <Button variant="contained" color="primary" type="submit" disabled={loading}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={loading}
+              >
                 {loading ? <Spin /> : "Submit"}
               </Button>
-              <Button variant="outlined" onClick={hideDialog} style={{ color: "red" }}>Cancel</Button>
+              <Button
+                variant="outlined"
+                onClick={hideDialog}
+                style={{ color: "red" }}
+              >
+                Cancel
+              </Button>
             </div>
           </Box>
         </Modal>
 
         {/* Snackbar for feedback */}
-        <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
-          <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: "100%" }}>{snackbarMessage}</Alert>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert
+            onClose={handleSnackbarClose}
+            severity={snackbarSeverity}
+            sx={{ width: "100%" }}
+          >
+            {snackbarMessage}
+          </Alert>
         </Snackbar>
       </div>
 
@@ -232,5 +290,3 @@ const TimeSheet = () => {
 };
 
 export default TimeSheet;
-
-

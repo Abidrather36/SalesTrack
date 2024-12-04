@@ -23,8 +23,8 @@ namespace salesTrack.Api.Controllers
             this.leadService = leadService;
         }
 
-        [HttpPost("addLeads")]
-        public async Task<IActionResult> AddLeads([FromBody]List<LeadRequestModel> models)
+        [HttpPost("addLeadsBulk")]
+        public async Task<IActionResult> AddLeads(List<LeadRequestModel> models)
         {
             try
             {
@@ -301,6 +301,19 @@ namespace salesTrack.Api.Controllers
                 return Ok(await leadService.DeleteLeadCompany(id));
             }
             catch (Exception ex )
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [HttpPost("BulkInsertionLeadCompany")]
+        public async Task<IActionResult> AddLeadCompanyNameBulk(List<LeadCompanyNameRequest> models)
+        {
+            try
+            {
+                /*return Ok(await leadService.AddLeadCompanyNameBulkInsert);*/
+                return default;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

@@ -35,68 +35,10 @@ namespace salesTrack.Persistence.Repository
             await context.FollowUpDates.AddAsync(model);
             return await context.SaveChangesAsync();
         }
-        public async Task<IEnumerable<Lead>> AddLeadsAsync(IEnumerable<LeadRequestModel> models, Guid userId)
+        public async Task<int> AddLeadsAsync(List<Lead> models)
         {
-            try
-            {
-                if (models == null || !models.Any())
-                {
-                    throw new ArgumentException("No leads provided for bulk insertion.");
-                }
-
-                var newLeads = new List<Lead>();
-
-                foreach (var model in models)
-                {
-                    // Check if a lead with the same email already exists for this company
-                    var existingLead = await context.Leads
-                        .Include(l => l.User)
-                        .FirstOrDefaultAsync(l => l.CompanyId == model.CompanyId && l.User.Email == model.Email);
-
-                    if (existingLead != null)
-                    {
-                        continue;
-                    }
-
-                    var newLead = new Lead
-                    {
-                        Id = Guid.NewGuid(), 
-                        LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId : throw new ArgumentException("LeadSourceId is required."),
-                        CompanyId = model.CompanyId,
-                        Comment = model.Comment,
-                        AssignTo = model.AssignTo,
-                        CreatedBy = userId,
-                        CreatedDate = DateTime.UtcNow,
-                        ModifiedDate = DateTime.UtcNow,
-                        IsActive = true,
-                        LeadRank = model.LeadRank,
-                        LeadCategoryId = model.LeadCategoryId,
-                        LeadCompanyId = model.LeadCompanyId
-                    };
-
-                    newLeads.Add(newLead);
-                }
-
-                if (!newLeads.Any())
-                {
-                    throw new Exception("No valid leads to add.");
-                }
-
-                await context.Leads.AddRangeAsync(newLeads);
-                await context.SaveChangesAsync();
-
-                var addedLeadIds = newLeads.Select(l => l.Id).ToList();
-                var addedLeads = await context.Leads
-                    .Where(l => addedLeadIds.Contains(l.Id))
-                    .Include(l => l.User)
-                    .ToListAsync();
-
-                return addedLeads;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error adding leads: {ex.Message}");
-            }
+          await  context.Leads.AddRangeAsync(models);
+          return await context.SaveChangesAsync();
         }
 
         public async Task<Lead> AddLead(LeadRequestModel model,Guid userId)
@@ -439,6 +381,12 @@ namespace salesTrack.Persistence.Repository
         {
             var timeSheetRes=await Task.Run(()=>context.TimeSheets.Update(model));
             return await context.SaveChangesAsync();
+        }
+
+        public async Task<int> AddLeadCompanyNamesBulk(List<LeadCompany> models)
+        {
+           await context.LeadCompanies.AddRangeAsync(models);
+           return await context.SaveChangesAsync();
         }
     }
 }

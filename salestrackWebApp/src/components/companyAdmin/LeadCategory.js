@@ -6,11 +6,13 @@ import Spin from '../public/Spin';
 import { addLeadCategory } from '../../Services/CompanyService';
 import myToaster from '../../utils/toaster';
 import { useNavigate } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 
 function LeadCategory() {
   const [loading, setLoading] = useState(false);
   const [leadCategory, setLeadCategory] = useState();
   const navigate = useNavigate();
+  const [showSpinner,setShowSpinner]=useState(true)
   
   const {
     register,
@@ -19,21 +21,21 @@ function LeadCategory() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    setLoading(true); // Start loading spinner
+    setLoading(true); 
     console.log(data);
     
-    // Call API to add lead category
     const response = await addLeadCategory(data);
     
     if (response.isSuccess) {
       setLeadCategory(response.result);
       myToaster.showSuccessToast(response.message);
-      navigate("/companyAdmin/leadCategoryList"); // Redirect on success
+      navigate("/companyAdmin/leadCategoryList"); 
     } else {
       myToaster.showErrorToast(response.message);
+      setShowSpinner(false)
     }
 
-    setLoading(false); // Stop loading spinner after response is received
+    setLoading(false); 
   };
 
   return (

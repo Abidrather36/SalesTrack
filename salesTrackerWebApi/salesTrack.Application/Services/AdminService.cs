@@ -714,6 +714,8 @@ namespace salesTrack.Application.Services
             try
             {
                 var loggedInUser = contextService.UserId();
+
+                var companyId = loggedInUser;
                 if (model.LeadCategoryName == string.Empty && model.LeadCategoryDescription == string.Empty)
                 {
                     return ApiResponse<LeadCategoryResponse>.ErrorResponse("please enter values", HttpStatusCodes.BadRequest);
@@ -733,6 +735,7 @@ namespace salesTrack.Application.Services
                     CreatedBy = loggedInUser,
                     CreatedDate = DateTime.Now,
                     IsActive = true,
+                    CompanyId=companyId
                 };
                 var res = await leadRepository.AddLeadCategory(leadCategory);
                 if (res > 0)

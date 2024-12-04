@@ -17,10 +17,7 @@ function UserList() {
   useEffect(() => {
     fetchUsers();
   }, []);
-  const userTypeMap = {
-    1: "Sales Executive",
-    2: "Sales Manager",
-  };
+
   const headers = [
     { key: "name", label: "Name" },
     { key: "email", label: "Email" },
@@ -28,7 +25,6 @@ function UserList() {
     { key: "userType", label: "User Type" },
     { key: "reportsToName", label: "Reports To" },
     { key: "isActive", label: "Is Active" },
-    { key: "companyName", label: "Company Name" },
   ];
 
   const breadcrumbLabels = {
@@ -83,11 +79,7 @@ function UserList() {
     const response = await UserLists();
     if (response.isSuccess) {
       console.log(response.result);
-      const transformedUsers = response.result.map((user) => ({
-        ...user,
-        userType: userTypeMap[user.userType], // Replace numeric values with labels
-      }));
-      setUsers(transformedUsers);
+      setUsers(response.result);
       setShowSpinner(false);
     } else {
       myToaster.showErrorToast(response.message);

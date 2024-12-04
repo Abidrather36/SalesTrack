@@ -80,6 +80,7 @@ const ViewTimeSheet = () => {
         setTimeSheetData(response.result);
       } else {
         myToaster.showErrorToast(response.message);
+        setTimeSheetData("")
       }
     } catch (error) {
       myToaster.showErrorToast("An error occurred. Please try again.");

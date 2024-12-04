@@ -7,7 +7,7 @@ namespace salesTrack.Application.Abstraction.IRepository
 {
     public interface ILeadRepository:IBaseRepository<Lead>
     {
-        Task<IEnumerable<Lead>> AddLeadsAsync(IEnumerable<LeadRequestModel> models, Guid userId);
+        Task<int> AddLeadsAsync(List<Lead>? models);
         Task<Lead> AddLead(LeadRequestModel model,Guid userId);
         Task<LeadResponseModel> GetLeadById(Guid leadId);
         Task<IEnumerable<LeadResponseModel>> GetAllLeadsByCompanyId(Guid id,Guid assignTo);
@@ -28,7 +28,8 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<IEnumerable<LeadCategoryResponse>> GetLeadCategories();
         Task<LeadCategory?> GetLeadCategoryById(Guid? id);
         Task<int> UpdateLeadCategory(LeadCategory model);
-        Task<int> AddLeadCompanyName(LeadCompany model); 
+        Task<int> AddLeadCompanyName(LeadCompany model);
+        Task<int> AddLeadCompanyNamesBulk(List<LeadCompany> models);
         Task<LeadCompany> GetLeadCompanyNameById(Guid? id); 
         Task<IEnumerable<LeadCompanyNameResponse>> GetAllLeadCompanyNames(Guid companyId);
         Task<int> UpdateLeadCompany(LeadCompany model);

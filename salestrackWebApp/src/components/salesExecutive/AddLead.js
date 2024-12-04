@@ -186,9 +186,8 @@ const AddLead = () => {
                       {...register("email", {
                         required: "Email is required",
                         validate: (value) =>
-                          /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(
-                            value
-                          ) || "Invalid email address",
+                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/.test(value) || "Invalid email address",
+                          
                       })}
                     />
                     {errors.email && (

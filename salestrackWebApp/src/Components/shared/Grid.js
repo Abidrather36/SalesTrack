@@ -100,7 +100,35 @@ function Grid({
                         ) : (
                           <Badge bg="danger">Inactive</Badge>
                         )
-                      ) : header.key === "hoursSpent" ? (
+                      ) : header.key === "finalStatus" ? (
+                                                item[header.key] === 1 ? (
+                                                  <MDBBadge color="warning" pill>
+                                                    Open
+                                                  </MDBBadge>
+                                                ) : item[header.key] === 2 ? (
+                                                  <MDBBadge color="danger" pill>
+                                                    Close
+                                                  </MDBBadge>
+                                                ) : item[header.key] === 3 ? (
+                                                  <MDBBadge color="success" pill>
+                                                    Success
+                                                  </MDBBadge>
+                                                ) : (
+                                                  <MDBBadge color="primary" pill>
+                                                    Unknown
+                                                  </MDBBadge>
+                                                )
+                                              ) : header.key === "userType" ? (
+                                                item[header.key] === 1 ? (
+                                                  <MDBBadge color="info" pill>
+                                                    SalesExecutive
+                                                  </MDBBadge>
+                                                ) : item[header.key] === 2 ? (
+                                                  <MDBBadge color="primary" pill>
+                                                    SalesManager
+                                                  </MDBBadge>
+                                                ) : null
+                                              ): header.key === "hoursSpent" ? (
                         item[header.key] > 5 ? (
                           <span>
                             <FaClock style={{ color: "orange" }} /> {item[header.key]} hrs

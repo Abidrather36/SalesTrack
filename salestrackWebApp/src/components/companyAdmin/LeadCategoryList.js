@@ -11,6 +11,7 @@ import { CircularProgress } from "@mui/material";
 function LeadCategoryList() {
   const [leadCategories, setLeadCategories] = useState([]);
   const navigate = useNavigate();
+  const[showSpinner,setShowSpinner]=useState(true)
 
   const headers = [
     { key: "leadCategoryName", label: "Category Name" },
@@ -70,8 +71,8 @@ function LeadCategoryList() {
     const response = await leadCategoryList();
     if (response.isSuccess) {
       setLeadCategories(response.result);
+      setShowSpinner(false);
     } else {
-      myToaster.showErrorToast(response.message);
     }
   };
 
@@ -82,6 +83,12 @@ function LeadCategoryList() {
   return (
     <>
       <BreadcrumbComponent labels={breadcrumbLabels} />
+      {showSpinner ? (
+        <div style={{display:"flex",justifyContent:"center",alignItems:"center",marginTop:"150px"}} >
+            <CircularProgress/>
+
+        </div>
+      ):(
       <Grid
         headers={headers}
         buttons={btnList}
@@ -90,7 +97,7 @@ function LeadCategoryList() {
         tableName="Lead Categories"
         addButtonLabel="Add Lead Category"
       />
-      
+      )}
       <ConfirmDialog />
      
     </>
