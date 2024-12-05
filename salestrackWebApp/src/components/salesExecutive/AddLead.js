@@ -9,7 +9,7 @@ import Spin from "../public/Spin";
 import { leadSources as getLeadSources } from "../../Services/LeadSource";
 import { UserLists } from "../../Services/UserService";
 import leadImage from "../../utils/build/assets/img/illustrated-woman-being-intern-company_23-2148726151 (1).avif";
-import { leadCategoryList } from "../../Services/CompanyService";
+import { getLeadCategoriesByCompany } from "../../Services/LeadService";
 const AddLead = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -70,7 +70,8 @@ const AddLead = () => {
     }
   };
   const fetchLeadCategories = async () => {
-    const response = await leadCategoryList();
+    const response = await getLeadCategoriesByCompany();
+    console.log("lead category for companies are :",response.result)
     if (response.isSuccess) {
       setLeadCategories(response.result);
     } else {
@@ -137,16 +138,16 @@ const AddLead = () => {
                 marginLeft: "140px",
               }}
             >
-           <h2
-  className="form-title"
-  style={{
-    fontFamily: "'tungstenw05-medium', 'Oswald', sans-serif",
-    fontSize: '2rem',
-    fontWeight: 'bold',
-  }}
->
-  Register New Lead
-</h2>
+              <h2
+                className="form-title"
+                style={{
+                  fontFamily: "'tungstenw05-medium', 'Oswald', sans-serif",
+                  fontSize: "2rem",
+                  fontWeight: "bold",
+                }}
+              >
+                Register New Lead
+              </h2>
 
               <form
                 className="login-form"
@@ -186,8 +187,9 @@ const AddLead = () => {
                       {...register("email", {
                         required: "Email is required",
                         validate: (value) =>
-                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/.test(value) || "Invalid email address",
-                          
+                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/.test(
+                            value
+                          ) || "Invalid email address",
                       })}
                     />
                     {errors.email && (

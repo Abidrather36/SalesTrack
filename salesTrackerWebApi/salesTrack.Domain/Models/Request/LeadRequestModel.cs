@@ -12,16 +12,11 @@ namespace salesTrack.Domain.Models.Request
         [EmailAddress(ErrorMessage = "Invalid email format.")]
         [RegularExpression("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", ErrorMessage = "Please enter valid Email")]
         public string? Email { get; set; }
-
-        [Required(ErrorMessage = "Phone number is required.")]
-        [Phone(ErrorMessage = "Invalid phone number format.")]
         public string? PhoneNumber { get; set; }
         public Guid LeadSourceId { get; set;}
-
         public Guid CompanyId { get; set; }
         public Guid LeadCategoryId { get; set; }
         public Guid LeadCompanyId {  get; set; }
-        [Required]
         public string? Comment { get; set; }
 
         [Required(ErrorMessage = "AssignTo is required.")]

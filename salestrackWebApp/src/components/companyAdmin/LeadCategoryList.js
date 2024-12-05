@@ -73,6 +73,7 @@ function LeadCategoryList() {
       setLeadCategories(response.result);
       setShowSpinner(false);
     } else {
+      setShowSpinner(false)
     }
   };
 

@@ -720,7 +720,7 @@ namespace salesTrack.Application.Services
                 {
                     return ApiResponse<LeadCategoryResponse>.ErrorResponse("please enter values", HttpStatusCodes.BadRequest);
                 }
-                var leadCategories = await leadRepository.GetLeadCategories();
+                var leadCategories = await leadRepository.GetLeadCategories(loggedInUser);
 
                 if (leadCategories.Any(x => x.LeadCategoryName == model.LeadCategoryName))
                 {
@@ -762,7 +762,8 @@ namespace salesTrack.Application.Services
             try
             {
                 var loggedInUser = contextService.UserId();
-                var leadCategories = await leadRepository.GetLeadCategories();
+                
+                var leadCategories = await leadRepository.GetLeadCategories(loggedInUser);
                 if (!leadCategories.Any())
                 {
                     return ApiResponse<IEnumerable<LeadCategoryResponse>>.ErrorResponse("No Lead Category Found", HttpStatusCodes.BadRequest);
@@ -849,6 +850,34 @@ namespace salesTrack.Application.Services
             {
                 return ApiResponse<LeadCategoryResponse>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
 
+            }
+        }
+
+        public async  Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompany()
+        {
+            var companyAdmin = contextService.UserId();
+            var leads = await leadRepository.GetAllLeadsAsync(companyAdmin);
+            if (leads == null || !leads.Any())
+            {
+                return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"no Leads Found", HttpStatusCodes.NotFound);
+            }
+
+            foreach (var lead in leads)
+            {
+                var assignUser = await userRepository.GetByIdAsync(lead.AssignToId);
+                lead.AssignedTo = assignUser?.Name;
+            }
+            if (leads is null)
+            {
+                return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError}", HttpStatusCodes.InternalServerError);
+
+            }
+            else
+            {
+                return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(leads, "Leads Fetched by CompanyId", HttpStatusCodes.InternalServerError);
+
+
+                return default;
             }
         }
     }

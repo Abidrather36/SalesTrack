@@ -152,7 +152,8 @@ namespace salesTrack.Application.Services
         {
             try
             {
-                var leads = await leadRepository.GetAllLeadsAsync();
+               var user =contextService.UserId();
+                var leads = await leadRepository.GetAllLeadsAsync(user);
                 foreach (var lead in leads)
                 {
                     var assignUser = await userRepository.GetByIdAsync(lead.AssignToId);
@@ -589,7 +590,8 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> TodaysFollowUpDate(TodaysFollowUpdateRequest model)
         {
-            var todaysFollowUpdate = await leadRepository.TodaysFollowUpdate(model);
+           var user= contextService.UserId();
+            var todaysFollowUpdate = await leadRepository.TodaysFollowUpdate(model,user);
 
             if (todaysFollowUpdate is null || !todaysFollowUpdate.Any())
             {
@@ -947,7 +949,7 @@ return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.
                          .Include(l => l.User)
                          .FirstOrDefaultAsync(l => l.CompanyId == companyId && l.User.Email == model.Email);
 
-                     if (existingLead != null)
+                     if (existingLead != null)0
                      {
                          continue; // Skip duplicate entries
                      }
@@ -1033,6 +1035,28 @@ return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.
         public Task<ApiResponse<IEnumerable<LeadCompanyNameResponse>>> AddLeadCompanyNameBulkInsert(List<LeadCompanyNameRequest> models)
         {
             throw new NotImplementedException();
+        }
+
+        public async  Task<ApiResponse<IEnumerable<LeadCategoryResponse>>> GetAllLeadCategoriesByCompany()
+        {
+            try
+            {
+                var loggedInUser = contextService.UserId();
+                 var user= await  userRepository.GetUserById(loggedInUser);
+                
+                var leadCategories = await leadRepository.GetLeadCategories(user.CompanyId);
+                if (!leadCategories.Any())
+                {
+                    return ApiResponse<IEnumerable<LeadCategoryResponse>>.ErrorResponse("No Lead Category Found", HttpStatusCodes.BadRequest);
+                }
+                return ApiResponse<IEnumerable<LeadCategoryResponse>>.SuccessResponse(leadCategories, $"{leadCategories.Count()} Lead Categories Found", HttpStatusCodes.OK);
+
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<LeadCategoryResponse>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<Lead> AddLead(LeadRequestModel model,Guid userId);
         Task<LeadResponseModel> GetLeadById(Guid leadId);
         Task<IEnumerable<LeadResponseModel>> GetAllLeadsByCompanyId(Guid id,Guid assignTo);
-        Task<IEnumerable<LeadResponseModel>> GetAllLeadsAsync();
+        Task<IEnumerable<LeadResponseModel>> GetAllLeadsAsync(Guid companyId);
         Task<int> AddLeadProcessStep(LeadProcessSteps model);
         Task<int> UpdateLeadProcessStep(LeadProcessSteps model);
         Task<LeadProcessSteps> GetLeadProcessStepById(Guid id);
@@ -19,13 +19,13 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<int> AddfollowUpdate(FollowUpDate model);
         Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId);
         Task<bool> AddProcessStep(FollowUpReq model);
-        Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest models);
+        Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest models,Guid id);
         Task<int> AddTimeSheet(TimeSheet model);
         Task<IEnumerable<TimeSheetResponseModel>> GetAllTimeSheetsByUser(Guid userId);
         Task<int> UpdateTimeSheet(TimeSheet model);
         Task<TimeSheet> GetTimeSheetById(Guid id);
         Task<int> AddLeadCategory(LeadCategory model);
-        Task<IEnumerable<LeadCategoryResponse>> GetLeadCategories();
+        Task<IEnumerable<LeadCategoryResponse>> GetLeadCategories(Guid companyId);
         Task<LeadCategory?> GetLeadCategoryById(Guid? id);
         Task<int> UpdateLeadCategory(LeadCategory model);
         Task<int> AddLeadCompanyName(LeadCompany model);

@@ -1,3 +1,5 @@
+
+
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logoImg from "../../utils/WhatsApp Image 2024-11-07 at 10.47.28_009bb6b7.jpg";
@@ -64,7 +66,7 @@ const Header = () => {
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        gap: "15px",
+                        gap: "10px",
                         cursor: "pointer",
                         transition: "transform 0.2s ease",
                       }}
@@ -74,19 +76,18 @@ const Header = () => {
                         className="avatar avatar-rounded-circle"
                         src={logoImg}
                         style={{
-                          width: "60px",
-                          height: "60px",
+                          width: "50px",
+                          height: "50px",
                           borderRadius: "50%",
-                          border: "3px solid #00b4d8",
-                          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.15)",
+                          border: "2px solid #00b4d8",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
                         }}
                       />
                       <span
                         style={{
-                          fontSize: "1.25rem",
+                          fontSize: "1rem",
                           color: "#03045e",
-                          fontWeight: "bold",
-                          textShadow: "1px 1px 2px rgba(0, 0, 0, 0.1)",
+                          fontWeight: "600",
                         }}
                       >
                         {user.fullName}
@@ -98,28 +99,28 @@ const Header = () => {
                     aria-labelledby="sidebarAvatar"
                     className="dropdown-menu dropdown-menu-end"
                     style={{
-                      padding: "20px",
-                      minWidth: "320px",
+                      padding: "15px",
+                      minWidth: "280px",
                       textAlign: "left",
                       backgroundColor: "#f4f9f7",
-                      borderRadius: "10px",
-                      boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+                      borderRadius: "8px",
+                      boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
                     }}
                   >
                     <div
                       className="dropdown-header d-flex align-items-center"
-                      style={{ marginBottom: "15px" }}
+                      style={{ marginBottom: "10px" }}
                     >
                       <img
                         alt="User Avatar"
                         className="avatar avatar-rounded-circle me-3"
                         src={logoImg}
                         style={{
-                          width: "50px",
-                          height: "50px",
+                          width: "40px",
+                          height: "40px",
                           borderRadius: "50%",
                           border: "2px solid #0077b6",
-                          marginRight: "15px",
+                          marginRight: "10px",
                         }}
                       />
                       <div>
@@ -127,9 +128,9 @@ const Header = () => {
                           className="dropdown-header-name"
                           style={{
                             margin: 0,
-                            fontSize: "1.2rem",
+                            fontSize: "1rem",
                             color: "#03045e",
-                            fontWeight: "bold",
+                            fontWeight: "600",
                           }}
                         >
                           {userRole === 1
@@ -144,7 +145,7 @@ const Header = () => {
                           className="text-muted"
                           style={{
                             margin: 0,
-                            fontSize: "0.9rem",
+                            fontSize: "0.85rem",
                             color: "#555",
                           }}
                         >
@@ -167,19 +168,23 @@ const Header = () => {
                         display: "flex",
                         alignItems: "center",
                         padding: "10px 15px",
-                        borderRadius: "5px",
-                        transition: "background-color 0.3s",
+                        borderRadius: "6px",
+                        transition: "background-color 0.3s, transform 0.2s",
+                        fontFamily: "'Poppins', sans-serif",
+                        fontSize: "0.9rem",
+                        fontWeight: "500",
+                        color: "#03045e",
+                        textDecoration: "none",
                       }}
-                      onMouseEnter={(e) =>
-                        (e.target.style.backgroundColor = "#90e0ef")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.backgroundColor = "transparent")
-                      }
+                    
                     >
                       <i
                         className="bi bi-person-circle"
-                        style={{ marginRight: "10px", color: "#0077b6" }}
+                        style={{
+                          marginRight: "10px",
+                          color: "#0077b6",
+                          fontSize: "1.1rem",
+                        }}
                       />
                       Profile
                     </Link>
@@ -191,20 +196,22 @@ const Header = () => {
                         display: "flex",
                         alignItems: "center",
                         padding: "10px 15px",
-                        borderRadius: "5px",
-                        transition: "background-color 0.3s",
-                        textDecoration: "none", 
+                        borderRadius: "6px",
+                        transition: "background-color 0.3s, transform 0.2s",
+                        fontFamily: "'Poppins', sans-serif",
+                        fontSize: "0.9rem",
+                        fontWeight: "500",
+                        color: "#d33",
+                        textDecoration: "none",
                       }}
-                      onMouseEnter={(e) =>
-                        (e.target.style.backgroundColor = "#ffb3c1")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.backgroundColor = "transparent")
-                      }
+                    
                     >
                       <i
                         className="bi bi-box-arrow-left"
-                        style={{ marginRight: "10px", color: "#d33" }}
+                        style={{
+                          marginRight: "10px",
+                          fontSize: "1.1rem",
+                        }}
                       />
                       Logout
                     </Link>
@@ -283,12 +290,12 @@ export default Header;
 //               transform: translateY(-10px);
 //               transition: all 0.3s ease-in-out;
 //             }
-  
+
 //             .dropdown:hover .dropdown-menu {
 //               opacity: 1;
 //               transform: translateY(0);
 //             }
-  
+
 //             .dropdown-item {
 //               cursor: pointer;
 //               display: flex;
@@ -297,12 +304,12 @@ export default Header;
 //               border-radius: 5px;
 //               transition: background-color 0.3s, transform 0.3s;
 //             }
-  
+
 //             .dropdown-item:hover {
 //               background-color: #90e0ef;
 //               transform: scale(1.05);
 //             }
-  
+
 //             .avatar-parent-child {
 //               display: flex;
 //               align-items: center;
@@ -310,11 +317,11 @@ export default Header;
 //               cursor: pointer;
 //               transition: transform 0.2s ease;
 //             }
-  
+
 //             .avatar-parent-child:hover {
 //               transform: scale(1.1);
 //             }
-  
+
 //             .dropdown-header-name {
 //               margin: 0;
 //               font-size: 1.2rem;
@@ -504,4 +511,3 @@ export default Header;
 // };
 
 // export default Header;
-

@@ -219,10 +219,7 @@ export default function ExecutiveDashboard() {
       >
         <div>
           <span>Search Follow-Up History </span>
-          <i
-            className="fas fa-arrow-down"
-            style={{ display: "block", marginTop: "5px", marginLeft: "80px" }}
-          ></i>
+        
         </div>
       </h1>
 

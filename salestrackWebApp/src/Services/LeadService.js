@@ -70,3 +70,7 @@ export const updateLeadCompany= (model)=>{
     let res=axiosObject.post(`${ApiUrl}Leads/updateLeadCompany`,model).then(res=>res.data)
     return res;
 }
+export const getLeadCategoriesByCompany =()=>{
+    let res =axiosObject.get(`${ApiUrl}Leads/getLeadCategoriesByCompany`).then(res=>res.data);
+    return res;
+}

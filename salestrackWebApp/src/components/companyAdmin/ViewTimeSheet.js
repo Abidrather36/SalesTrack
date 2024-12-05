@@ -18,7 +18,7 @@ const ViewTimeSheet = () => {
   const [searchClicked, setSearchClicked] = useState(false);
   const headers = [
     { key: "dateString", label: "Date" },
-    { key: "processStep", label: "Process Step" },
+    { key: "timeSheetStepName", label: "Time Sheet Steps Name" },
     { key: "hoursSpent", label: "Hours Spent" },
     { key: "comment", label: "Comments" },
   ];

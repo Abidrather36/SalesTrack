@@ -28,9 +28,10 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<IEnumerable<LeadCompanyNameResponse>>> GetAllCompaniesLeads();
         Task<ApiResponse<LeadCompanyNameResponse>> DeleteLeadCompany(Guid id);
         Task<ApiResponse<UpdateLeadCompany>> UpdateLeadCompany(UpdateLeadCompany model);
+        Task<ApiResponse<IEnumerable<LeadCategoryResponse>>> GetAllLeadCategoriesByCompany();
 
-       
-     
-    
+
+
+
     }
 }

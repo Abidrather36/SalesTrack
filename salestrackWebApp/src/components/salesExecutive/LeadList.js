@@ -108,7 +108,7 @@ function LeadList(props) {
   const manageLead = (lead) => {
     setLeadData(lead);
     setFollowUpdatePopup(true);
-    setShowGrid(true);
+    setShowGrid(false);
   };
 
   const mangeClosePopup = () => {

@@ -318,6 +318,19 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        [HttpGet("getLeadCategoriesByCompany")]
+        public async Task<IActionResult> getLeadCategory()
+        {
+            try
+            {
+                return Ok(await leadService.GetAllLeadCategoriesByCompany());
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+                
+            }
+        }
 
     }
 }

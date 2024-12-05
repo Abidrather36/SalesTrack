@@ -77,11 +77,19 @@ export const CompanyAdminsidebarLabels = [
     label:"Add Lead Category",
     link:"/companyAdmin/add-lead-category",
     icon:<FaPlus />,
-  },{
+  }
+  ,
+  {
     id:6,
     label:"Lead Category List",
     link:"/companyAdmin/leadCategoryList",
     icon: <FaListAlt />,
+  },
+  {
+    id:7,
+    label:"LeadList",
+    link:"/companyAdmin/leadLists",
+    icon:<FaListAlt/>
   }
 ];
 

@@ -230,18 +230,19 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-     /*   [HttpGet("getAllLeads")]
-        public Task<IActionResult> getAllLeads()
+        [HttpGet("getAllLeads")]
+        public async Task<IActionResult> GetAllLeadsByCompany()
         {
             try
             {
-                return Ok(await (id));
+
+                return Ok(await adminService.GetAllLeadsByCompany());
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-        }*/
+        }
 
     }
 }

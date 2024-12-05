@@ -62,3 +62,11 @@
             let res =await axiosObject.post(`${ApiUrl}CompanyAdmin/update-process-step`,updateModel).then(res =>res.data)
             return res;
         }
+        export const getAllLeadsOfCompany=()=>{
+            let res =axiosObject.get(`${ApiUrl}CompanyAdmin/getAllLeads`).then(res=>res.data);
+            return res;
+        }
+        export const getLeadCategoriesByCompany =()=>{
+            let res =axiosObject.get(`${ApiUrl}CompanyAdmin/getLeadCategoriesByCompany`).then(res=>res.data);
+            return res;
+        }

@@ -163,9 +163,9 @@ namespace salesTrack.Persistence.Repository
             return  res;
         }
 
-        public async Task<IEnumerable<LeadResponseModel>> GetAllLeadsAsync()
+        public async Task<IEnumerable<LeadResponseModel>> GetAllLeadsAsync(Guid companyId)
         {
-            var Leads = await context.Leads.Select(lead => new LeadResponseModel
+            var Leads = await context.Leads.Where(l=>l.CompanyId==companyId).Select(lead => new LeadResponseModel
             {
                 Id = lead.Id,
                 LeadName = lead.User!.Name,
@@ -181,7 +181,11 @@ namespace salesTrack.Persistence.Repository
                 IsActive = lead.IsActive,
                 CompanyName = lead.Company!.CompanyName,
                 CompanyId = lead.CompanyId,
-                CreatedDate = lead.CreatedDate.ToString()
+                LeadCategoryName=lead.LeadCategory.LeadCategoryName,
+                LeadRank=lead.LeadRank,
+                CreatedDate = lead.CreatedDate.HasValue
+                ? lead.CreatedDate.Value.ToString("dd-MM-yyyy")
+                : null
             }).ToListAsync();
 
             return Leads;
@@ -252,18 +256,17 @@ namespace salesTrack.Persistence.Repository
 
         }
 
-        public async Task<IEnumerable<LeadCategoryResponse>> GetLeadCategories()
+        public async Task<IEnumerable<LeadCategoryResponse>> GetLeadCategories(Guid companyId)
         {
-            var leadCategories = await context.LeadCategories.ToListAsync();
 
-            var leadCategoryResponses = leadCategories.Select(category => new LeadCategoryResponse
+            var leadCategoryResponses =await context.LeadCategories.Where(l => l.CompanyId == companyId).Select(category => new LeadCategoryResponse
             {
-                Id=category.Id,
+                Id = category.Id,
                 LeadCategoryName = category.LeadCategoryName,
                 LeadCategoryDescription = category.LeadCategoryDescription,
-                IsActive=category.IsActive,
-                
-            });
+                IsActive = category.IsActive,
+
+            }).ToListAsync();
 
             return leadCategoryResponses;
         }
@@ -323,9 +326,9 @@ namespace salesTrack.Persistence.Repository
         }
 
       
-        public async Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest model)
+        public async Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest model,Guid id)
         {
-            var followUpsForToday = await context.Leads
+            var followUpsForToday = await context.Leads.Where(l=>l.Id==id)
                 .Include(u => u.User)
                 .Include(l => l.ProcessSteps!)
                     .ThenInclude(ps => ps.LeadFollowUpDate)

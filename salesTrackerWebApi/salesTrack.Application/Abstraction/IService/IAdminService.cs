@@ -24,6 +24,8 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<IEnumerable<LeadCategoryResponse>>> GetAllLeadCategories();
         Task<ApiResponse<LeadCategoryResponse>> UpdateLeadCategory(UpdateLeadCategory model);
         Task<ApiResponse<LeadCategoryResponse>> DeleteLeadCategory(Guid id);
+        Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompany();
+
 
     }
 }
