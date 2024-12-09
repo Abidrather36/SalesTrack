@@ -48,6 +48,9 @@ element.style {
   .profile-card .profile-actions a:hover {
     color: #90e0ef; /* Add hover effect for links */
   }
+
+
+  /*---------------------*/
   body {
     font-family: 'Arial', sans-serif;
   }

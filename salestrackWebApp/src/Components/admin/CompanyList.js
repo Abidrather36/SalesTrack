@@ -79,7 +79,7 @@ function CompanyList() {
     } catch (error) {
       myToaster.showErrorToast("Failed to delete the company");
     } finally {
-      setConfirmVisible(false); // Close the dialog
+      setConfirmVisible(false); 
     }
   };
 
@@ -119,7 +119,7 @@ function CompanyList() {
         message={`Are you sure you want to delete the company "${selectedCompany?.companyName}"?`}
         header="Confirmation"
         icon="pi pi-exclamation-triangle"
-        acceptLabel="Yes"
+        acceptLabel="Yes"s
         rejectLabel="No"
         acceptClassName="p-button-secondary"
         rejectClassName="p-button-danger"

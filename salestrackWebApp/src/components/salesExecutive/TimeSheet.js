@@ -48,6 +48,7 @@ const TimeSheet = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
     setValue,
   } = useForm();
@@ -191,7 +192,7 @@ const TimeSheet = () => {
               <Calendar
                 minDate={minDate}
                 maxDate={maxDate}
-                {...register("date", { required: true })}
+                {...register("date", { required: "Date is required" })}
                 showIcon
                 panelClassName="modal-calendar"
               />

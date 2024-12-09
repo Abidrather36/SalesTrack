@@ -73,6 +73,7 @@ function LeadCategoryList() {
       setLeadCategories(response.result);
       setShowSpinner(false);
     } else {
+      myToaster.showErrorToast(response.message)
       setShowSpinner(false)
     }
   };

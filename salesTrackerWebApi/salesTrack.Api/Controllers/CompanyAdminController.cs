@@ -230,7 +230,7 @@ namespace salesTrack.Api.Controllers
             }
         }
 
-        [HttpGet("getAllLeads")]
+        [HttpGet("getAllLeadsByCompany")]
         public async Task<IActionResult> GetAllLeadsByCompany()
         {
             try

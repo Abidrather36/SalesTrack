@@ -35,11 +35,60 @@ namespace salesTrack.Persistence.Repository
             await context.FollowUpDates.AddAsync(model);
             return await context.SaveChangesAsync();
         }
-        public async Task<int> AddLeadsAsync(List<Lead> models)
+            public async Task<int> AddLeadsAsync(List<Lead> models)
+            {
+              await  context.Leads.AddRangeAsync(models);
+              return await context.SaveChangesAsync();
+            }
+       /* public async Task<IEnumerable<Lead>> AddLeadsAsync(IEnumerable<LeadRequestModel> models, Guid userId)
         {
-          await  context.Leads.AddRangeAsync(models);
-          return await context.SaveChangesAsync();
-        }
+            try
+            {
+                var leadsToAdd = new List<Lead>();
+                foreach (var model in models)
+                {
+                    // Check for existing lead with the same email
+                    var existingLead = await context.Leads
+                        .Include(l => l.User)
+                        .FirstOrDefaultAsync(l => l.CompanyId == model.CompanyId && l.User.Email == model.Email);
+
+                    if (existingLead != null)
+                    {
+                        throw new Exception($"A lead with email {model.Email} already exists for this company.");
+                    }
+
+                    // Create new lead
+                    var newLead = new Lead
+                    {
+                        Id = 
+                        LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId : throw new ArgumentException("Lead SourceId is required"),
+                        CompanyId = model.CompanyId,
+                        Comment = model.Comment,
+                        AssignTo = model.AssignTo,
+                        CreatedBy = userId,
+                        CreatedDate = DateTime.UtcNow,
+                        ModifiedDate = DateTime.UtcNow,
+                        IsActive = true,
+                        LeadRank = model.LeadRank,
+                        LeadCategoryId = model.LeadCategoryId,
+                        LeadCompanyId = model.LeadCompanyId
+                    };
+
+                    leadsToAdd.Add(newLead);
+                }
+
+                await context.Leads.AddRangeAsync(leadsToAdd);
+                await context.SaveChangesAsync();
+
+                return leadsToAdd;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error adding multiple leads: {ex.Message}");
+            }
+        }*/
+
+
 
         public async Task<Lead> AddLead(LeadRequestModel model,Guid userId)
         {
@@ -226,7 +275,8 @@ namespace salesTrack.Persistence.Repository
                 HoursSpent = x.HoursSpent,
                 Comment = x.Comment,
                 Date = x.Date,
-                DateString= x.Date.ToString("dd/MM/yyyy")
+                DateString= x.Date.ToString("dd/MM/yyyy"),
+                IsActive=x.IsActive
 
             }).OrderBy(x=>x.Date).ToListAsync();
             return res;
@@ -287,9 +337,9 @@ namespace salesTrack.Persistence.Repository
             return procStep;
         }
 
-        public async Task<TimeSheet> GetTimeSheetById(Guid id)
+        public async Task<TimeSheet?> GetTimeSheetById(Guid id)
         {
-               return  await  context.TimeSheets.FindAsync(id);
+               return await context.TimeSheets.FindAsync(id);
         }
 
         public async Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId)

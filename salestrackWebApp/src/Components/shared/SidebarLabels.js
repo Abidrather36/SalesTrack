@@ -88,7 +88,7 @@ export const CompanyAdminsidebarLabels = [
   {
     id:7,
     label:"LeadList",
-    link:"/companyAdmin/leadLists",
+    link:"/companyAdmin/leadListCompany",
     icon:<FaListAlt/>
   }
 ];

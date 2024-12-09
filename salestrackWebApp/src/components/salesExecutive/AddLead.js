@@ -223,7 +223,7 @@ const AddLead = () => {
                       style={{ padding: "0px 1.25rem 0 1.12rem" }}
                       placeholder="Phone Number"
                       {...register("phoneNumber", {
-                        required: "Phone number is required",
+                        required: false,
                         pattern: {
                           value: /^[0-9]{10}$/,
                           message: "Phone number must be 10 digits",

@@ -43,7 +43,10 @@ function Grid({
   );
 
   // Paginated filtered data after applying search and specific filter
-  const filteredData = leadListFilteredData.length > 0 ? leadListFilteredData : generalFilteredData;
+  const filteredData =
+    leadListFilteredData.length > 0
+      ? leadListFilteredData
+      : generalFilteredData;
 
   const paginatedData = filteredData.slice(
     page * rowsPerPage,
@@ -101,41 +104,43 @@ function Grid({
                           <Badge bg="danger">Inactive</Badge>
                         )
                       ) : header.key === "finalStatus" ? (
-                                                item[header.key] === 1 ? (
-                                                  <MDBBadge color="warning" pill>
-                                                    Open
-                                                  </MDBBadge>
-                                                ) : item[header.key] === 2 ? (
-                                                  <MDBBadge color="danger" pill>
-                                                    Close
-                                                  </MDBBadge>
-                                                ) : item[header.key] === 3 ? (
-                                                  <MDBBadge color="success" pill>
-                                                    Success
-                                                  </MDBBadge>
-                                                ) : (
-                                                  <MDBBadge color="primary" pill>
-                                                    Unknown
-                                                  </MDBBadge>
-                                                )
-                                              ) : header.key === "userType" ? (
-                                                item[header.key] === 1 ? (
-                                                  <MDBBadge color="info" pill>
-                                                    SalesExecutive
-                                                  </MDBBadge>
-                                                ) : item[header.key] === 2 ? (
-                                                  <MDBBadge color="primary" pill>
-                                                    SalesManager
-                                                  </MDBBadge>
-                                                ) : null
-                                              ): header.key === "hoursSpent" ? (
+                        item[header.key] === 1 ? (
+                          <MDBBadge color="warning" pill>
+                            Open
+                          </MDBBadge>
+                        ) : item[header.key] === 2 ? (
+                          <MDBBadge color="danger" pill>
+                            Close
+                          </MDBBadge>
+                        ) : item[header.key] === 3 ? (
+                          <MDBBadge color="success" pill>
+                            Success
+                          </MDBBadge>
+                        ) : (
+                          <MDBBadge color="primary" pill>
+                            Unknown
+                          </MDBBadge>
+                        )
+                      ) : header.key === "userType" ? (
+                        item[header.key] === 1 ? (
+                          <MDBBadge color="info" pill>
+                            SalesExecutive
+                          </MDBBadge>
+                        ) : item[header.key] === 2 ? (
+                          <MDBBadge color="primary" pill>
+                            SalesManager
+                          </MDBBadge>
+                        ) : null
+                      ) : header.key === "hoursSpent" ? (
                         item[header.key] > 5 ? (
                           <span>
-                            <FaClock style={{ color: "orange" }} /> {item[header.key]} hrs
+                            <FaClock style={{ color: "orange" }} />{" "}
+                            {item[header.key]} hrs
                           </span>
                         ) : (
                           <span>
-                            <FaRegClock style={{ color: "green" }} /> {item[header.key]} hrs
+                            <FaRegClock style={{ color: "green" }} />{" "}
+                            {item[header.key]} hrs
                           </span>
                         )
                       ) : (
@@ -172,7 +177,10 @@ function Grid({
               ))
             ) : (
               <tr>
-                <td colSpan={headers.length + 1} style={{ textAlign: "center" }}>
+                <td
+                  colSpan={headers.length + 1}
+                  style={{ textAlign: "center" }}
+                >
                   {loading ? "Loading data..." : "No data available"}
                 </td>
               </tr>

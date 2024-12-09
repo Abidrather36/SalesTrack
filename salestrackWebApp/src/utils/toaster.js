@@ -222,13 +222,14 @@ class Toaster {
 
   editTimeSheet = async (timeSheet = {}, fetchTimeSheetList) => {
     console.log(timeSheet);
+    const formattedDate = new Date(timeSheet.date).toISOString().split('T')[0];
     Swal.fire({
       title: "Edit Time Sheet",
       html: `
           <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
             <label for="swal-input-date" style="text-align:left">Date</label>
             <input id="swal-input-date" type="date" class="swal2-input" style="width: 80%; margin-left:10px" value="${
-              timeSheet.date
+              formattedDate
             }" />
     
             <label for="swal-input-hours" style="text-align:left">Hours Spent</label>
@@ -247,14 +248,6 @@ class Toaster {
         const date = document.getElementById("swal-input-date").value;
         const hoursSpent = document.getElementById("swal-input-hours").value;
         const comment = document.getElementById("swal-input-comment").value;
-
-        // // Check for empty fields
-        // if (!date || hoursSpent === '' || !comment) {
-        //   Swal.showValidationMessage(`Please enter all fields`);
-        //   return null;
-        // }
-
-        // Return the timesheet data to be updated
         return { date, hoursSpent: Number(hoursSpent), comment };
       },
       showCancelButton: true,

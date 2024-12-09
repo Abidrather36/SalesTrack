@@ -395,15 +395,6 @@ const AddUser = () => {
                 )}
                </div>
 
-              <div>
-                <InputField
-                  type="file"
-                  name="file"
-                  {...register("file")}
-                />
-                <span className="form-text">File upload is optional</span>
-              </div>
-
               <button
                 type="submit"
                 className="btn btn-primary"

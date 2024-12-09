@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
-import { timeSheetList } from '../../Services/LeadService';
+import { deleteTimeSheetById, timeSheetList } from '../../Services/LeadService';
 import myToaster from '../../utils/toaster';
 import BreadcrumbComponent from '../shared/Breadcrumb';
 import Grid from '../shared/Grid';
 import { FaEdit,FaTrash} from "react-icons/fa";
 import { Navigate, useNavigate } from 'react-router-dom';
 import { CircularProgress } from "@mui/material";
-
+import { ConfirmDialog } from 'primereact/confirmdialog';
 
 function TimeSheetList() {
   const [timesheetList, setTimeSheetList] = useState([]);
@@ -18,19 +18,38 @@ function TimeSheetList() {
   const [date,setDate]=useState("")
   const navigate =useNavigate();
   const [showSpinner,setShowSpinner]=useState(true)
+  const [selectedtimesheet,setSelectedTimeSheet]=useState(null)
+  const [confirmVisible, setConfirmVisible] = useState(false);
+
 
   const headers = [
     { key: "dateString", label: "Date" },
     { key: "timeSheetStepName", label: "Time Sheet StepName" },
     { key: "hoursSpent", label: "Hours Spent" },
     { key: "comment", label: "Comment" },
+    { key: "isActive",label:"IsActive"}
   ];
 
   useEffect(() => {
   fetchTimeSheetList();
   }, [])
   
+  const handleDeleteTimeSheet = (timesheet) => {
+    setSelectedTimeSheet(timesheet); 
+    setConfirmVisible(true); 
+  };
+const deleteTimeSheet = async (id)=>{
+  let response= await deleteTimeSheetById(id);
+  if(response.isSuccess){
+    myToaster.showSuccessToast(response.message);
+      fetchTimeSheetList();
+  }
+  else{
+    myToaster.showErrorToast(response.message);
+    setConfirmVisible(false); 
 
+  }
+}
   const editSheet=(timesheet)=>{
   console.log(timesheet)
    myToaster.editTimeSheet(timesheet,fetchTimeSheetList);
@@ -51,7 +70,7 @@ function TimeSheetList() {
   };
 
   return (
-    <div>
+    <>
       <BreadcrumbComponent labels={{ module: "SalesExecutive", currentRoute: "TimeSheetList" }} />
       {showSpinner ? (
         <div style={{display:"flex",justifyContent:"center",alignItems:"center",marginTop:"150px"}} >
@@ -71,7 +90,7 @@ function TimeSheetList() {
         {
           key: "delete",
           title: "Delete",
-          // onDeleteHandler:()=>deleteSheet(),
+          onDeleteHandler:(timesheet)=>handleDeleteTimeSheet(timesheet),
           icon: <FaTrash />,
           
         }
@@ -85,8 +104,20 @@ function TimeSheetList() {
         addButtonLabel="Add Time Sheet"   
       />
     )}
-      
-    </div>
+         <ConfirmDialog
+        visible={confirmVisible}
+        onHide={() => setConfirmVisible(false)}
+        message={`Are you sure you want to delete the Timesheet "${selectedtimesheet?.timeSheetStepName}"?`}
+        header="Confirmation"
+        icon="pi pi-exclamation-triangle"
+        acceptLabel="Yes"
+        rejectLabel="No"
+        acceptClassName="p-button-secondary"
+        rejectClassName="p-button-danger"
+        className="custom-dialog"
+        accept={() => deleteTimeSheet(selectedtimesheet?.id)}
+      />
+    </>
   );
 }
 

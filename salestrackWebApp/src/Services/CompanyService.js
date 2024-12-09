@@ -1,5 +1,6 @@
     import { ApiUrl } from "./Shared";
     import axiosObject from "../utils/InterceptorService";
+import axios from "axios";
 
     export const addCompany=(companyRequestModel)=>{
         let res= axiosObject.post(`${ApiUrl}PortalAdmin/AddCompany`,companyRequestModel).then(res=>res.data)
@@ -62,11 +63,8 @@
             let res =await axiosObject.post(`${ApiUrl}CompanyAdmin/update-process-step`,updateModel).then(res =>res.data)
             return res;
         }
-        export const getAllLeadsOfCompany=()=>{
-            let res =axiosObject.get(`${ApiUrl}CompanyAdmin/getAllLeads`).then(res=>res.data);
+        export const getAllLeadsOfCompany=async()=>{
+            let res =await axiosObject.get(`${ApiUrl}CompanyAdmin/getAllLeadsByCompany`).then(res=>res.data);
             return res;
         }
-        export const getLeadCategoriesByCompany =()=>{
-            let res =axiosObject.get(`${ApiUrl}CompanyAdmin/getLeadCategoriesByCompany`).then(res=>res.data);
-            return res;
-        }
+      

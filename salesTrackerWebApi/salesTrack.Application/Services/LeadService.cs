@@ -152,7 +152,7 @@ namespace salesTrack.Application.Services
         {
             try
             {
-               var user =contextService.UserId();
+                var user = contextService.UserId();
                 var leads = await leadRepository.GetAllLeadsAsync(user);
                 foreach (var lead in leads)
                 {
@@ -590,8 +590,10 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> TodaysFollowUpDate(TodaysFollowUpdateRequest model)
         {
-           var user= contextService.UserId();
-            var todaysFollowUpdate = await leadRepository.TodaysFollowUpdate(model,user);
+            var loggedInUser = contextService.UserId();
+            var user = await userRepository.GetUserById(loggedInUser);
+
+            var todaysFollowUpdate = await leadRepository.TodaysFollowUpdate(model, user.CompanyId);
 
             if (todaysFollowUpdate is null || !todaysFollowUpdate.Any())
             {
@@ -604,7 +606,7 @@ namespace salesTrack.Application.Services
             }
         }
 
-        public async Task<ApiResponse<TimeSheetRequestModel>> AddTimeSheet(TimeSheetRequestModel model)
+        public async Task<ApiResponse<TimeSheetResponseModel>> AddTimeSheet(TimeSheetRequestModel model)
         {
             var loggedInUser = contextService.UserId();
             var errorMessage = "";
@@ -629,15 +631,23 @@ namespace salesTrack.Application.Services
                 int res = await leadRepository.AddTimeSheet(timeSheet);
                 if (res > 0)
                 {
-                    return ApiResponse<TimeSheetRequestModel>.SuccessResponse(model, "Time Sheet Created Successfully ", HttpStatusCodes.OK);
+                    TimeSheetResponseModel response = new()
+                    {
+                        Comment = timeSheet.Comment,
+                        TimeSheetStepName = timeSheet.TimeSheetStepName,
+                        HoursSpent = timeSheet.HoursSpent,
+                        IsActive = timeSheet.IsActive,
+                        Date = timeSheet.Date
+                    };
+                    return ApiResponse<TimeSheetResponseModel>.SuccessResponse(response, "Time Sheet Created Successfully ", HttpStatusCodes.OK);
                 }
-                return ApiResponse<TimeSheetRequestModel>.ErrorResponse("Time sheet not added", HttpStatusCodes.BadRequest);
+                return ApiResponse<TimeSheetResponseModel>.ErrorResponse("Time sheet not added", HttpStatusCodes.BadRequest);
 
             }
             catch (Exception ex)
             {
                 errorMessage = "something went wrong while adding" + ex.Message;
-                return ApiResponse<TimeSheetRequestModel>.ErrorResponse(errorMessage, HttpStatusCodes.InternalServerError);
+                return ApiResponse<TimeSheetResponseModel>.ErrorResponse(errorMessage, HttpStatusCodes.InternalServerError);
             }
         }
 
@@ -833,203 +843,276 @@ namespace salesTrack.Application.Services
 
         }
 
-        /*      public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddLeads(List<LeadRequestModel> models)
-              {
-                  try
-                  {
-                      var salesExecutiveId = contextService.UserId();
-                      var salesEx = await userRepository.GetUserById(salesExecutiveId);
-
-                      if (salesEx == null || salesExecutiveId == Guid.Empty)
-                      {
-                          return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
-                      }
-
-                      var companyId = salesEx.CompanyId;
-                      if (models == null || !models.Any())
-                      {
-                          return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("No leads provided for bulk addition.", HttpStatusCodes.BadRequest);
-                      }
-
-                      var addedLeads = new List<LeadResponseModel>();
-
-                      foreach (var model in models)
-                      {
-                          try
-                          {
-                              // Create and insert the user
-                              MasterUser user = new()
-                              {
-                                  Id = Guid.NewGuid(),
-                                  Name = model.Name,
-                                  Email = model.Email,
-                                  PhoneNumber = model.PhoneNumber,
-                                  Password = AppEncryption.GenerateRandomPassword(model.Email!),
-                                  Salt = AppEncryption.GenerateSalt(),
-                                  UserRole = UserRole.Lead,
-                                  CreatedDate = DateTime.UtcNow,
-                                  DeletedDate = DateTime.UtcNow,
-                                  IsActive = true,
-                                  ModifiedDate = DateTime.UtcNow,
-                              };
-
-                              var userAdded = await userRepository.InsertAsync(user);
-                              if (userAdded <= 0)
-                              {
-                                  continue;
-                              }
-
-                              model.CompanyId = companyId;
-
-                              // Add the lead
-                              var leadAdded = await leadRepository.AddLeadsAsync(models, user.Id);
-
-                              if (leadAdded != null)
-                              {
-                              *//*    var sourceLead = await leadRepository.GetLeadById(leadAdded.Id);*/
-        /*   var returnVal = await userRepository.GetByIdAsync(sourceLead.AssignToId);*/
-        /*     sourceLead.AssignedTo = returnVal?.Name;*/
-
-        /*    var returnCompany = await companyRepository.GetByIdAsync(leadAdded.CompanyId);*/
-        /*    sourceLead.CompanyName = returnCompany?.CompanyName;
-
-            addedLeads.Add(sourceLead);*//*
-        }
-    }
-    catch (Exception ex)
-    {
-        continue;
-    }
-}
-
-if (!addedLeads.Any())
-{
-    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("No leads were added.", HttpStatusCodes.BadRequest);
-}
-
-return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(addedLeads, $"{addedLeads.Count} leads added successfully.", HttpStatusCodes.Created);
-}
-catch (Exception ex)
-{
-return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
-}
-}*/
-
-
-        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddLeads(List<LeadRequestModel> models)
+/*        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddLeads(List<LeadRequestModel> models)
         {
-            /* try
-             {
-                 var salesExecutiveId = contextService.UserId();
-                 var salesEx = await userRepository.GetUserById(salesExecutiveId);
+            try
+            {
+                var salesExecutiveId = contextService.UserId();
+                var salesEx = await userRepository.GetUserById(salesExecutiveId);
 
-                 if (salesExecutiveId == Guid.Empty || salesEx == null)
-                 {
-                     return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
-                 }
+                if (salesEx == null || salesExecutiveId == Guid.Empty)
+                {
+                    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                }
 
-                 var companyId = salesEx.CompanyId;
-                 if (models == null || !models.Any())
-                 {
-                     return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("No leads provided.", HttpStatusCodes.BadRequest);
-                 }
+                var companyId = salesEx.CompanyId;
+                if (models == null || !models.Any())
+                {
+                    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("No leads provided for bulk addition.", HttpStatusCodes.BadRequest);
+                }
 
-                 var newUsers = new List<MasterUser>();
-                 var newLeads = new List<Lead>();
+                var addedLeads = new List<LeadResponseModel>();
 
-                 foreach (var model in models)
-                 {
-                     if (string.IsNullOrWhiteSpace(model.Name) || string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.PhoneNumber))
-                     {
-                         continue; // Skip invalid entries
-                     }
+                foreach (var model in models)
+                {
+                    try
+                    {
+                        // Create and insert the user
+                        MasterUser user = new()
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = model.Name,
+                            Email = model.Email,
+                            PhoneNumber = model.PhoneNumber,
+                            Password = AppEncryption.GenerateRandomPassword(model.Email!),
+                            Salt = AppEncryption.GenerateSalt(),
+                            UserRole = UserRole.Lead,
+                            CreatedDate = DateTime.UtcNow,
+                            DeletedDate = DateTime.UtcNow,
+                            IsActive = true,
+                            ModifiedDate = DateTime.UtcNow,
+                        };
 
-                     // Check if lead already exists
-                     var existingLead = await context.Leads
-                         .Include(l => l.User)
-                         .FirstOrDefaultAsync(l => l.CompanyId == companyId && l.User.Email == model.Email);
+                        var userAdded = await userRepository.InsertAsync(user);
+                        if (userAdded <= 0)
+                        {
+                            continue;
+                        }
 
-                     if (existingLead != null)0
-                     {
-                         continue; // Skip duplicate entries
-                     }
+                        model.CompanyId = companyId;
 
-                     // Create new user
-                     var newUser = new MasterUser
-                     {
-                         Id = Guid.NewGuid(),
-                         Name = model.Name,
-                         Email = model.Email,
-                         PhoneNumber = model.PhoneNumber,
-                         Password = AppEncryption.GenerateRandomPassword(model.Email!),
-                         Salt = AppEncryption.GenerateSalt(),
-                         UserRole = UserRole.Lead,
-                         CreatedDate = DateTime.UtcNow,
-                         ModifiedDate = DateTime.UtcNow,
-                         IsActive = true,
-                     };
+                        // Add the lead
+                        var leadAdded = await leadRepository.AddLeadsAsync(models, user.Id);
 
-                     newUsers.Add(newUser);
+                        if (leadAdded != null)
+                        {
+                            var sourceLead = await leadRepository.GetLeadById(leadAdded.Id);
+                            var returnVal = await userRepository.GetByIdAsync(sourceLead.AssignToId);
+                            sourceLead.AssignedTo = returnVal?.Name;
 
-                     // Create new lead
-                     var newLead = new Lead
-                     {
-                         Id = Guid.NewGuid(),
-                         LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId : throw new ArgumentException("LeadSourceId is required"),
-                         CompanyId = companyId,
-                         Comment = model.Comment,
-                         AssignTo = model.AssignTo,
-                         CreatedBy = salesExecutiveId,
-                         CreatedDate = DateTime.UtcNow,
-                         ModifiedDate = DateTime.UtcNow,
-                         IsActive = true,
-                         LeadRank = model.LeadRank,
-                         LeadCategoryId = model.LeadCategoryId,
-                         LeadCompanyId = model.LeadCompanyId
-                     };
+                            var returnCompany = await companyRepository.GetByIdAsync(leadAdded.CompanyId);
+                            sourceLead.CompanyName = returnCompany?.CompanyName;
 
-                     newLeads.Add(newLead);
-                 }
+                            addedLeads.Add(sourceLead);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        continue;
+                    }
+                }
 
-                 // Insert users in bulk
-                 if (newUsers.Any())
-                 {
-                     var userInsertCount = await userRepository.BulkInsertAsync(newUsers);
-                     if (userInsertCount <= 0)
-                     {
-                         return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("Failed to add users.", HttpStatusCodes.InternalServerError);
-                     }
-                 }
+                if (!addedLeads.Any())
+                {
+                    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("No leads were added.", HttpStatusCodes.BadRequest);
+                }
 
-                 // Insert leads in bulk
-                 if (newLeads.Any())
-                 {
-                     var leadInsertCount = await leadRepository.AddLeadsAsync(newLeads);
-                     if (leadInsertCount <= 0)
-                     {
-                         return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("Failed to add leads.", HttpStatusCodes.InternalServerError);
-                     }
-                 }
+                return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(addedLeads, $"{addedLeads.Count} leads added successfully.", HttpStatusCodes.Created);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
+            }
+        }*/
+  /*      public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadRequestModel> leadModels)
+        {
+            try
+            {
+                var salesExecutiveId = contextService.UserId();
+                var salesEx = await userRepository.GetUserById(salesExecutiveId);
+                var companyId = salesEx!.CompanyId;
 
-                 // Fetch and map response
-                 var leadResponses = newLeads.Select(lead => new LeadResponseModel
-                 {
-                     Id = lead.Id,
-                     LeadName = newUsers.FirstOrDefault(u => u.Id == lead.Id)?.Name,
-                     Email = newUsers.FirstOrDefault(u => u.Id == lead.Id)?.Email,
-                     PhoneNumber = newUsers.FirstOrDefault(u => u.Id == lead.Id)?.PhoneNumber,
-                     AssignedTo = lead.AssignTo.ToString(),
-                     CompanyName = salesEx.Company?.CompanyName
-                 }).ToList();
+                if (salesExecutiveId == Guid.Empty)
+                {
+                    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                }
 
-                 return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(leadResponses, "Leads added successfully.", HttpStatusCodes.Created);
-             }
-             catch (Exception ex)
-             {
-                 return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
-             }*/
-            return default;
+                var responseLeads = new List<LeadResponseModel>();
+
+                foreach (var model in leadModels)
+                {
+                    var user = new MasterUser
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = model.Name,
+                        Email = model.Email,
+                        PhoneNumber = model.PhoneNumber,
+                        Password = AppEncryption.GenerateRandomPassword(model.Email!),
+                        Salt = AppEncryption.GenerateSalt(),
+                        UserRole = UserRole.Lead,
+                        CreatedDate = DateTime.UtcNow,
+                        DeletedDate = DateTime.UtcNow,
+                        IsActive = true,
+                        ModifiedDate = DateTime.UtcNow,
+                    };
+
+                    var userAdded = await userRepository.InsertAsync(user);
+                    if (userAdded <= 0)
+                    {
+                        return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                    }
+
+                    model.CompanyId = companyId;
+
+                    var leadAdded = await leadRepository.AddLead(model, user.Id);
+                    if (leadAdded is null)
+                    {
+                        return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                    }
+                    else
+                    {
+                        var sourceLead = await leadRepository.GetLeadById(leadAdded.Id);
+                        var returnVal = await userRepository.GetByIdAsync(sourceLead.AssignToId);
+                        sourceLead.AssignedTo = returnVal!.Name;
+                        var returnCompany = await companyRepository.GetByIdAsync(leadAdded.CompanyId);
+                        sourceLead.CompanyName = returnCompany!.CompanyName;
+
+                        responseLeads.Add(new LeadResponseModel
+                        {
+                            Id = sourceLead.Id,
+                            LeadName = sourceLead.LeadName,
+                            Email = sourceLead.Email,
+                            PhoneNumber = sourceLead.PhoneNumber,
+                            AssignedTo = sourceLead.AssignedTo,
+                            CompanyName = sourceLead.CompanyName,
+                            LeadSourceId = sourceLead.LeadSourceId,
+                            LeadRank = sourceLead.LeadRank,
+                            LeadCategoryId = sourceLead.LeadCategoryId,
+                            CompanyId = sourceLead.CompanyId,
+                            CreatedDate = sourceLead.CreatedDate
+                        });
+                    }
+                }
+
+                return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(responseLeads, "LeadsAddedSuccessfully", HttpStatusCodes.Created);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
+            }
+        }*/
+
+
+        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadRequestModel> models)
+        {
+            try
+            {
+                var salesExecutiveId = contextService.UserId();
+                var salesEx = await userRepository.GetUserById(salesExecutiveId);
+                var companyId = salesEx!.CompanyId;
+
+                foreach (var model in models)
+                {
+                    var existingUser = await userRepository.FirstOrDefaultAsync(x => x.Email == model.Email);
+                    if (existingUser != null)
+                    {
+                        return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                            $"A user with email {model.Email} already exists.",
+                            HttpStatusCodes.Conflict
+                        );
+                    }
+                }
+                var responseLeads = new List<LeadResponseModel>();
+                var leadsToAdd = new List<Lead>();
+
+                foreach (var model in models)
+                {
+                    var user = new MasterUser
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = model.Name,
+                        Email = model.Email,
+                        PhoneNumber = model.PhoneNumber,
+                        Password = AppEncryption.GenerateRandomPassword(model.Email!),
+                        Salt = AppEncryption.GenerateSalt(),
+                        UserRole = UserRole.Lead,
+                        CreatedDate = DateTime.UtcNow,
+                        DeletedDate = DateTime.UtcNow,
+                        IsActive = true,
+                        ModifiedDate = DateTime.UtcNow,
+                    };
+
+                    var userAdded = await userRepository.InsertAsync(user);
+                    if (userAdded <= 0)
+                    {
+                        return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                    }
+
+                    model.CompanyId = companyId;
+
+                    var newLead = new Lead
+                    {
+                        Id = user.Id, 
+                        LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId : throw new ArgumentException("Lead SourceId is required"),
+                        CompanyId = model.CompanyId,
+                        Comment = model.Comment,
+                        AssignTo = model.AssignTo,
+                        CreatedBy = model.AssignTo,
+                        CreatedDate = DateTime.UtcNow,
+                        ModifiedDate = DateTime.UtcNow,
+                        IsActive = true,
+                        LeadRank = model.LeadRank,
+                        LeadCategoryId = model.LeadCategoryId,
+                        LeadCompanyId = model.LeadCompanyId
+                    };
+
+                    leadsToAdd.Add(newLead); // Add the lead to the list to be inserted in bulk
+                }
+
+                // Insert all leads at once
+                if (leadsToAdd.Any())
+                {
+                    var rowsAffected = await leadRepository.AddLeadsAsync(leadsToAdd);
+                    if (rowsAffected <= 0)
+                    {
+                        return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+                    }
+                }
+
+                // Retrieve the added leads and return them
+                foreach (var lead in leadsToAdd)
+                {
+                    var sourceLead = await leadRepository.GetLeadById(lead.Id);
+                    var returnVal = await userRepository.GetByIdAsync(sourceLead.AssignToId);
+                    sourceLead.AssignedTo = returnVal!.Name;
+                    var returnCompany = await companyRepository.GetByIdAsync(lead.CompanyId);
+                    sourceLead.CompanyName = returnCompany!.CompanyName;
+
+                    responseLeads.Add(new LeadResponseModel
+                    {
+                        Id = sourceLead.Id,
+                        LeadName = sourceLead.LeadName,
+                        Email = sourceLead.Email,
+                        PhoneNumber = sourceLead.PhoneNumber,
+                        AssignedTo = sourceLead.AssignedTo,
+                        CompanyName = sourceLead.CompanyName,
+                        LeadSourceId = sourceLead.LeadSourceId,
+                        LeadRank = sourceLead.LeadRank,
+                        LeadCategoryId = sourceLead.LeadCategoryId,
+                        CompanyId = sourceLead.CompanyId,
+                        CreatedDate = sourceLead.CreatedDate
+                    });
+                }
+
+                return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(responseLeads, "LeadsAddedSuccessfully", HttpStatusCodes.Created);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
+            }
         }
+
+
 
 
         public Task<ApiResponse<IEnumerable<LeadCompanyNameResponse>>> AddLeadCompanyNameBulkInsert(List<LeadCompanyNameRequest> models)
@@ -1037,13 +1120,13 @@ return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.
             throw new NotImplementedException();
         }
 
-        public async  Task<ApiResponse<IEnumerable<LeadCategoryResponse>>> GetAllLeadCategoriesByCompany()
+        public async Task<ApiResponse<IEnumerable<LeadCategoryResponse>>> GetAllLeadCategoriesByCompany()
         {
             try
             {
                 var loggedInUser = contextService.UserId();
-                 var user= await  userRepository.GetUserById(loggedInUser);
-                
+                var user = await userRepository.GetUserById(loggedInUser);
+
                 var leadCategories = await leadRepository.GetLeadCategories(user.CompanyId);
                 if (!leadCategories.Any())
                 {
@@ -1057,6 +1140,66 @@ return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.
                 return ApiResponse<IEnumerable<LeadCategoryResponse>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
 
             }
+        }
+
+        public async Task<ApiResponse<TimeSheetResponseModel>> DeleteTimeSheetById(Guid id)
+        {
+            try
+            {
+                var loggedInUser = contextService.UserId();
+                var timeSheet = await leadRepository.GetTimeSheetById(id);
+                if (timeSheet is null)
+                {
+                    return ApiResponse<TimeSheetResponseModel>.ErrorResponse("No Such Time Sheet ", HttpStatusCodes.BadRequest);
+
+                }
+                timeSheet.IsActive = false;
+                timeSheet.ModifiedBy = loggedInUser;
+                timeSheet.ModifiedDate = DateTime.Now;
+                var timeSheetDeleted = await leadRepository.UpdateTimeSheet(timeSheet);
+                if (timeSheetDeleted > 0)
+                {
+                    TimeSheetResponseModel res = new()
+                    {
+                        Id = timeSheet.Id,
+                        TimeSheetStepName = timeSheet.TimeSheetStepName,
+                        Comment = timeSheet.Comment,
+                        IsActive = timeSheet.IsActive,
+                        Date = timeSheet.Date
+                    };
+                    return ApiResponse<TimeSheetResponseModel>.SuccessResponse(res, "TimeSheet Deleted Successfully", HttpStatusCodes.BadRequest);
+
+                }
+                return ApiResponse<TimeSheetResponseModel>.ErrorResponse("Can't Delete Please Try Again ", HttpStatusCodes.BadRequest);
+
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<TimeSheetResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+        }
+
+        public async Task<ApiResponse<TimeSheetResponseModel>> GetTimeSHeetById(Guid id)
+        {
+            var loggedInUser = contextService.UserId();
+            var timesheet = await leadRepository.GetTimeSheetById(id);
+            if (timesheet is null)
+            {
+                return ApiResponse<TimeSheetResponseModel>.ErrorResponse("no such Time Sheet ", HttpStatusCodes.BadRequest);
+            }
+            TimeSheetResponseModel timeSheetRes = new()
+            {
+                Id = timesheet.Id,
+                TimeSheetStepName = timesheet.TimeSheetStepName,
+                Comment = timesheet.Comment,
+                IsActive = timesheet.IsActive,
+                Date = timesheet.Date
+
+
+            };
+            return ApiResponse<TimeSheetResponseModel>.SuccessResponse(timeSheetRes, "time sheet Found Successfully", HttpStatusCodes.BadRequest);
+
         }
     }
 }

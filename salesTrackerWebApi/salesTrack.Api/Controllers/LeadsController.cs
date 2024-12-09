@@ -7,6 +7,7 @@ using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Common;
+using SalesTrack.Application.Shared;
 using System.Net;
 
 namespace salesTrack.Api.Controllers
@@ -21,20 +22,6 @@ namespace salesTrack.Api.Controllers
         public LeadsController(ILeadService leadService)
         {
             this.leadService = leadService;
-        }
-
-        [HttpPost("addLeadsBulk")]
-        public async Task<IActionResult> AddLeads(List<LeadRequestModel> models)
-        {
-            try
-            {
-                return Ok(await leadService.AddLeads(models));
-               
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message); 
-            }
         }
 
         [HttpPost("register")]
@@ -213,7 +200,7 @@ namespace salesTrack.Api.Controllers
 
         }
         [HttpPost("addTimeSheet")]
-        public async Task<ApiResponse<TimeSheetRequestModel>> AddTimeSheet(TimeSheetRequestModel model)
+        public async Task<ApiResponse<TimeSheetResponseModel>> AddTimeSheet(TimeSheetRequestModel model)
         {
             try
             {
@@ -224,6 +211,18 @@ namespace salesTrack.Api.Controllers
             {
                 throw ex;
 
+            }
+        }
+        [HttpGet("getTimeSheetById/{id:guid}")]
+        public async Task<IActionResult> GetTimeSheetById(Guid id)
+        {
+            try
+            {
+                return Ok(await leadService.GetTimeSHeetById(id));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
         [HttpGet("getTimeSheetList")]
@@ -252,6 +251,19 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
 
+
+        }
+        [HttpDelete("deleteTimeSheetById/{id:guid}")]
+        public async Task<IActionResult> DeleteTimeSheet(Guid id)
+        {
+            try
+            {
+                return Ok(await leadService.DeleteTimeSheetById(id));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception ($"Could not delete {id}");
+            }
         }
         [HttpPost("registerLeadCompany")]
         public async Task<IActionResult> AddLeadCompany(LeadCompanyNameRequest  model)
@@ -305,21 +317,34 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        [HttpPost("BulkInsertionLeadCompany")]
-        public async Task<IActionResult> AddLeadCompanyNameBulk(List<LeadCompanyNameRequest> models)
+        [HttpPost("addMultipleLeads")]
+        public async Task<IActionResult> AddMultipleLeads([FromBody] List<LeadRequestModel> leadModels)
         {
+            if (leadModels == null || !leadModels.Any())
+            {
+                return BadRequest(ApiResponse<string>.ErrorResponse("No lead data provided.", HttpStatusCodes.BadRequest));
+            }
+
             try
             {
-                /*return Ok(await leadService.AddLeadCompanyNameBulkInsert);*/
-                return default;
+                var result = await leadService.AddMultipleLeads(leadModels);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(result);
+                }
+
+                return StatusCode((int)result.StatusCode, result);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ApiResponse<string>.ErrorResponse($"An error occurred: {ex.Message}", HttpStatusCodes.InternalServerError));
             }
         }
+
+
         [HttpGet("getLeadCategoriesByCompany")]
-        public async Task<IActionResult> getLeadCategory()
+        public async Task<IActionResult> GetLeadCategory()
         {
             try
             {

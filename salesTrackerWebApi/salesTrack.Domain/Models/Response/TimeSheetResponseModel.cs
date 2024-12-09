@@ -11,5 +11,7 @@ namespace salesTrack.Domain.Models.Response
     {
         public Guid Id { get; set; }
         public string? DateString { get; set; }
+        public bool? IsActive { get; set; }
+
     }
 }

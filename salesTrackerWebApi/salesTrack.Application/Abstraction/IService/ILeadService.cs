@@ -6,7 +6,7 @@ namespace salesTrack.Application.Abstraction.IService
 {
     public interface ILeadService
     {
-        Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddLeads(List<LeadRequestModel> models);
+        Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadRequestModel> leadModels);
         Task<ApiResponse<LeadResponseModel>> AddLead(LeadRequestModel model);
         Task<ApiResponse<LeadResponseModel>> DeleteLead(Guid id);   
         Task<ApiResponse<LeadResponseModel>> GetLeadById(Guid leadId);
@@ -20,17 +20,17 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> ShowLeadFollowUpHistory(Guid leadId);
         Task<ApiResponse<bool>> AddLeadFollowUpHistory(FollowUpReq model);
         Task<ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>> TodaysFollowUpDate(TodaysFollowUpdateRequest model);
-        Task<ApiResponse<TimeSheetRequestModel>> AddTimeSheet(TimeSheetRequestModel model);
+        Task<ApiResponse<TimeSheetResponseModel>> AddTimeSheet(TimeSheetRequestModel model);
         Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetAllTimeSheets();
+        Task<ApiResponse<TimeSheetResponseModel>> GetTimeSHeetById(Guid id);
         Task<ApiResponse<TimeSheetResponseModel>> UpdateTimeSheet(UpdateTimeSheetModel model);
+        Task<ApiResponse<TimeSheetResponseModel>> DeleteTimeSheetById(Guid id);
         Task<ApiResponse<LeadCompanyNameResponse>> AddLeadCompanyName( LeadCompanyNameRequest model);
         Task<ApiResponse<IEnumerable<LeadCompanyNameResponse>>> AddLeadCompanyNameBulkInsert(List<LeadCompanyNameRequest> models);
         Task<ApiResponse<IEnumerable<LeadCompanyNameResponse>>> GetAllCompaniesLeads();
         Task<ApiResponse<LeadCompanyNameResponse>> DeleteLeadCompany(Guid id);
         Task<ApiResponse<UpdateLeadCompany>> UpdateLeadCompany(UpdateLeadCompany model);
         Task<ApiResponse<IEnumerable<LeadCategoryResponse>>> GetAllLeadCategoriesByCompany();
-
-
 
 
     }

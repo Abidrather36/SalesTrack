@@ -53,6 +53,7 @@ namespace salesTrack.Api
             app.MapControllers();
 
             app.Run();
+          /*  server =.; database = HomeWebApiDb; trusted_connection = true; encrypt = false*/
         }
     }
 }

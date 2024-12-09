@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logoImg from "../../utils/WhatsApp Image 2024-11-07 at 10.47.28_009bb6b7.jpg";
@@ -73,14 +71,10 @@ const Header = () => {
                     >
                       <img
                         alt="User Avatar"
-                        className="avatar avatar-rounded-circle"
                         src={logoImg}
                         style={{
                           width: "50px",
                           height: "50px",
-                          borderRadius: "50%",
-                          border: "2px solid #00b4d8",
-                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
                         }}
                       />
                       <span
@@ -176,7 +170,6 @@ const Header = () => {
                         color: "#03045e",
                         textDecoration: "none",
                       }}
-                    
                     >
                       <i
                         className="bi bi-person-circle"
@@ -187,6 +180,34 @@ const Header = () => {
                         }}
                       />
                       Profile
+                    </Link>
+                    {/* New Link for Change Password */}
+                    <Link
+                      to="/change-password"
+                      className="dropdown-item"
+                      style={{
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "10px 15px",
+                        borderRadius: "6px",
+                        transition: "background-color 0.3s, transform 0.2s",
+                        fontFamily: "'Poppins', sans-serif",
+                        fontSize: "0.9rem",
+                        fontWeight: "500",
+                        color: "#03045e",
+                        textDecoration: "none",
+                      }}
+                    >
+                      <i
+                        className="bi bi-lock"
+                        style={{
+                          marginRight: "10px",
+                          color: "#0077b6",
+                          fontSize: "1.1rem",
+                        }}
+                      />
+                      Change Password
                     </Link>
                     <Link
                       onClick={handleLogout}
@@ -204,7 +225,6 @@ const Header = () => {
                         color: "#d33",
                         textDecoration: "none",
                       }}
-                    
                     >
                       <i
                         className="bi bi-box-arrow-left"
@@ -228,6 +248,7 @@ const Header = () => {
 };
 
 export default Header;
+
 
 // import React, { useState } from "react";
 // import { Link, useNavigate } from "react-router-dom";

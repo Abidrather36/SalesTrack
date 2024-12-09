@@ -54,6 +54,10 @@ export const updateTimeSheet =async(updateTimeSheet)=>{
     let res= await axiosObject.post(`${ApiUrl}Leads/updateTimeSheet`,updateTimeSheet).then(res =>res.data)
     return res;
 }
+export const deleteTimeSheetById =async (id)=>{
+    let res =await axiosObject.delete(`${ApiUrl}Leads/deleteTimeSheetById/${id}`).then(res=>res.data);
+    return res;
+}
 export const addLeadCompanyName=async(model)=>{
     let res= await axiosObject.post(`${ApiUrl}Leads/registerLeadCompany`,model).then(res=>res.data)
     return res;
