@@ -63,8 +63,8 @@ import axios from "axios";
             let res =await axiosObject.post(`${ApiUrl}CompanyAdmin/update-process-step`,updateModel).then(res =>res.data)
             return res;
         }
-        export const getAllLeadsOfCompany=async()=>{
-            let res =await axiosObject.get(`${ApiUrl}CompanyAdmin/getAllLeadsByCompany`).then(res=>res.data);
+      export const listOfLeadsByCompany =async()=>{
+            let res=await axiosObject.get(`${ApiUrl}CompanyAdmin/getListOfLeadsByCompany`).then(res=>res.data)
             return res;
-        }
+      }
       

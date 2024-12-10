@@ -64,5 +64,21 @@ namespace SalesTrack.Persistence.Repository
 
             return await context.SaveChangesAsync();    
         }
+        public async Task<IEnumerable<string>> GetEmailsAsync(List<string> emails)
+        {
+            // Use reflection to check if the "Email" property exists
+            var propertyInfo = typeof(T).GetProperty("Email");
+            if (propertyInfo == null || propertyInfo.PropertyType != typeof(string))
+            {
+                throw new InvalidOperationException("The entity does not have a string property named 'Email'.");
+            }
+
+            // Retrieve email values
+            return await Task.Run(() =>
+                context.Set<T>()
+                       .Where(e => propertyInfo.GetValue(e, null) != null)
+                       .Select(e => (string)propertyInfo.GetValue(e, null))
+                       .ToList());
+        }
     }
 }

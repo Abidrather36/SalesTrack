@@ -18,7 +18,7 @@ namespace salesTrack.Persistence.Repository
         private readonly SalesTrackDBContext context;
         private readonly IContextService contextService;
         private readonly IConfiguration configuration;
-        public LeadRepository(SalesTrackDBContext context,IContextService contextService) : base(context)
+        public LeadRepository(SalesTrackDBContext context, IContextService contextService) : base(context)
         {
             this.context = context;
             this.contextService = contextService;
@@ -35,67 +35,67 @@ namespace salesTrack.Persistence.Repository
             await context.FollowUpDates.AddAsync(model);
             return await context.SaveChangesAsync();
         }
-            public async Task<int> AddLeadsAsync(List<Lead> models)
-            {
-              await  context.Leads.AddRangeAsync(models);
-              return await context.SaveChangesAsync();
-            }
-       /* public async Task<IEnumerable<Lead>> AddLeadsAsync(IEnumerable<LeadRequestModel> models, Guid userId)
+        public async Task<int> AddLeadsAsync(List<Lead> models)
         {
-            try
-            {
-                var leadsToAdd = new List<Lead>();
-                foreach (var model in models)
-                {
-                    // Check for existing lead with the same email
-                    var existingLead = await context.Leads
-                        .Include(l => l.User)
-                        .FirstOrDefaultAsync(l => l.CompanyId == model.CompanyId && l.User.Email == model.Email);
+            await context.Leads.AddRangeAsync(models);
+            return await context.SaveChangesAsync();
+        }
+        /* public async Task<IEnumerable<Lead>> AddLeadsAsync(IEnumerable<LeadRequestModel> models, Guid userId)
+         {
+             try
+             {
+                 var leadsToAdd = new List<Lead>();
+                 foreach (var model in models)
+                 {
+                     // Check for existing lead with the same email
+                     var existingLead = await context.Leads
+                         .Include(l => l.User)
+                         .FirstOrDefaultAsync(l => l.CompanyId == model.CompanyId && l.User.Email == model.Email);
 
-                    if (existingLead != null)
-                    {
-                        throw new Exception($"A lead with email {model.Email} already exists for this company.");
-                    }
+                     if (existingLead != null)
+                     {
+                         throw new Exception($"A lead with email {model.Email} already exists for this company.");
+                     }
 
-                    // Create new lead
-                    var newLead = new Lead
-                    {
-                        Id = 
-                        LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId : throw new ArgumentException("Lead SourceId is required"),
-                        CompanyId = model.CompanyId,
-                        Comment = model.Comment,
-                        AssignTo = model.AssignTo,
-                        CreatedBy = userId,
-                        CreatedDate = DateTime.UtcNow,
-                        ModifiedDate = DateTime.UtcNow,
-                        IsActive = true,
-                        LeadRank = model.LeadRank,
-                        LeadCategoryId = model.LeadCategoryId,
-                        LeadCompanyId = model.LeadCompanyId
-                    };
+                     // Create new lead
+                     var newLead = new Lead
+                     {
+                         Id = 
+                         LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId : throw new ArgumentException("Lead SourceId is required"),
+                         CompanyId = model.CompanyId,
+                         Comment = model.Comment,
+                         AssignTo = model.AssignTo,
+                         CreatedBy = userId,
+                         CreatedDate = DateTime.UtcNow,
+                         ModifiedDate = DateTime.UtcNow,
+                         IsActive = true,
+                         LeadRank = model.LeadRank,
+                         LeadCategoryId = model.LeadCategoryId,
+                         LeadCompanyId = model.LeadCompanyId
+                     };
 
-                    leadsToAdd.Add(newLead);
-                }
+                     leadsToAdd.Add(newLead);
+                 }
 
-                await context.Leads.AddRangeAsync(leadsToAdd);
-                await context.SaveChangesAsync();
+                 await context.Leads.AddRangeAsync(leadsToAdd);
+                 await context.SaveChangesAsync();
 
-                return leadsToAdd;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error adding multiple leads: {ex.Message}");
-            }
-        }*/
+                 return leadsToAdd;
+             }
+             catch (Exception ex)
+             {
+                 throw new Exception($"Error adding multiple leads: {ex.Message}");
+             }
+         }*/
 
 
 
-        public async Task<Lead> AddLead(LeadRequestModel model,Guid userId)
+        public async Task<Lead> AddLead(LeadRequestModel model, Guid userId)
         {
             try
             {
                 var existingLead = await context.Leads
-                    .Include(l => l.User) 
+                    .Include(l => l.User)
                     .FirstOrDefaultAsync(l => l.CompanyId == model.CompanyId && l.User.Email == model.Email);
 
                 if (existingLead != null)
@@ -107,22 +107,22 @@ namespace salesTrack.Persistence.Repository
                 {
                     Id = userId,
                     LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId : throw new ArgumentException("lead SouceId is Required"),
-                    CompanyId = model.CompanyId,  
-                    Comment = model.Comment,  
-                    AssignTo = model.AssignTo,  
-                    CreatedBy = model.AssignTo,  
-                    CreatedDate = DateTime.UtcNow,  
-                    ModifiedDate = DateTime.UtcNow,  
-                    IsActive = true ,
-                    LeadRank=model.LeadRank,
-                    LeadCategoryId=model.LeadCategoryId,
-                    LeadCompanyId=model.LeadCompanyId
+                    CompanyId = model.CompanyId,
+                    Comment = model.Comment,
+                    AssignTo = model.AssignTo,
+                    CreatedBy = model.AssignTo,
+                    CreatedDate = DateTime.UtcNow,
+                    ModifiedDate = DateTime.UtcNow,
+                    IsActive = true,
+                    LeadRank = model.LeadRank,
+                    LeadCategoryId = model.LeadCategoryId,
+                    LeadCompanyId = model.LeadCompanyId
                 };
 
                 await context.Leads.AddAsync(newLead);
                 await context.SaveChangesAsync();
-                var lead=await  GetByIdAsync(newLead.Id);
-                return lead;  
+                var lead = await GetByIdAsync(newLead.Id);
+                return lead;
             }
             catch (Exception ex)
             {
@@ -132,13 +132,13 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<int> AddLeadCategory(LeadCategory model)
         {
-           await context.LeadCategories.AddAsync(model);
-           return await context.SaveChangesAsync();
+            await context.LeadCategories.AddAsync(model);
+            return await context.SaveChangesAsync();
         }
 
         public async Task<int> AddLeadCompanyName(LeadCompany model)
         {
-           await context.LeadCompanies.AddAsync(model);
+            await context.LeadCompanies.AddAsync(model);
             return await context.SaveChangesAsync();
         }
 
@@ -152,26 +152,26 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<bool> AddProcessStep(FollowUpReq model)
         {
-           var loggedInUser= contextService.UserId();
+            var loggedInUser = contextService.UserId();
             var comment = new LeadComments
             {
                 LeadProcessStepId = model.LeadId,
                 Id = Guid.NewGuid(),
                 Text = model.Comment,
                 LeadId = model.LeadId,
-                CreatedDate=DateTime.Now,
-                CreatedBy=loggedInUser
+                CreatedDate = DateTime.Now,
+                CreatedBy = loggedInUser
             };
             var folowUp = new FollowUpDate
             {
-    
+
                 LeadProcessStepId = model.LeadId,
                 Time = model.Time,
                 Date = model.Date,
                 LeadId = model.LeadId,
                 CreatedDate = DateTime.Now,
                 CreatedBy = loggedInUser,
-                LeadCompanyId=model.LeadCompanyId
+                LeadCompanyId = model.LeadCompanyId
 
             };
             var leadProcessStep = new LeadProcessSteps
@@ -192,33 +192,33 @@ namespace salesTrack.Persistence.Repository
             return true;
         }
 
-       
+
 
         public async Task<int> AddTimeSheet(TimeSheet model)
         {
             await context.TimeSheets.AddAsync(model);
-            return  await context.SaveChangesAsync();
+            return await context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<LeadCompanyNameResponse>> GetAllLeadCompanyNames(Guid companyId)
         {
-           var res=await context.LeadCompanies.Where(lc=> lc.CompanyId ==companyId).Select(x => new LeadCompanyNameResponse
+            var res = await context.LeadCompanies.Where(lc => lc.CompanyId == companyId).Select(x => new LeadCompanyNameResponse
             {
                 Id = x.Id,
                 LeadCompanyName = x.LeadCompanyName,
                 Description = x.Description,
                 IsActive = x.IsActive,
             }).ToListAsync();
-            return  res;
+            return res;
         }
 
         public async Task<IEnumerable<LeadResponseModel>> GetAllLeadsAsync(Guid companyId)
         {
-            var Leads = await context.Leads.Where(l=>l.CompanyId==companyId).Select(lead => new LeadResponseModel
+            var Leads = await context.Leads.Where(l => l.CompanyId == companyId).Select(lead => new LeadResponseModel
             {
                 Id = lead.Id,
                 LeadName = lead.User!.Name,
-                LeadCompanyName=lead.LeadCompany.LeadCompanyName,
+                LeadCompanyName = lead.LeadCompany.LeadCompanyName,
                 Email = lead.User!.Email,
                 PhoneNumber = lead.User!.PhoneNumber,
                 Comment = lead.Comment,
@@ -230,8 +230,8 @@ namespace salesTrack.Persistence.Repository
                 IsActive = lead.IsActive,
                 CompanyName = lead.Company!.CompanyName,
                 CompanyId = lead.CompanyId,
-                LeadCategoryName=lead.LeadCategory.LeadCategoryName,
-                LeadRank=lead.LeadRank,
+                LeadCategoryName = lead.LeadCategory.LeadCategoryName,
+                LeadRank = lead.LeadRank,
                 CreatedDate = lead.CreatedDate.HasValue
                 ? lead.CreatedDate.Value.ToString("dd-MM-yyyy")
                 : null
@@ -240,13 +240,13 @@ namespace salesTrack.Persistence.Repository
             return Leads;
         }
 
-        public async Task<IEnumerable<LeadResponseModel>> GetAllLeadsByCompanyId(Guid id,Guid assignTo)
+        public async Task<IEnumerable<LeadResponseModel>> GetAllLeadsByCompanyId(Guid id, Guid assignTo)
         {
-            var leads = await context.Leads.Where(lead => lead.CompanyId == id && lead.AssignTo ==assignTo).Select(lead => new LeadResponseModel
+            var leads = await context.Leads.Where(lead => lead.CompanyId == id && lead.AssignTo == assignTo).Select(lead => new LeadResponseModel
             {
                 Id = lead.Id,
                 LeadName = lead!.User!.Name,
-                LeadCompanyName =lead.LeadCompany.LeadCompanyName,
+                LeadCompanyName = lead.LeadCompany.LeadCompanyName,
                 Email = lead.User!.Email,
                 PhoneNumber = lead.User!.PhoneNumber,
                 Comment = lead.Comment,
@@ -257,8 +257,8 @@ namespace salesTrack.Persistence.Repository
                 CompanyName = lead.Company!.CompanyName,
                 AssignToId = lead.AssignTo,
                 LeadSourceName = lead.LeadSource!.LeadSourceName,
-                LeadRank=lead.LeadRank,
-                LeadCategoryName=lead.LeadCategory.LeadCategoryName,
+                LeadRank = lead.LeadRank,
+                LeadCategoryName = lead.LeadCategory.LeadCategoryName,
                 CreatedDate = lead.CreatedDate.HasValue
                 ? lead.CreatedDate.Value.ToString("dd-MM-yyyy")
                 : null
@@ -270,15 +270,15 @@ namespace salesTrack.Persistence.Repository
         {
             var res = await context.TimeSheets.Where(x => x.UserId == userId).Select(x => new TimeSheetResponseModel
             {
-                Id=x.Id,
+                Id = x.Id,
                 TimeSheetStepName = x.TimeSheetStepName,
                 HoursSpent = x.HoursSpent,
                 Comment = x.Comment,
                 Date = x.Date,
-                DateString= x.Date.ToString("dd/MM/yyyy"),
-                IsActive=x.IsActive
+                DateString = x.Date.ToString("dd/MM/yyyy"),
+                IsActive = x.IsActive
 
-            }).OrderBy(x=>x.Date).ToListAsync();
+            }).OrderBy(x => x.Date).ToListAsync();
             return res;
         }
 
@@ -309,7 +309,7 @@ namespace salesTrack.Persistence.Repository
         public async Task<IEnumerable<LeadCategoryResponse>> GetLeadCategories(Guid companyId)
         {
 
-            var leadCategoryResponses =await context.LeadCategories.Where(l => l.CompanyId == companyId).Select(category => new LeadCategoryResponse
+            var leadCategoryResponses = await context.LeadCategories.Where(l => l.CompanyId == companyId).Select(category => new LeadCategoryResponse
             {
                 Id = category.Id,
                 LeadCategoryName = category.LeadCategoryName,
@@ -323,12 +323,12 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<LeadCategory?> GetLeadCategoryById(Guid? id)
         {
-           return await context.LeadCategories.FindAsync(id);
+            return await context.LeadCategories.FindAsync(id);
         }
 
         public async Task<LeadCompany?> GetLeadCompanyNameById(Guid? id)
         {
-           return await context.LeadCompanies.FindAsync(id);
+            return await context.LeadCompanies.FindAsync(id);
         }
 
         public async Task<LeadProcessSteps?> GetLeadProcessStepById(Guid id)
@@ -339,7 +339,7 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<TimeSheet?> GetTimeSheetById(Guid id)
         {
-               return await context.TimeSheets.FindAsync(id);
+            return await context.TimeSheets.FindAsync(id);
         }
 
         public async Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId)
@@ -351,9 +351,9 @@ namespace salesTrack.Persistence.Repository
                     .ThenInclude(lc => lc.LeadFollowUpDate)
                 .Include(l => l.ProcessSteps!)
                     .ThenInclude(lc => lc.LeadComment)
-                      .Include(l => l.ProcessSteps!) 
+                      .Include(l => l.ProcessSteps!)
             .ThenInclude(lc => lc.ProcessStepAdmin)
-                       .Include(l=>l.LeadCompany)
+                       .Include(l => l.LeadCompany)
                 .FirstOrDefaultAsync();
 
             if (data == null || data.ProcessSteps == null)
@@ -363,22 +363,22 @@ namespace salesTrack.Persistence.Repository
 
             var results = data.ProcessSteps.Select(ps => new LeadFollowUpHistoryResponse
             {
-                ClientName = ps.Lead?.User?.Name ?? "N/A", 
-                LeadComments = ps.LeadComment?.FirstOrDefault()?.Text ?? "No comments", 
-                LeadProcessStep = ps.ProcessStepAdmin?.StepName ?? "No step name", 
-                FollowUpDate = ps.LeadFollowUpDate?.FirstOrDefault()?.Date ?? DateTime.MinValue, 
+                ClientName = ps.Lead?.User?.Name ?? "N/A",
+                LeadComments = ps.LeadComment?.FirstOrDefault()?.Text ?? "No comments",
+                LeadProcessStep = ps.ProcessStepAdmin?.StepName ?? "No step name",
+                FollowUpDate = ps.LeadFollowUpDate?.FirstOrDefault()?.Date ?? DateTime.MinValue,
                 Email = ps.Lead?.User?.Email ?? "No email",
                 PhoneNumber = ps.Lead?.User?.PhoneNumber ?? "No phone number",
-                LeadCompanyName=ps.Lead?.LeadCompany?.LeadCompanyName?? "No Company Name"
+                LeadCompanyName = ps.Lead?.LeadCompany?.LeadCompanyName ?? "No Company Name"
             });
 
             return results;
         }
 
-      
-        public async Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest model,Guid id)
+
+        public async Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest model, Guid id)
         {
-            var followUpsForToday = await context.Leads.Where(l=>l.Id==id)
+            var followUpsForToday = await context.Leads.Where(l => l.Id == id)
                 .Include(u => u.User)
                 .Include(l => l.ProcessSteps!)
                     .ThenInclude(ps => ps.LeadFollowUpDate)
@@ -386,7 +386,7 @@ namespace salesTrack.Persistence.Repository
                     .ThenInclude(ps => ps.LeadComment)
                 .Include(l => l.ProcessSteps!)
                     .ThenInclude(ps => ps.ProcessStepAdmin)
-                 .Include(l=>l.LeadCompany)
+                 .Include(l => l.LeadCompany)
                 .Where(l => l.ProcessSteps != null
                              && l.ProcessSteps.Any(ps => ps.LeadFollowUpDate != null
                                                           && ps.LeadFollowUpDate.Any(fd => fd.Date.Date == model.Date.Date)))
@@ -395,7 +395,7 @@ namespace salesTrack.Persistence.Repository
                                  && ps.LeadFollowUpDate.Any(fd => fd.Date.Date == model.Date.Date))
                     .Select(ps => new LeadFollowUpHistoryResponse
                     {
-                        LeadId   =ps.LeadId,
+                        LeadId = ps.LeadId,
                         ClientName = ps.Lead!.User!.Name ?? "N/A",
                         Email = ps.Lead.User.Email ?? "No Email",
                         PhoneNumber = ps.Lead.User.PhoneNumber ?? "No Phone Number",
@@ -403,18 +403,18 @@ namespace salesTrack.Persistence.Repository
                         LeadProcessStep = ps.ProcessStepAdmin!.StepName ?? "No Step Name",
                         FollowUpDate = ps.LeadFollowUpDate!.FirstOrDefault()!.Date,
                         LeadCompanyName = ps.Lead!.LeadCompany!.LeadCompanyName ?? "No Lead Company Name ",
-                        
+
 
                     }))
-                .ToListAsync(); 
+                .ToListAsync();
 
             return followUpsForToday;
         }
 
         public async Task<int> UpdateLeadCompany(LeadCompany model)
         {
-           await Task.Run(()=> context.LeadCompanies.Update(model));
-           return await context.SaveChangesAsync(); 
+            await Task.Run(() => context.LeadCompanies.Update(model));
+            return await context.SaveChangesAsync();
 
         }
 
@@ -432,14 +432,39 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<int> UpdateTimeSheet(TimeSheet model)
         {
-            var timeSheetRes=await Task.Run(()=>context.TimeSheets.Update(model));
+            var timeSheetRes = await Task.Run(() => context.TimeSheets.Update(model));
             return await context.SaveChangesAsync();
         }
 
         public async Task<int> AddLeadCompanyNamesBulk(List<LeadCompany> models)
         {
-           await context.LeadCompanies.AddRangeAsync(models);
-           return await context.SaveChangesAsync();
+            await context.LeadCompanies.AddRangeAsync(models);
+            return await context.SaveChangesAsync();
         }
+        public async Task<IEnumerable<LeadResponseModel>> GetLeadDetailsByIdsAsync(List<Guid> ids)
+        {
+            if (ids == null || !ids.Any())
+                return Enumerable.Empty<LeadResponseModel>();
+
+            return await context.Leads
+                .Where(lead => ids.Contains(lead.Id))
+                .Select(lead => new LeadResponseModel
+                {
+                     Id = lead.Id,
+                LeadName = lead.User!.Name,
+                Email = lead.User.Email,
+                PhoneNumber = lead.User.PhoneNumber,
+                Comment = lead.Comment,
+                FinalStatus = lead.FinalStatus,
+                UserRole = lead.User.UserRole,
+                LeadSourceId = lead.LeadSourceId,
+                LeadSourceName =lead.LeadSource!.LeadSourceName,
+                AssignToId = lead.AssignTo,
+                IsActive = lead.User.IsActive,
+                CompanyName = lead.Company!.CompanyName
+                })
+                .ToListAsync();
+        }
+
     }
 }

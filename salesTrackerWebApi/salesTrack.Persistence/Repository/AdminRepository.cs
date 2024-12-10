@@ -27,5 +27,11 @@ namespace salesTrack.Persistence.Repository
            await context.AdminProcessSteps.AddAsync(model);
             return await context.SaveChangesAsync();
         }
+
+        public async Task<int> AddMasterUsers(List<MasterUser> masterUsers)
+        {
+           await context.MasterUsers.AddRangeAsync(masterUsers);
+           return  await context.SaveChangesAsync();
+        }   
     }
 }

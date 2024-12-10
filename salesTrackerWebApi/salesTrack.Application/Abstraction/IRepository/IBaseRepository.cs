@@ -15,7 +15,7 @@ namespace SalesTrack.Application.Abstraction.IRepository
         Task<T?> GetByIdAsync(Guid? Id);
         Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> expression);
         Task<bool> IsExistsAsync(Expression<Func<T, bool>> expression);
-
+        Task<IEnumerable<string>> GetEmailsAsync(List<string> emails);
 
         #endregion
     }

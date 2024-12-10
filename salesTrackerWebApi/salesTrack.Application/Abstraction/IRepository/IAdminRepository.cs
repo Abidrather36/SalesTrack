@@ -11,6 +11,7 @@ namespace salesTrack.Application.Abstraction.IRepository
     {
         Task<int> AddAdmin(MasterUser model);
         Task<int> AddAdminProcessStep(AdminProcessStep model);
+        Task<int> AddMasterUsers(List<MasterUser> masterUsers);
 
     }
 }

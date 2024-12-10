@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllLeadsOfCompany } from "../../Services/CompanyService";
+import { getAllLeadsOfCompany, listOfLeadsByCompany } from "../../Services/CompanyService";
 import { CircularProgress } from "@mui/material";
 import myToaster from "../../utils/toaster";
 import Grid from "../shared/Grid";
@@ -30,7 +30,7 @@ function LeadListCompany() {
   const fetchAllLeads = async () => {
     setLoading(true);
     try {
-      const response = await getAllLeadsOfCompany();
+      const response = await listOfLeadsByCompany();
       if (response.result) {
         console.log("leadList Data", response.result);
         setLeads(response.result);
