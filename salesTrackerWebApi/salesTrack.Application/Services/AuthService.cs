@@ -41,8 +41,13 @@ namespace salesTrack.Application.Services
             {
                 return ApiResponse<string>.ErrorResponse(ApiMessages.Auth.IncorrectOldPassword, HttpStatusCodes.BadRequest);
             }
+            if(string.IsNullOrEmpty(model.OldPassword) && string.IsNullOrEmpty(model.NewPassword) && string.IsNullOrEmpty(model.NewPassword))
+            {
+                return ApiResponse<string>.ErrorResponse("Please provide the old password, new password, and confirm password.", HttpStatusCodes.BadRequest);
 
-           user.Password= AppEncryption.CreatePassword(model.NewPassword, user.Salt);
+            }
+
+            user.Password= AppEncryption.CreatePassword(model.NewPassword, user.Salt);
            var updatedUser=await authRepository.UpdateAsync(user);
             
             if(updatedUser > 0)

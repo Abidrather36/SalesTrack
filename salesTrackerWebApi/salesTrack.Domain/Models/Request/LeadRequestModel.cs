@@ -10,7 +10,7 @@ namespace salesTrack.Domain.Models.Request
 
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email format.")]
-        [RegularExpression("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", ErrorMessage = "Please enter valid Email")]
+    /*    [RegularExpression("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", ErrorMessage = "Please enter valid Email")]*/
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public Guid LeadSourceId { get; set;}

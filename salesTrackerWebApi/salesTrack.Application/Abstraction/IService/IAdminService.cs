@@ -25,7 +25,8 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<LeadCategoryResponse>> UpdateLeadCategory(UpdateLeadCategory model);
         Task<ApiResponse<LeadCategoryResponse>> DeleteLeadCategory(Guid id);
         Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompany();
-
-
+        Task<ApiResponse<CompanyTimeSheetResponse>> AddCompanyTimeSheet(CompanyTimeSheetRequest model);
+        Task<ApiResponse<IEnumerable<CompanyTimeSheetResponse>>> GetCompanyTimeSheet();
+        Task<ApiResponse<UpdateApproveCompanyTimeSheet>> UpdateTimeSheetIsApproved(Guid userId);
     }
 }

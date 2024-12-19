@@ -3,19 +3,18 @@ import { Routes, Route } from "react-router-dom";
 import PublicLayout from "./components/shared/PublicLayout";
 import DashboardLayout from "./components/shared/DashboardLayout";
 import { routerConfiguration } from "./route-config";
-import { PortalAdminsidebarLabels, SalesManagersidebarLabels } from "./components/shared/SidebarLabels";
-import { CompanyAdminsidebarLabels } from "./components/shared/SidebarLabels";
-import { SalesExectivesidebarLabels } from "./components/shared/SidebarLabels";
+import { PortalAdminsidebarLabels, SalesManagersidebarLabels, CompanyAdminsidebarLabels, SalesExectivesidebarLabels } from "./components/shared/SidebarLabels";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import { UserRole } from "./Models/Enums/userRole";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import ChangePassword from "./components/shared/ChangePassword"; // Import ChangePassword component
 
 const App = () => {
   return (
     <>
-     <ToastContainer />
+      <ToastContainer />
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<PublicLayout />}>
@@ -38,6 +37,7 @@ const App = () => {
           {routerConfiguration.AdminRoutes.map((route, index) => (
             <Route key={index} path={route.path} element={route.element} />
           ))}
+          <Route path="changePassword" element={<ChangePassword />} /> {/* Add ChangePassword route */}
         </Route>
 
         {/* Company Admin routes - protected and role-based */}
@@ -54,6 +54,7 @@ const App = () => {
           {routerConfiguration.CompanyAdminRoutes.map((route, index) => (
             <Route key={index} path={route.path} element={route.element} />
           ))}
+          <Route path="/companyAdmin/changePassword" element={<ChangePassword />} /> {/* Add ChangePassword route */}
         </Route>
 
         {/* Sales Executive routes - protected and role-based */}
@@ -70,12 +71,15 @@ const App = () => {
           {routerConfiguration.SalesExecutiveRoutes.map((route, index) => (
             <Route key={index} path={route.path} element={route.element} />
           ))}
+          <Route path="/salesExecutive/changePassword" element={<ChangePassword />} /> {/* Add ChangePassword route */}
         </Route>
+
+        {/* Sales Manager routes - protected and role-based */}
         <Route
           path="/salesManager"
           element={
             <PrivateRoute>
-              <ProtectedRoute allowedRoles={[ UserRole.SalesManager]}>
+              <ProtectedRoute allowedRoles={[UserRole.SalesManager]}>
                 <DashboardLayout labelList={SalesManagersidebarLabels} />
               </ProtectedRoute>
             </PrivateRoute>
@@ -84,13 +88,11 @@ const App = () => {
           {routerConfiguration.SalesManagerRoutes.map((route, index) => (
             <Route key={index} path={route.path} element={route.element} />
           ))}
+          <Route path="/salesManager/changePassword" element={<ChangePassword />} /> {/* Add ChangePassword route */}
         </Route>
-
-        {/* Catch-all route for undefined paths (404 Not Found) */}
       </Routes>
     </>
   );
 };
 
 export default App;
-

@@ -83,17 +83,17 @@ namespace salesTrack.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("01b758dc-d688-4ccd-a393-9832b2cefc85"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 12, 4, 11, 26, 51, 385, DateTimeKind.Unspecified).AddTicks(6650), new TimeSpan(0, 5, 30, 0, 0)),
+                            Id = new Guid("86fc34eb-ed06-4bf5-a84f-52181e8a240b"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 12, 17, 16, 56, 1, 215, DateTimeKind.Unspecified).AddTicks(2048), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "ramrk@anterntech.com",
                             IsActive = false,
                             IsPasswordTemporary = true,
                             Name = "Ram",
-                            Password = "jAVztQsk1n/gPG4nhOcpQ97UEBi3Yydwyt7j2V+rTbo=",
+                            Password = "b+pTKvi/C3vkyHxBsuqKXqCIvofrU3d0Hz1NRCBbVE8=",
                             PhoneNumber = "6545454543",
                             ResetCode = 12345,
-                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 12, 4, 6, 11, 51, 385, DateTimeKind.Unspecified).AddTicks(6714), new TimeSpan(0, 0, 0, 0, 0)),
-                            Salt = "8VtQsPHMyFfUkqYoiq3FuA==",
+                            ResetExpiry = new DateTimeOffset(new DateTime(2024, 12, 17, 11, 41, 1, 215, DateTimeKind.Unspecified).AddTicks(2122), new TimeSpan(0, 0, 0, 0, 0)),
+                            Salt = "BJCIaepaFVefHgn6e9VDVw==",
                             UserRole = (byte)1
                         });
                 });
@@ -218,6 +218,46 @@ namespace salesTrack.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.CompanyTimeSheet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("CompanyTimeSheetStep");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.Enquiry", b =>
@@ -624,6 +664,9 @@ namespace salesTrack.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -708,6 +751,17 @@ namespace salesTrack.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("salesTrack.Domain.Entities.CompanyTimeSheet", b =>
+                {
+                    b.HasOne("salesTrack.Domain.Entities.Company", "Company")
+                        .WithMany("CompanyTimeSheets")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("salesTrack.Domain.Entities.FollowUpDate", b =>
@@ -878,6 +932,8 @@ namespace salesTrack.Persistence.Migrations
             modelBuilder.Entity("salesTrack.Domain.Entities.Company", b =>
                 {
                     b.Navigation("AdminProcessSteps");
+
+                    b.Navigation("CompanyTimeSheets");
 
                     b.Navigation("CompanyUser");
 

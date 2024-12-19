@@ -17,19 +17,25 @@ namespace salesTrack.Persistence.Repository
         private readonly SalesTrackDBContext context;
         private readonly ILeadRepository leadRepository;
 
-        public CompanyRepository(SalesTrackDBContext context,ILeadRepository leadRepository) : base(context)
+        public CompanyRepository(SalesTrackDBContext context, ILeadRepository leadRepository) : base(context)
         {
             this.context = context;
             this.leadRepository = leadRepository;
         }
 
+        public async Task<int> AddTimeSheet(CompanyTimeSheet model)
+        {
+            await context.CompanyTimeSheetStep.AddAsync(model);
+            return await context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<AdminProcessStepResponseModel>> GetAllAdminProcessStepsByCompanyId(Guid id)
         {
-          var res= await context.AdminProcessSteps.Where(x => x.CompanyId == id).Select(x => new AdminProcessStepResponseModel
+            var res = await context.AdminProcessSteps.Where(x => x.CompanyId == id).Select(x => new AdminProcessStepResponseModel
             {
-                Id=x.Id,
-                StepName=x.StepName,
-                
+                Id = x.Id,
+                StepName = x.StepName,
+
             }).ToListAsync();
             return res;
         }
@@ -43,7 +49,7 @@ namespace salesTrack.Persistence.Repository
                 AdminName = company.User!.Name,
                 PhoneNumber = company.PhoneNumber,
                 Email = company.Email,
-                IsActive=company.IsActive
+                IsActive = company.IsActive
 
             }).ToListAsync();
             return await companies;
@@ -64,22 +70,44 @@ namespace salesTrack.Persistence.Repository
 
 
         }
+        public async Task<CompanyTimeSheet> GetCompanyTimeSheetByNameAsync(string name, Guid companyId)
+        {
+            return await context.CompanyTimeSheetStep.Where(x=>x.CompanyId==companyId).FirstOrDefaultAsync(ts => ts.Name == name);
+        }
 
         public async Task<IEnumerable<TimeSheetResponseModel>> GetTimeSheet(DateTimeOffset? startDate, DateTimeOffset? endDate, Guid id)
         {
-            
-          var timeSheets=await leadRepository.GetAllTimeSheetsByUser(id);
+
+            var timeSheets = await leadRepository.GetAllTimeSheetsByUser(id);
             var filteredUserTimeSheets = timeSheets.Where(ts => ts.Date >= startDate && ts.Date <= endDate).
                  Select(ts => new TimeSheetResponseModel
-                 {   Id=ts.Id,
-                     Date=ts.Date,
+                 {
+                     Id = ts.Id,
+                     Date = ts.Date,
                      TimeSheetStepName = ts.TimeSheetStepName,
                      HoursSpent = ts.HoursSpent,
                      Comment = ts.Comment,
-                     DateString=ts.Date.ToString("dd/MM/yyyy")
+                     DateString = ts.Date.ToString("dd/MM/yyyy")
                  });
             return filteredUserTimeSheets;
-            
+
+        }
+
+        public async Task<IEnumerable<CompanyTimeSheetResponse>> GetTimeSheetByCompany(Guid id)
+        {
+            var res = await context.CompanyTimeSheetStep.Where(x => x.CompanyId == id).Select(x => new CompanyTimeSheetResponse
+            {
+                Id = x.Id,
+                Name = x.Name,
+                CompanyId = x.CompanyId,
+            }).ToListAsync();
+            return  res;
+        }
+
+        public async Task<int> UpdateTimeSheetIsApproved(TimeSheet model)
+        {
+            await Task.Run(()=> context.TimeSheets.Update(model));
+            return await context.SaveChangesAsync();
         }
     }
 }

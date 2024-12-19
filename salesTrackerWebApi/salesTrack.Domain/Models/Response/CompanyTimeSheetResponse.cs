@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace salesTrack.Domain.Models.Response
 {
-    public class TimeSheetResponseModel:TimeSheetRequestModel
+    public class CompanyTimeSheetResponse:CompanyTimeSheetRequest
     {
-        public Guid Id { get; set; }
-        public string? DateString { get; set; }
-        public bool? IsActive { get; set; }
+        public Guid? Id { get; set; }
+        public Guid? CompanyId { get; set; }
+        public bool IsActive { get; set; }
         public bool IsApproved { get; set; }
-
     }
 }

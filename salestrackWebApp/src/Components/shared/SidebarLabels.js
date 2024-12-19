@@ -90,6 +90,18 @@ export const CompanyAdminsidebarLabels = [
     label:"LeadList",
     link:"/companyAdmin/leadListCompany",
     icon:<FaListAlt/>
+  },
+  {
+    id:8,
+    label:"AddTimeSheetStep",
+    link:"/companyAdmin/addTimeSheetStep",
+    icon:<FaPlus/>
+  },
+  {
+    id:9,
+    label:"Time Sheet StepList",
+    link:"/companyAdmin/companyTimeSheetStepList",
+    icon:<FaListAlt/>
   }
 ];
 

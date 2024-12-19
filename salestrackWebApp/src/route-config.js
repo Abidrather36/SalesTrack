@@ -34,6 +34,11 @@ import { addFollowUpdate } from "./Services/LeadService"
 import BulkInsert from "./components/salesExecutive/bulkExample"
 import LeadListCompany from "./components/companyAdmin/LeadListCompany"
 import ChangePassword from "./components/shared/ChangePassword"
+import Demo from "./components/public/Demo"
+import ModernHomepage from "./components/public/Demo"
+import AddMultipleLeads from "./components/salesExecutive/AddMutipleLeads"
+import AddTimeSheetStep from "./components/companyAdmin/AddTimeSheetStep"
+import CompanyTimeSheetStepList from "./components/companyAdmin/CompanyTimeSheetStepList"
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -44,7 +49,8 @@ export const routerConfiguration = {
     { path: "login", element: < Login/> },
     { path: "testimonial", element:<TestimonialsComponent/>},
     { path: "forgetPassword",element :<ForgetPassword/>},
-    {path:  "reset-Password",element:<ResetPassword/>}
+    { path: "reset-Password",element:<ResetPassword/>},
+    
 
   ],
   AdminRoutes: [
@@ -54,6 +60,7 @@ export const routerConfiguration = {
     { path: "/admin/add-new-company", element: < AddCompany/> },
     { path: "/admin/profile", element: < ProfilePage/> },
     { path: "/admin/companylist", element: <CompanyList /> },
+    { path: "/admin/changePassword",element:<ChangePassword/>} 
 
 
   ],
@@ -71,6 +78,8 @@ export const routerConfiguration = {
     { path: "/companyAdmin/leadCategoryList",element:<LeadCategoryList/>},
     { path: "/companyAdmin/leadListCompany",element:<LeadListCompany/>},
     { path: "/companyAdmin/changePassword",element:<ChangePassword/>},
+    { path: "/companyAdmin/addTimeSheetStep",element:<AddTimeSheetStep/>},
+    { path: "/companyAdmin/companyTimeSheetStepList",element:<CompanyTimeSheetStepList/>}
 
   ],
 
@@ -89,6 +98,7 @@ export const routerConfiguration = {
     { path : "/salesExecutive/leadCompanyList",element :<LeadCompanieList/>}, 
     { path : "/salesExecutive/bulkInsert",element :<BulkInsert/>},
     { path: "/salesExecutive/changePassword",element:<ChangePassword/>},
+    { path: "/salesExecutive/addBulkLeads",element:<AddMultipleLeads/>},
 
   ]
   ,
@@ -106,8 +116,6 @@ export const routerConfiguration = {
     { path : "/salesManager/leadSourceList", element: <LeadSourceList/> },
     { path : "/salesManager/timeSheetList",element :<TimeSheetList/>},
     { path: "/salesManager/changePassword",element:<ChangePassword/>},
-
-
-
+    
   ]
 }

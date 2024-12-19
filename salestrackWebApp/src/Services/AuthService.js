@@ -57,3 +57,8 @@ export const registerEnquiry =async(enquiryModel) =>{
       let res= await axiosObject.post(`${ApiUrl}Enquiry/register`,enquiryModel).then(res=>res.data);
       return res;
 }
+
+export const changePass =async (changePasswordModel)=>{
+    let res= await axiosObject.post(`${ApiUrl}Auth/ChangePassword`,changePasswordModel).then(res=>res.data);
+    return res;
+} 

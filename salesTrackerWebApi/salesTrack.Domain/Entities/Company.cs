@@ -20,6 +20,7 @@ namespace salesTrack.Domain.Entities
         public ICollection<AdminProcessStep>? AdminProcessSteps { get; set; }
         public ICollection<LeadCompany>? LeadCompany { get; set; }
         public ICollection<LeadCategory>? LeadCategory { get; set; }
+        public ICollection<CompanyTimeSheet>? CompanyTimeSheets { get; set; }
 
         #endregion
     }

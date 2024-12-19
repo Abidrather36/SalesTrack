@@ -40,55 +40,6 @@ namespace salesTrack.Persistence.Repository
             await context.Leads.AddRangeAsync(models);
             return await context.SaveChangesAsync();
         }
-        /* public async Task<IEnumerable<Lead>> AddLeadsAsync(IEnumerable<LeadRequestModel> models, Guid userId)
-         {
-             try
-             {
-                 var leadsToAdd = new List<Lead>();
-                 foreach (var model in models)
-                 {
-                     // Check for existing lead with the same email
-                     var existingLead = await context.Leads
-                         .Include(l => l.User)
-                         .FirstOrDefaultAsync(l => l.CompanyId == model.CompanyId && l.User.Email == model.Email);
-
-                     if (existingLead != null)
-                     {
-                         throw new Exception($"A lead with email {model.Email} already exists for this company.");
-                     }
-
-                     // Create new lead
-                     var newLead = new Lead
-                     {
-                         Id = 
-                         LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId : throw new ArgumentException("Lead SourceId is required"),
-                         CompanyId = model.CompanyId,
-                         Comment = model.Comment,
-                         AssignTo = model.AssignTo,
-                         CreatedBy = userId,
-                         CreatedDate = DateTime.UtcNow,
-                         ModifiedDate = DateTime.UtcNow,
-                         IsActive = true,
-                         LeadRank = model.LeadRank,
-                         LeadCategoryId = model.LeadCategoryId,
-                         LeadCompanyId = model.LeadCompanyId
-                     };
-
-                     leadsToAdd.Add(newLead);
-                 }
-
-                 await context.Leads.AddRangeAsync(leadsToAdd);
-                 await context.SaveChangesAsync();
-
-                 return leadsToAdd;
-             }
-             catch (Exception ex)
-             {
-                 throw new Exception($"Error adding multiple leads: {ex.Message}");
-             }
-         }*/
-
-
 
         public async Task<Lead> AddLead(LeadRequestModel model, Guid userId)
         {
@@ -276,7 +227,8 @@ namespace salesTrack.Persistence.Repository
                 Comment = x.Comment,
                 Date = x.Date,
                 DateString = x.Date.ToString("dd/MM/yyyy"),
-                IsActive = x.IsActive
+                IsActive = x.IsActive,
+                IsApproved=x.IsApproved
 
             }).OrderBy(x => x.Date).ToListAsync();
             return res;
@@ -450,18 +402,18 @@ namespace salesTrack.Persistence.Repository
                 .Where(lead => ids.Contains(lead.Id))
                 .Select(lead => new LeadResponseModel
                 {
-                     Id = lead.Id,
-                LeadName = lead.User!.Name,
-                Email = lead.User.Email,
-                PhoneNumber = lead.User.PhoneNumber,
-                Comment = lead.Comment,
-                FinalStatus = lead.FinalStatus,
-                UserRole = lead.User.UserRole,
-                LeadSourceId = lead.LeadSourceId,
-                LeadSourceName =lead.LeadSource!.LeadSourceName,
-                AssignToId = lead.AssignTo,
-                IsActive = lead.User.IsActive,
-                CompanyName = lead.Company!.CompanyName
+                    Id = lead.Id,
+                    LeadName = lead.User!.Name,
+                    Email = lead.User.Email,
+                    PhoneNumber = lead.User.PhoneNumber,
+                    Comment = lead.Comment,
+                    FinalStatus = lead.FinalStatus,
+                    UserRole = lead.User.UserRole,
+                    LeadSourceId = lead.LeadSourceId,
+                    LeadSourceName = lead.LeadSource!.LeadSourceName,
+                    AssignToId = lead.AssignTo,
+                    IsActive = lead.User.IsActive,
+                    CompanyName = lead.Company!.CompanyName
                 })
                 .ToListAsync();
         }

@@ -13,8 +13,7 @@ namespace SalesTrack.Application.Abstraction.IRepository
         Task<User> GetUserById(Guid id);
         Task<MasterUser> GetMasterUserById(Guid? id);
         Task<int> UpdateUser(User user);
-            
 
-}
-    
+    }
+
 }

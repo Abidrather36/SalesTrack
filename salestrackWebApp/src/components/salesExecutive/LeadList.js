@@ -56,16 +56,15 @@ function LeadList(props) {
 
   const headers = [
     { key: "leadCompanyName", label: "Company Name" },
-    { key: "leadName", label: "Lead Name" },
+    { key: "leadName", label: "Name" },
     { key: "email", label: "Email" },
     { key: "phoneNumber", label: "Phone Number" },
-    { key: "leadSourceName", label: "Lead Source" },
+    { key: "leadSourceName", label: "Source" },
     { key: "assignedTo", label: "Assigned To" },
-    { key: "finalStatus", label: "Lead Status" },
-    { key: "isActive" ,label:"IsActive"},
-    { key :"leadCategoryName",label:"Lead Category Name"},
-    { key: "leadRank", label: "Lead Rank"},
-    { key: "createdDate", label: "Date of Creation" },
+    { key: "finalStatus", label: " Status" },
+    { key :"leadCategoryName",label:"Category "},
+    { key: "leadRank", label: "Rank"},
+    { key: "createdDate", label: "Created Date" },
   ];
 
   const deleteLeadHandler =async (id)=>{

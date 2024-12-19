@@ -67,4 +67,16 @@ import axios from "axios";
             let res=await axiosObject.get(`${ApiUrl}CompanyAdmin/getListOfLeadsByCompany`).then(res=>res.data)
             return res;
       }
+      export const addCompanyTimesheet =async(companyTimeSheetRequestModel) => {
+        let res = await axiosObject.post(`${ApiUrl}CompanyAdmin/addCompanyTimeSheet`,companyTimeSheetRequestModel).then(res=>res.data)
+        return res;
+      }
+      export const getCompanyTimeSheetStepLists =async()=>{
+        let res=await axiosObject.get(`${ApiUrl}CompanyAdmin/getAllCompanyTimeSheets`).then(res=>res.data);
+        return res;
+      }
+      export const approveTimeSheetByCompany=async(userId)=>{
+        let res= await axiosObject.post(`${ApiUrl}CompanyAdmin/approveCompanyTimeSheet/${userId}`).then(res=>res.data);
+        return res;
+      }
       

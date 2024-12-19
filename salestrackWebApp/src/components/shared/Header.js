@@ -36,7 +36,17 @@ const Header = () => {
       },
     });
   };
-
+  const handleChangePasswordRoute = () => {
+    if (userRole === 1) {
+      return "/admin/changePassword";
+    } else if (userRole === 2) {
+      return "/companyAdmin/changePassword";
+    } else if (userRole === 3) {
+      return "/salesExecutive/changePassword";
+    } else {
+      return "/salesManager/changePassword"; 
+    }
+  };
   return (
     <header className="bg-surface-primary border-bottom pt-6">
       <div className="container-fluid">
@@ -183,7 +193,7 @@ const Header = () => {
                     </Link>
                     {/* New Link for Change Password */}
                     <Link
-                      to="/change-password"
+                      to={handleChangePasswordRoute()}
                       className="dropdown-item"
                       style={{
                         cursor: "pointer",

@@ -29,7 +29,7 @@ namespace salesTrack.Application.Services
         private readonly ILeadRepository leadRepository;
         private readonly IFileService fileService;
 
-        public AdminService(IUserRepository userRepository, IAdminRepository adminRepository, IContextService contextService, IEmailHelperService emailHelperService, ICompanyRepository companyRepository, ILeadRepository leadRepository,IFileService fileService)
+        public AdminService(IUserRepository userRepository, IAdminRepository adminRepository, IContextService contextService, IEmailHelperService emailHelperService, ICompanyRepository companyRepository, ILeadRepository leadRepository, IFileService fileService)
         {
             this.userRepository = userRepository;
             this.adminRepository = adminRepository;
@@ -284,8 +284,8 @@ namespace salesTrack.Application.Services
             try
             {
                 var loggedInCompany = contextService.UserId();
-                
-                
+
+
                 if (await adminRepository.IsExistsAsync(
                     x => x.StepName == model.StepName
                 ))
@@ -297,7 +297,7 @@ namespace salesTrack.Application.Services
                 {
                     Id = Guid.NewGuid(),
                     StepName = model.StepName,
-                    CompanyId = loggedInCompany, 
+                    CompanyId = loggedInCompany,
                     CreatedBy = loggedInCompany,
                     ModifiedBy = Guid.Empty,
                     CreatedDate = DateTime.Now,
@@ -394,8 +394,8 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<IEnumerable<AdminProcessStepResponseModel>>> GetAllAdminProcessSteps()
         {
-            var userId =contextService.UserId();
-            var user =await userRepository.GetUserById(userId);
+            var userId = contextService.UserId();
+            var user = await userRepository.GetUserById(userId);
             var adminProcessSteps = await companyRepository.GetAllAdminProcessStepsByCompanyId(user.CompanyId);
 
             if (adminProcessSteps is null)
@@ -563,7 +563,7 @@ namespace salesTrack.Application.Services
                 {
                     return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse("End date cannot be earlier than start date.", HttpStatusCodes.BadRequest);
                 }
-                
+
 
                 if (startDate == null || endDate == null)
                 {
@@ -578,7 +578,7 @@ namespace salesTrack.Application.Services
                 else
                 {
                     var res = await companyRepository.GetTimeSheet(startDate, endDate, userId);
-                  
+
                     return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(res, $"{res.Count()} TimeSheets Found", HttpStatusCodes.OK);
                 }
             }
@@ -593,17 +593,17 @@ namespace salesTrack.Application.Services
             try
             {
                 var companyId = contextService.UserId();
-                               
+
                 var steps = await companyRepository.GetAllAdminProcessStepsByCompanyId(companyId);
 
 
                 if (steps == null || !steps.Any())
                 {
-                    return ApiResponse<IEnumerable<AdminProcessStepResponseModel>>.ErrorResponse("No process steps found for this company.",HttpStatusCodes.BadRequest);
+                    return ApiResponse<IEnumerable<AdminProcessStepResponseModel>>.ErrorResponse("No process steps found for this company.", HttpStatusCodes.BadRequest);
                 }
                 else
                 {
-                    return ApiResponse<IEnumerable<AdminProcessStepResponseModel>>.SuccessResponse(steps,$"{steps.Count()} found",HttpStatusCodes.OK);
+                    return ApiResponse<IEnumerable<AdminProcessStepResponseModel>>.SuccessResponse(steps, $"{steps.Count()} found", HttpStatusCodes.OK);
 
                 }
             }
@@ -632,7 +632,7 @@ namespace salesTrack.Application.Services
                 masterUser.Email = model.Email;
                 masterUser.PhoneNumber = model.PhoneNumber;
                 masterUser.ModifiedBy = loggedInCompany;
-                masterUser.ModifiedDate= DateTime.Now;
+                masterUser.ModifiedDate = DateTime.Now;
                 var updatedMasterUser = await userRepository.UpdateAsync(masterUser);
 
                 if (updatedMasterUser > 0)
@@ -652,7 +652,7 @@ namespace salesTrack.Application.Services
                 {
                     return ApiResponse<UserResponseModel>.ErrorResponse("Update Failed", HttpStatusCodes.BadRequest);
                 }
-            
+
             }
             catch (Exception ex)
             {
@@ -735,7 +735,7 @@ namespace salesTrack.Application.Services
                     CreatedBy = loggedInUser,
                     CreatedDate = DateTime.Now,
                     IsActive = true,
-                    CompanyId=companyId
+                    CompanyId = companyId
                 };
                 var res = await leadRepository.AddLeadCategory(leadCategory);
                 if (res > 0)
@@ -762,7 +762,7 @@ namespace salesTrack.Application.Services
             try
             {
                 var loggedInUser = contextService.UserId();
-                
+
                 var leadCategories = await leadRepository.GetLeadCategories(loggedInUser);
                 if (!leadCategories.Any())
                 {
@@ -853,7 +853,7 @@ namespace salesTrack.Application.Services
             }
         }
 
-        public async  Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompany()
+        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompany()
         {
             var companyAdmin = contextService.UserId();
             var leads = await leadRepository.GetAllLeadsAsync(companyAdmin);
@@ -879,6 +879,115 @@ namespace salesTrack.Application.Services
 
                 return default;
             }
+        }
+
+        public async Task<ApiResponse<CompanyTimeSheetResponse>> AddCompanyTimeSheet(CompanyTimeSheetRequest model)
+        {
+            try
+            {
+                var companyAdmin = contextService.UserId();
+                if (string.IsNullOrEmpty(model.Name))
+                {
+                    return ApiResponse<CompanyTimeSheetResponse>.ErrorResponse("Please enter Time Sheet Step", HttpStatusCodes.BadRequest);
+                }
+
+                var companytimeSheet = await companyRepository.GetCompanyTimeSheetByNameAsync(model.Name, companyAdmin);
+                if (companytimeSheet is not null)
+                {
+                    return ApiResponse<CompanyTimeSheetResponse>.ErrorResponse("Time Sheet StepName Already Exists", HttpStatusCodes.BadRequest);
+                }
+
+                CompanyTimeSheet companyTimeSheet = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = model.Name,
+                    CompanyId = companyAdmin,
+                };
+
+                var timeSheetAdded = await companyRepository.AddTimeSheet(companyTimeSheet);
+                if (timeSheetAdded > 0)
+                {
+                    CompanyTimeSheetResponse res = new()
+                    {
+                        Id = companyTimeSheet.Id,
+                        Name = companyTimeSheet.Name,
+                        CompanyId = companyTimeSheet.CompanyId,
+                    };
+                    return ApiResponse<CompanyTimeSheetResponse>.SuccessResponse(res, "Company Time Sheet Added Successfully", HttpStatusCodes.OK);
+                }
+
+                return ApiResponse<CompanyTimeSheetResponse>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<CompanyTimeSheetResponse>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+            }
+        }
+
+
+        public async Task<ApiResponse<IEnumerable<CompanyTimeSheetResponse>>> GetCompanyTimeSheet()
+        {
+            try
+            {
+                var companyAdmin = contextService.UserId();
+                if (companyAdmin == Guid.Empty)
+                {
+                    return ApiResponse<IEnumerable<CompanyTimeSheetResponse>>.ErrorResponse("company not logged In", HttpStatusCodes.BadRequest);
+                }
+                var companyTimeSheet = await companyRepository.GetTimeSheetByCompany(companyAdmin);
+                if (companyTimeSheet == null)
+                {
+                    return ApiResponse<IEnumerable<CompanyTimeSheetResponse>>.ErrorResponse("No TimeSheets Found", HttpStatusCodes.BadRequest);
+                }
+
+                return ApiResponse<IEnumerable<CompanyTimeSheetResponse>>.SuccessResponse(companyTimeSheet, $"{companyTimeSheet.Count()} Company TimeSheetSteps  found", HttpStatusCodes.OK);
+
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<CompanyTimeSheetResponse>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
+
+            }
+        }
+
+        public async Task<ApiResponse<UpdateApproveCompanyTimeSheet>> UpdateTimeSheetIsApproved(Guid userId)
+        {
+            try
+            {
+                var companyAdmin = contextService.UserId();
+                if (companyAdmin == Guid.Empty)
+                {
+                    return ApiResponse<UpdateApproveCompanyTimeSheet>.ErrorResponse("Please log in as Company Admin first", HttpStatusCodes.BadRequest);
+                }
+
+                var timeSheet = await leadRepository.GetTimeSheetById(userId);
+                if (timeSheet == null)
+                {
+                    return ApiResponse<UpdateApproveCompanyTimeSheet>.ErrorResponse("Time sheet not found", HttpStatusCodes.BadRequest);
+                }
+
+                timeSheet.IsApproved = true;
+
+                var updatedTimeSheet = await companyRepository.UpdateTimeSheetIsApproved(timeSheet);
+
+                if (updatedTimeSheet > 0)
+                {
+                    var res = new UpdateApproveCompanyTimeSheet
+                    {
+                        Id = timeSheet.Id,
+                        IsApproved = timeSheet.IsApproved
+                    };
+
+                    return ApiResponse<UpdateApproveCompanyTimeSheet>.SuccessResponse(res, "Time sheet approved successfully", HttpStatusCodes.OK);
+                }
+
+                return ApiResponse<UpdateApproveCompanyTimeSheet>.ErrorResponse("Failed to approve time sheet. Please try again.", HttpStatusCodes.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<UpdateApproveCompanyTimeSheet>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
+            }
+
         }
     }
 }

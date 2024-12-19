@@ -8,7 +8,7 @@ namespace salesTrack.Application.Abstraction.IService
     {
         Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadRequestModel> leadModels);
         Task<ApiResponse<LeadResponseModel>> AddLead(LeadRequestModel model);
-        Task<ApiResponse<LeadResponseModel>> DeleteLead(Guid id);   
+        Task<ApiResponse<LeadResponseModel>> DeleteLead(Guid id);
         Task<ApiResponse<LeadResponseModel>> GetLeadById(Guid leadId);
         Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsAsync();
         Task<ApiResponse<IEnumerable<LeadResponseModel>>> GetAllLeadsByCompany();
@@ -25,7 +25,7 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<TimeSheetResponseModel>> GetTimeSHeetById(Guid id);
         Task<ApiResponse<TimeSheetResponseModel>> UpdateTimeSheet(UpdateTimeSheetModel model);
         Task<ApiResponse<TimeSheetResponseModel>> DeleteTimeSheetById(Guid id);
-        Task<ApiResponse<LeadCompanyNameResponse>> AddLeadCompanyName( LeadCompanyNameRequest model);
+        Task<ApiResponse<LeadCompanyNameResponse>> AddLeadCompanyName(LeadCompanyNameRequest model);
         Task<ApiResponse<IEnumerable<LeadCompanyNameResponse>>> AddLeadCompanyNameBulkInsert(List<LeadCompanyNameRequest> models);
         Task<ApiResponse<IEnumerable<LeadCompanyNameResponse>>> GetAllCompaniesLeads();
         Task<ApiResponse<LeadCompanyNameResponse>> DeleteLeadCompany(Guid id);

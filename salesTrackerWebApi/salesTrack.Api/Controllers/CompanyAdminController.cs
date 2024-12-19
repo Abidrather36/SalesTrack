@@ -178,6 +178,19 @@ namespace salesTrack.Api.Controllers
                 throw new Exception (ex.Message);
             }
         }
+        [HttpPost("approveCompanyTimeSheet/{userId:guid}")]
+        public async Task<IActionResult> ApproveTimeSheet(Guid userId)
+        {
+            try
+            {
+               return  Ok(await adminService.UpdateTimeSheetIsApproved(userId));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+        }
         [HttpPost("Add-LeadCategory")]
         public async Task<IActionResult> AddLeadCategory(LeadCategoryRequest model)
         {
@@ -243,6 +256,31 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
 
+        }
+        [HttpPost("addCompanyTimeSheet")]
+        public async Task<IActionResult> AddCompanyTimeSheet(CompanyTimeSheetRequest model)
+        {
+            try
+            {
+                return Ok(await adminService.AddCompanyTimeSheet(model));
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [HttpGet("getAllCompanyTimeSheets")]
+        public async Task<IActionResult> GetCompanyTimeSheets()
+        {
+            try
+            {
+                return Ok(await adminService.GetCompanyTimeSheet());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
     }
