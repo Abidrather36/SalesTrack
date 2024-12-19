@@ -926,95 +926,6 @@ namespace salesTrack.Application.Services
             return ApiResponse<TimeSheetResponseModel>.SuccessResponse(timeSheetRes, "time sheet Found Successfully", HttpStatusCodes.BadRequest);
 
         }
-        /*
-                public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadRequestModel> leadModels)
-                {
-                    try
-                    {
-                        var salesExecutiveId = contextService.UserId();
-                        var salesEx = await userRepository.GetUserById(salesExecutiveId);
-                        var companyId = salesEx!.CompanyId;
-
-                        if (salesExecutiveId == Guid.Empty)
-                        {
-                            return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
-                        }
-
-                        var leadEntities = new List<Lead>();
-                        var masterUsers = new List<MasterUser>();
-                        var leadResponseModels = new List<LeadResponseModel>();
-
-                        foreach (var model in leadModels)
-                        {
-                            var userId = Guid.NewGuid();
-
-                            var user = new MasterUser
-                            {
-                                Id = userId,
-                                Name = model.Name,
-                                Email = model.Email,
-                                PhoneNumber = model.PhoneNumber,
-                                Password = AppEncryption.GenerateRandomPassword(model.Email!),
-                                Salt = AppEncryption.GenerateSalt(),
-                                UserRole = UserRole.Lead,
-                                CreatedDate = DateTime.UtcNow,
-                                DeletedDate = DateTime.UtcNow,
-                                IsActive = true,
-                                ModifiedDate = DateTime.UtcNow,
-                            };
-
-                            masterUsers.Add(user);
-
-                            model.CompanyId = companyId;
-
-                            var lead = new Lead
-                            {
-                                Id = userId,
-                                LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId : throw new ArgumentException("lead SouceId is Required"),
-                                CompanyId = model.CompanyId,
-                                Comment = model.Comment,
-                                AssignTo = model.AssignTo,
-                                CreatedBy = model.AssignTo,
-                                CreatedDate = DateTime.UtcNow,
-                                ModifiedDate = DateTime.UtcNow,
-                                IsActive = true,
-                                LeadRank = model.LeadRank,
-                                LeadCategoryId = model.LeadCategoryId,
-                                LeadCompanyId = model.LeadCompanyId
-                            };
-
-                            leadEntities.Add(lead);
-                        }
-
-                        var userAddedCount = await adminRepository.AddMasterUsers(masterUsers);
-                        if (userAddedCount <= 0)
-                        {
-                            return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
-                        }
-
-                        var leadAddedCount = await leadRepository.AddLeadsAsync(leadEntities);
-                        if (leadAddedCount <= 0)
-                        {
-                            return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
-                        }
-
-                        foreach (var lead in leadEntities)
-                        {
-                            var sourceLead = await leadRepository.GetLeadById(lead.Id);
-                            var returnVal = await userRepository.GetByIdAsync(sourceLead.AssignToId);
-                            sourceLead.AssignedTo = returnVal!.Name;
-                            var returnCompany = await companyRepository.GetByIdAsync(lead.CompanyId);
-                            sourceLead.CompanyName = returnCompany!.CompanyName;
-                            leadResponseModels.Add(sourceLead);
-                        }
-
-                        return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(leadResponseModels, ApiMessages.LeadManagement.LeadAddedSuccessfully, HttpStatusCodes.Created);
-                    }
-                    catch (Exception ex)
-                    {
-                        return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
-                    }
-                }*/
 
         public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadRequestModel> leadModels)
         {
@@ -1125,6 +1036,27 @@ namespace salesTrack.Application.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task<ApiResponse<IEnumerable<CompanyTimeSheetResponse>>> GetAllTimeSheetStepsByCompany()
+        {
+            try
+            {
+                var salesUser = contextService.UserId();
+                var user = await userRepository.GetUserById(salesUser);
+                var companyId = user.CompanyId;
+                var timeSheets = await companyRepository.GetTimeSheetByCompany(companyId);
+                if (timeSheets.Any())
+                {
+                    return ApiResponse<IEnumerable<CompanyTimeSheetResponse>>.SuccessResponse(timeSheets, $"{timeSheets.Count()} timeSheetSteps found", HttpStatusCodes.OK);
+                }
+                return ApiResponse<IEnumerable<CompanyTimeSheetResponse>>.ErrorResponse("No TimeSheetSteps Found ", HttpStatusCodes.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<CompanyTimeSheetResponse>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
+            }
+        }
+
     }
 }
 public class FollowUpReq

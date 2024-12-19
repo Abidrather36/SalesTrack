@@ -356,6 +356,18 @@ namespace salesTrack.Api.Controllers
                 
             }
         }
+        [HttpGet("GetAllTimeSheetStepsByCompany")]
+        public async Task<IActionResult> GetAllTimeSheetStepsByCompany()
+        {
+            try
+            {
+                return Ok(await leadService.GetAllTimeSheetStepsByCompany());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

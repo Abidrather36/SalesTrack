@@ -25,7 +25,7 @@ const AddTimeSheetStep = () => {
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
         setLoading(false);
-        navigate("/companyAdmin/dasboard");     
+        navigate("/companyAdmin/companyTimeSheetStepList");     
       } else {
         myToaster.showErrorToast(response.message);
       }

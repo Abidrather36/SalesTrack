@@ -15,14 +15,13 @@ function LeadListCompany() {
 
   const headers = [
     { key: "leadCompanyName", label: "Company Name" },
-    { key: "leadName", label: " Name" },
+    { key: "leadName", label: " Lead Name" },
     { key: "email", label: "Email" },
     { key: "phoneNumber", label: "Phone Number" },
     { key: "leadSourceName", label: "Source" },
     { key: "assignedTo", label: "Assigned To" },
     { key: "finalStatus", label: "Status" },
-    { key: "isActive", label: "IsActive" },
-    { key: "leadCategoryName", label: "Category Name" },
+    { key: "leadCategoryName", label: "Category" },
     { key: "leadRank", label: "Rank" },
     { key: "createdDate", label: "Created date" },
   ];

@@ -34,5 +34,6 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<IEnumerable<LeadCompanyNameResponse>> GetAllLeadCompanyNames(Guid companyId);
         Task<int> UpdateLeadCompany(LeadCompany model);
         Task<IEnumerable<LeadResponseModel>> GetLeadDetailsByIdsAsync(List<Guid> ids);
+       
     }
 }

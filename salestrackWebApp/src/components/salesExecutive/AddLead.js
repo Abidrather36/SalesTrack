@@ -25,6 +25,7 @@ const AddLead = () => {
       await fetchUsers();
       await fetchLeadCategories();
       await fetchLeadCompanies();
+      
     };
     fetchData();
   }, []);

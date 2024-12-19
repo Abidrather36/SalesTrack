@@ -37,51 +37,56 @@ const AdminProcessStep = () => {
 
   return (
     <>
-      <BreadcrumbComponent labels={{ module: "companyAdmin", currentRoute: "Add-Process-Step" }} />
-      <div className="row" style={{ display: "flex", flexDirection: "row", height: "100vh" }}>
-        <div className="col-lg-6 mb-4 mb-lg-0">
-          <img
-            src="https://i.ibb.co/9g2y0MH/professional-registration-page-form-submission-by-diverse-group-people-1334819-37395.jpg"
-            alt="Registration Illustration"
-            className="img-fluid"
-            style={{
-              maxWidth: "100%",
-              height: "65%",
-              marginLeft: "10px",
-              marginTop: "40px",
-              borderRadius: "10px",
-            }}
-          />
-        </div>
-
-        <div className="col-lg-6 mb-4-lg-0">
-          <div className="login-container" style={{height:"60%"}}>
-            <h2 className="form-title">Add Process Step</h2>
-            <form className="login-form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-              <div>
-                <InputField
-                  type="text"
-                  name="stepName"
-                  placeholder="Step Name"
-                  {...register("stepName", { required: "Step Name is required" })}
-                />
-                {errors.stepName && <span className="error-message">{errors.stepName.message}</span>}
-              </div>
-
-              {loading ? (
-                <button type="submit" className="login-button" disabled>
-                  <Spin />
-                </button>
-              ) : (
-                <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>
-                  Add Process Step
-                </button>
-              )}
-            </form>
-          </div>
+    <BreadcrumbComponent labels={{ module: "companyAdmin", currentRoute: "Add-Process-Step" }} />
+    <div
+      className="row"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "40vh",
+      }}
+    >
+      <div className="col-lg-6">
+        <div
+          className="login-container"
+          style={{
+            height: "60%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "20px",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+            borderRadius: "8px",
+          }}
+        >
+          <h2 className="form-title" style={{ marginBottom: "20px" }}>Add Process Step</h2>
+          <form className="login-form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+            <div style={{ marginBottom: "10px", width: "100%" }}>
+              <InputField
+                type="text"
+                name="stepName"
+                placeholder="Step Name"
+                {...register("stepName", { required: "Step Name is required" })}
+              />
+              {errors.stepName && <span className="error-message">{errors.stepName.message}</span>}
+            </div>
+            {loading ? (
+              <button type="submit" className="login-button" disabled style={{ width: "100%" }}>
+                <Spin />
+              </button>
+            ) : (
+              <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>
+                Add Process Step
+              </button>
+            )}
+          </form>
         </div>
       </div>
-    </>
+    </div>
+  </>
+  
   );
 };
 

@@ -221,10 +221,6 @@ function ChangePassword() {
                 </button>
               </div>
             </form>
-
-            <div className="pt-4 text-center">
-              <Link to="/login">Back to Login</Link>
-            </div>
           </div>
         </div>
       </div>

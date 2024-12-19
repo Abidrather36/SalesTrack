@@ -18,7 +18,10 @@ import MuiAlert from "@mui/material/Alert";
 import { useForm } from "react-hook-form";
 import { getAllProcessSteps } from "../../Services/UserService";
 import myToaster from "../../utils/toaster";
-import { addTimeSheet } from "../../Services/LeadService";
+import {
+  addTimeSheet,
+  listOfTimeSheetStepsByCompany,
+} from "../../Services/LeadService";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import { useNavigate } from "react-router-dom";
 import InputField from "../public/InputField";
@@ -40,9 +43,11 @@ const TimeSheet = () => {
   const [processSteps, setProcessSteps] = useState([]);
   const [minDate, setMinDate] = useState(null);
   const [maxDate, setMaxDate] = useState(null);
+  const [timeSheetStep, setTimeSheetStep] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
+    fetchTimeSheetsSteps();
   }, []);
 
   const {
@@ -126,6 +131,15 @@ const TimeSheet = () => {
     }
     setLoading(false);
   };
+  const fetchTimeSheetsSteps = async () => {
+    const response = await listOfTimeSheetStepsByCompany();
+    console.log("timesheet list", response.result);
+    if (response.isSuccess && Array.isArray(response.result)) {
+      setTimeSheetStep(response.result);
+    } else {
+      setTimeSheetStep([]); // In case of an unexpected result, default to an empty array.
+    }
+  };
 
   return (
     <>
@@ -202,22 +216,29 @@ const TimeSheet = () => {
             </div>
 
             {/* Process Step Dropdown */}
-            <div className="mb-3">
+
               <TextField
                 id="timeSheetStepName"
-                name="timeSheetStepName"
-                type="text"
-                variant="outlined"
-                placeholder="Enter Time Sheet Step"
+                select
+                label="Select TimeSheet Step"
                 {...register("timeSheetStepName", {
                   required: "Time Sheet Step is required",
                 })}
+                fullWidth
+                sx={{ mb: 2 }}
                 error={Boolean(errors.timeSheetStepName)}
                 helperText={errors.timeSheetStepName?.message || ""}
-                fullWidth
-                sx={{ mt: 1 }}
-              />
-            </div>
+                defaultValue="" // Default value for dropdown
+              >
+                <MenuItem value="">
+                  <em>Select TimeSheet Step</em>
+                </MenuItem>
+                {timeSheetStep.map((item) => (
+                  <MenuItem key={item.id} value={item.name}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </TextField>
 
             <TextField
               id="hoursSpent"

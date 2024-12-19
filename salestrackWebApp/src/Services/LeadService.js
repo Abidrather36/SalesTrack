@@ -78,3 +78,7 @@ export const getLeadCategoriesByCompany =()=>{
     let res =axiosObject.get(`${ApiUrl}Leads/getLeadCategoriesByCompany`).then(res=>res.data);
     return res;
 }
+export const listOfTimeSheetStepsByCompany =async()=>{
+    let res =await axiosObject.get(`${ApiUrl}Leads/GetAllTimeSheetStepsByCompany`).then(res=>res.data);
+    return res;
+}
