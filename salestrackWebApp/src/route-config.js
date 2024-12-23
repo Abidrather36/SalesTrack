@@ -39,6 +39,7 @@ import ModernHomepage from "./components/public/Demo"
 import AddMultipleLeads from "./components/salesExecutive/AddMutipleLeads"
 import AddTimeSheetStep from "./components/companyAdmin/AddTimeSheetStep"
 import CompanyTimeSheetStepList from "./components/companyAdmin/CompanyTimeSheetStepList"
+import LeadRegistration from "./components/salesExecutive/LeadBulkRegistration"
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -97,8 +98,9 @@ export const routerConfiguration = {
     { path : "/salesExecutive/addLeadCompany",element :<AddSalesCompany/>},
     { path : "/salesExecutive/leadCompanyList",element :<LeadCompanieList/>}, 
     { path : "/salesExecutive/bulkInsert",element :<BulkInsert/>},
-    { path: "/salesExecutive/changePassword",element:<ChangePassword/>},
-    { path: "/salesExecutive/addBulkLeads",element:<AddMultipleLeads/>},
+    { path : "/salesExecutive/changePassword",element:<ChangePassword/>},
+    { path : "/salesExecutive/addBulkLeads",element:<AddMultipleLeads/>},
+    { path : "/salesExecutive/leadRegistrations", element:<LeadRegistration/>}
 
   ]
   ,

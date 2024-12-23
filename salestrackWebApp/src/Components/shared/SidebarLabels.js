@@ -619,6 +619,7 @@ import {
   FaPlus,
   FaListAlt,
   FaUsers,
+  FaFileUpload 
 } from "react-icons/fa";
 import {
   Dashboard as DashboardIcon,
@@ -703,6 +704,7 @@ export const CompanyAdminsidebarLabels = [
       { id: 12, label: "Add Lead Category", link: "/companyAdmin/add-lead-category", icon: <FaPlus /> },
       { id: 13, label: "Lead Category List", link: "/companyAdmin/leadCategoryList", icon: <FaListAlt /> },
       { id: 14, label: "Lead List", link: "/companyAdmin/leadListCompany", icon: <FaListAlt /> },
+     
     ],
   },
 ];
@@ -726,6 +728,7 @@ export const SalesExectivesidebarLabels = [
       { id: 6, label: "Leads List", link: "/salesExecutive/leadList", icon: <FaUsers /> },
       { id: 7, label: "Register Lead Source", link: "/salesExecutive/registerLeadSource", icon: <FaPlus /> },
       { id: 8, label: "Lead Source List", link: "/salesExecutive/leadSourceList", icon: <Source /> },
+      { id: 15, label:" Add Leads", link: "/salesExecutive/leadRegistrations", icon: <FaFileUpload  /> },
     ],
   },
   {

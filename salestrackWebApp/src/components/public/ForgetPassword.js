@@ -29,69 +29,119 @@ function ForgetPassword() {
     setLoading(false);
   };
 
-  return (
-    <div className="container">
-      <div className="row m-5 no-gutters shadow-lg">
-        <div className="col-md-6 d-none d-md-block">
-          <img
-            src={img}
-            className="img-fluid rounded-3"
-            alt="Background"
-            style={{ minHeight: '100%' }}
-          />
-        </div>
-        <div className="col-md-6 bg-white p-5 rounded-3">
-          <div style={{ maxWidth: "60%", marginLeft: "90px" }}>
-            <img src={logo} alt="Logo" />
+//   return (
+//     <div className="container" >
+      
+//         <div className="col-md-6 bg-white p-5 rounded-3" >
+//           <div style={{ width: "100%",}}>
+//             <img src={logo} alt="Logo" />
+//           </div>
+//           <h3 className="pb-3">Forgot Password</h3>
+//           <div className="form-style">
+//             <form onSubmit={handleSubmit(onSubmit)}>
+//               <div className="form-group pb-3">
+//                 <input
+//                   type="email"
+//                   placeholder="Enter your email"
+//                   className="form-control"
+//                   id="email"
+//                   {...register("email", { required: "Email is required" })}
+//                 />
+//                 {errors.email && <span className="text-danger">{errors.email.message}</span>}
+//               </div>
+//               <div className="pb-2">
+//                 <button
+//                   type="submit"
+//                   className="btn btn-primary w-100 font-weight-bold mt-2 p-3"
+//                   style={{
+//                     display: "flex",
+//                     alignItems: "center",
+//                     justifyContent: "center",
+//                   }}
+
+//                 >
+//                   Send Reset Link
+//                   {loading && (
+//                     <span
+//                       style={{
+//                         display: "flex",
+//                         alignItems: "center",
+//                         marginLeft: "8px",
+//                       }}
+//                     >
+//                       <Spin />
+//                     </span>
+//                   )}
+//                 </button>
+//               </div>
+//             </form>
+//             <div className="pt-4 text-center">
+//               Remembered your password? <Link to="/login">Login</Link>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//   );
+// }
+
+// export default ForgetPassword;
+
+return (
+  <div
+    className="container d-flex align-items-center justify-content-center"
+    style={{ minHeight: "60vh",}}
+  >
+    <div className="col-md-6 bg-white p-5 rounded-3">
+      <div style={{ width: "100%" }}>
+        <img src={logo} alt="Logo" />
+      </div>
+      <h3 className="pb-3 text-center">Forgot Password</h3>
+      <div className="form-style">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="form-group pb-3">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="form-control"
+              id="email"
+              {...register("email", { required: "Email is required" })}
+            />
+            {errors.email && (
+              <span className="text-danger">{errors.email.message}</span>
+            )}
           </div>
-          <h3 className="pb-3">Forgot Password</h3>
-          <div className="form-style">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="form-group pb-3">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="form-control"
-                  id="email"
-                  {...register("email", { required: "Email is required" })}
-                />
-                {errors.email && <span className="text-danger">{errors.email.message}</span>}
-              </div>
-              <div className="pb-2">
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100 font-weight-bold mt-2 p-3"
+          <div className="pb-2">
+            <button
+              type="submit"
+              className="btn btn-primary w-100 font-weight-bold mt-2 p-3"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              Send Reset Link
+              {loading && (
+                <span
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
+                    marginLeft: "8px",
                   }}
-
                 >
-                  Send Reset Link
-                  {loading && (
-                    <span
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginLeft: "8px",
-                      }}
-                    >
-                      <Spin />
-                    </span>
-                  )}
-                </button>
-              </div>
-            </form>
-            <div className="pt-4 text-center">
-              Remembered your password? <Link to="/login">Login</Link>
-            </div>
+                  <Spin />
+                </span>
+              )}
+            </button>
           </div>
+        </form>
+        <div className="pt-4 text-center">
+          Remembered your password? <Link to="/login">Login</Link>
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 }
-
 export default ForgetPassword;
 

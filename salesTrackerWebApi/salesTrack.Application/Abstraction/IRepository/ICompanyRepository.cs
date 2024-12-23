@@ -14,6 +14,5 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<IEnumerable<CompanyTimeSheetResponse>> GetTimeSheetByCompany(Guid id);
         Task<CompanyTimeSheet> GetCompanyTimeSheetByNameAsync(string name,Guid companyId);
         Task<int> UpdateTimeSheetIsApproved(TimeSheet model);
-      
     }
 }
