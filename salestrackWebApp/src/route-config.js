@@ -40,6 +40,7 @@ import AddMultipleLeads from "./components/salesExecutive/AddMutipleLeads"
 import AddTimeSheetStep from "./components/companyAdmin/AddTimeSheetStep"
 import CompanyTimeSheetStepList from "./components/companyAdmin/CompanyTimeSheetStepList"
 import LeadRegistration from "./components/salesExecutive/LeadBulkRegistration"
+import ExcelToGrid from "./components/salesExecutive/LeadBulkRegistration"
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },
@@ -100,7 +101,7 @@ export const routerConfiguration = {
     { path : "/salesExecutive/bulkInsert",element :<BulkInsert/>},
     { path : "/salesExecutive/changePassword",element:<ChangePassword/>},
     { path : "/salesExecutive/addBulkLeads",element:<AddMultipleLeads/>},
-    { path : "/salesExecutive/leadRegistrations", element:<LeadRegistration/>}
+    { path : "/salesExecutive/ExcelToGrid", element:<ExcelToGrid/>}
 
   ]
   ,

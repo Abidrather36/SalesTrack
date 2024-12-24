@@ -104,7 +104,7 @@ class Toaster {
   //   });
   // };
 
-  editLeadSwal = async (lead = {}, userAssignTo, leadSources, fetchLeads) => {
+  editLeadSwal = async (lead = {}, userAssignTo, leadSources, updateLeadInState) => {
     console.log("swal lead", lead);
     Swal.fire({
       title: "Edit Lead",
@@ -134,7 +134,7 @@ class Toaster {
             <select id="swal-input-assign" class="swal2-input" style="width: 80%; margin-left:10px">
               ${
                 lead.assignTo
-                  ? `<option value="${lead.assignTo.id}">${lead.assignTo.name}</option>`
+                  ? `<option value="${lead.assignTo.id}">${lead.assignedTo}</option>`
                   : ""
               }
               ${userAssignTo
@@ -209,7 +209,7 @@ class Toaster {
           const res = await updateLead(updatedLead);
           if (res.isSuccess) {
             myToaster.showSuccessToast(res.message);
-            fetchLeads();
+            updateLeadInState(updatedLead)
           } else {
             myToaster.showErrorToast(res.message);
           }

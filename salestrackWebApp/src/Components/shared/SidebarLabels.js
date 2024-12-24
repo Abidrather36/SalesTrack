@@ -728,7 +728,7 @@ export const SalesExectivesidebarLabels = [
       { id: 6, label: "Leads List", link: "/salesExecutive/leadList", icon: <FaUsers /> },
       { id: 7, label: "Register Lead Source", link: "/salesExecutive/registerLeadSource", icon: <FaPlus /> },
       { id: 8, label: "Lead Source List", link: "/salesExecutive/leadSourceList", icon: <Source /> },
-      { id: 15, label:" Add Leads", link: "/salesExecutive/leadRegistrations", icon: <FaFileUpload  /> },
+      { id: 15,label:"Excel Sheet", link: "/salesExecutive/ExcelToGrid", icon: <FaFileUpload  /> },
     ],
   },
   {

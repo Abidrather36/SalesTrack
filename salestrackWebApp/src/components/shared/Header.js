@@ -19,7 +19,8 @@ const Header = () => {
     profileRoute = "/salesManager/profile";
   }
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.stopPropagation();
     confirmDialog({
       message: "Are you sure you want to log out from your account?",
       header: "Confirmation",

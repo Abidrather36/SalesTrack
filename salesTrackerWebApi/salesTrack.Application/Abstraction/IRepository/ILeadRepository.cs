@@ -8,7 +8,7 @@ namespace salesTrack.Application.Abstraction.IRepository
     public interface ILeadRepository:IBaseRepository<Lead>
     {
         Task<int> AddLeadsAsync(List<Lead> models);
-        Task<Lead> AddLead(LeadRequestModel model,Guid userId);
+        Task<Lead> AddLead(LeadRequestModel model,Guid userId,Guid id);
         Task<LeadResponseModel> GetLeadById(Guid leadId);
         Task<IEnumerable<LeadResponseModel>> GetAllLeadsByCompanyId(Guid id,Guid assignTo);
         Task<IEnumerable<LeadResponseModel>> GetAllLeadsAsync(Guid companyId);
@@ -19,7 +19,7 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<int> AddfollowUpdate(FollowUpDate model);
         Task<IEnumerable<LeadFollowUpHistoryResponse>> ShowLeadHistory(Guid leadId);
         Task<bool> AddProcessStep(FollowUpReq model);
-        Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest models,Guid id);
+        Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest models,Guid id,Guid userId);
         Task<int> AddTimeSheet(TimeSheet model);
         Task<IEnumerable<TimeSheetResponseModel>> GetAllTimeSheetsByUser(Guid userId);
         Task<int> UpdateTimeSheet(TimeSheet model);

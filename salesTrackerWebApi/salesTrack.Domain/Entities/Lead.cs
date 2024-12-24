@@ -16,8 +16,12 @@ namespace salesTrack.Domain.Entities
         public Guid CompanyId { get; set; }
         public Guid LeadCategoryId { get; set; }
         public int LeadRank { get; set; }
+        public Guid UserId { get; set; }
 
         #region navigation
+
+        [ForeignKey(nameof(UserId))]
+        public User? SalesUser { get; set; }
 
         [ForeignKey(nameof(LeadCompanyId))]
         public LeadCompany? LeadCompany { get; set; }

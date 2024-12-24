@@ -41,7 +41,7 @@ namespace salesTrack.Persistence.Repository
             return await context.SaveChangesAsync();
         }
 
-        public async Task<Lead> AddLead(LeadRequestModel model, Guid userId)
+        public async Task<Lead> AddLead(LeadRequestModel model, Guid userId,Guid id)
         {
             try
             {
@@ -61,13 +61,14 @@ namespace salesTrack.Persistence.Repository
                     CompanyId = model.CompanyId,
                     Comment = model.Comment,
                     AssignTo = model.AssignTo,
-                    CreatedBy = model.AssignTo,
+                    CreatedBy = id,
                     CreatedDate = DateTime.UtcNow,
                     ModifiedDate = DateTime.UtcNow,
                     IsActive = true,
                     LeadRank = model.LeadRank,
                     LeadCategoryId = model.LeadCategoryId,
-                    LeadCompanyId = model.LeadCompanyId
+                    LeadCompanyId = model.LeadCompanyId,
+                    UserId=id
                 };
 
                 await context.Leads.AddAsync(newLead);
@@ -228,7 +229,7 @@ namespace salesTrack.Persistence.Repository
                 Date = x.Date,
                 DateString = x.Date.ToString("dd/MM/yyyy"),
                 IsActive = x.IsActive,
-                IsApproved=x.IsApproved
+                IsApproved = x.IsApproved
 
             }).OrderBy(x => x.Date).ToListAsync();
             return res;
@@ -328,9 +329,44 @@ namespace salesTrack.Persistence.Repository
         }
 
 
-        public async Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest model, Guid id)
+        /*    public async Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest model, Guid id,Guid userId)
+            {
+                var followUpsForToday = await context.Leads.Where(l => l.CompanyId == id && l.User!.Id==userId)
+                    .Include(u => u.User)
+                    .Include(l => l.ProcessSteps!)
+                        .ThenInclude(ps => ps.LeadFollowUpDate)
+                    .Include(l => l.ProcessSteps!)
+                        .ThenInclude(ps => ps.LeadComment)
+                    .Include(l => l.ProcessSteps!)
+                        .ThenInclude(ps => ps.ProcessStepAdmin)
+                     .Include(l => l.LeadCompany)
+                    .Where(l => l.ProcessSteps != null
+                                 && l.ProcessSteps.Any(ps => ps.LeadFollowUpDate != null
+                                                              && ps.LeadFollowUpDate.Any(fd => fd.Date.Date == model.Date.Date)))
+                    .SelectMany(l => l.ProcessSteps
+                        .Where(ps => ps.LeadFollowUpDate != null
+                                     && ps.LeadFollowUpDate.Any(fd => fd.Date.Date == model.Date.Date))
+                        .Select(ps => new LeadFollowUpHistoryResponse
+                        {
+                            LeadId = ps.LeadId,
+                            ClientName = ps.Lead!.User!.Name ?? "N/A",
+                            Email = ps.Lead.User.Email ?? "No Email",
+                            PhoneNumber = ps.Lead.User.PhoneNumber ?? "No Phone Number",
+                            LeadComments = ps.LeadComment!.FirstOrDefault()!.Text ?? "No Comment Here",
+                            LeadProcessStep = ps.ProcessStepAdmin!.StepName ?? "No Step Name",
+                            FollowUpDate = ps.LeadFollowUpDate!.FirstOrDefault()!.Date,
+                            LeadCompanyName = ps.Lead!.LeadCompany!.LeadCompanyName ?? "No Lead Company Name ",
+
+                        }))
+                    .ToListAsync();
+
+                return followUpsForToday;
+            }*/
+
+        public async Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest model, Guid id, Guid userId)
         {
-            var followUpsForToday = await context.Leads.Where(l => l.Id == id)
+            var followUpsForToday = await context.Leads
+            .Where(l => l.CompanyId == id && l.UserId == userId)
                 .Include(u => u.User)
                 .Include(l => l.ProcessSteps!)
                     .ThenInclude(ps => ps.LeadFollowUpDate)
@@ -338,7 +374,7 @@ namespace salesTrack.Persistence.Repository
                     .ThenInclude(ps => ps.LeadComment)
                 .Include(l => l.ProcessSteps!)
                     .ThenInclude(ps => ps.ProcessStepAdmin)
-                 .Include(l => l.LeadCompany)
+                .Include(l => l.LeadCompany)
                 .Where(l => l.ProcessSteps != null
                              && l.ProcessSteps.Any(ps => ps.LeadFollowUpDate != null
                                                           && ps.LeadFollowUpDate.Any(fd => fd.Date.Date == model.Date.Date)))
@@ -354,14 +390,13 @@ namespace salesTrack.Persistence.Repository
                         LeadComments = ps.LeadComment!.FirstOrDefault()!.Text ?? "No Comment Here",
                         LeadProcessStep = ps.ProcessStepAdmin!.StepName ?? "No Step Name",
                         FollowUpDate = ps.LeadFollowUpDate!.FirstOrDefault()!.Date,
-                        LeadCompanyName = ps.Lead!.LeadCompany!.LeadCompanyName ?? "No Lead Company Name ",
-
-
+                        LeadCompanyName = ps.Lead!.LeadCompany!.LeadCompanyName ?? "No Lead Company Name",
                     }))
                 .ToListAsync();
 
             return followUpsForToday;
         }
+
 
         public async Task<int> UpdateLeadCompany(LeadCompany model)
         {

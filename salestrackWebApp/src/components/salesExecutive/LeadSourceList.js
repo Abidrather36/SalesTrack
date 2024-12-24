@@ -72,7 +72,6 @@ function LeadSourceList() {
         }
       }
       const deleteLeadSourceHandler = async (id) => {
-        try {
             console.log(id);
             const result = await deleteLeadSourceById(id);
             if (result.isSuccess) {
@@ -81,10 +80,7 @@ function LeadSourceList() {
             } else {
                 myToaster.showErrorToast(result.message);
             }
-        } catch (error) {
-            myToaster.showErrorToast('Failed to delete the company');
         }
-    };
     
     
       const deleteLeadSource = async (leadSource) => {

@@ -5,7 +5,7 @@ namespace salesTrack.Domain.Models.Request
 {
     public class LeadUpdateModel
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string? LeadName { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
@@ -13,10 +13,9 @@ namespace salesTrack.Domain.Models.Request
         public Guid? LeadCategoryId { get; set; }
         public string? Comment { get; set; }
 
-        public Guid AssignTo { get; set; }
+        public Guid? AssignTo { get; set; }
 
-        public FinalStatus FinalStatus { get; set; }
-        public int LeadRank { get; set; }
-
+        public FinalStatus? FinalStatus { get; set; }
+        public int? LeadRank { get; set; }
     }
 }

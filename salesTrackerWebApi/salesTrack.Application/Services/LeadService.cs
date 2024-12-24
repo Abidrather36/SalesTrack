@@ -75,7 +75,7 @@ namespace salesTrack.Application.Services
                 }
                 model.CompanyId = companyId;
 
-                var leadAdded = await leadRepository.AddLead(model, user.Id);
+                var leadAdded = await leadRepository.AddLead(model, user.Id,salesExecutiveId);
 
                 if (leadAdded is null)
                 {
@@ -225,7 +225,6 @@ namespace salesTrack.Application.Services
                 {
                     user.Name = model.LeadName;
                     user.Email = model.Email;
-                    user.CreatedBy = salesExecutiveId;
                     user.ModifiedBy = salesExecutiveId;
                     user.ModifiedDate = DateTime.UtcNow;
                     user.PhoneNumber = string.IsNullOrEmpty(model.PhoneNumber) ? "N/A" : model.PhoneNumber;
@@ -245,13 +244,13 @@ namespace salesTrack.Application.Services
                 else
                 {
                     lead.LeadSourceId = model.LeadSourceId;
-                    lead.FinalStatus = model.FinalStatus;
+                    lead.FinalStatus = model.FinalStatus.HasValue ? model.FinalStatus.Value : lead.FinalStatus;
                     lead.ModifiedBy = salesExecutiveId;
                     lead.CreatedBy = salesExecutiveId;
                     lead.ModifiedDate = DateTime.UtcNow;
-                    lead.AssignTo = model.AssignTo;
+                    lead.AssignTo = model.AssignTo.HasValue ? model.AssignTo.Value : lead.AssignTo;
                     lead.IsActive = true;
-                    lead.Comment = model.Comment;
+                    lead.Comment = model.Comment ?? lead.Comment;
 
                     var updatedLead = await leadRepository.UpdateAsync(lead);
                     var assignUserId = await userRepository.GetByIdAsync(lead.AssignTo);
@@ -280,7 +279,7 @@ namespace salesTrack.Application.Services
                                 AssignedTo = assignUserId != null ? assignUserId.Name : null,
                                 Comment = model.Comment,
                                 IsActive = true,
-                                FinalStatus = model.FinalStatus,
+                                FinalStatus = model.FinalStatus ?? default(FinalStatus),
                                 UserRole = UserRole.Lead
 
                             };
@@ -597,7 +596,7 @@ namespace salesTrack.Application.Services
             var loggedInUser = contextService.UserId();
             var user = await userRepository.GetUserById(loggedInUser);
 
-            var todaysFollowUpdate = await leadRepository.TodaysFollowUpdate(model, user.CompanyId);
+            var todaysFollowUpdate = await leadRepository.TodaysFollowUpdate(model, user.CompanyId, loggedInUser);
 
             if (todaysFollowUpdate is null || !todaysFollowUpdate.Any())
             {
@@ -605,8 +604,7 @@ namespace salesTrack.Application.Services
             }
             else
             {
-                return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(todaysFollowUpdate, $"{todaysFollowUpdate.Count()} Follow Up Found", HttpStatusCodes.Found
-);
+                return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(todaysFollowUpdate, $"{todaysFollowUpdate.Count()} Follow Up Found", HttpStatusCodes.Found);
             }
         }
 

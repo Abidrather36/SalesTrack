@@ -26,7 +26,7 @@ namespace salesTrack.Application.Services
             throw new NotImplementedException();
         }
 
-        public async  Task<string> UploadFileAsync(IFormFile? file)
+        public async Task<string> UploadFileAsync(IFormFile? file)
         {
             if (file == null)
             {
@@ -86,7 +86,6 @@ namespace salesTrack.Application.Services
                 return true;
             }
 
-            // Check for null file
             if (file == null)
                 throw new Exception("File cannot be null.");
 

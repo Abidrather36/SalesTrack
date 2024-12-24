@@ -51,7 +51,7 @@ function LeadList(props) {
 
   const editLead = (lead) => {
     console.log(lead)
-    myToaster.editLeadSwal(lead, userAssignTo, leadSources, fetchAllLeads);
+    myToaster.editLeadSwal(lead, userAssignTo, leadSources,updateLeadInState);
   };
 
   const headers = [
@@ -121,7 +121,13 @@ function LeadList(props) {
     setShowGrid(false);
     setShowFollowupHistoryGrid(true);
   };
-
+  const updateLeadInState = (updatedLead) => {
+    setLeads((prevLeads) =>
+        prevLeads.map((lead) =>
+            lead.id === updatedLead.id ? { ...lead, ...updatedLead } : lead
+        )
+    );
+};
   return (
     <>
       <ConfirmDialog/>

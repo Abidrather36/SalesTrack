@@ -9,6 +9,7 @@ using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
+using SalesTrack.Application.Abstraction.IRepository;
 using SalesTrack.Application.Common;
 using SalesTrack.Application.Shared;
 
@@ -20,13 +21,15 @@ namespace salesTrack.Application.Services
         private readonly IJwtProvider jwtProvider;
         private readonly IContextService contextService;
         private readonly IEmailHelperService emailHelperService;
+        private readonly IUserRepository userRepository;
 
-        public AuthService(IAuthRepository authRepository,IJwtProvider jwtProvider,IContextService contextService,IEmailHelperService emailHelperService)
+        public AuthService(IAuthRepository authRepository,IJwtProvider jwtProvider,IContextService contextService,IEmailHelperService emailHelperService,IUserRepository userRepository)
         {
             this.authRepository = authRepository;
             this.jwtProvider = jwtProvider;
             this.contextService = contextService;
             this.emailHelperService = emailHelperService;
+            this.userRepository = userRepository;
         }
 
         public async  Task<ApiResponse<string>> ChangePassword(ChangePasswordModel model)
@@ -140,6 +143,16 @@ namespace salesTrack.Application.Services
                 return ApiResponse<string>.ErrorResponse(ApiMessages.TechnicalError,HttpStatusCodes.BadRequest);
             }
 
+        }
+
+        public async Task<ApiResponse<string>> UpdateProfilePicture(UpdateProfilePictureRequestModel model)
+        {
+            var user = await userRepository.FirstOrDefaultAsync(x => x.Id == model.UserId);
+            if (user != null)
+            {
+                return ApiResponse<string>.ErrorResponse("no such user please check again", HttpStatusCodes.BadRequest);
+            }
+            return default;
         }
     }
 }

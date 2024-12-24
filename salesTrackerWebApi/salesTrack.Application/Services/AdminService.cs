@@ -874,7 +874,7 @@ namespace salesTrack.Application.Services
             }
             else
             {
-                return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(leads, "Leads Fetched by CompanyId", HttpStatusCodes.InternalServerError);
+                return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(leads, $"{leads.Count()} leads found ", HttpStatusCodes.InternalServerError);
 
 
                 return default;
