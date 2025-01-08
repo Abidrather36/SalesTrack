@@ -4,13 +4,9 @@ using salesTrack.Application.Abstraction.Jwt;
 using salesTrack.Domain.Models.JWT;
 using salesTrack.Infrastructure.Identity;
 using SalesTrack.Domain.Entities;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace salesTrack.Infrastructure.Jwt
 {
@@ -41,7 +37,6 @@ namespace salesTrack.Infrastructure.Jwt
                 DateTime expireTime = DateTime.UtcNow.AddHours(1);
 
                 userToken.Validaty = expireTime.TimeOfDay;
-
                 var claims = new List<Claim>
             {
                 new Claim(AppClaims.UserId, user.Id.ToString()!),
@@ -58,6 +53,7 @@ namespace salesTrack.Infrastructure.Jwt
                     expires: expireTime,
                     signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
                 );
+                userToken.ExpiredTime = expireTime;
 
                 userToken.Token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
                 userToken.UserName = user.Name;
@@ -70,6 +66,41 @@ namespace salesTrack.Infrastructure.Jwt
             {
                 throw;
             }
+
         }
+        public UserTokens GenerateRefreshToken(MasterUser user)
+        {
+            var jwtSettings = new JwtSettings
+            {
+                IssuerSigningKey = configuration["Jwt:Key"],
+                ValidIssuer = configuration["Jwt:Issuer"],
+                ValidAudience = configuration["Jwt:Audience"]
+            };
+
+            var key = Encoding.ASCII.GetBytes(jwtSettings.IssuerSigningKey!);
+            DateTime expireTime = DateTime.UtcNow.AddDays(7);
+
+            var claims = new List<Claim>
+            {
+                new Claim(AppClaims.UserId, user.Id.ToString()!),
+                new Claim(ClaimTypes.Role, user.UserRole.ToString())
+            };
+
+            var jwtToken = new JwtSecurityToken(
+                issuer: jwtSettings.ValidIssuer,
+                audience: jwtSettings.ValidAudience,
+                claims: claims,
+                notBefore: DateTime.UtcNow,
+                expires: expireTime,
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+            );
+            var userToken = new UserTokens();
+            userToken.ExpiredTime = expireTime;
+            userToken.RefreshToken = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+            userToken.Id = user.Id;
+            userToken.UserRole = user.UserRole;
+            return userToken;
+        }
+
     }
 }

@@ -11,7 +11,6 @@ namespace salesTrack.Domain.Models.Request
     {
         [Required]
         public string? LeadCompanyName { get; set; }
-        [Required]
         public string? Description { get; set; }
     }
 }

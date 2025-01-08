@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using salesTrack.Application.Abstraction.IService;
-using salesTrack.Application.Services;
-using salesTrack.Domain.Entities;
 using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Common;
 using SalesTrack.Application.Shared;
-using System.Net;
 
 namespace salesTrack.Api.Controllers
 {
@@ -238,6 +235,7 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
         [HttpPost("UpdateTimeSheet")]
         public async Task<IActionResult> UpdateTimeSheet(UpdateTimeSheetModel model)
         {
@@ -253,6 +251,8 @@ namespace salesTrack.Api.Controllers
 
 
         }
+
+
         [HttpDelete("deleteTimeSheetById/{id:guid}")]
         public async Task<IActionResult> DeleteTimeSheet(Guid id)
         {
@@ -265,6 +265,7 @@ namespace salesTrack.Api.Controllers
                 throw new Exception ($"Could not delete {id}");
             }
         }
+
         [HttpPost("registerLeadCompany")]
         public async Task<IActionResult> AddLeadCompany(LeadCompanyNameRequest  model)
         {
@@ -279,6 +280,7 @@ namespace salesTrack.Api.Controllers
             }
 
         }
+
         [HttpGet("getAllLeadCompanyNames")]
         public async Task<IActionResult> GetAllLeadCompanyNames()
         {
@@ -293,6 +295,7 @@ namespace salesTrack.Api.Controllers
             }
 
         }
+
         [HttpPost("updateLeadCompany")]
         public async Task<IActionResult> UpdateLeadCompany(UpdateLeadCompany model)
         {
@@ -305,6 +308,7 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
         [HttpDelete("deleteLeadCompanyById/{id:guid}")]
         public async Task<IActionResult> DeleteCompany(Guid id)
         {
@@ -317,14 +321,11 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        [HttpPost("addMultipleLeads")]
-        public async Task<IActionResult> AddMultipleLeads([FromBody] List<LeadRequestModel> leadModels)
-        {
-            if (leadModels == null || !leadModels.Any())
-            {
-                return BadRequest(ApiResponse<string>.ErrorResponse("No lead data provided.", HttpStatusCodes.BadRequest));
-            }
 
+        [HttpPost("addMultipleLeads")]
+        public async Task<IActionResult> AddMultipleLeads([FromBody] List<LeadMutipleRequestModel> leadModels)
+        {
+          
             try
             {
                 var result = await leadService.AddMultipleLeads(leadModels);

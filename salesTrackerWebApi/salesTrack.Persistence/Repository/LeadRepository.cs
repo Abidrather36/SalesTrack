@@ -1,13 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using salesTrack.Application.Abstraction.Iidentity;
 using salesTrack.Application.Abstraction.IRepository;
 using salesTrack.Domain.Entities;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
-using SalesTrack.Application.Common;
-using SalesTrack.Domain.Entities;
 using SalesTrack.Persistence.Data;
 using SalesTrack.Persistence.Repository;
 
@@ -65,10 +62,10 @@ namespace salesTrack.Persistence.Repository
                     CreatedDate = DateTime.UtcNow,
                     ModifiedDate = DateTime.UtcNow,
                     IsActive = true,
-                    LeadRank = model.LeadRank,
+                    LeadRank =  model.LeadRank ?? 5,
                     LeadCategoryId = model.LeadCategoryId,
                     LeadCompanyId = model.LeadCompanyId,
-                    UserId=id
+                    UserId = id
                 };
 
                 await context.Leads.AddAsync(newLead);
@@ -166,7 +163,7 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<IEnumerable<LeadResponseModel>> GetAllLeadsAsync(Guid companyId)
         {
-            var Leads = await context.Leads.Where(l => l.CompanyId == companyId).Select(lead => new LeadResponseModel
+            var Leads = await context.Leads.Where(l => l.CompanyId == companyId).OrderByDescending(l=>l.CreatedDate).Select(lead => new LeadResponseModel
             {
                 Id = lead.Id,
                 LeadName = lead.User!.Name,
@@ -194,7 +191,7 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<IEnumerable<LeadResponseModel>> GetAllLeadsByCompanyId(Guid id, Guid assignTo)
         {
-            var leads = await context.Leads.Where(lead => lead.CompanyId == id && lead.AssignTo == assignTo).Select(lead => new LeadResponseModel
+            var leads = await context.Leads.Where(lead => lead.CompanyId == id && lead.AssignTo == assignTo).OrderByDescending(lead=> lead.CreatedDate).Select(lead => new LeadResponseModel
             {
                 Id = lead.Id,
                 LeadName = lead!.User!.Name,
@@ -206,6 +203,8 @@ namespace salesTrack.Persistence.Repository
                 UserRole = lead.User.UserRole,
                 LeadSourceId = lead.LeadSourceId,
                 IsActive = lead.IsActive,
+                LeadCategoryId=lead.LeadCategoryId,
+                LeadCompanyId=lead.LeadCompanyId,
                 CompanyName = lead.Company!.CompanyName,
                 AssignToId = lead.AssignTo,
                 LeadSourceName = lead.LeadSource!.LeadSourceName,
@@ -453,5 +452,19 @@ namespace salesTrack.Persistence.Repository
                 .ToListAsync();
         }
 
+        public Task<bool> IsLeadCompanyExists(string leadCompanyName)
+        {
+            return context.Set<LeadCompany>().AnyAsync(lc => lc.LeadCompanyName == leadCompanyName);
+        }
+
+        public Task<LeadCompany?> GetLeadCompanyByName(string leadCompanyName)
+        {
+           return  context.Set<LeadCompany>().FirstOrDefaultAsync(lc => lc.LeadCompanyName == leadCompanyName);
+        }
+
+        public Task<LeadSource?> GetLeadSoureByName(string leadSourceName)
+        {
+           return context.Set<LeadSource>().FirstOrDefaultAsync(ls => ls.LeadSourceName == leadSourceName);
+        }
     }
 }

@@ -101,6 +101,7 @@ namespace salesTrack.Application.Services
                return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
 
                 var userTokens = jwtProvider.GenerateToken(user);
+                var refreshToken = jwtProvider.GenerateRefreshToken(user);
                 LoginResponseModel login = new()
                 {
                     UserId = user.Id,
@@ -110,6 +111,7 @@ namespace salesTrack.Application.Services
                     UserRole= userTokens.UserRole ?? UserRole.PortalAdmin ,
                     Email=user.Email,
                     PhoneNumber=user.PhoneNumber,
+                    RefreshToken=refreshToken.RefreshToken,
                 };
                 return ApiResponse<LoginResponseModel>.SuccessResponse(login, ApiMessages.Auth.LoggedIn, HttpStatusCodes.Accepted);
             }
@@ -119,7 +121,11 @@ namespace salesTrack.Application.Services
             }
         }
 
-     
+        public Task<ApiResponse<LoginResponseModel>> RefreshToken(RefreshTokenRequestModel model)
+        {
+           /*jwtProvider.GenerateRefreshToken()*/
+                return default;
+        }
 
         public async Task<ApiResponse<string>> ResetPassword(ResetPasswordModel model)
         {

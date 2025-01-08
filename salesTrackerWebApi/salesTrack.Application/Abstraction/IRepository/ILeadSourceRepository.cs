@@ -5,6 +5,5 @@ namespace salesTrack.Application.Abstraction.IRepository
 {
     public interface ILeadSourceRepository:IBaseRepository<LeadSource>
     {
-
     }
 }

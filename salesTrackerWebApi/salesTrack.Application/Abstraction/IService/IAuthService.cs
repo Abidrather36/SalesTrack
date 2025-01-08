@@ -1,5 +1,4 @@
-﻿using salesTrack.Domain.Models;
-using salesTrack.Domain.Models.Request;
+﻿using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Common;
 
@@ -13,6 +12,7 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<string>> ForgotPassword(string email);
         Task<ApiResponse<string>> ResetPassword(ResetPasswordModel model);
         Task<ApiResponse<string>> UpdateProfilePicture(UpdateProfilePictureRequestModel model);
+        Task<ApiResponse<LoginResponseModel>> RefreshToken(RefreshTokenRequestModel model);
     }
 
 }

@@ -86,6 +86,7 @@ function LeadList(props) {
   const fetchAllLeads = async () => {
     setLoading(true);  
     const response = await getAllLeads();
+    console.log("lead List ->",response.result)
     if (response.result) {
       console.log("leadList Date",response.result)
       setLeads(response.result);

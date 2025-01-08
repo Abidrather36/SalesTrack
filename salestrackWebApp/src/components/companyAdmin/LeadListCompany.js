@@ -53,7 +53,7 @@ function LeadListCompany() {
         </div>
       ) : (
         <Grid 
-        headers={headers}
+         headers={headers}
          data={leads} 
          loading={loading} 
          tableName="Leads" />

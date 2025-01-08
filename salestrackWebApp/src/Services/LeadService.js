@@ -82,3 +82,7 @@ export const listOfTimeSheetStepsByCompany =async()=>{
     let res =await axiosObject.get(`${ApiUrl}Leads/GetAllTimeSheetStepsByCompany`).then(res=>res.data);
     return res;
 }
+export const addBulkLeads=(model)=>{
+    let res=axiosObject.post(`${ApiUrl}Leads/addMultipleLeads`,model).then(res=>res.data);
+    return res;
+}

@@ -134,7 +134,7 @@ class Toaster {
             <select id="swal-input-assign" class="swal2-input" style="width: 80%; margin-left:10px">
               ${
                 lead.assignTo
-                  ? `<option value="${lead.assignTo.id}">${lead.assignedTo}</option>`
+                  ? `<option value="${lead.assignTo.id}">${lead.assignTo.name}</option>`
                   : ""
               }
               ${userAssignTo

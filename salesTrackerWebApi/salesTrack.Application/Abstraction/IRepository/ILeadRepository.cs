@@ -29,11 +29,14 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<LeadCategory?> GetLeadCategoryById(Guid? id);
         Task<int> UpdateLeadCategory(LeadCategory model);
         Task<int> AddLeadCompanyName(LeadCompany model);
+        Task<LeadCompany?> GetLeadCompanyByName(string leadCompanyName);
+        Task<bool> IsLeadCompanyExists(string leadCompanyName);
         Task<int> AddLeadCompanyNamesBulk(List<LeadCompany> models);
         Task<LeadCompany> GetLeadCompanyNameById(Guid? id); 
         Task<IEnumerable<LeadCompanyNameResponse>> GetAllLeadCompanyNames(Guid companyId);
         Task<int> UpdateLeadCompany(LeadCompany model);
         Task<IEnumerable<LeadResponseModel>> GetLeadDetailsByIdsAsync(List<Guid> ids);
+        Task<LeadSource?> GetLeadSoureByName(string leadSourceName);
        
     }
 }

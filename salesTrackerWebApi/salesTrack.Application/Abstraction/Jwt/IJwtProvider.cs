@@ -11,5 +11,6 @@ namespace salesTrack.Application.Abstraction.Jwt
     public  interface IJwtProvider
     {
         public UserTokens GenerateToken(MasterUser user);
+        public UserTokens GenerateRefreshToken(MasterUser user);
     }
 }

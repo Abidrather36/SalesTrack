@@ -9,7 +9,6 @@ namespace salesTrack.Domain.Entities
     {
         public string? Comment { get; set; }
         public Guid LeadCompanyId { get; set; }
-        public int MyProperty { get; set; }
         public Guid AssignTo { get; set; }
         public Guid LeadSourceId { get; set; }
         public FinalStatus FinalStatus { get; set; }=FinalStatus.Open;

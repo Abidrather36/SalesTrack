@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using salesTrack.Application.Abstraction.IService;
-using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models.Request;
-using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Abstraction.IService;
 using SalesTrack.Application.Common;
 
@@ -26,16 +23,15 @@ namespace salesTrack.Api.Controllers
     
 
         [HttpPost("login")]
-        public async Task<ApiResponse<LoginResponseModel>> Login(LoginRequestModel model)
+        public async Task<IActionResult> Login(LoginRequestModel model)
         {
             try
             {
-                return await authService.Login(model);
+               return  Ok( await authService.Login(model));
             }
-
             catch (Exception ex)
             {
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         [HttpPost("ChangePassword")]
@@ -75,6 +71,18 @@ namespace salesTrack.Api.Controllers
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+        [HttpPost("refresh-Token")]
+        public async Task<IActionResult> RefreshToken(RefreshTokenRequestModel model)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 

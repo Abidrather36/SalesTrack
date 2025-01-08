@@ -27,9 +27,11 @@ namespace salesTrack.Domain.Models.Response
         public bool IsActive { get; set; }
         public string? CompanyName { get; set; }
         public Guid CompanyId { get; set; }
+        public Guid LeadCompanyId { get; set; }
         public Guid LeadCategoryId { get; set; }
         public int LeadRank { get; set; }
         public string? CreatedDate { get; set; }
+        public string? StatusMessage { get; set; }
 
     }
 }

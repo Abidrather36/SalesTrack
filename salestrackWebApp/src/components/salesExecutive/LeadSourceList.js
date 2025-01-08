@@ -56,7 +56,7 @@ function LeadSourceList() {
         else{
           myToaster.showErrorToast(response.message);
         }
-    }
+    } 
       const editLeadSource=(leadSource)=>{
         console.log(leadSource)
         myToaster.leadSourceEditSwal(leadSource,fetchLeadSources)

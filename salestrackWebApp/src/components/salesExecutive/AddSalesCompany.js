@@ -134,7 +134,6 @@ function AddSalesCompany() {
                       id="description"
                       placeholder="Enter Description"
                       {...register("description", {
-                        required: "Description is required",
                       })}
                     />
                     {errors.description && (

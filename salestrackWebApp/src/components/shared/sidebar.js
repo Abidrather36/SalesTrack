@@ -230,6 +230,86 @@
 //Material Ui///
 
 
+// import React, { useState } from "react";
+// import { Link } from "react-router-dom";
+// import {
+//   Drawer,
+//   List,
+//   ListItem,
+//   ListItemIcon,
+//   ListItemText,
+//   Collapse,
+// } from "@mui/material";
+// import { ExpandLess, ExpandMore } from "@mui/icons-material";
+
+// import logo from "../../utils/WhatsApp Image 2024-10-30 at 14.27.14_88ae8d3e.jpg";
+
+// function Sidebar({ labels = [] }) {
+//   const [openMenus, setOpenMenus] = useState({});
+
+//   const handleToggle = (id) => {
+//     setOpenMenus((prev) => ({ ...prev, [id]: !prev[id] }));
+//   };
+
+//   return (
+//     <Drawer
+//       variant="permanent"
+//       anchor="left"
+//       sx={{
+//         width: 250,
+//         "& .MuiDrawer-paper": { width: 250, boxSizing: "border-box" },
+//       }}
+//     >
+//       <div style={{ textAlign: "center", padding: "16px 0" }}>
+//         <img
+//           src={logo}
+//           alt="Logo"
+//           style={{ width: "200px", height: "auto" }}
+//         />
+//       </div>
+//       <List>
+//         {labels.map((label) => (
+//           <React.Fragment key={label.id}>
+//             {label.dropdown ? (
+//               <>
+//                 <ListItem button onClick={() => handleToggle(label.id)}>
+//                   <ListItemIcon>{label.icon}</ListItemIcon>
+//                   <ListItemText primary={label.label} />
+//                   {openMenus[label.id] ? <ExpandLess /> : <ExpandMore />}
+//                 </ListItem>
+//                 <Collapse in={openMenus[label.id]} timeout="auto" unmountOnExit>
+//                   <List component="div" disablePadding>
+//                     {label.items.map((item) => (
+//                       <ListItem
+//                         button
+//                         key={item.id}
+//                         component={Link}
+//                         to={item.link}
+//                         sx={{ pl: 4 }}
+//                       >
+//                         <ListItemIcon>{item.icon}</ListItemIcon>
+//                         <ListItemText primary={item.label} />
+//                       </ListItem>
+//                     ))}
+//                   </List>
+//                 </Collapse>
+//               </>
+//             ) : (
+//               <ListItem button component={Link} to={label.link}>
+//                 <ListItemIcon>{label.icon}</ListItemIcon>
+//                 <ListItemText primary={label.label} />
+//               </ListItem>
+//             )}
+//           </React.Fragment>
+//         ))}
+//       </List>
+//     </Drawer>
+//   );
+// }
+
+// export default Sidebar;
+
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -249,6 +329,14 @@ function Sidebar({ labels = [] }) {
 
   const handleToggle = (id) => {
     setOpenMenus((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  // Inline style for ListItemIcon
+  const iconStyle = {
+    color: "rgba(0, 0, 0, 0.54)",
+    flexShrink: 0,
+    display: "inline-flex",
+    marginRight: "-20px",
   };
 
   return (
@@ -273,7 +361,7 @@ function Sidebar({ labels = [] }) {
             {label.dropdown ? (
               <>
                 <ListItem button onClick={() => handleToggle(label.id)}>
-                  <ListItemIcon>{label.icon}</ListItemIcon>
+                  <ListItemIcon style={iconStyle}>{label.icon}</ListItemIcon>
                   <ListItemText primary={label.label} />
                   {openMenus[label.id] ? <ExpandLess /> : <ExpandMore />}
                 </ListItem>
@@ -287,7 +375,7 @@ function Sidebar({ labels = [] }) {
                         to={item.link}
                         sx={{ pl: 4 }}
                       >
-                        <ListItemIcon>{item.icon}</ListItemIcon>
+                        <ListItemIcon style={iconStyle}>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.label} />
                       </ListItem>
                     ))}
@@ -296,7 +384,7 @@ function Sidebar({ labels = [] }) {
               </>
             ) : (
               <ListItem button component={Link} to={label.link}>
-                <ListItemIcon>{label.icon}</ListItemIcon>
+                <ListItemIcon style={iconStyle}>{label.icon}</ListItemIcon>
                 <ListItemText primary={label.label} />
               </ListItem>
             )}

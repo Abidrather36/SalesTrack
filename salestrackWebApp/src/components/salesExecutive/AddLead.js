@@ -38,6 +38,7 @@ const AddLead = () => {
 
   const fetchLeadCompanies = async () => {
     const response = await getAllLeadCompanies();
+    console.log("lead Company ->",response.result)
     if (response.isSuccess) {
       setLeadCompanyList(response.result);
       setShowSpinner(false);
@@ -304,7 +305,6 @@ const AddLead = () => {
                       name="leadRank"
                       style={{ padding: "0px 1.25rem 0 1.12rem" }}
                       {...register("leadRank", {
-                        required: "Lead Rank is required",
                         valueAsNumber: true,
                       })}
                     >
