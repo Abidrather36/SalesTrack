@@ -30,6 +30,9 @@ const AddLead = () => {
     fetchData();
   }, []);
 
+ let user= JSON.parse( localStorage.getItem("user"));
+ console.log("userRole",user);
+
   const {
     register,
     handleSubmit,
@@ -87,7 +90,14 @@ const AddLead = () => {
       const response = await addLead(data);
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
-        navigate("/salesExecutive/leadList");
+        if(user.userRole== 3){
+          console.log("------",user)
+          navigate("/salesExecutive/leadList");
+        }
+        else if(user.userRole==4)
+          {
+          navigate("/salesManager/leadList");
+        }
       } else {
         // myToaster.showErrorToast(response.message);
       }

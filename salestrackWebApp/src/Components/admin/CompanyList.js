@@ -119,7 +119,7 @@ function CompanyList() {
         message={`Are you sure you want to delete the company "${selectedCompany?.companyName}"?`}
         header="Confirmation"
         icon="pi pi-exclamation-triangle"
-        acceptLabel="Yes"s
+        acceptLabel="Yes"
         rejectLabel="No"
         acceptClassName="p-button-secondary"
         rejectClassName="p-button-danger"

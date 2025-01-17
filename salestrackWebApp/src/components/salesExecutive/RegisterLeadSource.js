@@ -11,6 +11,7 @@ const LeadSource = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  let user =JSON.parse(localStorage.getItem("user"));
   const {
     register,
     handleSubmit,
@@ -23,7 +24,15 @@ const LeadSource = () => {
       const response = await addLeadSource(data);
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
-        navigate("/salesExecutive/leadSourceList"); 
+        if(user.userRole==3){
+          navigate("/salesExecutive/leadSourceList"); 
+        }
+        else if(user.userRole==4){
+          navigate("/salesManager/leadSourceList"); 
+        }
+        else{
+          myToaster.showErrorToast("UnAuthorized User please login",response.message)
+        }
       } else {
         myToaster.showErrorToast(response.message);
       }

@@ -728,7 +728,7 @@ export const SalesExectivesidebarLabels = [
       { id: 6, label: "Leads List", link: "/salesExecutive/leadList", icon: <FaUsers /> },
       { id: 7, label: "Register Lead Source", link: "/salesExecutive/registerLeadSource", icon: <FaPlus /> },
       { id: 8, label: "Lead Source List", link: "/salesExecutive/leadSourceList", icon: <Source /> },
-      { id: 15,label:"Excel Sheet", link: "/salesExecutive/ExcelToGrid", icon: <FaFileUpload  /> },
+      { id: 15,label: "Excel Sheet", link: "/salesExecutive/ExcelToGrid", icon: <FaFileUpload  /> },
     ],
   },
   {
@@ -762,6 +762,7 @@ export const SalesManagersidebarLabels = [
       { id: 6, label: "Leads List", link: "/salesManager/leadList", icon: <FaUsers /> },
       { id: 7, label: "Register Lead Source", link: "/salesManager/registerLeadSource", icon: <FaPlus /> },
       { id: 8, label: "Lead Source List", link: "/salesManager/leadSourceList", icon: <Source /> },
+      { id: 15,label: "Excel Sheet", link: "/salesManager/ExcelToGrid", icon: <FaFileUpload  /> },
     ],
   },
   {

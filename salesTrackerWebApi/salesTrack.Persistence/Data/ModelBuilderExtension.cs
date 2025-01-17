@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using salesTrack.Application.Utils;
+using salesTrack.Domain.Entities;
 using salesTrack.Domain.Enums;
 using SalesTrack.Domain.Entities;
 
@@ -27,9 +28,14 @@ namespace salesTrack.Persistence.Data
                     ResetExpiry = DateTimeOffset.UtcNow.AddMinutes(15),
                     IsPasswordTemporary = true
                 });;
+            modelBuilder.Entity<AppFiles>(entity =>
+            {
+                entity.Property(e => e.Module)
+                    .HasConversion<byte>() 
+                    .IsRequired();
+            });
 
-         
-            }
+        }
         }
 
     }

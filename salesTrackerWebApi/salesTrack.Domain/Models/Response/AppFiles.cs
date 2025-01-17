@@ -10,8 +10,8 @@ namespace salesTrack.Domain.Models.Response
     public class AppFileResponse
     {
         public Guid Id { get; set; }
-        public string FilePath { get; set; } = string.Empty;
-        public Guid EntityId { get; set; }
-        public AppModule Module { get; set; }
+        public string? FilePath { get; set; } = string.Empty;
+        public Guid? EntityId { get; set; }
+        public AppModule? Module { get; set; }
     }
 }

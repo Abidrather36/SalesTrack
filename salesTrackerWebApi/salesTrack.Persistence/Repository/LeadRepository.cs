@@ -151,7 +151,7 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<IEnumerable<LeadCompanyNameResponse>> GetAllLeadCompanyNames(Guid companyId)
         {
-            var res = await context.LeadCompanies.Where(lc => lc.CompanyId == companyId).Select(x => new LeadCompanyNameResponse
+            var res = await context.LeadCompanies.Where(lc => lc.CompanyId == companyId).OrderByDescending(lc=>lc.CreatedDate).Select(x => new LeadCompanyNameResponse
             {
                 Id = x.Id,
                 LeadCompanyName = x.LeadCompanyName,
@@ -219,7 +219,7 @@ namespace salesTrack.Persistence.Repository
 
         public async Task<IEnumerable<TimeSheetResponseModel>> GetAllTimeSheetsByUser(Guid userId)
         {
-            var res = await context.TimeSheets.Where(x => x.UserId == userId).Select(x => new TimeSheetResponseModel
+            var res = await context.TimeSheets.Where(x => x.UserId == userId).OrderByDescending(x=>x.CreatedDate).Select(x => new TimeSheetResponseModel
             {
                 Id = x.Id,
                 TimeSheetStepName = x.TimeSheetStepName,
@@ -229,8 +229,7 @@ namespace salesTrack.Persistence.Repository
                 DateString = x.Date.ToString("dd/MM/yyyy"),
                 IsActive = x.IsActive,
                 IsApproved = x.IsApproved
-
-            }).OrderBy(x => x.Date).ToListAsync();
+            }).ToListAsync();
             return res;
         }
 

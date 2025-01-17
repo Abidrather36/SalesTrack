@@ -35,7 +35,7 @@ namespace salesTrack.Application.Services
             var dirPath = GetPhysicalDirectoryPath();
             ValidateFile(file);
             string newFileName = string.Concat(Guid.NewGuid(), file.FileName);
-            string fullPathWithFileName = string.Concat(dirPath, newFileName);
+            string fullPathWithFileName = Path.Combine(dirPath, newFileName);
             using FileStream fs = new FileStream(fullPathWithFileName, FileMode.Create);
             await file.CopyToAsync(fs);
             return GetVirtualDirectoryPath() + newFileName;
@@ -96,7 +96,7 @@ namespace salesTrack.Application.Services
             long maxSize = 10240; // Default max size
 
             if (file.ContentType.Contains("image"))
-                maxSize = 102400; // 100 KB for images
+                maxSize = 10240000; // 100 KB for images
             else if (file.ContentType.Contains("video"))
                 maxSize = 240240; // 240 KB for videos
             else if (file.ContentType.Contains("application/pdf"))

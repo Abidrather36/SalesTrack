@@ -22,21 +22,23 @@ namespace salesTrack.Application.Services
         private readonly IContextService contextService;
         private readonly IEmailHelperService emailHelperService;
         private readonly IUserRepository userRepository;
+        private readonly IFileRepository fileRepository;
 
-        public AuthService(IAuthRepository authRepository,IJwtProvider jwtProvider,IContextService contextService,IEmailHelperService emailHelperService,IUserRepository userRepository)
+        public AuthService(IAuthRepository authRepository, IJwtProvider jwtProvider, IContextService contextService, IEmailHelperService emailHelperService, IUserRepository userRepository, IFileRepository fileRepository)
         {
             this.authRepository = authRepository;
             this.jwtProvider = jwtProvider;
             this.contextService = contextService;
             this.emailHelperService = emailHelperService;
             this.userRepository = userRepository;
+            this.fileRepository = fileRepository;
         }
 
-        public async  Task<ApiResponse<string>> ChangePassword(ChangePasswordModel model)
+        public async Task<ApiResponse<string>> ChangePassword(ChangePasswordModel model)
         {
-            var userId=contextService.UserId();
-            var user=await authRepository.GetByIdAsync(userId);
-            if(user is null)
+            var userId = contextService.UserId();
+            var user = await authRepository.GetByIdAsync(userId);
+            if (user is null)
             {
                 return ApiResponse<string>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
             }
@@ -44,20 +46,20 @@ namespace salesTrack.Application.Services
             {
                 return ApiResponse<string>.ErrorResponse(ApiMessages.Auth.IncorrectOldPassword, HttpStatusCodes.BadRequest);
             }
-            if(string.IsNullOrEmpty(model.OldPassword) && string.IsNullOrEmpty(model.NewPassword) && string.IsNullOrEmpty(model.NewPassword))
+            if (string.IsNullOrEmpty(model.OldPassword) && string.IsNullOrEmpty(model.NewPassword) && string.IsNullOrEmpty(model.NewPassword))
             {
                 return ApiResponse<string>.ErrorResponse("Please provide the old password, new password, and confirm password.", HttpStatusCodes.BadRequest);
 
             }
 
-            user.Password= AppEncryption.CreatePassword(model.NewPassword, user.Salt);
-           var updatedUser=await authRepository.UpdateAsync(user);
-            
-            if(updatedUser > 0)
+            user.Password = AppEncryption.CreatePassword(model.NewPassword, user.Salt);
+            var updatedUser = await authRepository.UpdateAsync(user);
+
+            if (updatedUser > 0)
             {
                 user.IsPasswordTemporary = false;
-               await authRepository.UpdateAsync(user);
-                return ApiResponse<string>.SuccessResponse(default,ApiMessages.Auth.PasswordChangedSuccess, HttpStatusCodes.Created);
+                await authRepository.UpdateAsync(user);
+                return ApiResponse<string>.SuccessResponse(default, ApiMessages.Auth.PasswordChangedSuccess, HttpStatusCodes.Created);
             }
             else
             {
@@ -67,18 +69,18 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<string>> ForgotPassword(string email)
         {
-            var user=await authRepository.FirstOrDefaultAsync(x => x.Email == email);
-            if(user is null)
+            var user = await authRepository.FirstOrDefaultAsync(x => x.Email == email);
+            if (user is null)
             {
                 return ApiResponse<string>.ErrorResponse(ApiMessages.Auth.InVaildEmailAddress, HttpStatusCodes.BadRequest);
             }
-            user.ResetCode =Convert.ToInt32( AppEncryption.GetRandomConfirmationCode());
+            user.ResetCode = Convert.ToInt32(AppEncryption.GetRandomConfirmationCode());
             user.ResetExpiry = DateTime.Now.AddMinutes(5);
             await authRepository.UpdateAsync(user);
 
             try
             {
-               var forgetEmailResponse= emailHelperService.SendForgotPasswordEmail(email,user.ResetCode);
+                var forgetEmailResponse = emailHelperService.SendForgotPasswordEmail(email, user.ResetCode);
                 return ApiResponse<string>.SuccessResponse(ApiMessages.Auth.CheckEmailToResetPassword, HttpStatusCodes.OK.ToString());
             }
             catch (Exception ex)
@@ -87,7 +89,7 @@ namespace salesTrack.Application.Services
             }
         }
 
-  
+
 
         public async Task<ApiResponse<LoginResponseModel>> Login(LoginRequestModel model)
         {
@@ -97,9 +99,9 @@ namespace salesTrack.Application.Services
                 if (user == null)
                     return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
 
-               if(!AppEncryption.ComparePassword(user.Password!, model.Password!, user.Salt!))
-               return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
-
+                if (!AppEncryption.ComparePassword(user.Password!, model.Password!, user.Salt!))
+                    return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
+                var generalUser = await fileRepository.GetFileByEntityIdAndModuleAsync(user.Id, AppModule.User);
                 var userTokens = jwtProvider.GenerateToken(user);
                 var refreshToken = jwtProvider.GenerateRefreshToken(user);
                 LoginResponseModel login = new()
@@ -107,15 +109,16 @@ namespace salesTrack.Application.Services
                     UserId = user.Id,
                     FullName = user.Name,
                     Token = userTokens.Token,
-                    IsPasswordTemporary=user.IsPasswordTemporary,
-                    UserRole= userTokens.UserRole ?? UserRole.PortalAdmin ,
-                    Email=user.Email,
-                    PhoneNumber=user.PhoneNumber,
-                    RefreshToken=refreshToken.RefreshToken,
+                    IsPasswordTemporary = user.IsPasswordTemporary,
+                    UserRole = userTokens.UserRole ?? UserRole.PortalAdmin,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    RefreshToken = refreshToken.RefreshToken,
+                    FilePath = generalUser.FilePath,
                 };
                 return ApiResponse<LoginResponseModel>.SuccessResponse(login, ApiMessages.Auth.LoggedIn, HttpStatusCodes.Accepted);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
             }
@@ -123,14 +126,14 @@ namespace salesTrack.Application.Services
 
         public Task<ApiResponse<LoginResponseModel>> RefreshToken(RefreshTokenRequestModel model)
         {
-           /*jwtProvider.GenerateRefreshToken()*/
-                return default;
+            /*jwtProvider.GenerateRefreshToken()*/
+            return default;
         }
 
         public async Task<ApiResponse<string>> ResetPassword(ResetPasswordModel model)
         {
-            var user=  (await authRepository.FindByAsync(x => x.ResetCode == model.ResetCode)).FirstOrDefault();
-            if (user!.ResetCode <=0 )
+            var user = (await authRepository.FindByAsync(x => x.ResetCode == model.ResetCode)).FirstOrDefault();
+            if (user!.ResetCode <= 0)
             {
                 return ApiResponse<string>.ErrorResponse(ApiMessages.Auth.InValidResetCode, HttpStatusCodes.BadRequest);
             }
@@ -139,14 +142,14 @@ namespace salesTrack.Application.Services
                 return ApiResponse<string>.ErrorResponse(ApiMessages.Auth.LinkExpired, HttpStatusCodes.BadRequest);
             }
             user.Salt = AppEncryption.GenerateSalt();
-            user.Password= AppEncryption.CreatePassword(model.NewPassword, user.Salt);
-            if((await authRepository.UpdateAsync(user)) > 0)
+            user.Password = AppEncryption.CreatePassword(model.NewPassword, user.Salt);
+            if ((await authRepository.UpdateAsync(user)) > 0)
             {
                 return ApiResponse<string>.SuccessResponse(ApiMessages.Auth.PasswordResetSuccess, HttpStatusCodes.Created.ToString());
             }
             else
             {
-                return ApiResponse<string>.ErrorResponse(ApiMessages.TechnicalError,HttpStatusCodes.BadRequest);
+                return ApiResponse<string>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
             }
 
         }

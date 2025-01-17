@@ -12,6 +12,7 @@ function AddSalesCompany() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  let user =JSON.parse(localStorage.getItem("user"))
   const {
     register,
     handleSubmit,
@@ -22,11 +23,19 @@ function AddSalesCompany() {
     console.log(data)
     setLoading(true);
     try {
-      const response = await addLeadCompanyName(data); // Adjust API call as needed
+      const response = await addLeadCompanyName(data); 
       console.log(data)
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
-        navigate("/salesExecutive/leadCompanyList"); 
+        if(user.userRole==3){
+          navigate("/salesExecutive/leadCompanyList"); 
+        }
+        else if(user.userRole==4){
+          navigate("/salesManager/leadCompanyList"); 
+        }
+        else{
+          myToaster.showErrorToast("UnAuthorized User"); 
+        }
       } else {
         myToaster.showErrorToast(response.message);
       }

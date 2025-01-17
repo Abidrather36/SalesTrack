@@ -3,24 +3,23 @@ import BreadcrumbComponent from "../shared/Breadcrumb";
 import Grid from "../shared/Grid";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { CircularProgress } from "@mui/material";
-
 import myToaster from "../../utils/toaster";
 import { useNavigate } from "react-router-dom";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { deletLeadCompanyById, getAllLeadCompanies, updateLeadCompany } from "../../Services/LeadService";
-import { deleteCompanyById } from "../../Services/CompanyService";
 
 function LeadCompanieList() {
   const [leadCompanyList, setLeadCompanyList] = useState([]);
   const [showSpinner, setShowSpinner] = useState(true);
   const [loading, setLoading] = useState(true);
-
+  const [confirmVisible, setConfirmVisible] = useState(false);
+  const [selectedLeadCompany, setSelectedLeadCompany] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchLeadCompanies();
   }, []);
-
+  let user=JSON.parse(localStorage.getItem("user"));
   const headers = [
     { key: "leadCompanyName", label: "Company Name" },
     { key: "description", label: "Description" },
@@ -39,13 +38,21 @@ function LeadCompanieList() {
       key: "delete",
       title: "Delete",
       className: "btn btn-danger",
-      onDeleteHandler: (data) => deleteLeadCompany(data),
+      onDeleteHandler: (data) => handleDeleteLeadCompany(data),
       icon: <FaTrash />,
     },
   ];
 
   const addLeadCompany = () => {
-    navigate("/salesExecutive/addLeadCompany");
+    if(user.userRole==3){
+      navigate("/salesExecutive/addLeadCompany");
+    }
+    else if(user.userRole==4){
+      navigate("/salesManager/addLeadCompany");
+    }
+    else{
+      myToaster.error("You don't have permission to add Lead Company");
+    }
   };
 
   const updateLeadCompanyHandler = async (updateModel) => {
@@ -75,19 +82,19 @@ function LeadCompanieList() {
   };
 
   const deleteLeadCompanyHandler = async (id) => {
-      console.log(id);
-      const result = await deletLeadCompanyById(id);
-      if (result.isSuccess) {
-        myToaster.showSuccessToast(result.message);
-        fetchLeadCompanies();
-      } else {
-        myToaster.showErrorToast(result.message);
-      }
+    console.log(id);
+    const result = await deletLeadCompanyById(id);
+    if (result.isSuccess) {
+      myToaster.showSuccessToast(result.message);
+      fetchLeadCompanies();
+    } else {
+      myToaster.showErrorToast(result.message);
+    }
   };
 
-  const deleteLeadCompany = async (leadCompany) => {
-    console.log(leadCompany);
-    myToaster.primereactDeleteLeadCompany(leadCompany, deleteLeadCompanyHandler);
+  const handleDeleteLeadCompany = (leadCompany) => {
+    setSelectedLeadCompany(leadCompany);
+    setConfirmVisible(true);
   };
 
   return (
@@ -111,10 +118,21 @@ function LeadCompanieList() {
           />
         )}
       </div>
-      <ConfirmDialog />
+      <ConfirmDialog
+        visible={confirmVisible}
+        onHide={() => setConfirmVisible(false)}
+        message={`Are you sure you want to delete the lead company "${selectedLeadCompany?.leadCompanyName || ""}"?`}
+        header="Confirmation"
+        icon="pi pi-exclamation-triangle"
+        acceptLabel="Yes"
+        rejectLabel="No"
+        acceptClassName="p-button-secondary"
+        rejectClassName="p-button-danger"
+        className="custom-dialog"
+        accept={() => deleteLeadCompanyHandler(selectedLeadCompany?.id)}
+      />
     </>
   );
 }
 
 export default LeadCompanieList;
-

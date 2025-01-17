@@ -104,7 +104,12 @@ class Toaster {
   //   });
   // };
 
-  editLeadSwal = async (lead = {}, userAssignTo, leadSources, updateLeadInState) => {
+  editLeadSwal = async (
+    lead = {},
+    userAssignTo,
+    leadSources,
+    updateLeadInState
+  ) => {
     console.log("swal lead", lead);
     Swal.fire({
       title: "Edit Lead",
@@ -130,19 +135,22 @@ class Toaster {
               lead.comment || ""
             }" />
     
-            <label for="swal-input-assign" style="text-align:left">Assign To</label>
-            <select id="swal-input-assign" class="swal2-input" style="width: 80%; margin-left:10px">
-              ${
-                lead.assignTo
-                  ? `<option value="${lead.assignTo.id}">${lead.assignTo.name}</option>`
-                  : ""
-              }
-              ${userAssignTo
-                .map(
-                  (user) => `<option value="${user.id}">${user.name}</option>`
-                )
-                .join("")}
-            </select>
+           <label for="swal-input-assign" style="text-align:left">Assign To</label>
+<select id="swal-input-assign" class="swal2-input" style="width: 80%; margin-left:10px">
+  ${
+    lead.assignToId
+      ? `<option value="${lead.assignToId}" selected>${lead.assignedTo}</option>`
+      : ""
+  }
+  ${userAssignTo
+    .map(
+      (user) =>
+        `<option value="${user.id}" ${
+          lead.assignToId === user.id ? "selected" : ""
+        }>${user.name}</option>`
+    )
+    .join("")}
+</select>
     
             <label for="swal-input-source" style="text-align:left">Lead Source</label>
             <select id="swal-input-source" class="swal2-input" style="width: 80%; margin-left:10px">
@@ -209,7 +217,7 @@ class Toaster {
           const res = await updateLead(updatedLead);
           if (res.isSuccess) {
             myToaster.showSuccessToast(res.message);
-            updateLeadInState(updatedLead)
+            updateLeadInState(updatedLead);
           } else {
             myToaster.showErrorToast(res.message);
           }
@@ -222,15 +230,13 @@ class Toaster {
 
   editTimeSheet = async (timeSheet = {}, fetchTimeSheetList) => {
     console.log(timeSheet);
-    const formattedDate = new Date(timeSheet.date).toISOString().split('T')[0];
+    const formattedDate = new Date(timeSheet.date).toISOString().split("T")[0];
     Swal.fire({
       title: "Edit Time Sheet",
       html: `
           <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
             <label for="swal-input-date" style="text-align:left">Date</label>
-            <input id="swal-input-date" type="date" class="swal2-input" style="width: 80%; margin-left:10px" value="${
-              formattedDate
-            }" />
+            <input id="swal-input-date" type="date" class="swal2-input" style="width: 80%; margin-left:10px" value="${formattedDate}" />
     
             <label for="swal-input-hours" style="text-align:left">Hours Spent</label>
             <input id="swal-input-hours" type="number" min="0" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Hours Spent" value="${
@@ -613,9 +619,7 @@ class Toaster {
       rejectClassName: "p-button-danger",
       className: "custom-dialog",
       accept: () => deleteSwalHandler(company.id),
-      reject: () => {
-        
-      }
+      reject: () => {},
     });
   };
 
@@ -645,19 +649,7 @@ class Toaster {
       accept: () => deleteEnquiryHandler(enquiry.id),
     });
   };
-  primereactDeleteLeadSource = (leadSource, deleteLeadSourceHandler) => {
-    confirmDialog({
-      message: `Are you sure you want to delete the enquiry "${leadSource.leadSourceName}"?`,
-      header: "Confirmation",
-      icon: "pi pi-exclamation-triangle",
-      acceptLabel: "Yes",
-      rejectLabel: "No",
-      acceptClassName: "p-button-secondary",
-      rejectClassName: "p-button-danger",
-      className: "custom-dialog",
-      accept: () => deleteLeadSourceHandler(leadSource.id),
-    });
-  };
+
   primereactDeleteConfirmLead = (lead, deleteLeadHandler) => {
     confirmDialog({
       message: `Are you sure you want to delete the lead "${lead.leadName}"?`,

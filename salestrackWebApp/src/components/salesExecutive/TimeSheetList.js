@@ -29,11 +29,23 @@ function TimeSheetList() {
     { key: "comment", label: "Comment" },
     { key: "isActive",label:"IsActive"}
   ];
+  let user =JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
   fetchTimeSheetList();
   }, [])
   
+  let addTimeSheet=()=>{
+    if(user.userRole==3){
+      navigate("/salesExecutive/timeSheet");
+    }
+    else if(user.userRole==4){
+      navigate("/salesManager/timeSheet");
+    }
+    else{
+      myToaster.showErrorToast("You are not authorized to access this page");
+    }
+  }
   const handleDeleteTimeSheet = (timesheet) => {
     setSelectedTimeSheet(timesheet); 
     setConfirmVisible(true); 
@@ -98,7 +110,7 @@ const deleteTimeSheet = async (id)=>{
       ]}
         headers={headers}
         data={timesheetList}
-        onAdd={()=>navigate("/salesExecutive/timeSheet")}
+        onAdd={addTimeSheet}
         loading={loading}
         tableName="Time Sheet List"
         addButtonLabel="Add Time Sheet"   

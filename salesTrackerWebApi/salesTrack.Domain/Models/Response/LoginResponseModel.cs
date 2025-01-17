@@ -17,6 +17,7 @@ namespace salesTrack.Domain.Models.Response
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public bool IsPasswordTemporary { get; set; }
-        //public string? FilePath { get; set; }
+        public string? ProfilePicture { get; set; }
+        public string? FilePath { get; set; }
     }
 }

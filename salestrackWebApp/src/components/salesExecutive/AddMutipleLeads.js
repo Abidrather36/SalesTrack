@@ -15,6 +15,7 @@ const AddMultipleLeads = () => {
       assignTo: '',
       finalStatus: '',
       leadRank: 0,
+      assignToUser:''
     },
   ]);
   const [error, setError] = useState('');
@@ -42,6 +43,7 @@ const AddMultipleLeads = () => {
         assignTo: '',
         finalStatus: '',
         leadRank: 0,
+        assignToUser:''
       },
     ]);
   };
@@ -70,6 +72,7 @@ const AddMultipleLeads = () => {
             assignTo: '',
             finalStatus: '',
             leadRank: 0,
+            assignToUser:'',
           },
         ]); // Reset the form after successful submission
       }

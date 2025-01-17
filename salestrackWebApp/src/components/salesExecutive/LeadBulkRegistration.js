@@ -1,6 +1,3 @@
-
-
-
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
 import myToaster from "../../utils/toaster";
@@ -8,13 +5,16 @@ import { addBulkLeads } from "../../Services/LeadService";
 import { CircularProgress } from "@mui/material";
 import Spin from "../public/Spin";
 import BreadcrumbComponent from "../shared/Breadcrumb";
+import { useNavigate } from "react-router-dom";
 
 const ExcelToGrid = () => {
   const [data, setData] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const [processingFile, setProcessingFile] = useState(false); // Spinner state for file upload
+  const navigate=useNavigate();
 
+  let user = JSON.parse(localStorage.getItem("user"))
   // Handle file upload
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -92,10 +92,12 @@ const ExcelToGrid = () => {
       comment: row.comment || "",
       assignTo: row.assignTo || "3fa85f64-5717-4562-b3fc-2c963f66afa6", // Default GUID for assignTo
       leadRank: Number(row.LeadRank) || 0, // Fallback to 0 for leadRank
+      assignToUser:row.AssignToUser || "",
     }));
     
   
           setLoading(true);
+          console.log("formatedd ddata",formattedData);
           try {
             const response = await addBulkLeads(formattedData);
         
@@ -104,6 +106,16 @@ const ExcelToGrid = () => {
             if (response.isSuccess) {
               myToaster.showSuccessToast(`Successfully added ${selectedData.length} leads.`);
               handleReset();
+              if(user.userRole==3){
+                navigate("/salesExecutive/leadList");
+              }
+              else if(user.userRole==4){
+                navigate("/salesManager/leadList");
+              }
+              else{
+                myToaster.showErrorToast("UnAuthorized role pleas etry again");
+              }
+              
             } else {
               myToaster.showErrorToast(response.message || "An error occurred.");
             }

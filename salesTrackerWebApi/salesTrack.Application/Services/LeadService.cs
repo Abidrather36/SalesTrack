@@ -770,7 +770,7 @@ namespace salesTrack.Application.Services
                         HoursSpent = timeSheet.HoursSpent,
                         Comment = timeSheet.Comment
                     };
-                    return ApiResponse<TimeSheetResponseModel>.SuccessResponse(timeSheetResponse, "TimeSheetUpdatedSuccessfully", HttpStatusCodes.OK);
+                    return ApiResponse<TimeSheetResponseModel>.SuccessResponse(timeSheetResponse, "TimeSheet-Updated-Successfully", HttpStatusCodes.OK);
                 }
                 else
                 {
@@ -998,316 +998,6 @@ namespace salesTrack.Application.Services
 
         }
 
-
-
-        /*   public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadMutipleRequestModel> leadModels)
-           {
-               try
-               {
-                   var salesExecutiveId = contextService.UserId();
-                   var salesEx = await userRepository.GetUserById(salesExecutiveId);
-                   var companyId = salesEx!.CompanyId;
-                   var leadSourceId = new Guid("575AE6EA-AFA6-49FD-B541-FFCB4FC70571");
-                   var leadCompanyId = Guid.Empty;
-
-                   if (salesExecutiveId == Guid.Empty)
-                   {
-                       return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
-                   }
-
-                   var leadEntities = new List<Lead>();
-                   var masterUsers = new List<MasterUser>();
-                   var leadResponseModels = new List<LeadResponseModel>();
-                   var emails = leadModels.Select(m => m.Email).ToList();
-
-                   var existingEmails = await userRepository.GetEmailsAsync(emails);
-                   var duplicateEmails = emails.Intersect(existingEmails).ToList();
-
-                   if (duplicateEmails.Any())
-                   {
-                       return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
-                           $"Users with the following emails already exist: {string.Join(", ", duplicateEmails)}",
-                           HttpStatusCodes.Conflict
-                       );
-                   }
-
-                   foreach (var leadModel in leadModels)
-                   {
-                       if (!string.IsNullOrEmpty(leadModel.LeadSourceName) &&
-                          await leadSourceRepository.IsExistsAsync(x => x.LeadSourceName == leadModel.LeadSourceName))
-                       {
-                           var lsName = await leadRepository.GetLeadSoureByName(leadModel.LeadSourceName);
-                           leadSourceId = lsName.Id;
-                       }
-
-                       else
-                       {
-                           var leadSource = new LeadSource()
-                           {
-                               Id = Guid.NewGuid(),
-                               LeadSourceName = leadModel.LeadSourceName,
-                               CreatedDate = DateTimeOffset.Now,
-                               CreatedBy = salesExecutiveId,
-                               Description = "N/A"
-                           };
-
-                           await leadSourceRepository.InsertAsync(leadSource);
-                           leadSourceId = leadSource.Id; 
-                       }
-
-                       if (!string.IsNullOrEmpty(leadModel.LeadCompany) &&
-                           await leadRepository.IsLeadCompanyExists(leadModel.LeadCompany))
-                       {
-
-                           var lcName = await leadRepository.GetLeadCompanyByName(leadModel.LeadCompany);
-                           leadCompanyId = lcName.Id;  
-                       }
-                       else
-                       {
-                           var leadCompany = new LeadCompany()
-                           {
-                               Id = Guid.NewGuid(),
-                               LeadCompanyName = leadModel.LeadCompany,
-                               CreatedBy = salesExecutiveId,
-                               CreatedDate = DateTime.Now,
-                               Description = "N/A",
-                               CompanyId = companyId
-                           };
-                           await leadRepository.AddLeadCompanyName(leadCompany);
-                           leadCompanyId = leadCompany.Id;
-                       }
-
-                       var userId = Guid.NewGuid();
-                       var user = new MasterUser
-                       {
-                           Id = userId,
-                           Name = leadModel.Name,
-                           Email = leadModel.Email,
-                           PhoneNumber = string.IsNullOrEmpty(leadModel.PhoneNumber) ? "N/A" : leadModel.PhoneNumber,
-                           Password = AppEncryption.GenerateRandomPassword(leadModel.Email!),
-                           Salt = AppEncryption.GenerateSalt(),
-                           UserRole = UserRole.Lead,
-                           CreatedDate = DateTime.UtcNow,
-                           DeletedDate = DateTime.UtcNow,
-                           IsActive = true,
-                           ModifiedDate = DateTime.UtcNow,
-                       };
-
-                       masterUsers.Add(user);
-                       leadModel.CompanyId = companyId;
-
-                       var lead = new Lead
-                       {
-                           Id = userId,
-                           LeadSourceId = leadSourceId != Guid.Empty ? leadSourceId : new Guid("575ae6ea-afa6-49fd-b541-ffcb4fc70571"),
-                           CompanyId = companyId,
-                           Comment = leadModel.Comment,
-                           AssignTo = salesExecutiveId,
-                           CreatedBy = leadModel.AssignTo,
-                           CreatedDate = DateTime.UtcNow,
-                           ModifiedDate = DateTime.UtcNow,
-                           IsActive = true,
-                           LeadRank = leadModel.LeadRank ?? 5,
-                           LeadCategoryId = new Guid("6C92D610-4837-425C-98EF-57831C36EF71"),
-                           LeadCompanyId = leadCompanyId,
-                           FinalStatus = FinalStatus.Open,
-                           UserId = salesExecutiveId,
-
-                       };
-
-                       leadEntities.Add(lead);
-                   }
-
-                   var userAddedCount = await adminRepository.AddMasterUsers(masterUsers);
-                   if (userAddedCount <= 0)
-                   {
-                       return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
-                   }
-
-                   var leadAddedCount = await leadRepository.AddLeadsAsync(leadEntities);
-                   if (leadAddedCount <= 0)
-                   {
-                       return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
-                   }
-
-                   foreach (var lead1 in leadEntities)
-                   {
-                       var sourceLead = await leadRepository.GetLeadById(lead1.Id);
-                       if (sourceLead != null)
-                       {
-                           var returnVal = await userRepository.GetByIdAsync(sourceLead.AssignToId);
-                           if (returnVal != null)
-                               sourceLead.AssignedTo = returnVal.Name;
-
-                           var returnCompany = await companyRepository.GetByIdAsync(lead1.CompanyId);
-                           if (returnCompany != null)
-                               sourceLead.CompanyName = returnCompany.CompanyName;
-
-                           leadResponseModels.Add(sourceLead);
-                       }
-                   }
-
-                   return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(leadResponseModels, ApiMessages.LeadManagement.LeadAddedSuccessfully, HttpStatusCodes.Created);
-               }
-               catch (Exception ex)
-               {
-                   return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
-               }
-
-           }*/
-
-        /*        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadMutipleRequestModel> leadModels)
-                {
-                    try
-                    {
-                        var salesExecutiveId = contextService.UserId();
-                        var salesEx = await userRepository.GetUserById(salesExecutiveId);
-                        var companyId = salesEx!.CompanyId;
-
-                        if (salesExecutiveId == Guid.Empty)
-                        {
-                            return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
-                        }
-
-                        var leadEntities = new List<Lead>();
-                        var masterUsers = new List<MasterUser>();
-                        var leadResponseModels = new List<LeadResponseModel>();
-                        var emails = leadModels.Select(m => m.Email).ToList();
-
-                        var existingEmails = await userRepository.GetEmailsAsync(emails);
-                        var duplicateEmails = emails.Intersect(existingEmails).ToList();
-
-                        // Filter out leads with duplicate emails
-                        var validLeadModels = leadModels.Where(l => !duplicateEmails.Contains(l.Email)).ToList();
-
-                        foreach (var leadModel in validLeadModels)
-                        {
-                            // Process Lead Source
-                            Guid leadSourceId;
-                            if (!string.IsNullOrEmpty(leadModel.LeadSourceName) &&
-                                await leadSourceRepository.IsExistsAsync(x => x.LeadSourceName == leadModel.LeadSourceName))
-                            {
-                                var lsName = await leadRepository.GetLeadSoureByName(leadModel.LeadSourceName);
-                                leadSourceId = lsName.Id;
-                            }
-                            else
-                            {
-                                var leadSource = new LeadSource()
-                                {
-                                    Id = Guid.NewGuid(),
-                                    LeadSourceName = leadModel.LeadSourceName,
-                                    CreatedDate = DateTimeOffset.Now,
-                                    CreatedBy = salesExecutiveId,
-                                    Description = "N/A",
-                                    IsActive = true
-                                };
-
-                                await leadSourceRepository.InsertAsync(leadSource);
-                                leadSourceId = leadSource.Id;
-                            }
-
-                            // Process Lead Company
-                            Guid leadCompanyId;
-                            if (!string.IsNullOrEmpty(leadModel.LeadCompany) &&
-                                await leadRepository.IsLeadCompanyExists(leadModel.LeadCompany))
-                            {
-                                var lcName = await leadRepository.GetLeadCompanyByName(leadModel.LeadCompany);
-                                leadCompanyId = lcName.Id;
-                            }
-                            else
-                            {
-                                var leadCompany = new LeadCompany()
-                                {
-                                    Id = Guid.NewGuid(),
-                                    LeadCompanyName = leadModel.LeadCompany,
-                                    CreatedBy = salesExecutiveId,
-                                    CreatedDate = DateTime.Now,
-                                    Description = "N/A",
-                                    CompanyId = companyId,
-                                    IsActive = true
-                                };
-                                await leadRepository.AddLeadCompanyName(leadCompany);
-                                leadCompanyId = leadCompany.Id;
-                            }
-
-                            // Add Master User
-                            var userId = Guid.NewGuid();
-                            var user = new MasterUser
-                            {
-                                Id = userId,
-                                Name = leadModel.Name,
-                                Email = leadModel.Email,
-                                PhoneNumber = string.IsNullOrEmpty(leadModel.PhoneNumber) ? "N/A" : leadModel.PhoneNumber,
-                                Password = AppEncryption.GenerateRandomPassword(leadModel.Email!),
-                                Salt = AppEncryption.GenerateSalt(),
-                                UserRole = UserRole.Lead,
-                                CreatedDate = DateTime.UtcNow,
-                                DeletedDate = DateTime.UtcNow,
-                                IsActive = true,
-                                ModifiedDate = DateTime.UtcNow,
-                            };
-
-                            masterUsers.Add(user);
-
-                            // Add Lead
-                            var lead = new Lead
-                            {
-                                Id = userId,
-                                LeadSourceId = leadSourceId,
-                                CompanyId = companyId,
-                                Comment = leadModel.Comment,
-                                AssignTo = salesExecutiveId,
-                                CreatedBy = leadModel.AssignTo,
-                                CreatedDate = DateTime.UtcNow,
-                                ModifiedDate = DateTime.UtcNow,
-                                IsActive = true,
-                                LeadRank = leadModel.LeadRank ?? 5,
-                                LeadCategoryId = new Guid("6C92D610-4837-425C-98EF-57831C36EF71"),
-                                LeadCompanyId = leadCompanyId,
-                                FinalStatus = FinalStatus.Open,
-                                UserId = salesExecutiveId,
-                            };
-
-                            leadEntities.Add(lead);
-                        }
-
-                        var userAddedCount = await adminRepository.AddMasterUsers(masterUsers);
-                        var leadAddedCount = await leadRepository.AddLeadsAsync(leadEntities);
-
-                        foreach (var lead in leadEntities)
-                        {
-                            var sourceLead = await leadRepository.GetLeadById(lead.Id);
-                            if (sourceLead != null)
-                            {
-                                var returnVal = await userRepository.GetByIdAsync(sourceLead.AssignToId);
-                                if (returnVal != null)
-                                    sourceLead.AssignedTo = returnVal.Name;
-
-                                var returnCompany = await companyRepository.GetByIdAsync(lead.CompanyId);
-                                if (returnCompany != null)
-                                    sourceLead.CompanyName = returnCompany.CompanyName;
-
-                                leadResponseModels.Add(sourceLead);
-                            }
-                        }
-
-                        if (!leadResponseModels.Any())
-                        {
-                            return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("No leads were added.", HttpStatusCodes.BadRequest);
-                        }
-
-                        return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(
-                            leadResponseModels,
-                            $"Added {leadResponseModels.Count} leads. Skipped {duplicateEmails.Count} due to duplicate emails: {string.Join(", ", duplicateEmails)}",
-                            HttpStatusCodes.Created
-                        );
-                    }
-                    catch (Exception ex)
-                    {
-                        return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
-                    }
-                }*/
-
         public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadMutipleRequestModel> leadModels)
         {
             try
@@ -1315,24 +1005,25 @@ namespace salesTrack.Application.Services
                 var salesExecutiveId = contextService.UserId();
                 if (salesExecutiveId == Guid.Empty)
                 {
-                    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
+                    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                        "Sales Executive ID not found.",
+                        HttpStatusCodes.BadRequest
+                    );
                 }
 
                 var salesEx = await userRepository.GetUserById(salesExecutiveId);
                 var companyId = salesEx!.CompanyId;
 
-                // Get existing emails to check for duplicates
                 var emails = leadModels.Select(m => m.Email).ToList();
                 var existingEmails = await userRepository.GetEmailsAsync(emails);
                 var duplicateEmails = emails.Intersect(existingEmails).ToList();
 
-                // Filter out valid leads (non-duplicate)
                 var validLeadModels = leadModels.Where(l => !duplicateEmails.Contains(l.Email)).ToList();
 
                 if (!validLeadModels.Any())
                 {
                     return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
-                        $"No leads were added. The following emails are duplicates: {string.Join(", ", duplicateEmails)}",
+                        $"Provided emails are already associated with existing leads: {string.Join(", ", duplicateEmails)}",
                         HttpStatusCodes.BadRequest
                     );
                 }
@@ -1340,58 +1031,72 @@ namespace salesTrack.Application.Services
                 var leadEntities = new List<Lead>();
                 var masterUsers = new List<MasterUser>();
                 var leadResponseModels = new List<LeadResponseModel>();
-
+                
                 foreach (var leadModel in validLeadModels)
                 {
-                    // Process Lead Source
-                    Guid leadSourceId;
-                    if (!string.IsNullOrEmpty(leadModel.LeadSourceName) &&
-                        await leadSourceRepository.IsExistsAsync(x => x.LeadSourceName == leadModel.LeadSourceName))
-                    {
-                        var lsName = await leadRepository.GetLeadSoureByName(leadModel.LeadSourceName);
-                        leadSourceId = lsName.Id;
-                    }
-                    else
-                    {
-                        var leadSource = new LeadSource
-                        {
-                            Id = Guid.NewGuid(),
-                            LeadSourceName = leadModel.LeadSourceName,
-                            CreatedDate = DateTimeOffset.Now,
-                            CreatedBy = salesExecutiveId,
-                            Description = "N/A",
-                            IsActive = true
-                        };
-
-                        await leadSourceRepository.InsertAsync(leadSource);
-                        leadSourceId = leadSource.Id;
-                    }
-
-                    // Process Lead Company
                     Guid leadCompanyId;
-                    if (!string.IsNullOrEmpty(leadModel.LeadCompany) &&
-                        await leadRepository.IsLeadCompanyExists(leadModel.LeadCompany))
+                    var companyExists = await leadRepository.IsLeadCompanyExists(leadModel.LeadCompany!);
+                    if(!string.IsNullOrEmpty( leadModel.AssignToUser))
                     {
-                        var lcName = await leadRepository.GetLeadCompanyByName(leadModel.LeadCompany);
-                        leadCompanyId = lcName.Id;
+                       var userAssign= leadModel.AssignToUser.ToLower();
+                        if(userAssign == "abhishek")
+                        {
+                            leadModel.AssignTo = Guid.Parse("7A08B5E6-2B08-45EF-A6D4-08DD0EA87C69");
+                        }
+                        else if(userAssign == "megha")
+                        {
+                            leadModel.AssignTo = Guid.Parse("F3D56DC2-5D5C-4E68-A6D3-08DD0EA87C69");
+                        }
+                        else if(userAssign == "aabid")
+                        {
+                            leadModel.AssignTo = Guid.Parse("12d66be1-edf5-473c-ded7-08dd31323009");
+                        }
+                        else if(userAssign == "demo")
+                        {
+                            leadModel.AssignTo = Guid.Parse("c18b25b6-e2d2-4614-4c1a-08dd2e3f467f");
+                        }
+                        else
+                        {
+                            return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"Invalid Assign To User {leadModel.AssignToUser}");
+                        }
                     }
                     else
+                    {
+                        return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("please enter assign To User",HttpStatusCodes.BadRequest);
+                    }
+                    if (!companyExists)
                     {
                         var leadCompany = new LeadCompany
                         {
                             Id = Guid.NewGuid(),
                             LeadCompanyName = leadModel.LeadCompany,
                             CreatedBy = salesExecutiveId,
-                            CreatedDate = DateTime.Now,
-                            Description = "N/A",
+                            CreatedDate = DateTime.UtcNow,
+                            Description = "IT company",
                             CompanyId = companyId,
                             IsActive = true
                         };
-                        await leadRepository.AddLeadCompanyName(leadCompany);
-                        leadCompanyId = leadCompany.Id;
+
+                        var result = await leadRepository.AddLeadCompanyName(leadCompany);
+                        if (result > 0)
+                        {
+                            var res = await leadRepository.GetLeadCompanyNameById(leadCompany.Id);
+                            leadCompanyId = res.Id;
+                        }
+                        else
+                        {
+                            return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                                $"Failed to add lead company {leadModel.LeadCompany}. Please try again.",
+                                HttpStatusCodes.InternalServerError
+                            );
+                        }
+                    }
+                    else
+                    {
+                        var res = await leadRepository.GetLeadCompanyByName(leadModel.LeadCompany!);
+                        leadCompanyId = res!.Id;
                     }
 
-                    // Add Master User
                     var userId = Guid.NewGuid();
                     var user = new MasterUser
                     {
@@ -1410,23 +1115,21 @@ namespace salesTrack.Application.Services
 
                     masterUsers.Add(user);
 
-                    // Add Lead
                     var lead = new Lead
                     {
                         Id = userId,
-                        LeadSourceId = leadSourceId,
+                        LeadSourceId = Guid.Parse("575AE6EA-AFA6-49FD-B541-FFCB4FC70571"),
                         CompanyId = companyId,
                         Comment = leadModel.Comment,
-                        AssignTo = salesExecutiveId,
+                        AssignTo = leadModel.AssignTo,
                         CreatedBy = salesExecutiveId,
                         CreatedDate = DateTime.UtcNow,
                         ModifiedDate = DateTime.UtcNow,
                         IsActive = true,
                         LeadRank = leadModel.LeadRank.HasValue && leadModel.LeadRank.Value > 0
-           ? leadModel.LeadRank.Value
-           : 5,
-
-                        LeadCategoryId = new Guid("6C92D610-4837-425C-98EF-57831C36EF71"),
+   ? leadModel.LeadRank.Value
+   : 5,
+                        LeadCategoryId = Guid.Parse("6C92D610-4837-425C-98EF-57831C36EF71"),
                         LeadCompanyId = leadCompanyId,
                         FinalStatus = FinalStatus.Open,
                         UserId = salesExecutiveId,
@@ -1435,29 +1138,24 @@ namespace salesTrack.Application.Services
                     leadEntities.Add(lead);
                 }
 
-                // Save to database
                 var userAddedCount = await adminRepository.AddMasterUsers(masterUsers);
                 var leadAddedCount = await leadRepository.AddLeadsAsync(leadEntities);
 
-                // Populate the response model
                 foreach (var lead in leadEntities)
                 {
                     var sourceLead = await leadRepository.GetLeadById(lead.Id);
                     if (sourceLead != null)
                     {
                         var assignToUser = await userRepository.GetByIdAsync(sourceLead.AssignToId);
-                        if (assignToUser != null)
-                            sourceLead.AssignedTo = assignToUser.Name;
+                        sourceLead.AssignedTo = assignToUser?.Name ?? "N/A";
 
                         var company = await companyRepository.GetByIdAsync(lead.CompanyId);
-                        if (company != null)
-                            sourceLead.CompanyName = company.CompanyName;
+                        sourceLead.CompanyName = company?.CompanyName ?? "N/A";
 
                         leadResponseModels.Add(sourceLead);
                     }
                 }
 
-                // Add duplicate leads to the response
                 foreach (var duplicateEmail in duplicateEmails)
                 {
                     leadResponseModels.Add(new LeadResponseModel
@@ -1469,19 +1167,19 @@ namespace salesTrack.Application.Services
 
                 return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(
                     leadResponseModels,
-                    $"Added {validLeadModels.Count} leads. Skipped {duplicateEmails.Count} duplicates.",
+                    $"Successfully added {validLeadModels.Count} new leads. {duplicateEmails.Count} emails were skipped as they already exist.",
                     HttpStatusCodes.Created
                 );
             }
             catch (Exception ex)
             {
+                // Log the exception here
                 return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
-                    $"{ApiMessages.TechnicalError} {ex.Message}",
+                    $"{ApiMessages.TechnicalError}",
                     HttpStatusCodes.InternalServerError
                 );
             }
         }
-
 
         public Task<ApiResponse<IEnumerable<LeadCompanyNameResponse>>> AddLeadCompanyNameBulkInsert(List<LeadCompanyNameRequest> models)
         {

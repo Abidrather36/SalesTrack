@@ -25,7 +25,7 @@ namespace salesTrack.Application.Services
             {
                 var salesExecutiveId = contextService.UserId();
 
-                if (salesExecutiveId ==Guid.Empty)
+                if (salesExecutiveId == Guid.Empty)
                 {
                     return ApiResponse<LeadSourceResponseModel>.ErrorResponse("Sales Executive ID is null.", HttpStatusCodes.BadRequest);
                 }
@@ -41,7 +41,7 @@ namespace salesTrack.Application.Services
                 {
                     Id = Guid.NewGuid(),
                     LeadSourceName = model.LeadSourceName,
-                    Description=model.Description,
+                    Description = model.Description,
                     CreatedBy = salesExecutiveId,
                     ModifiedBy = salesExecutiveId,
                     ModifiedDate = DateTime.Now,
@@ -58,7 +58,7 @@ namespace salesTrack.Application.Services
                     {
                         Id = leadSource.Id,
                         LeadSourceName = leadSource.LeadSourceName,
-                        Description=leadSource.Description,
+                        Description = leadSource.Description,
                     };
                     return ApiResponse<LeadSourceResponseModel>.SuccessResponse(leadSourceResponseModel, ApiMessages.LeadSourceManagement.LeadSourceAddedSuccessfully, HttpStatusCodes.Created);
                 }
@@ -117,12 +117,14 @@ namespace salesTrack.Application.Services
                 var leadSources = await leadSourceRepository.GetAllAsync();
                 if (leadSources.Any())
                 {
-                    var LeadSourceList = leadSources.Select(leadSource => new LeadSourceResponseModel
+                    var orderedLeadSources = leadSources
+               .OrderByDescending(leadSource => leadSource.CreatedDate);
+                    var LeadSourceList = orderedLeadSources.Select(leadSource => new LeadSourceResponseModel
                     {
                         Id = leadSource.Id,
                         LeadSourceName = leadSource.LeadSourceName,
                         Description = leadSource.Description,
-                        IsActive=leadSource.IsActive,
+                        IsActive = leadSource.IsActive,
                     });
                     return ApiResponse<IEnumerable<LeadSourceResponseModel>>.SuccessResponse(LeadSourceList, ApiMessages.LeadSourceManagement.LeadSourceListRetrievedSuccessfully, HttpStatusCodes.OK);
 
@@ -132,7 +134,7 @@ namespace salesTrack.Application.Services
                     return ApiResponse<IEnumerable<LeadSourceResponseModel>>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return ApiResponse<IEnumerable<LeadSourceResponseModel>>.ErrorResponse($"{ApiMessages.TechnicalError}: {ex.Message}", HttpStatusCodes.InternalServerError);
             }
@@ -140,21 +142,21 @@ namespace salesTrack.Application.Services
 
         public async Task<ApiResponse<LeadSourceResponseModel>> GetLeadSourceById(Guid id)
         {
-            var leadSource=await leadSourceRepository.GetByIdAsync(id);
-            if(leadSource is not null)
+            var leadSource = await leadSourceRepository.GetByIdAsync(id);
+            if (leadSource is not null)
             {
                 LeadSourceResponseModel leadSourceResponseModel = new()
                 {
-                    Id=leadSource.Id,
-                    LeadSourceName=leadSource.LeadSourceName,
-                    Description=leadSource.Description,
+                    Id = leadSource.Id,
+                    LeadSourceName = leadSource.LeadSourceName,
+                    Description = leadSource.Description,
 
                 };
                 return ApiResponse<LeadSourceResponseModel>.SuccessResponse(leadSourceResponseModel, ApiMessages.LeadSourceManagement.LeadSourceFound, HttpStatusCodes.OK);
             }
             else
             {
-                return ApiResponse<LeadSourceResponseModel>.ErrorResponse( ApiMessages.LeadSourceManagement.LeadSourceNotFound, HttpStatusCodes.BadRequest);
+                return ApiResponse<LeadSourceResponseModel>.ErrorResponse(ApiMessages.LeadSourceManagement.LeadSourceNotFound, HttpStatusCodes.BadRequest);
 
             }
         }
@@ -200,7 +202,7 @@ namespace salesTrack.Application.Services
                 {
                     return ApiResponse<LeadSourceResponseModel>.ErrorResponse("Failed to update lead source. Please try again.", HttpStatusCodes.InternalServerError);
                 }
-            
+
             }
             catch (Exception ex)
             {

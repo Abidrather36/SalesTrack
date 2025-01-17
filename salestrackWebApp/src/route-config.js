@@ -82,7 +82,6 @@ export const routerConfiguration = {
     { path: "/companyAdmin/changePassword",element:<ChangePassword/>},
     { path: "/companyAdmin/addTimeSheetStep",element:<AddTimeSheetStep/>},
     { path: "/companyAdmin/companyTimeSheetStepList",element:<CompanyTimeSheetStepList/>}
-
   ],
 
   SalesExecutiveRoutes:[
@@ -101,8 +100,8 @@ export const routerConfiguration = {
     { path : "/salesExecutive/bulkInsert",element :<BulkInsert/>},
     { path : "/salesExecutive/changePassword",element:<ChangePassword/>},
     { path : "/salesExecutive/addBulkLeads",element:<AddMultipleLeads/>},
-    { path : "/salesExecutive/ExcelToGrid", element:<ExcelToGrid/>}
-
+    { path : "/salesExecutive/ExcelToGrid", element:<ExcelToGrid/>},
+    // { path:"/salesExecutive/followUpHistory", element:<LeadList />} 
   ]
   ,
   SalesManagerRoutes:[
@@ -119,6 +118,7 @@ export const routerConfiguration = {
     { path : "/salesManager/leadSourceList", element: <LeadSourceList/> },
     { path : "/salesManager/timeSheetList",element :<TimeSheetList/>},
     { path: "/salesManager/changePassword",element:<ChangePassword/>},
-    
+    { path : "/salesManager/ExcelToGrid", element:<ExcelToGrid/>},
+    // { path:"/salesManager/followUpHistory", element:<LeadList />},
   ]
 }

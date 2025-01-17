@@ -115,7 +115,7 @@ const TimeSheet = () => {
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
-
+  let user =JSON.parse(localStorage.getItem("user"))
   const onSubmit = async (timeSheet) => {
     setLoading(true);
     timeSheet.date = new Date(timeSheet.date);
@@ -125,7 +125,15 @@ const TimeSheet = () => {
     console.log(response.result);
     if (response.isSuccess) {
       myToaster.showSuccessToast(response.message);
+      if(user.userRole==3){
       navigate("/salesExecutive/timeSheetList");
+      }
+      else if(user.userRole==4){
+        navigate("/salesManager/timeSheetList");
+      }
+      else{
+        myToaster.showErrorToast("UnAuthorized User");
+      }
     } else {
       myToaster.showErrorToast(response.message);
     }
