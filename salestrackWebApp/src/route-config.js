@@ -41,6 +41,7 @@ import AddTimeSheetStep from "./components/companyAdmin/AddTimeSheetStep"
 import CompanyTimeSheetStepList from "./components/companyAdmin/CompanyTimeSheetStepList"
 import LeadRegistration from "./components/salesExecutive/LeadBulkRegistration"
 import ExcelToGrid from "./components/salesExecutive/LeadBulkRegistration"
+
 export const routerConfiguration = {
   PublicRoutes: [
     { path: "/", element: <HomePage /> },

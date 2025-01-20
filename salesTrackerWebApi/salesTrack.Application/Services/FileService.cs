@@ -41,6 +41,7 @@ namespace salesTrack.Application.Services
                 EntityId = entityId,
                 FilePath = filePath,
                 IsActive=true,
+                CreatedDate=DateTime.Now,
 
             };
            var fileUploaded=await fileRepository.InsertAsync(appFiles);
@@ -51,7 +52,8 @@ namespace salesTrack.Application.Services
                     Id = appFiles.Id,
                     EntityId = appFiles.EntityId,
                     Module = appFiles.Module,
-                    FilePath=appFiles.FilePath
+                    FilePath=appFiles.FilePath,
+                    CreatedDate=appFiles.CreatedDate,
                    
                 };
 

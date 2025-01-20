@@ -47,6 +47,7 @@ namespace salesTrack.Api
               });*/
             app.UseStaticFiles();
             app.UseCors();
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

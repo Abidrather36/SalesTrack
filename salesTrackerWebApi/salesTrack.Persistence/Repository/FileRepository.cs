@@ -21,9 +21,20 @@ namespace salesTrack.Persistence.Repository
             this.context = context;
         }
 
-        public async Task<AppFiles?> GetFileByEntityIdAndModuleAsync(Guid entityId, AppModule module)
+        public async  Task<AppFiles?> GetFileByEntityIdAndModuleAsync(Guid entityId, AppModule module)
+        
+        {
+            return await context.AppFiles
+             .Where(f => f.EntityId == entityId && (byte)f.Module == (byte)module)
+             .OrderByDescending(f => f.CreatedDate)  // Assuming CreatedAt is the timestamp of the file
+             .FirstOrDefaultAsync();
+        }
+
+        /*public async Task<AppFiles?> GetFileByEntityIdAndModuleAsync(Guid entityId, AppModule module)
         {
            return await context.AppFiles.FirstOrDefaultAsync(f => f.EntityId == entityId && (byte)f.Module == (byte)module);
-        }
+        }*/
+      
+
     }
 }

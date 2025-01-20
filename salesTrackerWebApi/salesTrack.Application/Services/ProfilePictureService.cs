@@ -49,8 +49,7 @@ namespace salesTrack.Application.Services
                 {
                     FilePath = appFile.FilePath,
                     EntityId = appFile.EntityId,
-
-                  
+                    
                 };
 
                 return ApiResponse<AppFileResponse>.SuccessResponse(response, "File path retrieved successfully.", HttpStatusCodes.OK);

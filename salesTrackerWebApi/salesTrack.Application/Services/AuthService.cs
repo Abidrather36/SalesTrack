@@ -1,12 +1,10 @@
-﻿using MimeKit;
-using salesTrack.Application.Abstraction.IEmailService;
+﻿using salesTrack.Application.Abstraction.IEmailService;
 using salesTrack.Application.Abstraction.Iidentity;
 using salesTrack.Application.Abstraction.IRepository;
 using salesTrack.Application.Abstraction.IService;
 using salesTrack.Application.Abstraction.Jwt;
 using salesTrack.Application.Utils;
 using salesTrack.Domain.Enums;
-using salesTrack.Domain.Models;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Abstraction.IRepository;
@@ -101,7 +99,7 @@ namespace salesTrack.Application.Services
 
                 if (!AppEncryption.ComparePassword(user.Password!, model.Password!, user.Salt!))
                     return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
-                var generalUser = await fileRepository.GetFileByEntityIdAndModuleAsync(user.Id, AppModule.User);
+                var generalUser = await fileRepository.GetFileByEntityIdAndModuleAsync(user.Id, AppModule.MasterUser);
                 var userTokens = jwtProvider.GenerateToken(user);
                 var refreshToken = jwtProvider.GenerateRefreshToken(user);
                 LoginResponseModel login = new()
@@ -151,7 +149,7 @@ namespace salesTrack.Application.Services
             {
                 return ApiResponse<string>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
             }
-
+            
         }
 
         public async Task<ApiResponse<string>> UpdateProfilePicture(UpdateProfilePictureRequestModel model)

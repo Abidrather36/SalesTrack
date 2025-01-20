@@ -19,7 +19,7 @@ namespace salesTrack.Application
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IEnquiryService, EnquiryService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddSingleton < IStorageService>(new StorageService(webRootPath)) ;
+            services.AddSingleton<IStorageService>(new StorageService(webRootPath)) ;
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IProfilePictureService, ProfilePictureService>();
             return services;

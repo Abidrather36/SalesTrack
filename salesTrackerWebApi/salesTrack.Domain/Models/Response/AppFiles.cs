@@ -13,5 +13,6 @@ namespace salesTrack.Domain.Models.Response
         public string? FilePath { get; set; } = string.Empty;
         public Guid? EntityId { get; set; }
         public AppModule? Module { get; set; }
+        public DateTimeOffset? CreatedDate { get; set; }
     }
 }
