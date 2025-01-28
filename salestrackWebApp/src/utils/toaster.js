@@ -130,10 +130,6 @@ class Toaster {
               lead.phoneNumber || ""
             }" />
     
-            <label for="swal-input-comment" style="text-align:left">Comment</label>
-            <input id="swal-input-comment" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Comment" value="${
-              lead.comment || ""
-            }" />
     
            <label for="swal-input-assign" style="text-align:left">Assign To</label>
 <select id="swal-input-assign" class="swal2-input" style="width: 80%; margin-left:10px">
@@ -188,7 +184,6 @@ class Toaster {
         const leadName = document.getElementById("swal-input-leadName").value;
         const email = document.getElementById("swal-input-email").value;
         const phoneNumber = document.getElementById("swal-input-phone").value;
-        const comment = document.getElementById("swal-input-comment").value;
         const assignTo = document.getElementById("swal-input-assign").value;
         const leadSourceId = document.getElementById("swal-input-source").value;
         const finalStatus = Number(
@@ -199,7 +194,6 @@ class Toaster {
           leadName,
           email,
           phoneNumber,
-          comment,
           assignTo,
           leadSourceId,
           finalStatus,

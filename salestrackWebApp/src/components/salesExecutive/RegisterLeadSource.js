@@ -51,10 +51,20 @@ const LeadSource = () => {
           currentRoute: "Register-New-LeadSource",
         }}
       />
-      <div style={{ alignContent: "center",width: "100%", }}>
-      
-        <div style={{ flex: 1, padding: "20px" }}>
-          <div className="col-lg-8 mb-4-lg-0">
+      <div
+        className="row"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexWrap: "wrap",
+          width: "100%",
+          minHeight: "100vh", // Ensures the container takes up the full viewport height
+          padding: "20px",
+        }}
+      >
+        <div style={{ flex: 1, maxWidth: "600px", padding: "20px" }}>
+          <div className="col-lg-12 mb-4-lg-0">
             <div
               className="login-container"
               style={{
@@ -62,38 +72,64 @@ const LeadSource = () => {
                 padding: "35px",
                 borderRadius: "10px",
                 boxShadow: "0 0 15px rgba(0,0,0,0.1)",
-                width: "50%",
-                height: "auto",
-                alignContent:"center",
-                marginLeft:"400px"
+                width: "80%",
               }}
             >
-              <h2 className="form-title">Register New Lead Source</h2>
-              <form className="login-form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+              <h2 className="form-title" style={{ textAlign: "center", marginBottom: "20px" }}>
+                Register New Lead Source
+              </h2>
+              <form
+                className="login-form"
+                onSubmit={handleSubmit(onSubmit)}
+                autoComplete="off"
+              >
                 <div className="row">
-                  <div className="col-lg-6 mb-3" style={{width:"100%"}}>
+                  {/* Lead Source Name Field */}
+                  <div className="col-lg-12 mb-3">
                     <InputField
                       type="text"
                       name="leadSourceName"
-                      style={{ padding: "0px 1.25rem 0 1.12rem",width:"100%"}}
+                      style={{
+                        padding: "0px 1.25rem 0 1.12rem",
+                        width: "100%",
+                        borderRadius: "5px",
+                        border: "1px solid #ccc",
+                      }}
                       placeholder="Lead Source Name"
-                      {...register("leadSourceName", { required: "Lead Source Name is required" })}
+                      {...register("leadSourceName", {
+                        required: "Lead Source Name is required",
+                      })}
                     />
-                    {errors.leadSourceName && <span className="error-message">{errors.leadSourceName.message}</span>}
+                    {errors.leadSourceName && (
+                      <span className="error-message" style={{ color: "red" }}>
+                        {errors.leadSourceName.message}
+                      </span>
+                    )}
                   </div>
-
+  
+                  {/* Description Field */}
                   <div className="col-lg-12 mb-3">
                     <textarea
                       name="description"
                       rows={6}
-                      style={{ padding: "0px 1.25rem 0 1.12rem", width: "100%", borderRadius: "5px", border: "1px solid #ccc" }}
+                      style={{
+                        padding: "0px 1.25rem 0 1.12rem",
+                        width: "100%",
+                        borderRadius: "5px",
+                        border: "1px solid #ccc",
+                      }}
                       placeholder="Description"
-                      {...register("description", { required: "Description is required" })}
+                      {...register("description", {
+                      })}
                     />
-                    {errors.description && <span className="error-message">{errors.description.message}</span>}
+                    {errors.description && (
+                      <span className="error-message">
+                        {errors.description.message}
+                      </span>
+                    )}
                   </div>
                 </div>
-
+  
                 <button
                   type="submit"
                   className="btn btn-primary"
@@ -109,6 +145,7 @@ const LeadSource = () => {
       </div>
     </>
   );
+  
 };
 
 export default LeadSource;

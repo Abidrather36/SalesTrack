@@ -1,188 +1,62 @@
-element.style {
-    padding: 20px;
-    min-width: 320px;
-    max-width: 300px;
-    text-align: left;
-    position: absolute;
-    inset: 0px 0px auto auto;
-    background-color: #000000;
-    margin: 0px;
-    font-size: large;
-    transform: translate3d(0px, 52.4444px, 0px);
-}
-
+/* Fix conflicting widths */
 .profile-card {
-    padding: 20px;
-    min-width: 320px;
-    max-width: 300px;
-    text-align: left;
-    background-color: #ffffff; /* Keep the card's background white */
-  }
-  
-  .profile-card .profile-header {
-    font-size: large; /* Font size for the profile name and logout */
-    color: #f0f0f0; /* Set color for text */
-  }
-  
-  .profile-card .profile-header .role-text {
-    font-size: medium; /* Slightly smaller for subtitle (role description) */
-    color: #b0b0b0; /* Lighter gray for role description */
-  }
-  
-  .profile-card .profile-actions {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .profile-card .profile-actions a {
-    font-size: large; /* Larger font size for action links */
-    color: #f0f0f0; /* Set text color */
-    text-decoration: none; /* Remove underline */
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Add spacing between icon and text */
-  }
-  
-  .profile-card .profile-actions a:hover {
-    color: #90e0ef; /* Add hover effect for links */
-  }
-
-
-  /*---------------------*/
-  body {
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .profile-card {
-    border: none;
-    border-radius: 12px;
-    background-color: #ffffff;
-    transition: transform 0.3s ease;
-  }
-  
-  .profile-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .font-weight-bold {
-    font-weight: 600;
-  }
-  
-  .shadow-sm {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .text-muted {
-    font-size: 0.95rem;
-    color: #6c757d !important;
-  }
-  
-  hr {
-    border-color: #dee2e6;
-    margin: 0.75rem 0;
-  }
-  
-  h5 {
-    font-weight: 500;
-    margin: 0.5rem 0;
-  }
-  
-  .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    transition: background-color 0.2s ease;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
-  
-  /* ProfileCard.css */
-.profile-card {
-  max-width: 500px;
-  margin: 0 auto;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 300px; /* Adjusted to align with max-width */
+  max-width: 400px; /* Ensure this is >= min-width */
+  text-align: left;
+  background-color: #ffffff; /* Keep the card's background white */
+  margin: 2px auto; /* Add space between elements */
+  position: relative; /* Avoid using absolute unless necessary */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Uniform shadow */
 }
 
-@media (max-width: 768px) {
-  .profile-card {
-    max-width: 100%;
-    margin: 10px;
-  }
-
-  .profile-card img {
-    width: 120px;
-    margin-bottom: 10px;
-  }
-
-  .btn {
-    width: 100%;
-  }
-}
-
-
-
-
-
-
-
-
-.profile-card {
-  margin: auto;
-  max-width: 400px;
-}
-
-.text-center {
-  text-align: center;
-}
-
+/* Ensure gap in flex container */
 .mdb-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.mdb-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: flex-start;
+  gap: 20px; /* Add gap between cards */
 }
 
-.mdb-col {
-  flex: 1;
-  min-width: 300px; /* Ensure columns don't shrink below this width */
-  margin: 15px;
-}
-
-.mdb-card {
-  padding: 20px;
-}
-
-.mt-3 {
-  margin-top: 15px;
-}
-
-.mb-4 {
-  margin-bottom: 20px;
-}
-
-/* Prevent overlap */
-#profilePictureUpload {
-  display: none;
-}
-
-label[for="profilePictureUpload"] {
-  margin-top: 10px;
-}
-
+/* Ensure responsiveness */
 @media (max-width: 768px) {
-  .mdb-col {
-    flex: 1 1 100%;
+  .mdb-container {
+    flex-direction: column;
+    gap: 10px; /* Reduce gap for smaller screens */
+  }
+  .profile-card {
+    max-width: 100%; /* Make the card take full width */
+    margin: 10px; /* Add spacing for small screens */
   }
 }
 
+/* Prevent overlapping from transform */
+.profile-card:hover {
+  transform: translateY(-5px); /* Smooth hover effect */
+  margin-bottom: 10px; /* Add bottom margin to prevent overlap */
+}
+
+/* Fix for absolute positioning in element.style */
+.element.style {
+  position: relative; /* Change to relative for normal flow */
+  transform: none; /* Remove translate3d to avoid collision */
+  margin-top: 20px; /* Add spacing if necessary */
+}
+
+/* Ensure no collision in .mdb-row */
+.mdb-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between columns */
+  justify-content: center; /* Center content */
+}
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}

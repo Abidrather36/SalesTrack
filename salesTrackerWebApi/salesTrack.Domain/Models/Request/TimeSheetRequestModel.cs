@@ -9,17 +9,11 @@ namespace salesTrack.Domain.Models.Request
 {
     public class TimeSheetRequestModel
     {
-        [Required]
         public DateTime Date { get; set; }
-        [Required]
-
         public string? TimeSheetStepName { get; set; }
-        [Required]
-
         public int HoursSpent { get; set; }
-        [Required]
-
         public string? Comment { get; set; }
+        public Guid? ProjectId { get; set; }
 
     }
 }

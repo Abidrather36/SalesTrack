@@ -43,7 +43,7 @@ const AddTimeSheetStep = () => {
 
         <div className="col-lg-6 mb-4-lg-0">
           <div className="login-container" style={{ width: "100%", maxWidth: "500px", margin: "0 auto" }}>
-            <h2 className="form-title">Add TimeSheet Step</h2>
+            <h2 className="form-title">Add Task</h2>
             <form className="login-form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
               <div>
                 <InputField
@@ -61,7 +61,7 @@ const AddTimeSheetStep = () => {
                 </button>
               ) : (
                 <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>
-                  Add TimeSheet Step
+                  Add
                 </button>
               )}
             </form>

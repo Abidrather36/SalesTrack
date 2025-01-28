@@ -78,7 +78,6 @@ function LeadList(props) {
     { key: "leadRank", label: "Rank"},
     { key: "createdDate", label: "Created Date" },
     { key: "isActive",label:"IsActive"},
-    { key:"comment" ,label:"Comment"}
   ];
 
   const deleteLeadHandler =async (id)=>{

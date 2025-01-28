@@ -1,152 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { Calendar } from "primereact/calendar";
 import {
   Button,
   Modal,
+  TextField,
+  MenuItem,
   Box,
   Typography,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Snackbar,
-  FormHelperText,
 } from "@mui/material";
-import Spin from "../public/Spin";
-import MuiAlert from "@mui/material/Alert";
 import { useForm } from "react-hook-form";
-import { getAllProcessSteps } from "../../Services/UserService";
-import myToaster from "../../utils/toaster";
-import {
-  addTimeSheet,
-  listOfTimeSheetStepsByCompany,
-} from "../../Services/LeadService";
 import BreadcrumbComponent from "../shared/Breadcrumb";
-import { useNavigate } from "react-router-dom";
-import InputField from "../public/InputField";
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+import { addTimeSheet, getAllProjectsByUser } from "../../Services/LeadService";
+import myToaster from "../../utils/toaster";
 
 const TimeSheet = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [isMonday, setIsMonday] = useState(false);
   const [open, setOpen] = useState(false);
-  const [formDate, setFormDate] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [comments, setComments] = useState("");
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const [processSteps, setProcessSteps] = useState([]);
-  const [minDate, setMinDate] = useState(null);
-  const [maxDate, setMaxDate] = useState(null);
-  const [timeSheetStep, setTimeSheetStep] = useState([]);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchTimeSheetsSteps();
-  }, []);
-
+  const [taskOptions, setTaskOptions] = useState([]);
+  const [projectOptions, setProjectOptions] = useState([]);
+  const [timesheet, setTimeSheet] = useState([]);
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-    setValue,
   } = useForm();
 
-  const getStartOfWeek = (date) => {
-    const day = date.getDay();
-    const difference = date.getDate() - day + (day === 0 ? -6 : 1);
-    return new Date(date.setDate(difference));
-  };
+  useEffect(() => {
+    fetchProjects();
+  }, []);
 
-  const handleDateSelect = (date) => {
-    setSelectedDate(date);
-    const selectedDay = date.getDay();
-    setIsMonday(selectedDay === 1);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-    if (selectedDay === 1) {
-      const startOfWeekDate = getStartOfWeek(new Date(date));
-      const endOfWeekDate = new Date(startOfWeekDate);
-      endOfWeekDate.setDate(startOfWeekDate.getDate() + 5);
-      setMinDate(startOfWeekDate);
-      setMaxDate(endOfWeekDate);
-    } else {
-      const startOfWeekDate = getStartOfWeek(new Date(date));
-      myToaster.showErrorToast(
-        `Please select a Monday to add a new timesheet entry. Start of the Week: ${startOfWeekDate.toDateString()}`
-      );
-    }
-  };
-
-  const showDialog = () => {
-    if (selectedDate) {
-      const startOfWeekDate = getStartOfWeek(new Date(selectedDate));
-      setFormDate(startOfWeekDate);
-      setValue("date", startOfWeekDate);
-    }
-    setOpen(true);
-  };
-
-  const hideDialog = () => {
-    setOpen(false);
-  };
-
-  const handleSubmitDate = () => {
-    if (!formDate || !processSteps || !comments) {
-      setSnackbarSeverity("error");
-      setSnackbarMessage(
-        "Please select a valid date, process step, and comments."
-      );
-      setSnackbarOpen(true);
-      return;
-    }
-
-    hideDialog();
-    setSnackbarSeverity("success");
-    setSnackbarMessage("Time sheet entry saved successfully.");
-    setSnackbarOpen(true);
-  };
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-  let user =JSON.parse(localStorage.getItem("user"))
-  const onSubmit = async (timeSheet) => {
-    setLoading(true);
-    timeSheet.date = new Date(timeSheet.date);
-    timeSheet.hoursSpent = Number(timeSheet.hoursSpent);
-    console.log(timeSheet);
-    const response = await addTimeSheet(timeSheet);
+  const fetchProjects = async () => {
+    const userId = JSON.parse(localStorage.getItem("user")).userId;
+    console.log(userId);
+    const response = await getAllProjectsByUser(userId);
     console.log(response.result);
+    setProjectOptions(response.result);
+  };
+  const onSubmit = async (data) => {
+    const response = await addTimeSheet(data);
+    console.log("Form Data:", data);
     if (response.isSuccess) {
+      setTimeSheet(response.result);
       myToaster.showSuccessToast(response.message);
-      if(user.userRole==3){
-      navigate("/salesExecutive/timeSheetList");
-      }
-      else if(user.userRole==4){
-        navigate("/salesManager/timeSheetList");
-      }
-      else{
-        myToaster.showErrorToast("UnAuthorized User");
-      }
+      handleClose();
     } else {
       myToaster.showErrorToast(response.message);
     }
-    setLoading(false);
-  };
-  const fetchTimeSheetsSteps = async () => {
-    const response = await listOfTimeSheetStepsByCompany();
-    console.log("timesheet list", response.result);
-    if (response.isSuccess && Array.isArray(response.result)) {
-      setTimeSheetStep(response.result);
-    } else {
-      setTimeSheetStep([]); // In case of an unexpected result, default to an empty array.
-    }
+    handleClose();
   };
 
   return (
@@ -157,164 +58,119 @@ const TimeSheet = () => {
           currentRoute: "Register-Time-Sheet",
         }}
       />
-      <div className="time-sheet-container">
-        {/* Calendar */}
-        <div className="calendar-container">
-          <label style={{ marginRight: "10px" }}>Select Date </label>
-          <Calendar
-            value={selectedDate}
-            onChange={(e) => handleDateSelect(e.value)}
-            showIcon
-          />
-        </div>
 
-        {/* Add New Button - Visible only if Monday is selected */}
-        {isMonday && (
-          <div className="mt-3">
-            <button
-              className="btn btn-primary p-2 "
-              onClick={showDialog}
-              disabled={loading}
-            >
-              {loading ? <Spin /> : "Add Time sheet"}
-            </button>
-          </div>
-        )}
+      <Button variant="contained" color="primary" onClick={handleOpen}>
+        Add New Task
+      </Button>
 
-        {/* Modal for Adding New Entry */}
-        <Modal
-          open={open}
-          onClose={hideDialog}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
+      <Modal open={open} onClose={handleClose}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 500,
+            bgcolor: "background.paper",
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 4,
+          }}
         >
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: 500,
-              bgcolor: "background.paper",
-              border: "2px solid #000",
-              boxShadow: 24,
-              p: 4,
-            }}
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Add New Time Sheet
-            </Typography>
-            <br />
+          <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
+            Task Details Form
+          </Typography>
 
-            {/* Calendar restricted to the selected week's range */}
-            <div className="mb-1">
-              <label htmlFor="date">Selected Date</label>
-              <Calendar
-                minDate={minDate}
-                maxDate={maxDate}
-                {...register("date", { required: "Date is required" })}
-                showIcon
-                panelClassName="modal-calendar"
-              />
-              {errors.date && (
-                <span className="text-danger">{errors.date.message}</span>
-              )}
-            </div>
-
-            {/* Process Step Dropdown */}
-
-              <TextField
-                id="timeSheetStepName"
-                select
-                label="Select TimeSheet Step"
-                {...register("timeSheetStepName", {
-                  required: "Time Sheet Step is required",
-                })}
-                fullWidth
-                sx={{ mb: 2 }}
-                error={Boolean(errors.timeSheetStepName)}
-                helperText={errors.timeSheetStepName?.message || ""}
-                defaultValue="" // Default value for dropdown
-              >
-                <MenuItem value="">
-                  <em>Select TimeSheet Step</em>
-                </MenuItem>
-                {timeSheetStep.map((item) => (
-                  <MenuItem key={item.id} value={item.name}>
-                    {item.name}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <TextField
+              label="Enter Date"
+              type="date"
+              fullWidth
+              margin="normal"
+              InputLabelProps={{ shrink: true }}
+              {...register("date", { required: "Date is required" })}
+              error={!!errors.date}
+              helperText={errors.date?.message}
+            />
+            <TextField
+              label="Select Task"
+              select
+              fullWidth
+              margin="normal"
+              defaultValue=""
+              {...register("timeSheetStepName", {
+                required: "Task is required",
+              })}
+              error={!!errors.timeSheetStepName}
+              helperText={errors.timeSheetStepName?.message}
+            >
+              {taskOptions && taskOptions.length > 0 ? (
+                taskOptions.map((task, index) => (
+                  <MenuItem key={index} value={task}>
+                    {task}
                   </MenuItem>
-                ))}
-              </TextField>
+                ))
+              ) : (
+                <MenuItem disabled>No tasks available</MenuItem>
+              )}
+            </TextField>
 
             <TextField
-              id="hoursSpent"
+              label="Select Project"
+              select
+              fullWidth
+              margin="normal"
+              defaultValue=""
+              {...register("project", { required: "Project is required" })}
+              error={!!errors.project}
+              helperText={errors.project?.message}
+            >
+              {projectOptions && projectOptions.length > 0 ? (
+                projectOptions.map((project) => (
+                  <MenuItem key={project.id} value={project.id}>
+                    {project.projectName}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>No projects available</MenuItem>
+              )}
+            </TextField>
+
+            <TextField
               label="Hours Spent"
               type="number"
-              {...register("hoursSpent", { required: false })}
               fullWidth
-              sx={{ mb: 2 }}
-              placeholder="Enter Hours Spent"
-              required="Hours is required"
+              margin="normal"
+              InputProps={{ inputProps: { min: 0 } }}
+              {...register("hoursSpent", {
+                required: "Hours spent is required",
+              })}
+              error={!!errors.hoursSpent}
+              helperText={errors.hoursSpent?.message}
             />
 
             <TextField
-              id="comment"
               label="Comments"
               multiline
-              rows={4}
-              {...register("comment", { required: false })}
+              rows={3}
               fullWidth
-              sx={{ mb: 2 }}
-              required
-              placeholder="Enter your comments here"
-              helperText={!comments ? "Comments are required." : ""}
+              margin="normal"
+              {...register("comments")}
             />
 
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                disabled={loading}
-              >
-                {loading ? <Spin /> : "Submit"}
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={hideDialog}
-                style={{ color: "red" }}
-              >
+            <Box
+              sx={{ mt: 1, display: "flex", justifyContent: "space-between" }}
+            >
+              <Button variant="contained" color="error" onClick={handleClose}>
                 Cancel
               </Button>
-            </div>
-          </Box>
-        </Modal>
-
-        {/* Snackbar for feedback */}
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={6000}
-          onClose={handleSnackbarClose}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          <Alert
-            onClose={handleSnackbarClose}
-            severity={snackbarSeverity}
-            sx={{ width: "100%" }}
-          >
-            {snackbarMessage}
-          </Alert>
-        </Snackbar>
-      </div>
-
-      {/* CSS for z-index adjustment */}
-      <style jsx global>{`
-        .p-datepicker {
-          z-index: 1400 !important; /* Ensure it is above the modal */
-        }
-      `}</style>
+              <Button variant="contained" color="primary" type="submit">
+                Save
+              </Button>
+            </Box>
+          </form>
+        </Box>
+      </Modal>
     </>
   );
 };

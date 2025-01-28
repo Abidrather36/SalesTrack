@@ -82,7 +82,16 @@ export const listOfTimeSheetStepsByCompany =async()=>{
     let res =await axiosObject.get(`${ApiUrl}Leads/GetAllTimeSheetStepsByCompany`).then(res=>res.data);
     return res;
 }
-export const addBulkLeads=(model)=>{
-    let res=axiosObject.post(`${ApiUrl}Leads/addMultipleLeads`,model).then(res=>res.data);
+export const addBulkLeads=async (model)=>{
+    let res=await axiosObject.post(`${ApiUrl}Leads/addMultipleLeads`,model).then(res=>res.data);
     return res;
+}
+export const addProject=async (projectRequestModel)=>{
+    let res=await axiosObject.post(`${ApiUrl}Leads/addProject`,projectRequestModel).then(res=>res.data);
+    return res;
+}
+export const getAllProjectsByUser =async (userId)=>{
+    let res=await axiosObject.get(`${ApiUrl}Leads/getProjectsByUser/${userId}`).then(res=>res.data);
+    return res;
+
 }

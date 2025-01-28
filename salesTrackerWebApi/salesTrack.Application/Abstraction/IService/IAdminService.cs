@@ -28,5 +28,7 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<CompanyTimeSheetResponse>> AddCompanyTimeSheet(CompanyTimeSheetRequest model);
         Task<ApiResponse<IEnumerable<CompanyTimeSheetResponse>>> GetCompanyTimeSheet();
         Task<ApiResponse<UpdateApproveCompanyTimeSheet>> UpdateTimeSheetIsApproved(Guid userId);
+      
+
     }
 }

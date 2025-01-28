@@ -183,7 +183,6 @@ namespace salesTrack.Application.Services
         {
             try
             {
-
                 var compactLead = await leadRepository.GetLeadById(leadId);
                 if (compactLead is null)
                 {
@@ -191,8 +190,6 @@ namespace salesTrack.Application.Services
                 }
                 else
                 {
-
-
                     var leadResponseModel = await leadRepository.GetLeadById(leadId);
                     leadResponseModel.AssignedTo = (await userRepository.GetByIdAsync(compactLead.AssignToId))!.Name;
 
@@ -249,7 +246,8 @@ namespace salesTrack.Application.Services
                     lead.ModifiedDate = DateTime.UtcNow;
                     lead.AssignTo = model.AssignTo.HasValue ? model.AssignTo.Value : lead.AssignTo;
                     lead.IsActive = true;
-                    lead.Comment = model.Comment;
+                    lead.Designation = model.Designation;
+                    lead.Department = model.Department;
 
                     var updatedLead = await leadRepository.UpdateAsync(lead);
                     var assignUserId = await userRepository.GetByIdAsync(lead.AssignTo);
@@ -276,7 +274,6 @@ namespace salesTrack.Application.Services
                                 LeadSourceName = leadSource.LeadSourceName,
                                 AssignToId = lead.AssignTo,
                                 AssignedTo = assignUserId != null ? assignUserId.Name : null,
-                                Comment = model.Comment,
                                 IsActive = true,
                                 FinalStatus = model.FinalStatus ?? lead.FinalStatus,
                                 UserRole = UserRole.Lead
@@ -791,19 +788,19 @@ namespace salesTrack.Application.Services
                 var salesEx = await userRepository.GetUserById(salesExecutiveId);
                 var companyId = salesEx!.CompanyId;
 
-                if (model.LeadCompanyName == string.Empty && model.Description == string.Empty)
+                if (model.LeadCompanyName.ToLower() == string.Empty && model.Description == string.Empty)
                 {
                     return ApiResponse<LeadCompanyNameResponse>.ErrorResponse("please enter values", HttpStatusCodes.BadRequest);
                 }
                 var leadCompanyNames = await leadRepository.GetAllLeadCompanyNames(companyId);
-                if (leadCompanyNames.Any(x => x.LeadCompanyName == model.LeadCompanyName))
+                if (leadCompanyNames.Any(x => x.LeadCompanyName == model.LeadCompanyName.ToLower()))
                 {
                     return ApiResponse<LeadCompanyNameResponse>.ErrorResponse("Lead CompanyName Already Exits", HttpStatusCodes.BadRequest);
                 }
                 LeadCompany leadCompanyName = new()
                 {
                     Id = Guid.NewGuid(),
-                    LeadCompanyName = model.LeadCompanyName,
+                    LeadCompanyName = model.LeadCompanyName.ToLower(),
                     Description = !string.IsNullOrEmpty(model.Description) ? model.Description : "N/A",
                     IsActive = true,
                     CreatedBy = salesExecutiveId,
@@ -998,7 +995,368 @@ namespace salesTrack.Application.Services
 
         }
 
-        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadMutipleRequestModel> leadModels)
+        /*   public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadMutipleRequestModel> leadModels)
+           {
+               try
+               {
+                   var salesExecutiveId = contextService.UserId();
+                   if (salesExecutiveId == Guid.Empty)
+                   {
+                       return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                           "Sales Executive ID not found.",
+                           HttpStatusCodes.BadRequest
+                       );
+                   }
+
+                   var salesEx = await userRepository.GetUserById(salesExecutiveId);
+                   var companyId = salesEx!.CompanyId;
+
+                   var emails = leadModels.Select(m => m.Email).ToList();
+                   var existingEmails = await userRepository.GetEmailsAsync(emails);
+                   var duplicateEmails = emails.Intersect(existingEmails).ToList();
+
+                   var validLeadModels = leadModels.Where(l => !duplicateEmails.Contains(l.Email)).ToList();
+
+                   if (!validLeadModels.Any())
+                   {
+                       return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                           $"Provided emails are already associated with existing leads: {string.Join(", ", duplicateEmails)}",
+                           HttpStatusCodes.BadRequest
+                       );
+                   }
+
+                   var leadEntities = new List<Lead>();
+                   var masterUsers = new List<MasterUser>();
+                   var leadResponseModels = new List<LeadResponseModel>();
+
+                   foreach (var leadModel in validLeadModels)
+                   {
+                       Guid leadCompanyId;
+                       var companyExists = await leadRepository.IsLeadCompanyExists(leadModel.LeadCompany!);
+                       if(!string.IsNullOrEmpty( leadModel.AssignToUser))
+                       {
+                          var userAssign= leadModel.AssignToUser.ToLower();
+                           if(userAssign == "abhishek")
+                           {
+                               leadModel.AssignTo = Guid.Parse("7A08B5E6-2B08-45EF-A6D4-08DD0EA87C69");
+                           }
+                           else if(userAssign == "megha")
+                           {
+                               leadModel.AssignTo = Guid.Parse("F3D56DC2-5D5C-4E68-A6D3-08DD0EA87C69");
+                           }
+
+                           else
+                           {
+                               return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"Invalid Assign To User {leadModel.AssignToUser}");
+                           }
+                       }
+                       else
+                       {
+                           return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("please enter assign To User",HttpStatusCodes.BadRequest);
+                       }
+                       if (!companyExists)
+                       {
+                           var leadCompany = new LeadCompany
+                           {
+                               Id = Guid.NewGuid(),
+                               LeadCompanyName = leadModel.LeadCompany,
+                               CreatedBy = salesExecutiveId,
+                               CreatedDate = DateTime.UtcNow,
+                               Description = "IT company",
+                               CompanyId = companyId,
+                               IsActive = true
+                           };
+
+                           var result = await leadRepository.AddLeadCompanyName(leadCompany);
+                           if (result > 0)
+                           {
+                               var res = await leadRepository.GetLeadCompanyNameById(leadCompany.Id);
+                               leadCompanyId = res.Id;
+                           }
+                           else
+                           {
+                               return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                                   $"Failed to add lead company {leadModel.LeadCompany}. Please try again.",
+                                   HttpStatusCodes.InternalServerError
+                               );
+                           }
+                       }
+                       else
+                       {
+                           var res = await leadRepository.GetLeadCompanyByName(leadModel.LeadCompany!);
+                           leadCompanyId = res!.Id;
+                       }
+
+                       var userId = Guid.NewGuid();
+                       var user = new MasterUser
+                       {
+                           Id = userId,
+                           Name = leadModel.Name,
+                           Email = leadModel.Email,
+                           PhoneNumber = string.IsNullOrEmpty(leadModel.PhoneNumber) ? "N/A" : leadModel.PhoneNumber,
+                           Password = AppEncryption.GenerateRandomPassword(leadModel.Email!),
+                           Salt = AppEncryption.GenerateSalt(),
+                           UserRole = UserRole.Lead,
+                           CreatedDate = DateTime.UtcNow,
+                           DeletedDate = DateTime.UtcNow,
+                           IsActive = true,
+                           ModifiedDate = DateTime.UtcNow,
+
+                       };
+
+                       masterUsers.Add(user);
+
+                       var lead = new Lead
+                       {
+                           Id = userId,
+                           LeadSourceId = Guid.Parse("575AE6EA-AFA6-49FD-B541-FFCB4FC70571"),
+                           CompanyId = companyId,
+                           AssignTo = leadModel.AssignTo,
+                           CreatedBy = salesExecutiveId,
+                           CreatedDate = DateTime.UtcNow,
+                           ModifiedDate = DateTime.UtcNow,
+                           IsActive = true,
+                           LeadRank = leadModel.LeadRank.HasValue && leadModel.LeadRank.Value > 0
+      ? leadModel.LeadRank.Value
+      : 1,
+                           LeadCategoryId = Guid.Parse("6C92D610-4837-425C-98EF-57831C36EF71"),
+                           LeadCompanyId = leadCompanyId,
+                           FinalStatus = FinalStatus.Open,
+                           UserId = salesExecutiveId,
+                           Designation=leadModel.Designation,
+                           Department=leadModel.Department,
+                       };
+
+                       leadEntities.Add(lead);
+                   }
+
+                   var userAddedCount = await adminRepository.AddMasterUsers(masterUsers);
+                   var leadAddedCount = await leadRepository.AddLeadsAsync(leadEntities);
+
+                   foreach (var lead in leadEntities)
+                   {
+                       var sourceLead = await leadRepository.GetLeadById(lead.Id);
+                       if (sourceLead != null)
+                       {
+                           var assignToUser = await userRepository.GetByIdAsync(sourceLead.AssignToId);
+                           sourceLead.AssignedTo = assignToUser?.Name ?? "N/A";
+
+                           var company = await companyRepository.GetByIdAsync(lead.CompanyId);
+                           sourceLead.CompanyName = company?.CompanyName ?? "N/A";
+
+                           leadResponseModels.Add(sourceLead);
+                       }
+                   }
+
+                   foreach (var duplicateEmail in duplicateEmails)
+                   {
+                       leadResponseModels.Add(new LeadResponseModel
+                       {
+                           Email = duplicateEmail,
+                           StatusMessage = "Duplicate email. Already exists."
+                       });
+                   }
+
+                   return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(
+                       leadResponseModels,
+                       $"Successfully added {validLeadModels.Count} new leads. {duplicateEmails.Count} emails were skipped as they already exist.",
+                       HttpStatusCodes.Created
+                   );
+               }
+               catch (Exception ex)
+               {
+                   // Log the exception here
+                   return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                       $"{ApiMessages.TechnicalError}",
+                       HttpStatusCodes.InternalServerError
+                   );
+               }
+           }*/
+
+
+
+        /*   public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadMutipleRequestModel> leadModels)
+           {
+               try
+               {
+                   var salesExecutiveId = contextService.UserId();
+                   var salesEx = await userRepository.GetUserById(salesExecutiveId);
+                   var companyId = salesEx!.CompanyId;
+
+                   var emails = leadModels.Select(m => m.Email).ToList();
+                   var existingEmails = await userRepository.GetEmailsAsync(emails);
+                   var duplicateEmails = emails.Intersect(existingEmails).ToList();
+
+                   var validLeadModels = leadModels.Where(l => !duplicateEmails.Contains(l.Email)).ToList();
+
+                   if (!validLeadModels.Any())
+                   {
+                       return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                           $"Provided emails are already associated with existing leads: {string.Join(", ", duplicateEmails)}",
+                           HttpStatusCodes.BadRequest
+                       );
+                   }
+
+                   var leadEntities = new List<Lead>();
+                   var masterUsers = new List<MasterUser>();
+                   var leadResponseModels = new List<LeadResponseModel>();
+
+                   foreach (var leadModel in validLeadModels)
+                   {
+                       Guid leadCompanyId;
+
+                       var companyExists = await leadRepository.IsLeadCompanyExists(leadModel.LeadCompany!);
+                       if (!string.IsNullOrEmpty(leadModel.AssignToUser))
+                       {
+                           var userAssign = leadModel.AssignToUser.ToLower();
+                           if (userAssign == "abhishek")
+                           {
+                               leadModel.AssignTo = Guid.Parse("7A08B5E6-2B08-45EF-A6D4-08DD0EA87C69");
+                           }
+                           else if (userAssign == "megha")
+                           {
+                               leadModel.AssignTo = Guid.Parse("F3D56DC2-5D5C-4E68-A6D3-08DD0EA87C69");
+                           }
+                           else if (userAssign=="aabid")
+                           {
+                               leadModel.AssignTo = Guid.Parse("12d66be1-edf5-473c-ded7-08dd31323009");
+
+                           }
+                           else
+                           {
+                               return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"Invalid Assign To User {leadModel.AssignToUser}");
+                           }
+                       }
+                       else
+                       {
+                           return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("Please enter Assign To User", HttpStatusCodes.BadRequest);
+                       }
+
+                       if (!companyExists)
+                       {
+                           var leadCompany = new LeadCompany
+                           {
+                               Id = Guid.NewGuid(),
+                               LeadCompanyName = leadModel.LeadCompany,
+                               CreatedBy = salesExecutiveId,
+                               CreatedDate = DateTime.UtcNow,
+                               Description = "IT company",
+                               CompanyId = companyId,
+                               IsActive = true
+                           };
+
+                           var result = await leadRepository.AddLeadCompanyName(leadCompany);
+                           if (result > 0)
+                           {
+                               var res = await leadRepository.GetLeadCompanyNameById(leadCompany.Id);
+                               leadCompanyId = res.Id;
+                           }
+                           else
+                           {
+                               return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                                   $"Failed to add lead company {leadModel.LeadCompany}. Please try again.",
+                                   HttpStatusCodes.InternalServerError
+                               );
+                           }
+                       }
+                       else
+                       {
+                           var res = await leadRepository.GetLeadCompanyByName(leadModel.LeadCompany!);
+                           leadCompanyId = res!.Id;
+                       }
+
+                       var userId = Guid.NewGuid();
+                       var user = new MasterUser
+                       {
+                           Id = userId,
+                           Name = leadModel.Name,
+                           Email = leadModel.Email,
+                           PhoneNumber = string.IsNullOrEmpty(leadModel.PhoneNumber) ? "N/A" : leadModel.PhoneNumber,
+                           Password = AppEncryption.GenerateRandomPassword(leadModel.Email!),
+                           Salt = AppEncryption.GenerateSalt(),
+                           UserRole = UserRole.Lead,
+                           CreatedDate = DateTime.UtcNow,
+                           DeletedDate = DateTime.UtcNow,
+                           IsActive = true,
+                           ModifiedDate = DateTime.UtcNow,
+                       };
+
+                       masterUsers.Add(user);
+
+                       var lead = new Lead
+                       {
+                           Id = userId,
+                           LeadSourceId = Guid.Parse("575AE6EA-AFA6-49FD-B541-FFCB4FC70571"),
+                           CompanyId = companyId,
+                           AssignTo = leadModel.AssignTo,
+                           CreatedBy = salesExecutiveId,
+                           CreatedDate = DateTime.UtcNow,
+                           ModifiedDate = DateTime.UtcNow,
+                           IsActive = true,
+                           LeadRank = leadModel.LeadRank.HasValue && leadModel.LeadRank.Value > 0 ? leadModel.LeadRank.Value : 1,
+                           LeadCategoryId = Guid.Parse("6C92D610-4837-425C-98EF-57831C36EF71"),
+                           LeadCompanyId = leadCompanyId,
+                           FinalStatus = FinalStatus.Open,
+                           UserId = salesExecutiveId,
+                           Designation = leadModel.Designation,
+                           Department = leadModel.Department,
+                       };
+
+                       leadEntities.Add(lead);
+                   }
+
+                   // Add valid users and leads
+                   var userAddedCount = await adminRepository.AddMasterUsers(masterUsers);
+                   var leadAddedCount = await leadRepository.AddLeadsAsync(leadEntities);
+
+                   // Prepare response models for leads
+                   foreach (var lead in leadEntities)
+                   {
+                       var sourceLead = await leadRepository.GetLeadById(lead.Id);
+                       if (sourceLead != null)
+                       {
+                           var assignToUser = await userRepository.GetByIdAsync(sourceLead.AssignToId);
+                           sourceLead.AssignedTo = assignToUser?.Name ?? "N/A";
+
+                           var company = await companyRepository.GetByIdAsync(lead.CompanyId);
+                           sourceLead.CompanyName = company?.CompanyName ?? "N/A";
+
+                           leadResponseModels.Add(sourceLead);
+                       }
+                   }
+
+                   // Add duplicates to response as well
+                   foreach (var duplicateEmail in duplicateEmails)
+                   {
+                       leadResponseModels.Add(new LeadResponseModel
+                       {
+                           Email = duplicateEmail,
+                           StatusMessage = "Duplicate email. Already exists."
+                       });
+                   }
+
+                   var addedCount = leadEntities.Count;
+                   var skippedCount = duplicateEmails.Count;
+
+                   return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(
+                       leadResponseModels,
+                       $"Successfully added {addedCount} new leads. {skippedCount} emails were skipped as they already exist.",
+                       HttpStatusCodes.Created
+                   );
+
+               }
+               catch (Exception ex)
+               {
+                   // Log the exception here
+                   return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                       $"{ApiMessages.TechnicalError}",
+                       HttpStatusCodes.InternalServerError
+                   );
+               }
+
+
+           }*/
+    /*    public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadMutipleRequestModel> leadModels)
         {
             try
             {
@@ -1014,12 +1372,17 @@ namespace salesTrack.Application.Services
                 var salesEx = await userRepository.GetUserById(salesExecutiveId);
                 var companyId = salesEx!.CompanyId;
 
+                // Collect all provided emails
                 var emails = leadModels.Select(m => m.Email).ToList();
-                var existingEmails = await userRepository.GetEmailsAsync(emails);
-                var duplicateEmails = emails.Intersect(existingEmails).ToList();
 
+                // Fetch existing emails from database
+                var existingEmails = await userRepository.GetEmailsAsync(emails);
+
+                // Identify duplicates and separate valid lead models
+                var duplicateEmails = emails.Intersect(existingEmails).ToList();
                 var validLeadModels = leadModels.Where(l => !duplicateEmails.Contains(l.Email)).ToList();
 
+                // If no valid leads to add
                 if (!validLeadModels.Any())
                 {
                     return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
@@ -1031,39 +1394,40 @@ namespace salesTrack.Application.Services
                 var leadEntities = new List<Lead>();
                 var masterUsers = new List<MasterUser>();
                 var leadResponseModels = new List<LeadResponseModel>();
-                
+
                 foreach (var leadModel in validLeadModels)
                 {
                     Guid leadCompanyId;
+
+                    // Check and process lead company
                     var companyExists = await leadRepository.IsLeadCompanyExists(leadModel.LeadCompany!);
-                    if(!string.IsNullOrEmpty( leadModel.AssignToUser))
+                    if (!string.IsNullOrEmpty(leadModel.AssignToUser))
                     {
-                       var userAssign= leadModel.AssignToUser.ToLower();
-                        if(userAssign == "abhishek")
+                        var userAssign = leadModel.AssignToUser.ToLower();
+                        if (userAssign == "abhishek")
                         {
                             leadModel.AssignTo = Guid.Parse("7A08B5E6-2B08-45EF-A6D4-08DD0EA87C69");
                         }
-                        else if(userAssign == "megha")
+                        else if (userAssign == "megha")
                         {
                             leadModel.AssignTo = Guid.Parse("F3D56DC2-5D5C-4E68-A6D3-08DD0EA87C69");
                         }
-                        else if(userAssign == "aabid")
+                        else if (userAssign == "aabid")
                         {
                             leadModel.AssignTo = Guid.Parse("12d66be1-edf5-473c-ded7-08dd31323009");
-                        }
-                        else if(userAssign == "demo")
-                        {
-                            leadModel.AssignTo = Guid.Parse("c18b25b6-e2d2-4614-4c1a-08dd2e3f467f");
+
                         }
                         else
                         {
                             return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"Invalid Assign To User {leadModel.AssignToUser}");
                         }
+
                     }
                     else
                     {
-                        return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("please enter assign To User",HttpStatusCodes.BadRequest);
+                        return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("Please enter Assign To User", HttpStatusCodes.BadRequest);
                     }
+
                     if (!companyExists)
                     {
                         var leadCompany = new LeadCompany
@@ -1097,6 +1461,7 @@ namespace salesTrack.Application.Services
                         leadCompanyId = res!.Id;
                     }
 
+                    // Add user and lead entities
                     var userId = Guid.NewGuid();
                     var user = new MasterUser
                     {
@@ -1120,27 +1485,28 @@ namespace salesTrack.Application.Services
                         Id = userId,
                         LeadSourceId = Guid.Parse("575AE6EA-AFA6-49FD-B541-FFCB4FC70571"),
                         CompanyId = companyId,
-                        Comment = leadModel.Comment,
                         AssignTo = leadModel.AssignTo,
                         CreatedBy = salesExecutiveId,
                         CreatedDate = DateTime.UtcNow,
                         ModifiedDate = DateTime.UtcNow,
                         IsActive = true,
-                        LeadRank = leadModel.LeadRank.HasValue && leadModel.LeadRank.Value > 0
-   ? leadModel.LeadRank.Value
-   : 5,
+                        LeadRank = leadModel.LeadRank.HasValue && leadModel.LeadRank.Value > 0 ? leadModel.LeadRank.Value : 1,
                         LeadCategoryId = Guid.Parse("6C92D610-4837-425C-98EF-57831C36EF71"),
                         LeadCompanyId = leadCompanyId,
                         FinalStatus = FinalStatus.Open,
                         UserId = salesExecutiveId,
+                        Designation = leadModel.Designation,
+                        Department = leadModel.Department,
                     };
 
                     leadEntities.Add(lead);
                 }
 
-                var userAddedCount = await adminRepository.AddMasterUsers(masterUsers);
-                var leadAddedCount = await leadRepository.AddLeadsAsync(leadEntities);
+                // Add valid users and leads
+                await adminRepository.AddMasterUsers(masterUsers);
+                await leadRepository.AddLeadsAsync(leadEntities);
 
+                // Prepare response models for leads
                 foreach (var lead in leadEntities)
                 {
                     var sourceLead = await leadRepository.GetLeadById(lead.Id);
@@ -1156,6 +1522,7 @@ namespace salesTrack.Application.Services
                     }
                 }
 
+                // Add duplicates to response models
                 foreach (var duplicateEmail in duplicateEmails)
                 {
                     leadResponseModels.Add(new LeadResponseModel
@@ -1165,9 +1532,209 @@ namespace salesTrack.Application.Services
                     });
                 }
 
+                // Success response with counts
+                var addedCount = validLeadModels.Count;
+                var skippedCount = duplicateEmails.Count;
+
                 return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(
                     leadResponseModels,
-                    $"Successfully added {validLeadModels.Count} new leads. {duplicateEmails.Count} emails were skipped as they already exist.",
+                    $"Successfully added {addedCount} new lead(s). {skippedCount} email(s) were skipped as they already exist.",
+                    HttpStatusCodes.Created
+                );
+            }
+            catch (Exception ex)
+            {
+                // Log the exception here
+                return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                    $"{ApiMessages.TechnicalError}",
+                    HttpStatusCodes.InternalServerError
+                );
+            }
+        }*/
+
+
+        //Deepseek//
+        public async Task<ApiResponse<IEnumerable<LeadResponseModel>>> AddMultipleLeads(List<LeadMutipleRequestModel> leadModels)
+        {
+            try
+            {
+                var salesExecutiveId = contextService.UserId();
+                if (salesExecutiveId == Guid.Empty)
+                {
+                    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                        "Sales Executive ID not found.",
+                        HttpStatusCodes.BadRequest
+                    );
+                }
+
+                var salesEx = await userRepository.GetUserById(salesExecutiveId);
+                var companyId = salesEx!.CompanyId;
+
+                // Collect all provided emails
+                var emails = leadModels.Select(m => m.Email).ToList();
+
+                // Fetch existing emails from database
+                var existingEmails = await userRepository.GetEmailsAsync(emails);
+
+                // Identify duplicates and separate valid lead models
+                var duplicateEmails = emails.Intersect(existingEmails).ToList();
+                var validLeadModels = leadModels.Where(l => !duplicateEmails.Contains(l.Email)).ToList();
+
+                // If no valid leads to add
+                if (!validLeadModels.Any())
+                {
+                    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                        $"Provided emails are already associated with existing leads: {string.Join(", ", duplicateEmails)}",
+                        HttpStatusCodes.BadRequest
+                    );
+                }
+
+                var leadEntities = new List<Lead>();
+                var masterUsers = new List<MasterUser>();
+                var leadResponseModels = new List<LeadResponseModel>();
+
+                foreach (var leadModel in validLeadModels)
+                {
+                    Guid leadCompanyId;
+
+                    // Check and process lead company
+                    var companyExists = await leadRepository.IsLeadCompanyExists(leadModel.LeadCompany!);
+                    if (!string.IsNullOrEmpty(leadModel.AssignToUser))
+                    {
+                        var userAssign = leadModel.AssignToUser.ToLower();
+                        if (userAssign == "abhishek")
+                        {
+                            leadModel.AssignTo = Guid.Parse("7A08B5E6-2B08-45EF-A6D4-08DD0EA87C69");
+                        }
+                        else if (userAssign == "megha")
+                        {
+                            leadModel.AssignTo = Guid.Parse("F3D56DC2-5D5C-4E68-A6D3-08DD0EA87C69");
+                        }
+                        else if (userAssign == "aabid")
+                        {
+                            leadModel.AssignTo = Guid.Parse("12d66be1-edf5-473c-ded7-08dd31323009");
+                        }
+                        else
+                        {
+                            return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse($"Invalid Assign To User {leadModel.AssignToUser}");
+                        }
+                    }
+                    else
+                    {
+                        return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("Please enter Assign To User", HttpStatusCodes.BadRequest);
+                    }
+
+                    if (!companyExists)
+                    {
+                        var leadCompany = new LeadCompany
+                        {
+                            Id = Guid.NewGuid(),
+                            LeadCompanyName = leadModel.LeadCompany,
+                            CreatedBy = salesExecutiveId,
+                            CreatedDate = DateTime.UtcNow,
+                            Description = "IT company",
+                            CompanyId = companyId,
+                            IsActive = true
+                        };
+
+                        var result = await leadRepository.AddLeadCompanyName(leadCompany);
+                        if (result > 0)
+                        {
+                            var res = await leadRepository.GetLeadCompanyNameById(leadCompany.Id);
+                            leadCompanyId = res.Id;
+                        }
+                        else
+                        {
+                            return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
+                                $"Failed to add lead company {leadModel.LeadCompany}. Please try again.",
+                                HttpStatusCodes.InternalServerError
+                            );
+                        }
+                    }
+                    else
+                    {
+                        var res = await leadRepository.GetLeadCompanyByName(leadModel.LeadCompany!);
+                        leadCompanyId = res!.Id;
+                    }
+
+                    // Add user and lead entities
+                    var userId = Guid.NewGuid();
+                    var user = new MasterUser
+                    {
+                        Id = userId,
+                        Name = leadModel.Name,
+                        Email = leadModel.Email,
+                        PhoneNumber = string.IsNullOrEmpty(leadModel.PhoneNumber) ? "N/A" : leadModel.PhoneNumber,
+                        Password = AppEncryption.GenerateRandomPassword(leadModel.Email!),
+                        Salt = AppEncryption.GenerateSalt(),
+                        UserRole = UserRole.Lead,
+                        CreatedDate = DateTime.UtcNow,
+                        DeletedDate = DateTime.UtcNow,
+                        IsActive = true,
+                        ModifiedDate = DateTime.UtcNow,
+                    };
+
+                    masterUsers.Add(user);
+
+                    var lead = new Lead
+                    {
+                        Id = userId,
+                        LeadSourceId = Guid.Parse("575AE6EA-AFA6-49FD-B541-FFCB4FC70571"),
+                        CompanyId = companyId,
+                        AssignTo = leadModel.AssignTo,
+                        CreatedBy = salesExecutiveId,
+                        CreatedDate = DateTime.UtcNow,
+                        ModifiedDate = DateTime.UtcNow,
+                        IsActive = true,
+                        LeadRank = leadModel.LeadRank.HasValue && leadModel.LeadRank.Value > 0 ? leadModel.LeadRank.Value : 1,
+                        LeadCategoryId = Guid.Parse("6C92D610-4837-425C-98EF-57831C36EF71"),
+                        LeadCompanyId = leadCompanyId,
+                        FinalStatus = FinalStatus.Open,
+                        UserId = salesExecutiveId,
+                        Designation = leadModel.Designation,
+                        Department = leadModel.Department,
+                    };
+
+                    leadEntities.Add(lead);
+                }
+
+                // Add valid users and leads
+                await adminRepository.AddMasterUsers(masterUsers);
+                await leadRepository.AddLeadsAsync(leadEntities);
+
+                // Prepare response models for leads
+                foreach (var lead in leadEntities)
+                {
+                    var sourceLead = await leadRepository.GetLeadById(lead.Id);
+                    if (sourceLead != null)
+                    {
+                        var assignToUser = await userRepository.GetByIdAsync(sourceLead.AssignToId);
+                        sourceLead.AssignedTo = assignToUser?.Name ?? "N/A";
+
+                        var company = await companyRepository.GetByIdAsync(lead.CompanyId);
+                        sourceLead.CompanyName = company?.CompanyName ?? "N/A";
+
+                        leadResponseModels.Add(sourceLead);
+                    }
+                }
+
+                // Add duplicates to response models
+                foreach (var duplicateEmail in duplicateEmails)
+                {
+                    leadResponseModels.Add(new LeadResponseModel
+                    {
+                        Email = duplicateEmail,
+                        StatusMessage = "Duplicate email. Already exists."
+                    });
+                }
+
+                // Success response with counts
+                var addedCount = validLeadModels.Count;
+                var skippedCount = duplicateEmails.Count;
+
+                return ApiResponse<IEnumerable<LeadResponseModel>>.SuccessResponse(
+                    leadResponseModels,
+                    $"Successfully added {addedCount} new lead(s). {skippedCount} email(s) were skipped as they already exist.",
                     HttpStatusCodes.Created
                 );
             }
@@ -1180,7 +1747,6 @@ namespace salesTrack.Application.Services
                 );
             }
         }
-
         public Task<ApiResponse<IEnumerable<LeadCompanyNameResponse>>> AddLeadCompanyNameBulkInsert(List<LeadCompanyNameRequest> models)
         {
             throw new NotImplementedException();
@@ -1205,6 +1771,87 @@ namespace salesTrack.Application.Services
                 return ApiResponse<IEnumerable<CompanyTimeSheetResponse>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
             }
         }
+        public async Task<ApiResponse<ProjectResponseModel>> AddProject(ProjectRequestModel model)
+        {
+
+            try
+            {
+                var userLoggedIn = contextService.UserId();
+                var user=await userRepository.GetUserById(userLoggedIn);
+                var companyId=user.CompanyId;
+                
+                if (string.IsNullOrWhiteSpace(model.ProjectName))
+                {
+                    return ApiResponse<ProjectResponseModel>.ErrorResponse("Project Name is Required ", HttpStatusCodes.BadRequest);
+                }
+                if (!model.StartDate.HasValue || !model.EndDate.HasValue)
+                {
+                    return ApiResponse<ProjectResponseModel>.ErrorResponse("Start and End dates are required.", HttpStatusCodes.BadRequest);
+
+                }
+                var projectExists = await leadRepository.IsProjectNameExists(model.ProjectName.ToLower(), companyId);
+                if (projectExists)
+                {
+                    return ApiResponse<ProjectResponseModel>.ErrorResponse("Project with the same name already exists.", HttpStatusCodes.BadRequest);
+                }
+                var project = new Project
+                {
+                    Id = Guid.NewGuid(),
+                    ProjectName = model.ProjectName,
+                    StartDate = model.StartDate.Value,
+                    EndDate = model.EndDate.Value,
+                    UserId = model.UserId,
+                    CompanyId = companyId,
+                    CreatedBy = userLoggedIn,
+                    CreatedDate = DateTime.UtcNow,
+                    IsActive = true
+                };
+
+                var projectAdded = await leadRepository.AddProject(project);
+                if (projectAdded > 0)
+                {
+                    ProjectResponseModel res = new()
+                    {
+                        Id = project.Id,
+                        ProjectName = project.ProjectName,
+                        StartDate = project.StartDate,
+                        EndDate = project.EndDate,
+                        IsActive=project.IsActive,
+                    };
+                    return ApiResponse<ProjectResponseModel>.SuccessResponse(res, "Project Added Successfully", HttpStatusCodes.OK);
+                }
+                return ApiResponse<ProjectResponseModel>.ErrorResponse("Can't Create Project Please try Again", HttpStatusCodes.OK);
+
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<ProjectResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
+
+            }
+
+        }
+        public async Task<ApiResponse<IEnumerable<ProjectResponseModel>>> GetAllProjectsByUser(Guid? userId)
+        {
+            try
+            {
+             
+                var userLoggedIn = contextService.UserId();
+
+                var projects =await leadRepository.GetProjectsByUser(userId);
+
+                if (!projects.Any())
+                {
+                    return ApiResponse<IEnumerable<ProjectResponseModel>>.ErrorResponse("No projects found for the specified user.", HttpStatusCodes.NotFound);
+                }
+
+                return ApiResponse<IEnumerable<ProjectResponseModel>>.SuccessResponse(projects, $"{projects.Count()} Projects retrieved successfully.", HttpStatusCodes.OK);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<ProjectResponseModel>>.ErrorResponse($"An error occurred: {ex.Message}", HttpStatusCodes.InternalServerError);
+            }
+        }
+
 
     }
 }

@@ -309,7 +309,7 @@
 
 // export default Sidebar;
 
-
+///Original//
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -336,7 +336,7 @@ function Sidebar({ labels = [] }) {
     color: "rgba(0, 0, 0, 0.54)",
     flexShrink: 0,
     display: "inline-flex",
-    marginRight: "-20px",
+    marginRight: "-30px",
   };
 
   return (
@@ -401,3 +401,121 @@ export default Sidebar;
 
 
 
+///Burger //
+
+// import React, { useState } from "react";
+// import { Link } from "react-router-dom";
+// import {
+//   Drawer,
+//   List,
+//   ListItem,
+//   ListItemIcon,
+//   ListItemText,
+//   Collapse,
+//   AppBar,
+//   Toolbar,
+//   IconButton,
+//   Typography,
+// } from "@mui/material";
+// import { Menu, ExpandLess, ExpandMore } from "@mui/icons-material";
+// import logo from "../../utils/WhatsApp Image 2024-10-30 at 14.27.14_88ae8d3e.jpg";
+
+// function Sidebar({ labels = [] }) {
+//   const [openMenus, setOpenMenus] = useState({});
+//   const [drawerOpen, setDrawerOpen] = useState(false);
+
+//   const handleToggle = (id) => {
+//     setOpenMenus((prev) => ({ ...prev, [id]: !prev[id] }));
+//   };
+
+//   const toggleDrawer = () => {
+//     setDrawerOpen((prev) => !prev);
+//   };
+
+//   // Inline style for ListItemIcon
+//   const iconStyle = {
+//     color: "rgba(0, 0, 0, 0.54)",
+//     flexShrink: 0,
+//     display: "inline-flex",
+//     marginRight: "-20px",
+//   };
+
+//   return (
+//     <>
+//       {/* AppBar with Menu Button */}
+//       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+//         <Toolbar>
+//           <IconButton
+//             color="inherit"
+//             edge="start"
+//             onClick={toggleDrawer}
+//             sx={{ mr: 2 }}
+//           >
+//             <Menu />
+//           </IconButton>
+//           <Typography variant="h6" noWrap component="div">
+//             Sidebar Menu
+//           </Typography>
+//         </Toolbar>
+//       </AppBar>
+
+//       {/* Drawer */}
+//       <Drawer
+//         variant={drawerOpen ? "temporary" : "permanent"}
+//         open={drawerOpen}
+//         onClose={toggleDrawer}
+//         anchor="left"
+//         sx={{
+//           width: 250,
+//           "& .MuiDrawer-paper": { width: 250, boxSizing: "border-box" },
+//         }}
+//       >
+//         <div style={{ textAlign: "center", padding: "16px 0" }}>
+//           <img
+//             src={logo}
+//             alt="Logo"
+//             style={{ width: "200px", height: "auto" }}
+//           />
+//         </div>
+//         <List>
+//           {labels.map((label) => (
+//             <React.Fragment key={label.id}>
+//               {label.dropdown ? (
+//                 <>
+//                   <ListItem button onClick={() => handleToggle(label.id)}>
+//                     <ListItemIcon style={iconStyle}>{label.icon}</ListItemIcon>
+//                     <ListItemText primary={label.label} />
+//                     {openMenus[label.id] ? <ExpandLess /> : <ExpandMore />}
+//                   </ListItem>
+//                   <Collapse in={openMenus[label.id]} timeout="auto" unmountOnExit>
+//                     <List component="div" disablePadding>
+//                       {label.items.map((item) => (
+//                         <ListItem
+//                           button
+//                           key={item.id}
+//                           component={Link}
+//                           to={item.link}
+//                           sx={{ pl: 4 }}
+//                         >
+//                           <ListItemIcon style={iconStyle}>{item.icon}</ListItemIcon>
+//                           <ListItemText primary={item.label} />
+//                         </ListItem>
+//                       ))}
+//                     </List>
+//                   </Collapse>
+//                 </>
+//               ) : (
+//                 <ListItem button component={Link} to={label.link}>
+//                   <ListItemIcon style={iconStyle}>{label.icon}</ListItemIcon>
+//                   <ListItemText primary={label.label} />
+//                 </ListItem>
+//               )}
+//             </React.Fragment>
+//           ))}
+//         </List>
+//       </Drawer>
+//     </>
+//   );
+// }
+
+// export default Sidebar;

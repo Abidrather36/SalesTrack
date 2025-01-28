@@ -32,6 +32,8 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<UpdateLeadCompany>> UpdateLeadCompany(UpdateLeadCompany model);
         Task<ApiResponse<IEnumerable<LeadCategoryResponse>>> GetAllLeadCategoriesByCompany();
         Task<ApiResponse<IEnumerable<CompanyTimeSheetResponse>>> GetAllTimeSheetStepsByCompany();
+        Task<ApiResponse<ProjectResponseModel>> AddProject(ProjectRequestModel model);
+        Task<ApiResponse<IEnumerable<ProjectResponseModel>>> GetAllProjectsByUser(Guid? userId);
 
 
     }

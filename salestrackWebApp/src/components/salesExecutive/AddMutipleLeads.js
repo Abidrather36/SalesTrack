@@ -158,14 +158,7 @@ const AddMultipleLeads = () => {
                 required
               />
             </div>
-            <div>
-              <label>Comment:</label>
-              <textarea
-                name="comment"
-                value={lead.comment}
-                onChange={(e) => handleInputChange(e, index)}
-              ></textarea>
-            </div>
+         
             <div>
               <label>Assign To:</label>
               <input

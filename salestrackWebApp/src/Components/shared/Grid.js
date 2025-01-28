@@ -134,11 +134,11 @@ function Grid({
                       ) : header.key === "userType" ? (
                         item[header.key] === 1 ? (
                           <MDBBadge color="info" pill>
-                            SalesExecutive
+                            Executive/Developer
                           </MDBBadge>
                         ) : item[header.key] === 2 ? (
                           <MDBBadge color="primary" pill>
-                            SalesManager
+                            Manager
                           </MDBBadge>
                         ) : null
                       ) : header.key === "hoursSpent" ? (

@@ -99,9 +99,11 @@ namespace salesTrack.Application.Services
 
                 if (!AppEncryption.ComparePassword(user.Password!, model.Password!, user.Salt!))
                     return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.Auth.InvalidCredential, HttpStatusCodes.BadRequest);
+
                 var generalUser = await fileRepository.GetFileByEntityIdAndModuleAsync(user.Id, AppModule.MasterUser);
                 var userTokens = jwtProvider.GenerateToken(user);
                 var refreshToken = jwtProvider.GenerateRefreshToken(user);
+
                 LoginResponseModel login = new()
                 {
                     UserId = user.Id,
@@ -112,8 +114,9 @@ namespace salesTrack.Application.Services
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
                     RefreshToken = refreshToken.RefreshToken,
-                    FilePath = generalUser.FilePath,
+                    FilePath = generalUser?.FilePath ?? "no profile uploaded yet",
                 };
+
                 return ApiResponse<LoginResponseModel>.SuccessResponse(login, ApiMessages.Auth.LoggedIn, HttpStatusCodes.Accepted);
             }
             catch (Exception ex)
@@ -121,6 +124,7 @@ namespace salesTrack.Application.Services
                 return ApiResponse<LoginResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
             }
         }
+
 
         public Task<ApiResponse<LoginResponseModel>> RefreshToken(RefreshTokenRequestModel model)
         {

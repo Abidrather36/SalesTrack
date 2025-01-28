@@ -361,8 +361,9 @@ const AddUser = () => {
                   })}
                 >
                   <option value="">Select User Type</option>
-                  <option value="1">Sales Executive</option>
-                  <option value="2">Sales Manager</option>
+                  <option value="1">Executive/Developer</option>
+                  <option value="2">Manager</option>
+
                 </InputField>
                 {errors.userType && (
                   <span className="text-danger">{errors.userType.message}</span>
@@ -373,7 +374,7 @@ const AddUser = () => {
             <InputField
                    as="select"
                    name="reportsTo"
-                  {...register("reportsTo", {
+                  {...register("reportsTo", { 
                                          required: "Reports To is required",
                    })}
                  >

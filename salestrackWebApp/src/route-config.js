@@ -41,6 +41,7 @@ import AddTimeSheetStep from "./components/companyAdmin/AddTimeSheetStep"
 import CompanyTimeSheetStepList from "./components/companyAdmin/CompanyTimeSheetStepList"
 import LeadRegistration from "./components/salesExecutive/LeadBulkRegistration"
 import ExcelToGrid from "./components/salesExecutive/LeadBulkRegistration"
+import Projects from "./components/salesExecutive/Projects"
 
 export const routerConfiguration = {
   PublicRoutes: [
@@ -102,6 +103,7 @@ export const routerConfiguration = {
     { path : "/salesExecutive/changePassword",element:<ChangePassword/>},
     { path : "/salesExecutive/addBulkLeads",element:<AddMultipleLeads/>},
     { path : "/salesExecutive/ExcelToGrid", element:<ExcelToGrid/>},
+    { path :"/salesExecutive/addProject", element:<Projects/>}
     // { path:"/salesExecutive/followUpHistory", element:<LeadList />} 
   ]
   ,
@@ -120,6 +122,10 @@ export const routerConfiguration = {
     { path : "/salesManager/timeSheetList",element :<TimeSheetList/>},
     { path: "/salesManager/changePassword",element:<ChangePassword/>},
     { path : "/salesManager/ExcelToGrid", element:<ExcelToGrid/>},
+    { path : "/salesManager/bulkInsert",element :<BulkInsert/>},
+    { path :"/salesManager/addProject", element:<Projects/>}
+
+
     // { path:"/salesManager/followUpHistory", element:<LeadList />},
   ]
 }

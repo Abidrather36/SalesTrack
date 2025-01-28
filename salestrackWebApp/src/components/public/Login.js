@@ -10,8 +10,8 @@ import storage from "../../utils/storages";
 import { loginUser } from "../../Services/AuthService";
 import "./LoginComponent.css";
 import logo from "../../utils/WhatsApp Image 2024-10-30 at 14.27.14_88ae8d3e.jpg";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 function Login() {
   const [loading, setLoading] = useState(false);
@@ -35,6 +35,7 @@ function Login() {
       if (response.isSuccess) {
         storage.setItem("salesTrack", response.result.token);
         storage.setItem("user", response.result);
+
         if (response.result.isPasswordTemporary) {
           setIsPasswordTemporary(true);
           setShowChangePasswordModal(true);
@@ -45,13 +46,11 @@ function Login() {
             navigate("/admin/dashboard");
           } else if (response.result.userRole === 2) {
             navigate("/companyAdmin/dashboard");
-          } else if (response.result.userRole === 3 ) {
+          } else if (response.result.userRole === 3) {
             navigate("/salesExecutive");
-          }
-          else if(response.result.userRole === 4){
+          } else if (response.result.userRole === 4) {
             navigate("/salesManager");
           }
-          
         }
       } else {
         myToaster.showErrorToast(response.message);
@@ -90,7 +89,18 @@ function Login() {
               <img src={logo} alt="Logo" />
             </div>
 
-            <h3 className="pb-3">Login Form</h3>
+            <h3
+              className="pb-3"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
+              Login Form
+            </h3>
+
             <div className="form-style">
               <form onSubmit={handleSubmit(logInUser)}>
                 <div className="form-group pb-3">
@@ -120,7 +130,12 @@ function Login() {
                   />
                   <span
                     className="position-absolute"
-                    style={{ right: "10px", top: "50%", transform: "translateY(-50%)", cursor: 'pointer' }}
+                    style={{
+                      right: "10px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                    }}
                     onClick={togglePasswordVisibility}
                   >
                     <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
@@ -179,7 +194,6 @@ function Login() {
 }
 
 export default Login;
-
 
 // import "./login.css";
 // import { Link } from "react-router-dom";
@@ -381,4 +395,3 @@ export default Login;
 // }
 
 // export default Login;
-

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using salesTrack.Application.Abstraction.IService;
+using salesTrack.Application.Services;
 using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
@@ -363,6 +364,33 @@ namespace salesTrack.Api.Controllers
             try
             {
                 return Ok(await leadService.GetAllTimeSheetStepsByCompany());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [HttpPost("addProject")]
+        public async Task<IActionResult> Addproject(ProjectRequestModel model)
+        {
+            try
+            {
+                return Ok(await leadService.AddProject(model));
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+        }
+        [HttpGet("getProjectsByUser/{userId:guid}")]
+        public async  Task<IActionResult> GetProjectsByUser(Guid? userId)
+        {
+            try
+            {
+                return Ok(await leadService.GetAllProjectsByUser(userId));
+
             }
             catch (Exception ex)
             {

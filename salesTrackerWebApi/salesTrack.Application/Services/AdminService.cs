@@ -559,6 +559,7 @@ namespace salesTrack.Application.Services
             {
                 var companyUser = contextService.UserId();
 
+
                 if (endDate < startDate)
                 {
                     return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse("End date cannot be earlier than start date.", HttpStatusCodes.BadRequest);
@@ -621,9 +622,9 @@ namespace salesTrack.Application.Services
                 var loggedInCompany = contextService.UserId();
 
                 var masterUser = await userRepository.GetMasterUserById(model.Id);
-                var user = await userRepository.GetUserById(model.Id);
 
-                if (user is null || masterUser is null)
+
+                if (masterUser is null)
                 {
                     return ApiResponse<UserResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
                 }
@@ -643,7 +644,7 @@ namespace salesTrack.Application.Services
                         Name = masterUser.Name,
                         Email = masterUser.Email,
                         PhoneNumber = masterUser.PhoneNumber,
-                        IsActive = user.IsActive,
+                        IsActive = masterUser.IsActive,
                     };
 
                     return ApiResponse<UserResponseModel>.SuccessResponse(userResponse, "User updated successfully", HttpStatusCodes.OK);
@@ -989,5 +990,9 @@ namespace salesTrack.Application.Services
             }
 
         }
+
+     
+
+     
     }
 }

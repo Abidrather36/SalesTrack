@@ -17,5 +17,7 @@ namespace salesTrack.Domain.Models.Request
 
         public FinalStatus? FinalStatus { get; set; }
         public int? LeadRank { get; set; }
+        public string? Designation { get; set; }
+        public string? Department { get; set; }
     }
 }

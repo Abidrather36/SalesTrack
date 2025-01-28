@@ -67,72 +67,131 @@ const ExcelToGrid = () => {
     }
   };
 
-  // Validate GUID
-  const isValidGuid = (str) => {
-    const regex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-    return regex.test(str);
-  };
+
 
   // Handle form submission
+  // const handleSubmit = async () => {
+  //   const selectedData = data.filter((row) => selectedRows.includes(row));
+  //   if (selectedData.length === 0) {
+  //     myToaster.showErrorToast("No records selected for submission!");
+  //     return;
+  //   }
+
+  //   const formattedData = selectedData.map((row) => ({
+  //     name: row.name || "",
+  //     email: row.email || "",
+  //     phoneNumber: String(row.phoneNumber || ""),
+  //     leadSourceName: row.leadSourceName || "",
+  //     leadCompany:row.leadCompany || "",
+  //     companyId: row.companyId || "3fa85f64-5717-4562-b3fc-2c963f66afa6", // Default GUID for companyId
+  //     leadCategoryId: row.leadCategoryId ? row.leadCategoryId : "3fa85f64-5717-4562-b3fc-2c963f66afa6", // Default GUID for leadCategoryId
+  //     assignTo: row.assignTo || "3fa85f64-5717-4562-b3fc-2c963f66afa6", // Default GUID for assignTo
+  //     leadRank: Number(row.LeadRank) || 0, // Fallback to 0 for leadRank
+  //     assignToUser:row.AssignToUser || "",
+  //     designation:row.designation || "",
+  //     department:row.department || ""
+  //   }));
+    
+  
+  //         setLoading(true);
+  //         console.log("formatedd data",formattedData);
+  //         try {
+  //           const response = await addBulkLeads(formattedData);
+        
+  //           console.log("multiple leads res =>", response);
+        
+  //           if (response.isSuccess) {
+  //             myToaster.showSuccessToast(`Successfully added ${selectedData.length} leads.`);
+  //             handleReset();
+  //             if(user.userRole==3){
+  //               navigate("/salesExecutive/leadList");
+  //             }
+  //             else if(user.userRole==4){
+  //               navigate("/salesManager/leadList");
+  //             }
+  //             else{
+  //               myToaster.showErrorToast("UnAuthorized role pleas etry again");
+  //             }
+              
+  //           } else {
+  //             myToaster.showErrorToast(response.message || "An error occurred.");
+  //           }
+  //         } catch (error) {
+  //           console.error("API Error:", error);
+        
+  //           // Extract error message from Axios response
+  //           const errorMessage =
+  //             error.response?.data?.message || // Backend error message
+  //             "An error occurred while submitting leads."; // Fallback message
+        
+  //           myToaster.showErrorToast(errorMessage);
+  //         } finally {
+  //           setLoading(false);
+  //         }
+  //       };
+
   const handleSubmit = async () => {
     const selectedData = data.filter((row) => selectedRows.includes(row));
     if (selectedData.length === 0) {
       myToaster.showErrorToast("No records selected for submission!");
       return;
     }
-
+  
     const formattedData = selectedData.map((row) => ({
       name: row.name || "",
       email: row.email || "",
       phoneNumber: String(row.phoneNumber || ""),
       leadSourceName: row.leadSourceName || "",
-      leadCompany:row.leadCompany || "",
+      leadCompany: row.leadCompany || "",
       companyId: row.companyId || "3fa85f64-5717-4562-b3fc-2c963f66afa6", // Default GUID for companyId
       leadCategoryId: row.leadCategoryId ? row.leadCategoryId : "3fa85f64-5717-4562-b3fc-2c963f66afa6", // Default GUID for leadCategoryId
-      comment: row.comment || "",
       assignTo: row.assignTo || "3fa85f64-5717-4562-b3fc-2c963f66afa6", // Default GUID for assignTo
       leadRank: Number(row.LeadRank) || 0, // Fallback to 0 for leadRank
-      assignToUser:row.AssignToUser || "",
+      assignToUser: row.AssignToUser || "",
+      designation: row.designation || "",
+      department: row.department || "",
     }));
-    
   
-          setLoading(true);
-          console.log("formatedd ddata",formattedData);
-          try {
-            const response = await addBulkLeads(formattedData);
-        
-            console.log("multiple leads res =>", response);
-        
-            if (response.isSuccess) {
-              myToaster.showSuccessToast(`Successfully added ${selectedData.length} leads.`);
-              handleReset();
-              if(user.userRole==3){
-                navigate("/salesExecutive/leadList");
-              }
-              else if(user.userRole==4){
-                navigate("/salesManager/leadList");
-              }
-              else{
-                myToaster.showErrorToast("UnAuthorized role pleas etry again");
-              }
-              
-            } else {
-              myToaster.showErrorToast(response.message || "An error occurred.");
-            }
-          } catch (error) {
-            console.error("API Error:", error);
-        
-            // Extract error message from Axios response
-            const errorMessage =
-              error.response?.data?.message || // Backend error message
-              "An error occurred while submitting leads."; // Fallback message
-        
-            myToaster.showErrorToast(errorMessage);
-          } finally {
-            setLoading(false);
-          }
-        };
-
+    setLoading(true);
+    console.log("formatted data", formattedData);
+    try {
+      const response = await addBulkLeads(formattedData);
+  
+      console.log("multiple leads res =>", response);
+  
+      if (response.isSuccess) {
+        // Parse the response message to get added and skipped counts
+        const message = response.message || "";
+        const addedCount = message.match(/Successfully added (\d+) new lead\(s\)/)?.[1] || 0;
+        const skippedCount = message.match(/(\d+) email\(s\) were skipped/)?.[1] || 0;
+  
+        myToaster.showSuccessToast(
+          `Successfully added ${addedCount} lead(s). ${skippedCount} email(s) were skipped as they already exist.`
+        );
+        handleReset();
+        if (user.userRole == 3) {
+          navigate("/salesExecutive/leadList");
+        } else if (user.userRole == 4) {
+          navigate("/salesManager/leadList");
+        } else {
+          myToaster.showErrorToast("Unauthorized role. Please try again.");
+        }
+      } else {
+        myToaster.showErrorToast(response.message || "An error occurred.");
+      }
+    } catch (error) {
+      console.error("API Error:", error);
+  
+      // Extract error message from Axios response
+      const errorMessage =
+        error.response?.data?.message || // Backend error message
+        "An error occurred while submitting leads."; // Fallback message
+  
+      myToaster.showErrorToast(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
     <BreadcrumbComponent

@@ -46,128 +46,127 @@ function AddSalesCompany() {
     }
   };
 
-  return (
-    <>
-      <BreadcrumbComponent
-        labels={{ module: "salesExecutive", currentRoute: "Add-Company" }}
-      />
-      <div
-        className="wrapper"
-        style={{
-          display: "center",
-          flexWrap: "wrap",
-          width: "100%",
-          padding: "50px",
-          alignContent:"center"
-        }}
-      >
-
-        {/* Form Section */}
-        <div style={{ flex: 1, padding: "20px", marginTop: "-5px" }}>
-          <div className="col-lg-8 mb-4-lg-0">
-            <div
-              className="login-container"
-              style={{
-                background: "#fff",
-                padding: "35px",
-                borderRadius: "10px",
-                boxShadow: "0 0 15px rgba(0,0,0,0.1)",
-                height: "auto",
-                alignContent:"center",
-                display:"center",
-                marginLeft:"300px"
-              }}
-            >
-              <h2 className="form-title">Add Company</h2>
-              <form
-                className="login-form"
-                onSubmit={handleSubmit(onSubmit)}
-                autoComplete="off"
-              >
-                {/* Company Name Field */}
-                <div className="row mb-3">
-                  <div className="col-lg-4 d-flex align-items-center">
-                    <label
-                      htmlFor="companyName"
-                      className="form-label"
-                      style={{
-                        marginRight: "10px",
-                        whiteSpace: "nowrap",
-                        fontSize: "16px",
-                        fontFamily: "sans-serif",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Company Name:
-                    </label>
-                  </div>
-                  <div className="col-lg-8">
-                    <InputField
-                      type="text"
-                      name="leadCompanyName"
-                      id="companyName"
-                      placeholder="Enter Company Name"
-                      {...register("leadCompanyName", {
-                        required: "Company Name is required",
-                      })}
-                    />
-                    {errors.leadCompanyName && (
-                      <span className="error-message">
-                        {errors.leadCompanyName.message}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Company Description Field */}
-                <div className="row mb-3">
-                  <div className="col-lg-4 d-flex align-items-center">
-                    <label
-                      htmlFor="description"
-                      className="form-label"
-                      style={{
-                        marginRight: "10px",
-                        fontSize: "16px",
-                        whiteSpace: "nowrap",
-                        fontFamily: "sans-serif",
-                        fontWeight: "bolder",
-                      }}
-                    >
-                      Description:
-                    </label>
-                  </div>
-                  <div className="col-lg-8">
-                    <InputField
-                      type="text"
-                      name="description"
-                      id="description"
-                      placeholder="Enter Description"
-                      {...register("description", {
-                      })}
-                    />
-                    {errors.description && (
-                      <span className="error-message">
-                        {errors.description.message}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  style={{ width: "100%" }}
-                  disabled={loading}
+ return (
+  <>
+    <BreadcrumbComponent
+      labels={{ module: "salesExecutive", currentRoute: "Add-Company" }}
+    />
+    <div
+      className="row"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexWrap: "wrap",
+        minHeight: "100vh",
+        padding: "20px",
+        width: "100%",
+      }}
+    >
+      {/* Form Section */}
+      <div style={{ flex: 1, maxWidth: "600px", padding: "20px" }}>
+        <div className="login-container"
+          style={{
+            background: "#fff",
+            padding: "35px",
+            borderRadius: "10px",
+            boxShadow: "0 0 15px rgba(0,0,0,0.1)",
+            width: "100%",
+          }}
+        >
+          <h2 className="form-title" style={{ textAlign: "center", marginBottom: "20px" }}>
+            Add Company
+          </h2>
+          <form
+            className="login-form"
+            onSubmit={handleSubmit(onSubmit)}
+            autoComplete="off"
+          >
+            {/* Company Name Field */}
+            <div className="row mb-3">
+              <div className="col-lg-4 d-flex align-items-center">
+                <label
+                  htmlFor="companyName"
+                  className="form-label"
+                  style={{
+                    marginRight: "10px",
+                    whiteSpace: "nowrap",
+                    fontSize: "16px",
+                    fontFamily: "sans-serif",
+                    fontWeight: "bold",
+                  }}
                 >
-                  {loading ? <Spin /> : "Add Company"}
-                </button>
-              </form>
+                  Company Name:
+                </label>
+              </div>
+              <div className="col-lg-8">
+                <InputField
+                  type="text"
+                  name="leadCompanyName"
+                  id="companyName"
+                  placeholder="Enter Company Name"
+                  {...register("leadCompanyName", {
+                    required: "Company Name is required",
+                  })}
+                />
+                {errors.leadCompanyName && (
+                  <span className="error-message">
+                    {errors.leadCompanyName.message}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
+
+            {/* Company Description Field */}
+            <div className="row mb-3">
+              <div className="col-lg-4 d-flex align-items-center">
+                <label
+                  htmlFor="description"
+                  className="form-label"
+                  style={{
+                    marginRight: "10px",
+                    fontSize: "16px",
+                    whiteSpace: "nowrap",
+                    fontFamily: "sans-serif",
+                    fontWeight: "bolder",
+                  }}
+                >
+                  Description:
+                </label>
+              </div>
+              <div className="col-lg-8">
+                <InputField
+                  type="text"
+                  name="description"
+                  id="description"
+                  placeholder="Enter Description"
+                  {...register("description", {})}
+                />
+                {errors.description && (
+                  <span className="error-message">
+                    {errors.description.message}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="btn btn-primary"
+              style={{
+                width: "100%",
+                marginTop: "20px",
+              }}
+              disabled={loading}
+            >
+              {loading ? <Spin /> : "Add Company"}
+            </button>
+          </form>
         </div>
       </div>
-    </>
-  );
+    </div>
+  </>
+);
 }
 
 export default AddSalesCompany;

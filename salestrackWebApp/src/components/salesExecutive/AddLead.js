@@ -25,13 +25,12 @@ const AddLead = () => {
       await fetchUsers();
       await fetchLeadCategories();
       await fetchLeadCompanies();
-      
     };
     fetchData();
   }, []);
 
- let user= JSON.parse( localStorage.getItem("user"));
- console.log("userRole",user);
+  let user = JSON.parse(localStorage.getItem("user"));
+  console.log("userRole", user);
 
   const {
     register,
@@ -41,7 +40,7 @@ const AddLead = () => {
 
   const fetchLeadCompanies = async () => {
     const response = await getAllLeadCompanies();
-    console.log("lead Company ->",response.result)
+    console.log("lead Company ->", response.result);
     if (response.isSuccess) {
       setLeadCompanyList(response.result);
       setShowSpinner(false);
@@ -76,7 +75,7 @@ const AddLead = () => {
   };
   const fetchLeadCategories = async () => {
     const response = await getLeadCategoriesByCompany();
-    console.log("lead category for companies are :",response.result)
+    console.log("lead category for companies are :", response.result);
     if (response.isSuccess) {
       setLeadCategories(response.result);
     } else {
@@ -90,12 +89,10 @@ const AddLead = () => {
       const response = await addLead(data);
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
-        if(user.userRole== 3){
-          console.log("------",user)
+        if (user.userRole == 3) {
+          console.log("------", user);
           navigate("/salesExecutive/leadList");
-        }
-        else if(user.userRole==4)
-          {
+        } else if (user.userRole == 4) {
           navigate("/salesManager/leadList");
         }
       } else {
@@ -272,21 +269,6 @@ const AddLead = () => {
                     )}
                   </div>
 
-                  {/* Updated Comment Field as textarea */}
-                  <div className="col-lg-6 mb-3">
-                    <textarea
-                      name="comment"
-                      style={{
-                        padding: "0px 1.25rem 0 1.12rem",
-                        width: "100%",
-                        borderRadius: "5px",
-                        border: "1px solid #ccc",
-                      }}
-                      placeholder="Comment"
-                      {...register("comment")}
-                    />
-                  </div>
-
                   <div className="col-lg-6 mb-3">
                     <InputField
                       as="select"
@@ -353,6 +335,89 @@ const AddLead = () => {
                     {errors.leadCategoryId && (
                       <span className="error-message">
                         {errors.leadCategoryId.message}
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-lg-6 mb-3">
+                    <InputField
+                      as="select"
+                      name="designation"
+                      style={{ padding: "0px 1.25rem 0 1.12rem" }}
+                      {...register("designation", {
+                        valueAsNumber: false,
+                      })}
+                    >
+                      <option value="">Select Designation</option>
+                      <option value="CEO">Chief Executive Officer (CEO)</option>
+                      <option value="COO">Chief Operating Officer (COO)</option>
+                      <option value="CFO">Chief Financial Officer (CFO)</option>
+                      <option value="CTO">
+                        Chief Technology Officer (CTO)
+                      </option>
+                      <option value="Manager">Manager</option>
+                      <option value="TeamLead">Team Lead</option>
+                      <option value="SrDeveloper">Senior Developer</option>
+                      <option value="JrDeveloper">Junior Developer</option>
+                      <option value="Intern">Intern</option>
+                      <option value="HR">Human Resources (HR)</option>
+                      <option value="Marketing">Marketing Specialist</option>
+                      <option value="SalesExecutive">Sales Executive</option>
+                      <option value="Consultant">Consultant</option>
+                      <option value="Analyst">Business Analyst</option>
+                      <option value="Technician">Technician</option>
+                      <option value="Engineer">Engineer</option>
+                      <option value="Designer">Designer</option>
+                      <option value="QA">Quality Assurance (QA)</option>
+                      <option value="Support">Customer Support</option>
+                    </InputField>
+                    {errors.designation && (
+                      <span className="error-message">
+                        {errors.designation.message}
+                      </span>
+                    )}
+                  </div>
+                  <div className="col-lg-6 mb-3">
+                    <InputField
+                      as="select"
+                      name="department"
+                      style={{ padding: "0px 1.25rem 0 1.12rem" }}
+                      {...register("department", {
+                        valueAsNumber: false,
+                      })}
+                    >
+                      <option selected value="">
+                        Select Department
+                      </option>
+                      <option value="Administration">Administration</option>
+                      <option value="Finance">Finance</option>
+                      <option value="HumanResources">
+                        Human Resources (HR)
+                      </option>
+                      <option value="IT">Information Technology (IT)</option>
+                      <option value="Marketing">Marketing</option>
+                      <option value="Sales">Sales</option>
+                      <option value="CustomerSupport">Customer Support</option>
+                      <option value="ProductDevelopment">
+                        Product Development
+                      </option>
+                      <option value="ResearchDevelopment">
+                        Research and Development (R&D)
+                      </option>
+                      <option value="Operations">Operations</option>
+                      <option value="Logistics">Logistics</option>
+                      <option value="QualityAssurance">
+                        Quality Assurance (QA)
+                      </option>
+                      <option value="Legal">Legal</option>
+                      <option value="Procurement">Procurement</option>
+                      <option value="Design">Design</option>
+                      <option value="Production">Production</option>
+                      <option value="Accounting">Accounting</option>
+                      <option value="Digital">Digital</option>
+                    </InputField>
+                    {errors.department && (
+                      <span className="error-message">
+                        {errors.department.message}
                       </span>
                     )}
                   </div>

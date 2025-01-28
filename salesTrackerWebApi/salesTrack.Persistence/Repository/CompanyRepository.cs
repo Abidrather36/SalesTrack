@@ -23,6 +23,8 @@ namespace salesTrack.Persistence.Repository
             this.leadRepository = leadRepository;
         }
 
+      
+
         public async Task<int> AddTimeSheet(CompanyTimeSheet model)
         {
             await context.CompanyTimeSheetStep.AddAsync(model);
@@ -72,8 +74,15 @@ namespace salesTrack.Persistence.Repository
         }
         public async Task<CompanyTimeSheet> GetCompanyTimeSheetByNameAsync(string name, Guid companyId)
         {
-            return await context.CompanyTimeSheetStep.Where(x=>x.CompanyId==companyId).FirstOrDefaultAsync(ts => ts.Name == name);
+            return await context.CompanyTimeSheetStep.Where(x => x.CompanyId == companyId).FirstOrDefaultAsync(ts => ts.Name == name);
         }
+
+        public async Task<Project> GetProjectById(Guid Id)
+        {
+          return  await context.Project.FindAsync(Id);
+        }
+
+    
 
         public async Task<IEnumerable<TimeSheetResponseModel>> GetTimeSheet(DateTimeOffset? startDate, DateTimeOffset? endDate, Guid id)
         {
@@ -101,12 +110,13 @@ namespace salesTrack.Persistence.Repository
                 Name = x.Name,
                 CompanyId = x.CompanyId,
             }).ToListAsync();
-            return  res;
+            return res;
         }
+      
 
         public async Task<int> UpdateTimeSheetIsApproved(TimeSheet model)
         {
-            await Task.Run(()=> context.TimeSheets.Update(model));
+            await Task.Run(() => context.TimeSheets.Update(model));
             return await context.SaveChangesAsync();
         }
     }

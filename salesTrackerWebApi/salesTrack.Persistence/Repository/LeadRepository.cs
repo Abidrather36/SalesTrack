@@ -20,7 +20,28 @@ namespace salesTrack.Persistence.Repository
             this.context = context;
             this.contextService = contextService;
         }
-
+        public async Task<int> AddProject(Project model)
+        {
+            await context.Project.AddAsync(model);
+            return await context.SaveChangesAsync();
+        }
+        public async Task<bool> IsProjectNameExists(string projectName, Guid companyId)
+        {
+            return await context.Project
+                .AnyAsync(p => p.ProjectName == projectName && p.CompanyId == companyId);
+        }
+        public async Task<IEnumerable<ProjectResponseModel>> GetProjects(Guid? userId)
+        {
+            return await context.Project.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Select(x => new ProjectResponseModel
+            {
+                Id = x.Id,
+                ProjectName = x.ProjectName,
+                StartDate = x.StartDate,
+                EndDate = x.EndDate,
+                UserId = x.UserId,
+                IsActive = x.IsActive
+            }).ToListAsync();
+        }
         public async Task<int> AddComment(LeadComments model)
         {
             await context.LeadComments.AddAsync(model);
@@ -56,7 +77,6 @@ namespace salesTrack.Persistence.Repository
                     Id = userId,
                     LeadSourceId = model.LeadSourceId != Guid.Empty ? model.LeadSourceId : throw new ArgumentException("lead SouceId is Required"),
                     CompanyId = model.CompanyId,
-                    Comment = model.Comment,
                     AssignTo = model.AssignTo,
                     CreatedBy = id,
                     CreatedDate = DateTime.UtcNow,
@@ -65,7 +85,11 @@ namespace salesTrack.Persistence.Repository
                     LeadRank =  model.LeadRank ?? 5,
                     LeadCategoryId = model.LeadCategoryId,
                     LeadCompanyId = model.LeadCompanyId,
-                    UserId = id
+                    UserId = id,
+                    Designation=model.Designation,
+                    Department=model.Department,
+                    
+                    
                 };
 
                 await context.Leads.AddAsync(newLead);
@@ -170,7 +194,6 @@ namespace salesTrack.Persistence.Repository
                 LeadCompanyName = lead.LeadCompany.LeadCompanyName,
                 Email = lead.User!.Email,
                 PhoneNumber = lead.User!.PhoneNumber,
-                Comment = lead.Comment,
                 FinalStatus = lead.FinalStatus,
                 UserRole = lead.User.UserRole,
                 LeadSourceId = lead.LeadSourceId,
@@ -198,7 +221,6 @@ namespace salesTrack.Persistence.Repository
                 LeadCompanyName = lead.LeadCompany.LeadCompanyName,
                 Email = lead.User!.Email,
                 PhoneNumber = lead.User!.PhoneNumber,
-                Comment = lead.Comment,
                 FinalStatus = lead.FinalStatus,
                 UserRole = lead.User.UserRole,
                 LeadSourceId = lead.LeadSourceId,
@@ -217,7 +239,7 @@ namespace salesTrack.Persistence.Repository
             return leads;
         }
 
-        public async Task<IEnumerable<TimeSheetResponseModel>> GetAllTimeSheetsByUser(Guid userId)
+        public async Task<IEnumerable<TimeSheetResponseModel>> GetAllTimeSheetsByUser(Guid? userId)
         {
             var res = await context.TimeSheets.Where(x => x.UserId == userId).OrderByDescending(x=>x.CreatedDate).Select(x => new TimeSheetResponseModel
             {
@@ -242,7 +264,6 @@ namespace salesTrack.Persistence.Repository
                 LeadName = x.User!.Name,
                 Email = x.User.Email,
                 PhoneNumber = x.User.PhoneNumber,
-                Comment = x.Comment,
                 FinalStatus = x.FinalStatus,
                 UserRole = x.User.UserRole,
                 LeadSourceId = x.LeadSourceId,
@@ -439,7 +460,6 @@ namespace salesTrack.Persistence.Repository
                     LeadName = lead.User!.Name,
                     Email = lead.User.Email,
                     PhoneNumber = lead.User.PhoneNumber,
-                    Comment = lead.Comment,
                     FinalStatus = lead.FinalStatus,
                     UserRole = lead.User.UserRole,
                     LeadSourceId = lead.LeadSourceId,
@@ -464,6 +484,18 @@ namespace salesTrack.Persistence.Repository
         public Task<LeadSource?> GetLeadSoureByName(string leadSourceName)
         {
            return context.Set<LeadSource>().FirstOrDefaultAsync(ls => ls.LeadSourceName == leadSourceName);
+        }
+
+        public async Task<IEnumerable<ProjectResponseModel>> GetProjectsByUser(Guid? userId)
+        {
+          return await  context.Project.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Select(x => new ProjectResponseModel
+            {
+                Id = x.Id,
+                ProjectName = x.ProjectName,
+                StartDate = x.StartDate,
+                EndDate = x.EndDate,
+
+            }).ToListAsync();
         }
     }
 }

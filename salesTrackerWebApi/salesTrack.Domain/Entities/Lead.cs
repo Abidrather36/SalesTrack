@@ -7,7 +7,8 @@ namespace salesTrack.Domain.Entities
 {
     public  class Lead:BaseModel
     {
-        public string? Comment { get; set; }
+        public string? Designation { get; set; }
+        public string? Department { get; set; }
         public Guid LeadCompanyId { get; set; }
         public Guid AssignTo { get; set; }
         public Guid LeadSourceId { get; set; }

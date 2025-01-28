@@ -96,8 +96,8 @@ function CompanyTimeSheetStepList() {
           data={timeSheetSteps}
           loading={loading}
           onAdd={addTimeSheetStep}
-          tableName="Company Time Sheet Steps"
-          addButtonLabel="Add Time Sheet Step"
+          tableName="Task List"
+          addButtonLabel="Add Task"
         />
       )}
       <ConfirmDialog />

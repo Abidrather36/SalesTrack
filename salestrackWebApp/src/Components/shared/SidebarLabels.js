@@ -619,13 +619,14 @@ import {
   FaPlus,
   FaListAlt,
   FaUsers,
-  FaFileUpload 
+  FaFileUpload,
 } from "react-icons/fa";
 import {
   Dashboard as DashboardIcon,
   Email as EmailIcon,
   ListAlt as ListAltIcon,
   Add as AddIcon,
+  WorkOutlineIcon 
 } from "@mui/icons-material";
 import { Source } from "@mui/icons-material";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -690,9 +691,9 @@ export const CompanyAdminsidebarLabels = [
     icon: <FontAwesomeIcon icon={faEye} />,
     dropdown: true,
     items: [
-      { id: 9, label: "Time Sheet", link: "/companyAdmin/view-time-sheet", icon: <FontAwesomeIcon icon={faEye} /> },
-      { id: 10, label: "Add TimeSheet Step", link: "/companyAdmin/addTimeSheetStep", icon: <FaPlus /> },
-      { id: 11, label: "Time Sheet Step List", link: "/companyAdmin/companyTimeSheetStepList", icon: <FaListAlt /> },
+      { id: 9, label: "Check Time Sheet", link: "/companyAdmin/view-time-sheet", icon: <FontAwesomeIcon icon={faEye} /> },
+      { id: 10, label: "Add Task Name", link: "/companyAdmin/addTimeSheetStep", icon: <FaPlus /> },
+      { id: 11, label: "Task List", link: "/companyAdmin/companyTimeSheetStepList", icon: <FaListAlt /> },
     ],
   },
   {
@@ -737,8 +738,10 @@ export const SalesExectivesidebarLabels = [
     icon: <EventNoteIcon />,
     dropdown: true,
     items: [
-      { id: 10, label: "Add Time Sheet", link: "/salesExecutive/timeSheet", icon: <FaPlus /> },
-      { id: 11, label: "Time Sheet List", link: "/salesExecutive/timeSheetList", icon: <EventNoteIcon /> },
+      { id: 10, label: "Add Task", link: "/salesExecutive/timeSheet", icon: <FaPlus /> },
+      { id: 11, label: "Task List", link: "/salesExecutive/timeSheetList", icon: <EventNoteIcon /> },
+      { id: 12, label: "Project", link: "/salesExecutive/addProject", icon: < FaPlus/> },
+      
     ],
   },
 ];
@@ -771,8 +774,10 @@ export const SalesManagersidebarLabels = [
     icon: <EventNoteIcon />,
     dropdown: true,
     items: [
-      { id: 10, label: "Add Time Sheet", link: "/salesManager/timeSheet", icon: <FaPlus /> },
-      { id: 11, label: "Time Sheet List", link: "/salesManager/timeSheetList", icon: <EventNoteIcon /> },
+      { id: 10, label: "Add Task", link: "/salesManager/timeSheet", icon: <FaPlus /> },
+      { id: 11, label: "Task List", link: "/salesManager/timeSheetList", icon: <EventNoteIcon /> },
+      { id: 12, label: "Project", link: "/salesManager/addProject", icon: < FaPlus/> },
+
     ],
   },
 ];

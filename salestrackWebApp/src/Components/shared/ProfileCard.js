@@ -150,8 +150,7 @@
 
 // export default ProfilePage;
 
-
-//Org working fine
+// Org working fine
 // import React, { useState, useEffect } from "react";
 // import "./ProfileCard.css";
 // import {
@@ -329,8 +328,6 @@
 
 // export default ProfilePage;
 
-
-
 ///Editable ///
 import React, { useState, useEffect } from "react";
 import "./ProfileCard.css";
@@ -356,7 +353,7 @@ function ProfilePage() {
   const API_URL = "http://localhost:5075";
   const user = JSON.parse(localStorage.getItem("user"));
   console.log("User Information Full", user);
- 
+
   const defaultImage =
     "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp";
   const url = "http://localhost:5075";
@@ -367,7 +364,7 @@ function ProfilePage() {
     fullName: user.fullName || "Unknown User",
     email: user.email || "Not Provided",
     phoneNumber: user.phoneNumber || "Not Available",
-    address:user.address || "Not Available",
+    address: user.address || "Not Available",
     userRole:
       user.userRole === 1
         ? "Admin"
@@ -412,7 +409,6 @@ function ProfilePage() {
     setIsEditing(!isEditing);
   };
 
-
   // const handleSave = async() => {
   //   // Add logic to save the edited data (e.g., API call)
   // //  let response=await updateUser()
@@ -421,25 +417,27 @@ function ProfilePage() {
   //   myToaster.showSuccessToast("Profile updated !");
   // };
   const handleSave = async () => {
-      
-      const updateData = {
-        id: user.userId,  
-        name: editedProps.fullName,
-        email: editedProps.email,
-        phoneNumber: editedProps.phoneNumber,
-        address: editedProps.address || '', 
-      };
-  
-      const response = await updateUser(updateData);
-  
-      if (response.isSuccess) {
-        myToaster.showSuccessToast(response.message);
-      } else {
-        myToaster.showErrorToast(response.message);
-      }
-      setIsEditing(false);  
+    const updateData = {
+      id: user.userId,
+      name: editedProps.fullName,
+      email: editedProps.email,
+      phoneNumber: editedProps.phoneNumber,
+      address: editedProps.address || "",
+    };
+
+    const response = await updateUser(updateData);
+
+    if (response.isSuccess) {
+      myToaster.showSuccessToast(response.message);
+    } else {
+      myToaster.showErrorToast(response.message);
+    }
+    setIsEditing(false);
   };
-  
+  const handleCancel = () => {
+    setEditedProps({ ...Props }); // Revert to original props
+    setIsEditing(false);
+  };
   return (
     <>
       <MDBRow>
@@ -550,14 +548,17 @@ function ProfilePage() {
                           type="tel"
                           className="form-control"
                           name="phoneNumber"
-                          pattern="\d*" 
-                          maxLength="10" 
+                          pattern="\d*"
+                          maxLength="10"
                           title="Please enter a valid 10-digit phone number"
                           value={editedProps.phoneNumber}
                           onChange={handleInputChange}
-                           onInput={(e) => {
-    e.target.value = e.target.value.replace(/[^0-9]/g, ""); // Removes non-numeric characters
-  }}
+                          onInput={(e) => {
+                            e.target.value = e.target.value.replace(
+                              /[^0-9]/g,
+                              ""
+                            );
+                          }}
                         />
                       ) : (
                         <MDBCardText className="text-muted">
@@ -592,11 +593,28 @@ function ProfilePage() {
               </MDBCard>
               <div className="text-center mt-3">
                 {isEditing ? (
-                  <button className="btn btn-primary" onClick={handleSave}>
-                    Save Changes
-                  </button>
+                  <>
+                    <button
+                      className="btn btn-primary btn-sm"
+                      style={{ padding: "5px 10px" }}
+                      onClick={handleSave}
+                    >
+                      Save Changes
+                    </button>
+                    <button
+                      className="btn btn-secondary btn-sm"
+                      style={{ marginLeft: "10px", padding: "5px 10px" }}
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </button>
+                  </>
                 ) : (
-                  <button className="btn btn-primary" onClick={toggleEditMode}>
+                  <button
+                    className="btn btn-primary btn-sm"
+                    style={{ padding: "5px 10px" }}
+                    onClick={toggleEditMode}
+                  >
                     Edit Profile
                   </button>
                 )}

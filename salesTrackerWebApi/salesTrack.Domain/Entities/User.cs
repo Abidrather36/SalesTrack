@@ -19,7 +19,8 @@ namespace salesTrack.Domain.Entities
         public Company? Company { get; set; }
 
         public ICollection<TimeSheet>? TimeSheeet { get; set; }
-        public ICollection<Lead>? Leads { get; set; }   //new //
+        public ICollection<Lead>? Leads { get; set; }
+        public ICollection< Project>? Projects { get; set; }
 
     }
 }
