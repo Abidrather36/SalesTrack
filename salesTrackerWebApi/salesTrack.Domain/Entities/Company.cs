@@ -14,7 +14,6 @@ namespace salesTrack.Domain.Entities
 
         [ForeignKey(nameof(Id))]
         public MasterUser? User { get; set; }
-
         public ICollection<User>? CompanyUser { get; set; }
         public ICollection<Lead>? Lead { get; set; }
         public ICollection<AdminProcessStep>? AdminProcessSteps { get; set; }

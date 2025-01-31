@@ -169,9 +169,9 @@ const ExcelToGrid = () => {
           `Successfully added ${addedCount} lead(s). ${skippedCount} email(s) were skipped as they already exist.`
         );
         handleReset();
-        if (user.userRole == 3) {
+        if (user.userRole === 3) {
           navigate("/salesExecutive/leadList");
-        } else if (user.userRole == 4) {
+        } else if (user.userRole === 4) {
           navigate("/salesManager/leadList");
         } else {
           myToaster.showErrorToast("Unauthorized role. Please try again.");

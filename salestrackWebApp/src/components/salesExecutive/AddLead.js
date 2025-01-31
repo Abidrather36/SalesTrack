@@ -85,24 +85,25 @@ const AddLead = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     data.leadRank = Number(data.leadRank);
-    try {
       const response = await addLead(data);
       if (response.isSuccess) {
-        myToaster.showSuccessToast(response.message);
-        if (user.userRole == 3) {
+        if (user.userRole ===3) {
           console.log("------", user);
           navigate("/salesExecutive/leadList");
-        } else if (user.userRole == 4) {
+        myToaster.showSuccessToast(response.message);
+        } else if (user.userRole === 4) {
           navigate("/salesManager/leadList");
+        myToaster.showSuccessToast(response.message);
         }
-      } else {
-        // myToaster.showErrorToast(response.message);
+        else{
+          navigate("UnAuthorized Role please contact Admin");
+        }
+      } 
+      else {
+        myToaster.showErrorToast(response.message);
+        setLoading(false)
       }
-    } catch (error) {
-      // myToaster.showErrorToast("Failed to register lead. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    
   };
 
   return (

@@ -41,7 +41,8 @@ import AddTimeSheetStep from "./components/companyAdmin/AddTimeSheetStep"
 import CompanyTimeSheetStepList from "./components/companyAdmin/CompanyTimeSheetStepList"
 import LeadRegistration from "./components/salesExecutive/LeadBulkRegistration"
 import ExcelToGrid from "./components/salesExecutive/LeadBulkRegistration"
-import Projects from "./components/salesExecutive/Projects"
+import Projects from "./components/companyAdmin/Projects"
+import ProjectList from "./components/companyAdmin/ProjectList"
 
 export const routerConfiguration = {
   PublicRoutes: [
@@ -83,7 +84,9 @@ export const routerConfiguration = {
     { path: "/companyAdmin/leadListCompany",element:<LeadListCompany/>},
     { path: "/companyAdmin/changePassword",element:<ChangePassword/>},
     { path: "/companyAdmin/addTimeSheetStep",element:<AddTimeSheetStep/>},
-    { path: "/companyAdmin/companyTimeSheetStepList",element:<CompanyTimeSheetStepList/>}
+    { path: "/companyAdmin/companyTimeSheetStepList",element:<CompanyTimeSheetStepList/>},
+    { path :"/companyAdmin/addProject", element:<Projects/>},
+    { path : "/companyAdmin/projectList", element:<ProjectList />}
   ],
 
   SalesExecutiveRoutes:[
@@ -92,18 +95,18 @@ export const routerConfiguration = {
     { path : "/salesExecutive/leadList", element: <LeadList /> },
     { path : "/salesExecutive/leadLists", element: <LeadList /> },
     { path : "/salesExecutive/add-new-lead", element: <AddLead /> },
-    { path : "/salesExecutive/timeSheet",element:<TimeSheet/>},
+    { path : "/salesExecutive/addTask",element:<TimeSheet/>},
     { path : "/salesExecutive/profile", element: <ProfilePage/> },
     { path : "/salesExecutive/registerLeadSource", element:<LeadSource/>},
     { path : "/salesExecutive/leadSourceList", element: <LeadSourceList/> },
-    { path : "/salesExecutive/timeSheetList",element :<TimeSheetList/>},
+    { path : "/salesExecutive/taskList",element :<TimeSheetList/>},
     { path : "/salesExecutive/addLeadCompany",element :<AddSalesCompany/>},
     { path : "/salesExecutive/leadCompanyList",element :<LeadCompanieList/>}, 
     { path : "/salesExecutive/bulkInsert",element :<BulkInsert/>},
     { path : "/salesExecutive/changePassword",element:<ChangePassword/>},
     { path : "/salesExecutive/addBulkLeads",element:<AddMultipleLeads/>},
     { path : "/salesExecutive/ExcelToGrid", element:<ExcelToGrid/>},
-    { path :"/salesExecutive/addProject", element:<Projects/>}
+
     // { path:"/salesExecutive/followUpHistory", element:<LeadList />} 
   ]
   ,
@@ -117,15 +120,12 @@ export const routerConfiguration = {
     { path : "/salesManager/leadCompanyList",element :<LeadCompanieList/>}, 
     { path : "/salesManager/registerLeadSource", element:<LeadSource/>},
     { path : "/salesManager/addLeadCompany",element :<AddSalesCompany/>},
-    { path : "/salesManager/timeSheet",element:<TimeSheet/>},
+    { path : "/salesManager/addTask",element:<TimeSheet/>},
     { path : "/salesManager/leadSourceList", element: <LeadSourceList/> },
-    { path : "/salesManager/timeSheetList",element :<TimeSheetList/>},
+    { path : "/salesManager/taskList",element :<TimeSheetList/>},
     { path: "/salesManager/changePassword",element:<ChangePassword/>},
     { path : "/salesManager/ExcelToGrid", element:<ExcelToGrid/>},
     { path : "/salesManager/bulkInsert",element :<BulkInsert/>},
-    { path :"/salesManager/addProject", element:<Projects/>}
-
-
     // { path:"/salesManager/followUpHistory", element:<LeadList />},
   ]
 }

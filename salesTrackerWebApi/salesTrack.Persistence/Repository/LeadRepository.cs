@@ -20,28 +20,9 @@ namespace salesTrack.Persistence.Repository
             this.context = context;
             this.contextService = contextService;
         }
-        public async Task<int> AddProject(Project model)
-        {
-            await context.Project.AddAsync(model);
-            return await context.SaveChangesAsync();
-        }
-        public async Task<bool> IsProjectNameExists(string projectName, Guid companyId)
-        {
-            return await context.Project
-                .AnyAsync(p => p.ProjectName == projectName && p.CompanyId == companyId);
-        }
-        public async Task<IEnumerable<ProjectResponseModel>> GetProjects(Guid? userId)
-        {
-            return await context.Project.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Select(x => new ProjectResponseModel
-            {
-                Id = x.Id,
-                ProjectName = x.ProjectName,
-                StartDate = x.StartDate,
-                EndDate = x.EndDate,
-                UserId = x.UserId,
-                IsActive = x.IsActive
-            }).ToListAsync();
-        }
+     
+      
+     
         public async Task<int> AddComment(LeadComments model)
         {
             await context.LeadComments.AddAsync(model);
@@ -63,15 +44,6 @@ namespace salesTrack.Persistence.Repository
         {
             try
             {
-                var existingLead = await context.Leads
-                    .Include(l => l.User)
-                    .FirstOrDefaultAsync(l => l.CompanyId == model.CompanyId && l.User.Email == model.Email);
-
-                if (existingLead != null)
-                {
-                    throw new Exception("A lead with this email already exists for this company.");
-                }
-
                 var newLead = new Lead
                 {
                     Id = userId,
@@ -239,19 +211,53 @@ namespace salesTrack.Persistence.Repository
             return leads;
         }
 
-        public async Task<IEnumerable<TimeSheetResponseModel>> GetAllTimeSheetsByUser(Guid? userId)
+     /*   public async Task<IEnumerable<TimeSheetResponseModel>> GetAllTimeSheetsByUser(Guid? userId)
         {
             var res = await context.TimeSheets.Where(x => x.UserId == userId).OrderByDescending(x=>x.CreatedDate).Select(x => new TimeSheetResponseModel
             {
                 Id = x.Id,
+                Name=x.User!=null ?x.User.MasterUser.Name : "Unknow User",
                 TimeSheetStepName = x.TimeSheetStepName,
                 HoursSpent = x.HoursSpent,
                 Comment = x.Comment,
                 Date = x.Date,
                 DateString = x.Date.ToString("dd/MM/yyyy"),
                 IsActive = x.IsActive,
-                IsApproved = x.IsApproved
+                IsApproved = x.IsApproved,
+                ProjectId=x.ProjectId,
+                ProjectName = x.Projects != null ? x.Projects.ProjectName : "No Project Found"
             }).ToListAsync();
+            return res;
+        }*/
+        public async Task<IEnumerable<TimeSheetResponseModel>> GetAllTimeSheetsByUser(Guid? userId = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
+        {
+            var query = context.TimeSheets.AsQueryable();
+
+            if (userId.HasValue)
+            {
+                query = query.Where(x => x.UserId == userId);
+            }
+
+            if (startDate.HasValue && endDate.HasValue && userId.HasValue)
+            {
+                query = query.Where(x => x.Date >= startDate && x.Date <= endDate && x.UserId==userId);
+            }
+
+            var res = await query.OrderByDescending(x => x.CreatedDate).Select(x => new TimeSheetResponseModel
+            {
+                Id = x.Id,
+                Name = x.User != null ? x.User.MasterUser.Name : "Unknown User",
+                TimeSheetStepName = x.TimeSheetStepName,
+                HoursSpent = x.HoursSpent,
+                Comment = x.Comment,
+                Date = x.Date,
+                DateString = x.Date.ToString("dd/MM/yyyy"),
+                IsActive = x.IsActive,
+                IsApproved = x.IsApproved,
+                ProjectId = x.ProjectId,
+                ProjectName = x.Projects != null ? x.Projects.ProjectName : "No Project Found"
+            }).ToListAsync();
+
             return res;
         }
 
@@ -486,16 +492,6 @@ namespace salesTrack.Persistence.Repository
            return context.Set<LeadSource>().FirstOrDefaultAsync(ls => ls.LeadSourceName == leadSourceName);
         }
 
-        public async Task<IEnumerable<ProjectResponseModel>> GetProjectsByUser(Guid? userId)
-        {
-          return await  context.Project.Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedDate).Select(x => new ProjectResponseModel
-            {
-                Id = x.Id,
-                ProjectName = x.ProjectName,
-                StartDate = x.StartDate,
-                EndDate = x.EndDate,
-
-            }).ToListAsync();
-        }
+      
     }
 }

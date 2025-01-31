@@ -166,7 +166,7 @@ namespace salesTrack.Api.Controllers
 
         }
         [HttpPost("viewTimeSheet")]
-        public async Task<IActionResult> GetTimeSheetForCompany(DateTimeOffset? startDate,DateTimeOffset? endDate,Guid userId)
+        public async Task<IActionResult> GetTimeSheetForCompany(DateTimeOffset? startDate,DateTimeOffset? endDate,Guid? userId=null)
         {
             try
             {
@@ -282,7 +282,72 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
-      
+        [HttpPost("addProject")]
+        public async Task<IActionResult> Addproject(ProjectRequestModel model)
+        {
+            try
+            {
+                return Ok(await adminService.AddProject(model));
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+        }
+        [HttpGet("getProjectById/{id:guid}")]
+        public async Task<IActionResult> GetProjectById(Guid id)
+        {
+            try
+            {
+                return Ok(await adminService.GetProjectById(id));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [HttpGet("getProjectByName/{projectName:alpha}")]
+        public async Task<IActionResult> GetProjectByName(string projectName)
+        {
+            try
+            {
+                return  Ok( await adminService.GetProjectByName(projectName));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [HttpPost("updateProject")]
+        public async Task<IActionResult> UpdateProject(ProjectRequestModel model)
+        {
+            try
+            {
+                return Ok(await adminService.AddProject(model));
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+
+            }
+        }
+        [HttpGet("getProjectsByUser")]
+        public async Task<IActionResult> GetProjectsByUser()
+        {
+            try
+            {
+                return Ok(await adminService.GetAllProjectsByUser());
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
 
     }
 }

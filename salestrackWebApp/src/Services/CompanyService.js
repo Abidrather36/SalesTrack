@@ -79,4 +79,11 @@ import axios from "axios";
         let res= await axiosObject.post(`${ApiUrl}CompanyAdmin/approveCompanyTimeSheet/${userId}`).then(res=>res.data);
         return res;
       }
-      
+      export const addProject=async (projectRequestModel)=>{
+        let res=await axiosObject.post(`${ApiUrl}CompanyAdmin/addProject`,projectRequestModel).then(res=>res.data);
+        return res;
+    }
+        export const getAllProjectsByUser =async ()=>{
+            let res=await axiosObject.get(`${ApiUrl}CompanyAdmin/getProjectsByUser`).then(res=>res.data);
+            return res;
+        }

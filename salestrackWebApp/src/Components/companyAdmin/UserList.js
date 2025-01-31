@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Grid from "../shared/Grid";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash ,FaClipboardList} from "react-icons/fa";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import { deleteUser, deleteUserById, UserLists } from "../../Services/UserService";
 import { useNavigate } from "react-router-dom";
@@ -47,6 +47,13 @@ function UserList() {
       onDeleteHandler: (data) => deleteUser(data),
       icon: <FaTrash />,
     },
+    {
+    key: "view-time-sheet",
+    title: "View Time Sheet",
+    className: "btn btn-info",
+    onClickHandler: (user) => viewTimeSheet(user),
+    icon: <FaClipboardList />,
+    }
   ];
 
   const addUser = () => {
@@ -87,7 +94,11 @@ function UserList() {
     }
     setLoading(false);
   };
+  const viewTimeSheet = (user) => {
+    // navigate(`/companyAdmin/view-time-sheet/${user.id}`); // Adjust the URL if needed
+    navigate("/companyAdmin/view-time-sheet"); // Adjust the URL if needed
 
+  };
   return (
     <>
       <BreadcrumbComponent labels={breadcrumbLabels} />

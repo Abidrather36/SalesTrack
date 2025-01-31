@@ -19,7 +19,7 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<IEnumerable<AdminProcessStepResponseModel>>> GetAllAdminProcessStepsByCompany();
         Task<ApiResponse<AdminProcessStepResponseModel>> GetAdminProcessStepById(Guid Id);
         Task<ApiResponse<DeleteAdminProcessStepResponseModel>> DeleteAdminProcessStep(Guid Id);
-        Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetTimeSheetByUser(DateTimeOffset? startDate,DateTimeOffset? endDate, Guid userId);
+        Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetTimeSheetByUser(DateTimeOffset? startDate,DateTimeOffset? endDate, Guid? userId=null);
         Task<ApiResponse<LeadCategoryResponse>> AddLeadCategory(LeadCategoryRequest model);
         Task<ApiResponse<IEnumerable<LeadCategoryResponse>>> GetAllLeadCategories();
         Task<ApiResponse<LeadCategoryResponse>> UpdateLeadCategory(UpdateLeadCategory model);
@@ -28,7 +28,11 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<CompanyTimeSheetResponse>> AddCompanyTimeSheet(CompanyTimeSheetRequest model);
         Task<ApiResponse<IEnumerable<CompanyTimeSheetResponse>>> GetCompanyTimeSheet();
         Task<ApiResponse<UpdateApproveCompanyTimeSheet>> UpdateTimeSheetIsApproved(Guid userId);
-      
+        Task<ApiResponse<ProjectResponseModel>> AddProject(ProjectRequestModel model);
+        Task<ApiResponse<ProjectResponseModel>> GetProjectById(Guid id);
+        Task<ApiResponse<ProjectResponseModel>> GetProjectByName(string projectName);
+        Task<ApiResponse<IEnumerable<ProjectResponseModel>>> GetAllProjectsByUser();
+
 
     }
 }

@@ -51,7 +51,11 @@ namespace salesTrack.Application.Services
                     return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.NotFound, HttpStatusCodes.BadRequest);
                 }
 
-
+                var isEmailExist=  await userRepository.IsExistsAsync(x => x.Email == model.Email);
+                if (isEmailExist)
+                {
+                    return ApiResponse<LeadResponseModel>.ErrorResponse( "A lead with Such Email Already Exists ", HttpStatusCodes.BadRequest);
+                }
 
                 MasterUser user = new()
                 {
@@ -683,7 +687,8 @@ namespace salesTrack.Application.Services
             var loggedInUser = contextService.UserId();
             var errorMessage = "";
             int timeSheetAdded;
-
+           var user=await userRepository.GetUserById(loggedInUser);
+           var companyId= user.CompanyId;
             try
             {
                 TimeSheet timeSheet = new()
@@ -696,7 +701,9 @@ namespace salesTrack.Application.Services
                     CreatedBy = loggedInUser,
                     CreatedDate = DateTimeOffset.Now,
                     ModifiedBy = Guid.Empty,
-                    IsActive = true
+                    IsActive = true,
+                    ProjectId=model.ProjectId,
+                    CompanyId=companyId,
 
                 };
 
@@ -709,9 +716,10 @@ namespace salesTrack.Application.Services
                         TimeSheetStepName = timeSheet.TimeSheetStepName,
                         HoursSpent = timeSheet.HoursSpent,
                         IsActive = timeSheet.IsActive,
-                        Date = timeSheet.Date
+                        Date = timeSheet.Date,
+                        ProjectId=timeSheet.ProjectId,
                     };
-                    return ApiResponse<TimeSheetResponseModel>.SuccessResponse(response, "Time Sheet Created Successfully ", HttpStatusCodes.OK);
+                    return ApiResponse<TimeSheetResponseModel>.SuccessResponse(response, "Task Added Successfully ", HttpStatusCodes.OK);
                 }
                 return ApiResponse<TimeSheetResponseModel>.ErrorResponse("Time sheet not added", HttpStatusCodes.BadRequest);
 
@@ -1771,73 +1779,19 @@ namespace salesTrack.Application.Services
                 return ApiResponse<IEnumerable<CompanyTimeSheetResponse>>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
             }
         }
-        public async Task<ApiResponse<ProjectResponseModel>> AddProject(ProjectRequestModel model)
+
+        public async Task<ApiResponse<IEnumerable<ProjectResponseModel>>> GetAllProjectsByUser()
         {
 
             try
             {
+
                 var userLoggedIn = contextService.UserId();
-                var user=await userRepository.GetUserById(userLoggedIn);
-                var companyId=user.CompanyId;
-                
-                if (string.IsNullOrWhiteSpace(model.ProjectName))
-                {
-                    return ApiResponse<ProjectResponseModel>.ErrorResponse("Project Name is Required ", HttpStatusCodes.BadRequest);
-                }
-                if (!model.StartDate.HasValue || !model.EndDate.HasValue)
-                {
-                    return ApiResponse<ProjectResponseModel>.ErrorResponse("Start and End dates are required.", HttpStatusCodes.BadRequest);
+                var companyUser=await userRepository.GetUserById(userLoggedIn);
+                var companyId=companyUser.CompanyId;
 
-                }
-                var projectExists = await leadRepository.IsProjectNameExists(model.ProjectName.ToLower(), companyId);
-                if (projectExists)
-                {
-                    return ApiResponse<ProjectResponseModel>.ErrorResponse("Project with the same name already exists.", HttpStatusCodes.BadRequest);
-                }
-                var project = new Project
-                {
-                    Id = Guid.NewGuid(),
-                    ProjectName = model.ProjectName,
-                    StartDate = model.StartDate.Value,
-                    EndDate = model.EndDate.Value,
-                    UserId = model.UserId,
-                    CompanyId = companyId,
-                    CreatedBy = userLoggedIn,
-                    CreatedDate = DateTime.UtcNow,
-                    IsActive = true
-                };
 
-                var projectAdded = await leadRepository.AddProject(project);
-                if (projectAdded > 0)
-                {
-                    ProjectResponseModel res = new()
-                    {
-                        Id = project.Id,
-                        ProjectName = project.ProjectName,
-                        StartDate = project.StartDate,
-                        EndDate = project.EndDate,
-                        IsActive=project.IsActive,
-                    };
-                    return ApiResponse<ProjectResponseModel>.SuccessResponse(res, "Project Added Successfully", HttpStatusCodes.OK);
-                }
-                return ApiResponse<ProjectResponseModel>.ErrorResponse("Can't Create Project Please try Again", HttpStatusCodes.OK);
-
-            }
-            catch (Exception ex)
-            {
-                return ApiResponse<ProjectResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
-
-            }
-
-        }
-        public async Task<ApiResponse<IEnumerable<ProjectResponseModel>>> GetAllProjectsByUser(Guid? userId)
-        {
-            try
-            {
-             
-                var userLoggedIn = contextService.UserId();
-
-                var projects =await leadRepository.GetProjectsByUser(userId);
+                var projects = await companyRepository.GetProjectsByUser(companyId);
 
                 if (!projects.Any())
                 {
@@ -1850,9 +1804,8 @@ namespace salesTrack.Application.Services
             {
                 return ApiResponse<IEnumerable<ProjectResponseModel>>.ErrorResponse($"An error occurred: {ex.Message}", HttpStatusCodes.InternalServerError);
             }
+
         }
-
-
     }
 }
 public class FollowUpReq

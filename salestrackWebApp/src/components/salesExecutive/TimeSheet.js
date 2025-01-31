@@ -6,17 +6,24 @@ import {
   MenuItem,
   Box,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import BreadcrumbComponent from "../shared/Breadcrumb";
-import { addTimeSheet, getAllProjectsByUser } from "../../Services/LeadService";
+import { addTimeSheet, getAllProjectsByUserLead } from "../../Services/LeadService";
+import { getAllProjectsByUser } from "../../Services/CompanyService";
 import myToaster from "../../utils/toaster";
+import { listOfTimeSheetStepsByCompany } from "../../Services/LeadService";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const TimeSheet = () => {
   const [open, setOpen] = useState(false);
   const [taskOptions, setTaskOptions] = useState([]);
   const [projectOptions, setProjectOptions] = useState([]);
   const [timesheet, setTimeSheet] = useState([]);
+  const [timeSheetStep, setTimeSheetStep] = useState([]);
+  const [loading, setLoading] = useState(false); 
+  const navigate=useNavigate();
   const {
     register,
     handleSubmit,
@@ -25,27 +32,49 @@ const TimeSheet = () => {
 
   useEffect(() => {
     fetchProjects();
+    fetchTimeSheetsSteps();
   }, []);
-
+  const user=JSON.parse(localStorage.getItem("user"))
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const fetchProjects = async () => {
     const userId = JSON.parse(localStorage.getItem("user")).userId;
     console.log(userId);
-    const response = await getAllProjectsByUser(userId);
+    const response = await getAllProjectsByUserLead();
     console.log(response.result);
     setProjectOptions(response.result);
   };
+  const fetchTimeSheetsSteps = async () => {
+    const response = await listOfTimeSheetStepsByCompany();
+    console.log("timesheet list", response.result);
+    if (response.isSuccess && Array.isArray(response.result)) {
+      setTaskOptions(response.result);
+    } else {
+      setTaskOptions([]); 
+    }
+    handleClose();
+  };
   const onSubmit = async (data) => {
-    const response = await addTimeSheet(data);
+    setLoading(true);
     console.log("Form Data:", data);
+    const response = await addTimeSheet(data);
     if (response.isSuccess) {
       setTimeSheet(response.result);
       myToaster.showSuccessToast(response.message);
+      if(user.userRole==3){
+        navigate("/salesExecutive/taskList")
+      }
+      else if(user.userRole==4){
+        navigate("/salesManager/taskList")
+      }
+      else{
+        navigate("UnAuthorized")
+      }
       handleClose();
     } else {
       myToaster.showErrorToast(response.message);
+      setLoading(false); 
     }
     handleClose();
   };
@@ -55,13 +84,13 @@ const TimeSheet = () => {
       <BreadcrumbComponent
         labels={{
           module: "salesExecutive",
-          currentRoute: "Register-Time-Sheet",
+          currentRoute: "Register-Task",
         }}
       />
 
-      <Button variant="contained" color="primary" onClick={handleOpen}>
-        Add New Task
-      </Button>
+      <button variant="contained" className=" btn btn-primary" onClick={handleOpen}>
+        Add Task
+      </button>
 
       <Modal open={open} onClose={handleClose}>
         <Box
@@ -105,9 +134,9 @@ const TimeSheet = () => {
               helperText={errors.timeSheetStepName?.message}
             >
               {taskOptions && taskOptions.length > 0 ? (
-                taskOptions.map((task, index) => (
-                  <MenuItem key={index} value={task}>
-                    {task}
+                taskOptions.map((item) => (
+                  <MenuItem key={item.id} value={item.name}>
+                    {item.name}
                   </MenuItem>
                 ))
               ) : (
@@ -121,9 +150,9 @@ const TimeSheet = () => {
               fullWidth
               margin="normal"
               defaultValue=""
-              {...register("project", { required: "Project is required" })}
-              error={!!errors.project}
-              helperText={errors.project?.message}
+              {...register("projectId", { required: "Project is required" })}
+              error={!!errors.projectId}
+              helperText={errors.projectId?.message}
             >
               {projectOptions && projectOptions.length > 0 ? (
                 projectOptions.map((project) => (
@@ -155,7 +184,7 @@ const TimeSheet = () => {
               rows={3}
               fullWidth
               margin="normal"
-              {...register("comments")}
+              {...register("comment")}
             />
 
             <Box
@@ -164,8 +193,8 @@ const TimeSheet = () => {
               <Button variant="contained" color="error" onClick={handleClose}>
                 Cancel
               </Button>
-              <Button variant="contained" color="primary" type="submit">
-                Save
+              <Button variant="contained" color="primary" type="submit" disabled={loading}>
+                {loading ? <CircularProgress size={24} color="inherit" /> : "Save"}
               </Button>
             </Box>
           </form>

@@ -46,7 +46,6 @@ function LeadSourceList() {
     },
   ];
   const addLeadSource = () => {
-    // navigate("/salesExecutive/registerLeadSource");
     if(user.userRole==3){
       navigate("/salesExecutive/registerLeadSource");
     }

@@ -202,7 +202,7 @@ namespace salesTrack.Api.Controllers
         {
             try
             {
-                model.Date = model.Date.AddDays(1);
+                /*model.Date = model.Date.AddDays(1);*/
                 return await leadService.AddTimeSheet(model);
             }
             catch (Exception ex)
@@ -370,26 +370,12 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        [HttpPost("addProject")]
-        public async Task<IActionResult> Addproject(ProjectRequestModel model)
+        [HttpGet("getProjectsByUser")]
+        public async Task<IActionResult> GetProjectsByUser()
         {
             try
             {
-                return Ok(await leadService.AddProject(model));
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-
-            }
-        }
-        [HttpGet("getProjectsByUser/{userId:guid}")]
-        public async  Task<IActionResult> GetProjectsByUser(Guid? userId)
-        {
-            try
-            {
-                return Ok(await leadService.GetAllProjectsByUser(userId));
+                return Ok(await leadService.GetAllProjectsByUser());
 
             }
             catch (Exception ex)
@@ -397,6 +383,7 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
 
     }
 }

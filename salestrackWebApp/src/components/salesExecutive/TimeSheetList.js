@@ -24,10 +24,11 @@ function TimeSheetList() {
 
   const headers = [
     { key: "dateString", label: "Date" },
-    { key: "timeSheetStepName", label: "Time Sheet StepName" },
+    { key: "timeSheetStepName", label: "Task Name" },
     { key: "hoursSpent", label: "Hours Spent" },
     { key: "comment", label: "Comment" },
-    { key: "isActive",label:"IsActive"}
+    { key: "isActive",label:"IsActive"},
+    { key: "projectName", label: "Project Name" },  
   ];
   let user =JSON.parse(localStorage.getItem("user"));
 
@@ -36,11 +37,11 @@ function TimeSheetList() {
   }, [])
   
   let addTimeSheet=()=>{
-    if(user.userRole==3){
-      navigate("/salesExecutive/timeSheet");
+    if(user.userRole === 3){
+      navigate("/salesExecutive/addTask");
     }
-    else if(user.userRole==4){
-      navigate("/salesManager/timeSheet");
+    else if(user.userRole === 4){
+      navigate("/salesManager/addTask");
     }
     else{
       myToaster.showErrorToast("You are not authorized to access this page");
@@ -72,6 +73,7 @@ const deleteTimeSheet = async (id)=>{
     setLoading(true);
     
       const response = await timeSheetList();
+      console.log("timesheetList",response.result)
       if (response.isSuccess) {
         setTimeSheetList(response.result);
         setShowSpinner(false)
@@ -83,7 +85,7 @@ const deleteTimeSheet = async (id)=>{
 
   return (
     <>
-      <BreadcrumbComponent labels={{ module: "SalesExecutive", currentRoute: "TimeSheetList" }} />
+      <BreadcrumbComponent labels={{ module: "SalesExecutive", currentRoute: "taskList" }} />
       {showSpinner ? (
         <div style={{display:"flex",justifyContent:"center",alignItems:"center",marginTop:"150px"}} >
             <CircularProgress/>
@@ -112,8 +114,8 @@ const deleteTimeSheet = async (id)=>{
         data={timesheetList}
         onAdd={addTimeSheet}
         loading={loading}
-        tableName="Time Sheet List"
-        addButtonLabel="Add Time Sheet"   
+        tableName="Task List"
+        addButtonLabel="Add Task"   
       />
     )}
          <ConfirmDialog

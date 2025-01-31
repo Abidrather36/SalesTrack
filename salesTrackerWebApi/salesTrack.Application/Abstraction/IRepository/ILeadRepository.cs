@@ -21,7 +21,7 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<bool> AddProcessStep(FollowUpReq model);
         Task<IEnumerable<LeadFollowUpHistoryResponse>> TodaysFollowUpdate(TodaysFollowUpdateRequest models,Guid id,Guid userId);
         Task<int> AddTimeSheet(TimeSheet model);
-        Task<IEnumerable<TimeSheetResponseModel>> GetAllTimeSheetsByUser(Guid? userId);
+        Task<IEnumerable<TimeSheetResponseModel>> GetAllTimeSheetsByUser(Guid? userId = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null);
         Task<int> UpdateTimeSheet(TimeSheet model);
         Task<TimeSheet> GetTimeSheetById(Guid id);
         Task<int> AddLeadCategory(LeadCategory model);
@@ -37,10 +37,8 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<int> UpdateLeadCompany(LeadCompany model);
         Task<IEnumerable<LeadResponseModel>> GetLeadDetailsByIdsAsync(List<Guid> ids);
         Task<LeadSource?> GetLeadSoureByName(string leadSourceName);
-        Task<int> AddProject(Project model);
-        Task<bool> IsProjectNameExists(string projectName, Guid companyId);
-        Task<IEnumerable<ProjectResponseModel>> GetProjects(Guid? userId);
-        Task<IEnumerable<ProjectResponseModel>> GetProjectsByUser(Guid? userId);
+    
+       
 
     }
 }

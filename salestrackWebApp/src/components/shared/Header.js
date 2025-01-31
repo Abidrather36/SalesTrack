@@ -143,8 +143,8 @@ const Header = () => {
                             : userRole === 2
                             ? `${user.fullName}`
                             : userRole === 3
-                            ? "Sales Executive"
-                            : "Sales Manager"}
+                            ? "Executive/Developer"
+                            : "Manager"}
                         </h5>
                         <p
                           className="text-muted"
@@ -159,8 +159,8 @@ const Header = () => {
                             : userRole === 2
                             ? "Managing company"
                             : userRole === 3
-                            ? "Managing Leads"
-                            : "Managing Sales"}
+                            ? ""
+                            : ""}
                         </p>
                       </div>
                     </div>

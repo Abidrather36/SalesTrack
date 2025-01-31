@@ -103,7 +103,7 @@ function Grid({
                         ) : (
                           <Badge bg="danger">Inactive</Badge>
                         )
-                      ): header.key === "isApproved" ? ( // Handling isApproved field
+                      ) : header.key === "isApproved" ? ( // Handling isApproved field
                         item[header.key] ? (
                           <MDBBadge color="success" pill>
                             Approved
@@ -133,11 +133,11 @@ function Grid({
                         )
                       ) : header.key === "userType" ? (
                         item[header.key] === 1 ? (
-                          <MDBBadge color="info" pill>
+                          <MDBBadge color="success" pill>
                             Executive/Developer
                           </MDBBadge>
                         ) : item[header.key] === 2 ? (
-                          <MDBBadge color="primary" pill>
+                          <MDBBadge color="warning" pill>
                             Manager
                           </MDBBadge>
                         ) : null
@@ -159,7 +159,7 @@ function Grid({
                     </td>
                   ))}
                   <td>
-                    <ThreeDotMenu
+                    {/* <ThreeDotMenu
                       options={buttons}
                       handleEdit={() =>
                         buttons
@@ -185,6 +185,55 @@ function Grid({
                         buttons 
                         .find((btn) => btn.key === "Approve") 
                         ?.onApproveHandler(item) }
+                    /> */}
+                    <ThreeDotMenu
+                      options={buttons.filter(
+                        (btn) => !btn.show || btn.show(item)
+                      )} // ✅ Ensures button is shown only if `show` is true
+                      handleEdit={() =>
+                        buttons
+                          .find(
+                            (btn) =>
+                              btn.key === "edit" &&
+                              (!btn.show || btn.show(item))
+                          )
+                          ?.onEditHandler(item)
+                      }
+                      handleDelete={() =>
+                        buttons
+                          .find(
+                            (btn) =>
+                              btn.key === "delete" &&
+                              (!btn.show || btn.show(item))
+                          )
+                          ?.onDeleteHandler(item)
+                      }
+                      handleManageLead={() =>
+                        buttons
+                          .find(
+                            (btn) =>
+                              btn.key === "add" && (!btn.show || btn.show(item))
+                          )
+                          ?.onAddFollowUpdate?.(item)
+                      }
+                      handleFollowUpHistory={() =>
+                        buttons
+                          .find(
+                            (btn) =>
+                              btn.key === "followUpHistory" &&
+                              (!btn.show || btn.show(item))
+                          )
+                          ?.onAddFollowUpHistory?.(item)
+                      }
+                      handleApprove={() =>
+                        buttons
+                          .find(
+                            (btn) =>
+                              btn.key === "Approve" &&
+                              (!btn.show || btn.show(item))
+                          )
+                          ?.onApproveHandler(item)
+                      }
                     />
                   </td>
                 </tr>

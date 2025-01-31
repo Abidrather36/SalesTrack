@@ -3,8 +3,9 @@ import Spin from '../public/Spin';
 import { useForm } from "react-hook-form";
 import InputField from '../public/InputField';
 import BreadcrumbComponent from '../shared/Breadcrumb';
-import { addProject } from '../../Services/LeadService';
+import { addProject } from '../../Services/CompanyService';
 import myToaster from '../../utils/toaster';
+import { useNavigate } from 'react-router-dom';
 
 function Projects() {
   const [projectName, setProjectName] = useState('');
@@ -12,8 +13,8 @@ function Projects() {
   const [endDate, setEndDate] = useState('');
   const [userId, setUserId] = useState('');
   const [loading,setLoading]=useState(false)
-
-  let user=JSON.parse(localStorage.getItem("user"));
+  const navigate=useNavigate();
+  let user=JSON.parse(localStorage.getItem("user"))
   const {
     register,
     handleSubmit,
@@ -28,7 +29,6 @@ function Projects() {
       projectName: data.projectName || null,
       startDate: data.startDate ? new Date(data.startDate).toISOString() : null,
       endDate: data.endDate ? new Date(data.endDate).toISOString() : null,
-      userId: user.userId || null, 
     };
 
     try {
@@ -36,10 +36,10 @@ function Projects() {
       console.log(response);
       if(response.isSuccess){
         myToaster.showSuccessToast(response.message)
+        navigate("/companyAdmin/projectList")
       }
       else{
         myToaster.showErrorToast(response.message)
-
       }
     } catch (error) {
       console.error("Error adding project:", error);
@@ -106,7 +106,7 @@ function Projects() {
                       style={{ width: "100%" }}
                       disabled={loading}
                     >
-                      Add Lead Category
+                      Add
                     </button>
                   )}
                 </form>

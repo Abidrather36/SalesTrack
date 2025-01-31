@@ -620,6 +620,8 @@ import {
   FaListAlt,
   FaUsers,
   FaFileUpload,
+  FaProjectDiagram,
+  FaSitemap 
 } from "react-icons/fa";
 import {
   Dashboard as DashboardIcon,
@@ -705,9 +707,19 @@ export const CompanyAdminsidebarLabels = [
       { id: 12, label: "Add Lead Category", link: "/companyAdmin/add-lead-category", icon: <FaPlus /> },
       { id: 13, label: "Lead Category List", link: "/companyAdmin/leadCategoryList", icon: <FaListAlt /> },
       { id: 14, label: "Lead List", link: "/companyAdmin/leadListCompany", icon: <FaListAlt /> },
-     
+   
     ],
   },
+  {
+    id: 14,
+    label:"Project Management",
+    icon: <FaProjectDiagram />,
+    dropdown: true,
+    items: [
+      { id: 12, label: "Project", link: "/companyAdmin/addProject", icon: < FaPlus/> },
+      { id: 13, label: "Project List",link:"/companyAdmin/projectList",icon:<EventNoteIcon/>}
+    ]
+  }
 ];
 
 export const SalesExectivesidebarLabels = [
@@ -738,10 +750,9 @@ export const SalesExectivesidebarLabels = [
     icon: <EventNoteIcon />,
     dropdown: true,
     items: [
-      { id: 10, label: "Add Task", link: "/salesExecutive/timeSheet", icon: <FaPlus /> },
-      { id: 11, label: "Task List", link: "/salesExecutive/timeSheetList", icon: <EventNoteIcon /> },
-      { id: 12, label: "Project", link: "/salesExecutive/addProject", icon: < FaPlus/> },
-      
+      { id: 10, label: "Add Task", link: "/salesExecutive/addTask", icon: <FaPlus /> },
+      { id: 11, label: "Task List", link: "/salesExecutive/taskList", icon: <EventNoteIcon /> },
+     
     ],
   },
 ];
@@ -774,11 +785,11 @@ export const SalesManagersidebarLabels = [
     icon: <EventNoteIcon />,
     dropdown: true,
     items: [
-      { id: 10, label: "Add Task", link: "/salesManager/timeSheet", icon: <FaPlus /> },
-      { id: 11, label: "Task List", link: "/salesManager/timeSheetList", icon: <EventNoteIcon /> },
-      { id: 12, label: "Project", link: "/salesManager/addProject", icon: < FaPlus/> },
-
+      { id: 10, label: "Add Task", link: "/salesManager/addTask",icon:<FaPlus /> },
+      { id: 11, label: "Task List", link: "/salesManager/taskList", icon: <EventNoteIcon /> },
+     
     ],
   },
+
 ];
 

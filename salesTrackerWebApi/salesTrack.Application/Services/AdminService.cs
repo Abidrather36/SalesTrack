@@ -13,9 +13,7 @@ using SalesTrack.Application.Common;
 using SalesTrack.Application.Shared;
 using SalesTrack.Domain.Entities;
 using SalesTrack.Domain.Entities.Models.Request;
-using System.ComponentModel.Design;
 using System.Data;
-using static SalesTrack.Application.Shared.ApiMessages;
 
 namespace salesTrack.Application.Services
 {
@@ -553,20 +551,29 @@ namespace salesTrack.Application.Services
 
 
 
-        public async Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetTimeSheetByUser(DateTimeOffset? startDate, DateTimeOffset? endDate, Guid userId)
+        public async Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetTimeSheetByUser(DateTimeOffset? startDate, DateTimeOffset? endDate, Guid? userId =null)
         {
             try
             {
                 var companyUser = contextService.UserId();
 
-
-                if (endDate < startDate)
+              /*  if (endDate < startDate)
                 {
                     return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse("End date cannot be earlier than start date.", HttpStatusCodes.BadRequest);
+                }*/
+
+
+                if (startDate == null && endDate == null && userId!=null)
+                {
+                    var timeSheetByUser = await leadRepository.GetAllTimeSheetsByUser(userId);
+                    if (timeSheetByUser.Any())
+                    {
+                        return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(timeSheetByUser, $"{timeSheetByUser.Count()} TimeSheets Found", HttpStatusCodes.OK);
+
+                    }
+                    return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse("No TimeSheets Found For the User");
                 }
-
-
-                if (startDate == null || endDate == null)
+                else if (startDate != null && endDate != null && userId!=null)
                 {
                     var timeSheetByUser = await leadRepository.GetAllTimeSheetsByUser(userId);
                     if (timeSheetByUser.Any())
@@ -578,7 +585,7 @@ namespace salesTrack.Application.Services
                 }
                 else
                 {
-                    var res = await companyRepository.GetTimeSheet(startDate, endDate, userId);
+                    var res = await companyRepository.GetTimeSheet(startDate, endDate,companyUser,userId);
 
                     return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(res, $"{res.Count()} TimeSheets Found", HttpStatusCodes.OK);
                 }
@@ -889,13 +896,13 @@ namespace salesTrack.Application.Services
                 var companyAdmin = contextService.UserId();
                 if (string.IsNullOrEmpty(model.Name))
                 {
-                    return ApiResponse<CompanyTimeSheetResponse>.ErrorResponse("Please enter Time Sheet Step", HttpStatusCodes.BadRequest);
+                    return ApiResponse<CompanyTimeSheetResponse>.ErrorResponse("Please enter Task Name", HttpStatusCodes.BadRequest);
                 }
 
                 var companytimeSheet = await companyRepository.GetCompanyTimeSheetByNameAsync(model.Name, companyAdmin);
                 if (companytimeSheet is not null)
                 {
-                    return ApiResponse<CompanyTimeSheetResponse>.ErrorResponse("Time Sheet StepName Already Exists", HttpStatusCodes.BadRequest);
+                    return ApiResponse<CompanyTimeSheetResponse>.ErrorResponse("Task Name Already Exists", HttpStatusCodes.BadRequest);
                 }
 
                 CompanyTimeSheet companyTimeSheet = new()
@@ -914,7 +921,7 @@ namespace salesTrack.Application.Services
                         Name = companyTimeSheet.Name,
                         CompanyId = companyTimeSheet.CompanyId,
                     };
-                    return ApiResponse<CompanyTimeSheetResponse>.SuccessResponse(res, "Company Time Sheet Added Successfully", HttpStatusCodes.OK);
+                    return ApiResponse<CompanyTimeSheetResponse>.SuccessResponse(res, "Task Added Successfully", HttpStatusCodes.OK);
                 }
 
                 return ApiResponse<CompanyTimeSheetResponse>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
@@ -990,9 +997,134 @@ namespace salesTrack.Application.Services
             }
 
         }
+        public async Task<ApiResponse<ProjectResponseModel>> AddProject(ProjectRequestModel model)
+        {
 
-     
+            try
+            {
+                var companyAdmin = contextService.UserId();
+                
+                if (string.IsNullOrWhiteSpace(model.ProjectName))
+                {
+                    return ApiResponse<ProjectResponseModel>.ErrorResponse("Project Name is Required ", HttpStatusCodes.BadRequest);
+                }
+                if (!model.StartDate.HasValue || !model.EndDate.HasValue)
+                {
+                    return ApiResponse<ProjectResponseModel>.ErrorResponse("Start and End dates are required.", HttpStatusCodes.BadRequest);
 
-     
+                }
+                var projectExists = await companyRepository.IsProjectNameExists(model.ProjectName.ToLower(), companyAdmin);
+                if (projectExists)
+                {
+                    return ApiResponse<ProjectResponseModel>.ErrorResponse("Project with the same name already exists.", HttpStatusCodes.BadRequest);
+                }
+                var project = new Project
+                {
+                    Id = Guid.NewGuid(),
+                    ProjectName = model.ProjectName,
+                    StartDate = model.StartDate.Value,
+                    EndDate = model.EndDate.Value,
+                    CompanyId = companyAdmin,
+                    CreatedBy = companyAdmin,
+                    CreatedDate = DateTime.UtcNow,
+                    IsActive = true
+                };
+
+                var projectAdded = await companyRepository.AddProject(project);
+                if (projectAdded > 0)
+                {
+                    ProjectResponseModel res = new()
+                    {
+                        Id = project.Id,
+                        ProjectName = project.ProjectName,  
+                        StartDate = project.StartDate,
+                        EndDate = project.EndDate,
+                        IsActive = project.IsActive,
+                    };
+                    return ApiResponse<ProjectResponseModel>.SuccessResponse(res, "Project Added Successfully", HttpStatusCodes.OK);
+                }
+                return ApiResponse<ProjectResponseModel>.ErrorResponse("Can't Create Project Please try Again", HttpStatusCodes.OK);
+
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<ProjectResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.InternalServerError);
+
+            }
+
+        }
+        public async Task<ApiResponse<IEnumerable<ProjectResponseModel>>> GetAllProjectsByUser()
+        {
+            try
+            {
+
+                var userLoggedIn = contextService.UserId();
+
+
+                var projects = await companyRepository.GetProjectsByUser(userLoggedIn);
+
+                if (!projects.Any())
+                {
+                    return ApiResponse<IEnumerable<ProjectResponseModel>>.ErrorResponse("No projects found for the specified user.", HttpStatusCodes.NotFound);
+                }
+
+                return ApiResponse<IEnumerable<ProjectResponseModel>>.SuccessResponse(projects, $"{projects.Count()} Projects retrieved successfully.", HttpStatusCodes.OK);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<ProjectResponseModel>>.ErrorResponse($"An error occurred: {ex.Message}", HttpStatusCodes.InternalServerError);
+            }
+        }
+        public async Task<ApiResponse<ProjectResponseModel>> GetProjectById(Guid id)
+        {
+            try
+            {
+                var companyAdmin = contextService.UserId();
+                var project = await companyRepository.GetProjectByIdAsync(companyAdmin,id);
+                if (project == null)
+                {
+                    return ApiResponse<ProjectResponseModel>.ErrorResponse("No Such Project", HttpStatusCodes.NotFound);
+                }
+                ProjectResponseModel res = new()
+                {
+                    Id = project.Id,
+                    ProjectName = project.ProjectName,
+                    StartDate = project.StartDate,
+                    EndDate = project.EndDate,
+                };
+                return ApiResponse<ProjectResponseModel>.SuccessResponse(res, "Project Found Successfully", HttpStatusCodes.Found);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<ProjectResponseModel>.ErrorResponse($"An error occurred: {ex.Message}", HttpStatusCodes.InternalServerError);
+
+            }
+        }
+
+        public async  Task<ApiResponse<ProjectResponseModel>> GetProjectByName(string projectName)
+        {
+            try
+            {
+                var companyAdmin = contextService.UserId();
+                var project = await companyRepository.GetProjectByNameAsync(projectName.ToLower(), companyAdmin);
+                if (project == null)
+                {
+                    return ApiResponse<ProjectResponseModel>.ErrorResponse("No Such Project", HttpStatusCodes.NotFound);
+                }
+                ProjectResponseModel res = new()
+                {
+                    Id = project.Id,
+                    ProjectName = project.ProjectName,
+                    StartDate = project.StartDate,
+                    EndDate = project.EndDate,
+                };
+                return ApiResponse<ProjectResponseModel>.SuccessResponse(res, "Project Found Successfully", HttpStatusCodes.Found);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<ProjectResponseModel>.ErrorResponse($"An error occurred: {ex.Message}", HttpStatusCodes.InternalServerError);
+
+            }
+        }
     }
 }

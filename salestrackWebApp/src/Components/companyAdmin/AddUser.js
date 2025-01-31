@@ -272,7 +272,7 @@ const AddUser = () => {
     }
   };
 
-  const filteredUsers = users?.filter((user) => user.userType === 2);
+  // const filteredUsers = users?.filter((user) => user.userType === 2);
 
   return (
     <>
@@ -383,10 +383,7 @@ const AddUser = () => {
                    {/* <option value="c3188984-f7c5-4460-9d77-18d550740e57"> */}
                      Ram
                    </option>
-                   {filteredUsers?.map((user) => (
-                     <option key={user.id} value={user.id}>
-                       {user.name}
-                     </option>
+             
                    ))}
                  </InputField>
                  {errors.reportsTo && (

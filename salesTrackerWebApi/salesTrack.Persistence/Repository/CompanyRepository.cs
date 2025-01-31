@@ -4,11 +4,6 @@ using salesTrack.Domain.Entities;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Persistence.Data;
 using SalesTrack.Persistence.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace salesTrack.Persistence.Repository
 {
@@ -22,8 +17,6 @@ namespace salesTrack.Persistence.Repository
             this.context = context;
             this.leadRepository = leadRepository;
         }
-
-      
 
         public async Task<int> AddTimeSheet(CompanyTimeSheet model)
         {
@@ -77,30 +70,51 @@ namespace salesTrack.Persistence.Repository
             return await context.CompanyTimeSheetStep.Where(x => x.CompanyId == companyId).FirstOrDefaultAsync(ts => ts.Name == name);
         }
 
-        public async Task<Project> GetProjectById(Guid Id)
+      
+
+
+
+        /*  public async Task<IEnumerable<TimeSheetResponseModel>> GetTimeSheet(DateTimeOffset? startDate, DateTimeOffset? endDate, Guid? companyId)
+          {
+              var filteredUserTimeSheets = await context.TimeSheets
+                  .Where(ts =>
+                      ( ts.CompanyId == companyId) &&
+                      (ts.Date >= startDate) &&
+                      (ts.Date <= endDate))
+                  .Select(ts => new TimeSheetResponseModel
+                  {
+                      Id = ts.Id,
+                      Date = ts.Date,
+                      TimeSheetStepName = ts.TimeSheetStepName,
+                      HoursSpent = ts.HoursSpent,
+                      Comment = ts.Comment,
+                      DateString = ts.Date.ToString("dd/MM/yyyy"),
+                      Name = ts.User != null ? ts.User.MasterUser.Name : "Unknown User"
+                  })
+                  .ToListAsync(); 
+
+              return filteredUserTimeSheets;
+          }
+  */
+        public async Task<IEnumerable<TimeSheetResponseModel>> GetTimeSheet(DateTimeOffset? startDate, DateTimeOffset? endDate, Guid? companyId, Guid? userId = null)
         {
-          return  await context.Project.FindAsync(Id);
+            var res = await context.TimeSheets.Where(x => x.CompanyId == companyId &&  x.Date >=startDate  && x.Date <=endDate).OrderByDescending(x => x.CreatedDate).Select(x => new TimeSheetResponseModel
+            {
+                Id = x.Id,
+                Name = x.User != null ? x.User.MasterUser.Name : "Unknow User",
+                TimeSheetStepName = x.TimeSheetStepName,
+                HoursSpent = x.HoursSpent,
+                Comment = x.Comment,
+                Date = x.Date,
+                DateString = x.Date.ToString("dd/MM/yyyy"),
+                IsActive = x.IsActive,
+                IsApproved = x.IsApproved,
+                ProjectId = x.ProjectId,
+                ProjectName = x.Projects != null ? x.Projects.ProjectName : "No Project Found"
+            }).ToListAsync();
+            return res;
         }
 
-    
-
-        public async Task<IEnumerable<TimeSheetResponseModel>> GetTimeSheet(DateTimeOffset? startDate, DateTimeOffset? endDate, Guid id)
-        {
-
-            var timeSheets = await leadRepository.GetAllTimeSheetsByUser(id);
-            var filteredUserTimeSheets = timeSheets.Where(ts => ts.Date >= startDate && ts.Date <= endDate).
-                 Select(ts => new TimeSheetResponseModel
-                 {
-                     Id = ts.Id,
-                     Date = ts.Date,
-                     TimeSheetStepName = ts.TimeSheetStepName,
-                     HoursSpent = ts.HoursSpent,
-                     Comment = ts.Comment,
-                     DateString = ts.Date.ToString("dd/MM/yyyy")
-                 });
-            return filteredUserTimeSheets;
-
-        }
 
         public async Task<IEnumerable<CompanyTimeSheetResponse>> GetTimeSheetByCompany(Guid id)
         {
@@ -118,6 +132,44 @@ namespace salesTrack.Persistence.Repository
         {
             await Task.Run(() => context.TimeSheets.Update(model));
             return await context.SaveChangesAsync();
+        }
+        public async Task<int> AddProject(Project model)
+        {
+            await context.Project.AddAsync(model);
+            return await context.SaveChangesAsync();
+        }
+        public async Task<Project?> GetProjectById(Guid Id)
+        {
+            return await context.Project.FindAsync(Id);
+        }
+        public async Task<bool> IsProjectNameExists(string projectName, Guid companyId)
+        {
+            return await context.Project
+                .AnyAsync(p => p.ProjectName == projectName && p.CompanyId == companyId);
+        }
+
+        public async Task<IEnumerable<ProjectResponseModel>> GetProjectsByUser(Guid? companyId)
+        {
+            var res = await context.Project.Where(x => x.CompanyId == companyId).OrderByDescending(x => x.CreatedDate).Select(x => new ProjectResponseModel
+            {
+                Id = x.Id,
+                ProjectName = x.ProjectName,
+                StartDate = x.StartDate,
+                EndDate = x.EndDate,
+                IsActive = x.IsActive,
+                CompanyId = x.CompanyId
+            }).ToListAsync();
+            return res;
+        }
+
+        public async Task<Project> GetProjectByIdAsync(Guid companyId,Guid id)
+        {
+            return await context.Project.Where(x=>x.CompanyId==companyId && x.Id==id).FirstOrDefaultAsync();
+        }
+
+        public async Task<Project> GetProjectByNameAsync(string projectName,Guid companyId)
+        {
+            return await context.Project.Where(x => x.CompanyId == companyId && x.ProjectName == projectName).FirstOrDefaultAsync();
         }
     }
 }
