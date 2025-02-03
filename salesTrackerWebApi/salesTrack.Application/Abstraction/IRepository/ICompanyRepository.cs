@@ -16,7 +16,9 @@ namespace salesTrack.Application.Abstraction.IRepository
         Task<int> UpdateTimeSheetIsApproved(TimeSheet model);
         Task<int> AddProject(Project model);
         Task<Project> GetProjectByNameAsync(string projectName,Guid companyId);
-        Task<Project> GetProjectByIdAsync(Guid companyId,Guid id);
+        Task<Project> GetProjectByIdAndCompanyIdAsync(Guid companyId,Guid id);
+        Task<Project> GetProjectById(Guid id);
+        Task<int> UpdateProjectAsync(Project model);
         Task<bool> IsProjectNameExists(string projectName, Guid companyId);
         Task<IEnumerable<ProjectResponseModel>> GetProjectsByUser(Guid? companyId);
 

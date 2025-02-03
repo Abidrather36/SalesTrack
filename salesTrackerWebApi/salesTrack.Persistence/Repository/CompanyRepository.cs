@@ -70,7 +70,7 @@ namespace salesTrack.Persistence.Repository
             return await context.CompanyTimeSheetStep.Where(x => x.CompanyId == companyId).FirstOrDefaultAsync(ts => ts.Name == name);
         }
 
-      
+
 
 
 
@@ -98,7 +98,7 @@ namespace salesTrack.Persistence.Repository
   */
         public async Task<IEnumerable<TimeSheetResponseModel>> GetTimeSheet(DateTimeOffset? startDate, DateTimeOffset? endDate, Guid? companyId, Guid? userId = null)
         {
-            var res = await context.TimeSheets.Where(x => x.CompanyId == companyId &&  x.Date >=startDate  && x.Date <=endDate).OrderByDescending(x => x.CreatedDate).Select(x => new TimeSheetResponseModel
+            var res = await context.TimeSheets.Where(x => x.CompanyId == companyId && x.Date >= startDate && x.Date <= endDate).OrderByDescending(x => x.CreatedDate).Select(x => new TimeSheetResponseModel
             {
                 Id = x.Id,
                 Name = x.User != null ? x.User.MasterUser.Name : "Unknow User",
@@ -126,7 +126,7 @@ namespace salesTrack.Persistence.Repository
             }).ToListAsync();
             return res;
         }
-      
+
 
         public async Task<int> UpdateTimeSheetIsApproved(TimeSheet model)
         {
@@ -162,14 +162,20 @@ namespace salesTrack.Persistence.Repository
             return res;
         }
 
-        public async Task<Project> GetProjectByIdAsync(Guid companyId,Guid id)
+        public async Task<Project> GetProjectByIdAndCompanyIdAsync(Guid companyId, Guid id)
         {
-            return await context.Project.Where(x=>x.CompanyId==companyId && x.Id==id).FirstOrDefaultAsync();
+            return await context.Project.FirstOrDefaultAsync(x => x.CompanyId == companyId && x.Id == id);
         }
 
-        public async Task<Project> GetProjectByNameAsync(string projectName,Guid companyId)
+        public async Task<Project> GetProjectByNameAsync(string projectName, Guid companyId)
         {
             return await context.Project.Where(x => x.CompanyId == companyId && x.ProjectName == projectName).FirstOrDefaultAsync();
+        }
+
+        public async Task<int> UpdateProjectAsync(Project model)
+        {
+            await Task.Run(() => context.Project.Update(model));
+            return await context.SaveChangesAsync();
         }
     }
 }

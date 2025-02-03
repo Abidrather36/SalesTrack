@@ -121,12 +121,14 @@ import { useNavigate } from "react-router-dom";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import myToaster from "../../utils/toaster";
 import { ConfirmDialog } from "primereact/confirmdialog";
-import { getAllProjectsByUser } from "../../Services/CompanyService";
+import { deleteProjectById, getAllProjectsByUser } from "../../Services/CompanyService";
 import { CircularProgress } from "@mui/material";
 
 function ProjectList() {
   const [projects, setProjects] = useState([]);
   const [showSpinner, setShowSpinner] = useState(true);
+  const [confirmVisible, setConfirmVisible] = useState(false);
+   const [selectedproject,setSelectedProject]=useState(null)
   const navigate = useNavigate();
 
   const headers = [
@@ -147,13 +149,14 @@ function ProjectList() {
       key: "edit",
       title: "Edit",
       className: "btn btn-primary",
-      onEditHandler: (data) => editProject(data),
+      onEditHandler: (data) => updateProject(data),
       icon: <FaEdit />,
     },
     {
       key: "delete",
       title: "Delete",
       className: "btn btn-danger",
+      onDeleteHandler:(project)=>handleDeleteProject(project),
       icon: <FaTrash />,
     },
   ];
@@ -162,23 +165,25 @@ function ProjectList() {
     navigate("/companyAdmin/addProject");
   };
 
-  const editProject = async (project) => {
-    console.log(project);
-    await myToaster.projectEditSwal(project, fetchProjects);
+
+
+  const deleteSwalHandler = async (id) => {
+    const response = await deleteProjectById(id);
+    if (response.isSuccess) {
+      myToaster.showSuccessToast(response.message);
+      fetchProjects();
+    } else {
+      myToaster.showErrorToast(response.message);
+      setConfirmVisible(false); 
+    }
+  };
+  const handleDeleteProject = (project) => {
+    setSelectedProject(project); 
+    setConfirmVisible(true); 
   };
 
-  // const deleteSwalHandler = async (id) => {
-  //   const response = await deleteProjectById(id);
-  //   if (response.isSuccess) {
-  //     myToaster.showSuccessToast(response.message);
-  //     fetchProjects();
-  //   } else {
-  //     myToaster.showErrorToast(response.message);
-  //   }
-  // };
-
   // const deleteProject = async (project) => {
-  //   myToaster.primereactdeleteProject(project, deleteSwalHandler);
+  //   myToaster.primereactDeleteProject(project, deleteSwalHandler);
   // };
 
   const fetchProjects = async () => {
@@ -198,6 +203,10 @@ function ProjectList() {
    fetchProjects()
   }, []);
 
+  const updateProject=(project)=>{
+    console.log(project);
+    myToaster.updateProject(project,fetchProjects)
+  }
   return (
     <>
       <BreadcrumbComponent labels={breadcrumbLabels} />
@@ -222,7 +231,19 @@ function ProjectList() {
           addButtonLabel="Add Project"
         />
       )}
-      <ConfirmDialog />
+      <ConfirmDialog
+            visible={confirmVisible}
+            onHide={() => setConfirmVisible(false)}
+            message= {`Are you sure you want to delete the Project "${selectedproject?.projectName}"?`}
+            header= "Confirmation"
+            icon= "pi pi-exclamation-triangle"
+            acceptLabel= "Yes"
+            rejectLabel= "No"
+            acceptClassName= "p-button-secondary"
+            rejectClassName= "p-button-danger"
+            className= "custom-dialog"
+            accept= {() => deleteSwalHandler(selectedproject?.id)}
+         />
     </>
   );
 }

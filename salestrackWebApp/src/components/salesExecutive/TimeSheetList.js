@@ -28,6 +28,7 @@ function TimeSheetList() {
     { key: "hoursSpent", label: "Hours Spent" },
     { key: "comment", label: "Comment" },
     { key: "isActive",label:"IsActive"},
+    { key: "isApproved",label:"IsApproved"},
     { key: "projectName", label: "Project Name" },  
   ];
   let user =JSON.parse(localStorage.getItem("user"));

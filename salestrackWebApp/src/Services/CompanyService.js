@@ -87,3 +87,11 @@ import axios from "axios";
             let res=await axiosObject.get(`${ApiUrl}CompanyAdmin/getProjectsByUser`).then(res=>res.data);
             return res;
         }
+        export const updateProjectList=(updateProject)=>{
+            let res=axiosObject.post(`${ApiUrl}CompanyAdmin/updateProject`,updateProject).then(res=>res.data)
+            return res;
+        }
+        export const deleteProjectById=(projectId)=>{
+            let res=axiosObject.delete(`${ApiUrl}CompanyAdmin/deleteProjectcById/${projectId}`).then(res=>res.data)
+            return res;
+        }

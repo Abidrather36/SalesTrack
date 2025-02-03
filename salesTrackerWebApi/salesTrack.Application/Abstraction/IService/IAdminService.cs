@@ -29,9 +29,11 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<IEnumerable<CompanyTimeSheetResponse>>> GetCompanyTimeSheet();
         Task<ApiResponse<UpdateApproveCompanyTimeSheet>> UpdateTimeSheetIsApproved(Guid userId);
         Task<ApiResponse<ProjectResponseModel>> AddProject(ProjectRequestModel model);
+        Task<ApiResponse<ProjectResponseModel>> UpdateProject(ProjectUpdateModel model);
         Task<ApiResponse<ProjectResponseModel>> GetProjectById(Guid id);
         Task<ApiResponse<ProjectResponseModel>> GetProjectByName(string projectName);
         Task<ApiResponse<IEnumerable<ProjectResponseModel>>> GetAllProjectsByUser();
+        Task<ApiResponse<ProjectResponseModel>> DeleteProjectById(Guid id);
 
 
     }

@@ -8,7 +8,6 @@ namespace salesTrack.Domain.Models.Request
 {
     public class ProjectRequestModel
     {
-        public Guid? Id { get; set; }
         public string? ProjectName { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }

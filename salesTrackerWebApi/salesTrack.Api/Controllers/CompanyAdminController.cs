@@ -9,6 +9,7 @@ using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Common;
 using SalesTrack.Domain.Entities.Models.Request;
+using System.Reflection.Metadata.Ecma335;
 
 namespace salesTrack.Api.Controllers
 {
@@ -321,11 +322,11 @@ namespace salesTrack.Api.Controllers
             }
         }
         [HttpPost("updateProject")]
-        public async Task<IActionResult> UpdateProject(ProjectRequestModel model)
+        public async Task<IActionResult> UpdateProject(ProjectUpdateModel model)
         {
             try
             {
-                return Ok(await adminService.AddProject(model));
+                return Ok(await adminService.UpdateProject(model));
 
             }
             catch (Exception ex)
@@ -347,7 +348,18 @@ namespace salesTrack.Api.Controllers
                 throw new Exception(ex.Message);
             }
         }
-
+        [HttpDelete("deleteProjectcById/{id:guid}")]
+        public async Task<IActionResult> DeleteProject(Guid id)
+        {
+            try
+            {
+               return Ok(await adminService.DeleteProjectById(id));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

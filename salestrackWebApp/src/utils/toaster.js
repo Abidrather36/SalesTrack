@@ -5,6 +5,7 @@ import {
   deleteCompanyById,
   updateAdminProcessStep,
   updateLeadCategory,
+  updateProjectList,
 } from "../Services/CompanyService";
 import { confirmDialog } from "primereact/confirmdialog";
 import { ConfirmDialog } from "primereact/confirmdialog";
@@ -268,7 +269,54 @@ class Toaster {
       }
     });
   };
-
+   updateProject = async (project = {}, fetchProjectList) => {
+    const formattedStartDate = new Date(project.startDate).toISOString().split("T")[0];
+    const formattedEndDate = new Date(project.endDate).toISOString().split("T")[0];
+  
+    Swal.fire({
+      title: "Edit Project",
+      html: `
+        <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
+          <label for="swal-input-name" style="text-align:left">Project Name</label>
+          <input id="swal-input-name" type="text" class="swal2-input" style="width: 80%; margin-left:10px" 
+            placeholder="Project Name" value="${project.projectName || ""}" />
+  
+          <label for="swal-input-start-date" style="text-align:left">Start Date</label>
+          <input id="swal-input-start-date" type="date" class="swal2-input" style="width: 80%; margin-left:10px" 
+            value="${formattedStartDate}" />
+  
+          <label for="swal-input-end-date" style="text-align:left">End Date</label>
+          <input id="swal-input-end-date" type="date" class="swal2-input" style="width: 80%; margin-left:10px" 
+            value="${formattedEndDate}" />
+        </div>
+      `,
+      focusConfirm: false,
+      preConfirm: () => {
+        const projectName = document.getElementById("swal-input-name").value;
+        const startDate = document.getElementById("swal-input-start-date").value;
+        const endDate = document.getElementById("swal-input-end-date").value;
+  
+        return { projectName, startDate, endDate };
+      },
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Update",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const updatedProject = { ...result.value, id: project.id };
+  
+        const res = await updateProjectList(updatedProject);
+        if (res.isSuccess) {
+          myToaster.showSuccessToast(res.message);
+          fetchProjectList();
+        } else {
+          myToaster.showErrorToast(res.message);
+        }
+      }
+    });
+  };
+  
   FireInputSwal = async (data = {}, fetchCompanies) => {
     Swal.fire({
       title: "Edit Company",
@@ -670,6 +718,20 @@ class Toaster {
       accept: () => deleteLeadCompanyHandler(leadCompany.id),
     });
   };
+  primereactDeleteProject =(projectList,deleteSwalHandler)=>{
+    confirmDialog({
+      message: `Are you sure you want to delete the lead company "${projectList.projectName}"?`,
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      acceptLabel: "Yes",
+      rejectLabel: "No",
+      acceptClassName: "p-button-secondary",
+      rejectClassName: "p-button-danger",
+      className: "custom-dialog",
+      accept: () => deleteSwalHandler(projectList.id),
+    });
+  }
 }
+
 const myToaster = new Toaster();
 export default myToaster;

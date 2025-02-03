@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace salesTrack.Domain.Models.Request
 {
-    public class ProjectUpdateModel:ProjectRequestModel
+    public class ProjectUpdateModel : ProjectRequestModel
     {
+        public Guid Id { get; set; }
 
     }
 }

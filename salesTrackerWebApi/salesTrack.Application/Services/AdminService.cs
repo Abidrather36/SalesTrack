@@ -551,19 +551,19 @@ namespace salesTrack.Application.Services
 
 
 
-        public async Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetTimeSheetByUser(DateTimeOffset? startDate, DateTimeOffset? endDate, Guid? userId =null)
+        public async Task<ApiResponse<IEnumerable<TimeSheetResponseModel>>> GetTimeSheetByUser(DateTimeOffset? startDate, DateTimeOffset? endDate, Guid? userId = null)
         {
             try
             {
                 var companyUser = contextService.UserId();
 
-              /*  if (endDate < startDate)
-                {
-                    return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse("End date cannot be earlier than start date.", HttpStatusCodes.BadRequest);
-                }*/
+                /*  if (endDate < startDate)
+                  {
+                      return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse("End date cannot be earlier than start date.", HttpStatusCodes.BadRequest);
+                  }*/
 
 
-                if (startDate == null && endDate == null && userId!=null)
+                if (startDate == null && endDate == null && userId != null)
                 {
                     var timeSheetByUser = await leadRepository.GetAllTimeSheetsByUser(userId);
                     if (timeSheetByUser.Any())
@@ -573,7 +573,7 @@ namespace salesTrack.Application.Services
                     }
                     return ApiResponse<IEnumerable<TimeSheetResponseModel>>.ErrorResponse("No TimeSheets Found For the User");
                 }
-                else if (startDate != null && endDate != null && userId!=null)
+                else if (startDate != null && endDate != null && userId != null)
                 {
                     var timeSheetByUser = await leadRepository.GetAllTimeSheetsByUser(userId);
                     if (timeSheetByUser.Any())
@@ -585,7 +585,7 @@ namespace salesTrack.Application.Services
                 }
                 else
                 {
-                    var res = await companyRepository.GetTimeSheet(startDate, endDate,companyUser,userId);
+                    var res = await companyRepository.GetTimeSheet(startDate, endDate, companyUser, userId);
 
                     return ApiResponse<IEnumerable<TimeSheetResponseModel>>.SuccessResponse(res, $"{res.Count()} TimeSheets Found", HttpStatusCodes.OK);
                 }
@@ -1003,7 +1003,7 @@ namespace salesTrack.Application.Services
             try
             {
                 var companyAdmin = contextService.UserId();
-                
+
                 if (string.IsNullOrWhiteSpace(model.ProjectName))
                 {
                     return ApiResponse<ProjectResponseModel>.ErrorResponse("Project Name is Required ", HttpStatusCodes.BadRequest);
@@ -1036,7 +1036,7 @@ namespace salesTrack.Application.Services
                     ProjectResponseModel res = new()
                     {
                         Id = project.Id,
-                        ProjectName = project.ProjectName,  
+                        ProjectName = project.ProjectName,
                         StartDate = project.StartDate,
                         EndDate = project.EndDate,
                         IsActive = project.IsActive,
@@ -1080,7 +1080,7 @@ namespace salesTrack.Application.Services
             try
             {
                 var companyAdmin = contextService.UserId();
-                var project = await companyRepository.GetProjectByIdAsync(companyAdmin,id);
+                var project = await companyRepository.GetProjectByIdAndCompanyIdAsync(companyAdmin, id);
                 if (project == null)
                 {
                     return ApiResponse<ProjectResponseModel>.ErrorResponse("No Such Project", HttpStatusCodes.NotFound);
@@ -1091,6 +1091,7 @@ namespace salesTrack.Application.Services
                     ProjectName = project.ProjectName,
                     StartDate = project.StartDate,
                     EndDate = project.EndDate,
+                    IsActive = project.IsActive
                 };
                 return ApiResponse<ProjectResponseModel>.SuccessResponse(res, "Project Found Successfully", HttpStatusCodes.Found);
             }
@@ -1101,7 +1102,7 @@ namespace salesTrack.Application.Services
             }
         }
 
-        public async  Task<ApiResponse<ProjectResponseModel>> GetProjectByName(string projectName)
+        public async Task<ApiResponse<ProjectResponseModel>> GetProjectByName(string projectName)
         {
             try
             {
@@ -1117,8 +1118,84 @@ namespace salesTrack.Application.Services
                     ProjectName = project.ProjectName,
                     StartDate = project.StartDate,
                     EndDate = project.EndDate,
+                    CompanyId = project.CompanyId
                 };
                 return ApiResponse<ProjectResponseModel>.SuccessResponse(res, "Project Found Successfully", HttpStatusCodes.Found);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<ProjectResponseModel>.ErrorResponse($"An error occurred: {ex.Message}", HttpStatusCodes.InternalServerError);
+
+            }
+        }
+
+        public async Task<ApiResponse<ProjectResponseModel>> UpdateProject(ProjectUpdateModel model)
+        {
+            try
+            {
+                var companyAdmin = contextService.UserId();
+                var project = await companyRepository.GetProjectById(model.Id);
+                if (project is null)
+                {
+                    return ApiResponse<ProjectResponseModel>.ErrorResponse("no project found", HttpStatusCodes.NotFound);
+                }
+
+                project.ProjectName = model.ProjectName;
+                project.StartDate = model.StartDate;
+                project.EndDate = model.EndDate;
+
+                var updatedProject = await companyRepository.UpdateProjectAsync(project);
+                if (updatedProject > 0)
+                {
+                    ProjectResponseModel projectUpdatedResponse = new()
+                    {
+                        Id = project.Id,
+                        ProjectName = project.ProjectName,
+                        StartDate = project.StartDate,
+                        EndDate = project.EndDate,
+                        IsActive = project.IsActive,
+                        CompanyId = project.CompanyId,
+                    };
+                    return ApiResponse<ProjectResponseModel>.SuccessResponse(projectUpdatedResponse, "Project Updated Succesfully", HttpStatusCodes.OK);
+
+                }
+                return ApiResponse<ProjectResponseModel>.ErrorResponse("can't Updated please ,something is wrong please try again", HttpStatusCodes.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<ProjectResponseModel>.ErrorResponse($"An error occurred: {ex.Message}", HttpStatusCodes.InternalServerError);
+
+            }
+
+        }
+
+        public async Task<ApiResponse<ProjectResponseModel>> DeleteProjectById(Guid id)
+        {
+            try
+            {
+                var companyAdmin = contextService.UserId();
+                var project = await companyRepository.GetProjectById(id);
+                if (project is null)
+                {
+                    return ApiResponse<ProjectResponseModel>.ErrorResponse("no project found", HttpStatusCodes.NotFound);
+                }
+                project.IsActive = false;
+                project.ModifiedBy = companyAdmin;
+                project.DeletedBy = companyAdmin;
+                project.DeletedDate = DateTime.Now;
+                var isProjectDeleted = await companyRepository.UpdateProjectAsync(project);
+                if (isProjectDeleted > 0)
+                {
+                    ProjectResponseModel deletedProject = new()
+                    {
+                        Id = project.Id,
+                        ProjectName = project.ProjectName,
+                        IsActive = project.IsActive,
+
+                    };
+                    return ApiResponse<ProjectResponseModel>.SuccessResponse(deletedProject, "Project Deleted Successfully", HttpStatusCodes.Accepted);
+                }
+                return ApiResponse<ProjectResponseModel>.ErrorResponse("Can't delete something went wrong try again", HttpStatusCodes.InternalServerError);
             }
             catch (Exception ex)
             {
