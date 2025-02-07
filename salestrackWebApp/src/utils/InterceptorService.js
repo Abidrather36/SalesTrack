@@ -1,37 +1,8 @@
-// import axios from "axios";
-// import { ApiUrl } from "../Services/Shared"; 
-// import storage from "./storages"; 
-
-// const axiosObject = axios.create({
-//     baseURL: ApiUrl, 
-// });
-
-// axiosObject.interceptors.request.use(
-//     (config) => {
-//         const token = storage.getItem("salesTrack");
-//         if(token!==null){
-//             token.replace(/^"|"$/g, ""); 
-//         }
-//         const publicRoutes = ['/login', '/enquiry'];
-//         const isApiUrl = config.url.startsWith(ApiUrl);
-//         const isPublicRoute = publicRoutes.some(route => config.url.includes(route));
-//         if (token && isApiUrl && !isPublicRoute) {
-//             config.headers['Authorization'] = `Bearer ${token}`;
-//         }
-//         return config;
-//     },
-//     (error) => {
-
-//         return Promise.reject(error);
-//     }
-// );
-
-// export default axiosObject;
-
 ////Original ////
 import axios from "axios";
 import { ApiUrl } from "../Services/Shared"; 
 import storage from "./storages"; 
+import myToaster from "./toaster";
 
 const axiosObject = axios.create({
     baseURL: ApiUrl, 
@@ -49,6 +20,9 @@ axiosObject.interceptors.request.use(
         const publicRoutes = ['/login', '/enquiry'];
         const isApiUrl = config.url?.startsWith(ApiUrl);
         const isPublicRoute = publicRoutes.some(route => config.url?.includes(route));
+        //publicRoutes: Defines routes that do not require authentication.
+        //isApiUrl: Checks if the request is for the API.
+        //isPublicRoute: Checks if the requested URL is in the list of public routes.//
 
         // Set Authorization header if token is valid, URL matches API URL, and route is not public
         if (token && isApiUrl && !isPublicRoute) {
@@ -59,6 +33,28 @@ axiosObject.interceptors.request.use(
     },
     (error) => {
         return Promise.reject(error);
+    }
+);
+axiosObject.interceptors.response.use(
+    (response) => {
+        return response;  // If response is successful, just return it
+    },
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            // Handle 401 error globally here
+            myToaster.showErrorToast("Unauthorized! or Session Timeout Redirecting to login...");
+
+            // Optionally, remove the token and redirect to login
+            storage.removeStorage("salesTrack"); // Remove token from storage
+            window.location.href = "/login";   // Redirect to login page (or your preferred logout logic)
+
+            // Optionally, you could add some kind of notification about being logged out:
+            // myToaster.showErrorToast("Session expired. Please log in again.");
+        }
+
+        // You could also add other error handling logic based on error type (e.g., for 500 errors, etc.)
+
+        return Promise.reject(error);  // Return the error to be handled further
     }
 );
 

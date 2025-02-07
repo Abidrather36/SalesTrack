@@ -665,7 +665,7 @@ export const CompanyAdminsidebarLabels = [
     id: 1,
     label: "Dashboard",
     link: "/companyAdmin/dashboard",
-    icon: <AnalyticsIcon />,
+    icon: <AnalyticsIcon style={{marginLeft:"-3.5px"}} />,
   },
   {
     id: 2,
@@ -782,7 +782,7 @@ export const SalesManagersidebarLabels = [
   {
     id: 9,
     label: "Time Management",
-    icon: <EventNoteIcon />,
+    icon: <EventNoteIcon style={{marginLeft:"-3.1px"}} />,
     dropdown: true,
     items: [
       { id: 10, label: "Add Task", link: "/salesManager/addTask",icon:<FaPlus /> },

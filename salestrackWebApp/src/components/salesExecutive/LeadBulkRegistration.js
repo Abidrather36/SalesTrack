@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import * as XLSX from "xlsx";
 import myToaster from "../../utils/toaster";
 import { addBulkLeads } from "../../Services/LeadService";
@@ -13,6 +13,7 @@ const ExcelToGrid = () => {
   const [loading, setLoading] = useState(false);
   const [processingFile, setProcessingFile] = useState(false); // Spinner state for file upload
   const navigate=useNavigate();
+  const fileInputRef =useRef(null); 
 
   let user = JSON.parse(localStorage.getItem("user"))
   // Handle file upload
@@ -49,6 +50,9 @@ const ExcelToGrid = () => {
   const handleReset = () => {
     setData([]);
     setSelectedRows([]);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Reset the file input value
+    }
   };
 
   // Toggle single row selection
@@ -204,6 +208,7 @@ const ExcelToGrid = () => {
       <h2 style={{ textAlign: "center", color: "#333", marginBottom: "20px" }}>Excel File Upload</h2>
       <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
         <input
+         ref={fileInputRef} 
           type="file"
           accept=".xlsx, .xls"
           onChange={handleFileUpload}

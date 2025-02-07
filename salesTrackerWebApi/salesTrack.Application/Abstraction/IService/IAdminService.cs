@@ -35,6 +35,5 @@ namespace salesTrack.Application.Abstraction.IService
         Task<ApiResponse<IEnumerable<ProjectResponseModel>>> GetAllProjectsByUser();
         Task<ApiResponse<ProjectResponseModel>> DeleteProjectById(Guid id);
 
-
     }
 }

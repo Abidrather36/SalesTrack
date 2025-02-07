@@ -48,10 +48,10 @@ function UserList() {
       icon: <FaTrash />,
     },
     {
-    key: "view-time-sheet",
-    title: "View Time Sheet",
+    key: "timeSheet",
+    title: "ViewTimeSheet",
     className: "btn btn-info",
-    onClickHandler: (user) => viewTimeSheet(user),
+    onClickTimeSheetHandler: (user) => viewTimeSheet(user),
     icon: <FaClipboardList />,
     }
   ];

@@ -234,6 +234,16 @@ function Grid({
                           )
                           ?.onApproveHandler(item)
                       }
+                      handleTimeSheet={() =>
+                        buttons
+                          .find(
+                            (btn) =>
+                              btn.key === "timeSheet" &&
+                              (!btn.show || btn.show(item))
+                          )
+                          ?.onClickTimeSheetHandler(item)
+                          
+                      }
                     />
                   </td>
                 </tr>

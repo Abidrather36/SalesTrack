@@ -220,7 +220,7 @@ import { registerUser, UserLists } from "../../Services/UserService";
 import BreadcrumbComponent from "../shared/Breadcrumb";
 import InputField from "../public/InputField";
 import Spin from "../public/Spin";
-
+import image from "../../utils/52233.jpg"
 const AddUser = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
@@ -282,13 +282,13 @@ const AddUser = () => {
       <div className="row" style={{ height: "100vh", display: "flex" }}>
         <div className="col-lg-6">
           <img
-            src="https://i.ibb.co/k8TBpyy/illustration-sign-up-log-wireframe-idea-showcasing-various-ui-elements-1278800-10890.jpg"
+            src={image}
             alt="Registration Illustration"
             className="img-fluid"
             style={{
               maxWidth: "100%",
               height: "65%",
-              margin: "40px 10px 0",
+              margin: "60px 10px 0",
               borderRadius: "10px",
             }}
           />
@@ -384,7 +384,6 @@ const AddUser = () => {
                      Ram
                    </option>
              
-                   ))}
                  </InputField>
                  {errors.reportsTo && (
                    <span className="error-message">

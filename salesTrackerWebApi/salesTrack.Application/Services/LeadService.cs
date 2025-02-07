@@ -300,75 +300,7 @@ namespace salesTrack.Application.Services
             }
         }
 
-        /*  public async Task<ApiResponse<LeadResponseModel>> UpdateLead(LeadUpdateModel model)
-          {
-              try
-              {
-                  var salesExecutiveId = contextService.UserId();
-
-                  var user = await userRepository.GetByIdAsync(model.Id);
-                  if (user is null)
-                      return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.User.UserNotFound, HttpStatusCodes.BadRequest);
-
-                  var lead = await leadRepository.GetByIdAsync(model.Id);
-                  if (lead is null)
-                      return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.LeadManagement.LeadNotFound, HttpStatusCodes.BadRequest);
-
-                  var leadCompany = await leadRepository.GetLeadCompanyNameById(lead.LeadCompanyId);
-                  if (leadCompany is null)
-                      return ApiResponse<LeadResponseModel>.ErrorResponse("Invalid Lead Company", HttpStatusCodes.BadRequest);
-
-                  user.Name = model.LeadName;
-                  user.Email = model.Email;
-                  user.ModifiedBy = salesExecutiveId;
-                  user.ModifiedDate = DateTime.UtcNow;
-                  user.PhoneNumber = string.IsNullOrEmpty(model.PhoneNumber) ? "N/A" : model.PhoneNumber;
-
-                  var userUpdateResult = await userRepository.UpdateAsync(user);
-
-                  lead.LeadSourceId = model.LeadSourceId;
-                  lead.FinalStatus = model.FinalStatus ?? lead.FinalStatus;
-                  lead.AssignTo = model.AssignTo ?? lead.AssignTo;
-                  lead.ModifiedBy = salesExecutiveId;
-                  lead.ModifiedDate = DateTime.UtcNow;
-                  lead.Comment = model.Comment;
-                  lead.IsActive = true;
-
-                  var leadUpdateResult = await leadRepository.UpdateAsync(lead);
-                  if (leadUpdateResult <= 0)
-                      return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.TechnicalError, HttpStatusCodes.BadRequest);
-
-                  var leadSource = await leadSourceRepository.GetByIdAsync(lead.LeadSourceId);
-                  if (leadSource is null)
-                      return ApiResponse<LeadResponseModel>.ErrorResponse(ApiMessages.LeadSourceManagement.InvalidLeadSourceData, HttpStatusCodes.BadRequest);
-
-                  var assignUser = await userRepository.GetByIdAsync(lead.AssignTo);
-
-                  LeadResponseModel leadResponseModel = new()
-                  {
-                      Id = lead.Id,
-                      LeadName = user.Name,
-                      Email = user.Email,
-                      LeadCompanyName = leadCompany.LeadCompanyName,
-                      PhoneNumber = user.PhoneNumber,
-                      LeadSourceId = lead.LeadSourceId,
-                      LeadSourceName = leadSource.LeadSourceName,
-                      AssignToId = lead.AssignTo,
-                      AssignedTo = assignUser?.Name,
-                      Comment = model.Comment,
-                      IsActive = true,
-                      FinalStatus = lead.FinalStatus,
-                      UserRole = UserRole.Lead
-                  };
-
-                  return ApiResponse<LeadResponseModel>.SuccessResponse(leadResponseModel, ApiMessages.LeadManagement.LeadUpdateSuccess, HttpStatusCodes.OK);
-              }
-              catch (Exception ex)
-              {
-                  return ApiResponse<LeadResponseModel>.ErrorResponse($"{ApiMessages.TechnicalError} {ex.Message}", HttpStatusCodes.BadRequest);
-              }
-          }*/
-
+        
         public async Task<ApiResponse<LeadProcessResponseModel>> AddLeadProcessStep(LeadProcessRequestModel model)
         {
             try
@@ -1567,19 +1499,17 @@ namespace salesTrack.Application.Services
             try
             {
                 var salesExecutiveId = contextService.UserId();
-                if (salesExecutiveId == Guid.Empty)
-                {
-                    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse(
-                        "Sales Executive ID not found.",
-                        HttpStatusCodes.BadRequest
-                    );
-                }
+               
 
                 var salesEx = await userRepository.GetUserById(salesExecutiveId);
                 var companyId = salesEx!.CompanyId;
 
                 // Collect all provided emails
                 var emails = leadModels.Select(m => m.Email).ToList();
+                if (emails == null || emails.Count == 0 || emails.Any(email => string.IsNullOrEmpty(email)))
+                {
+                    return ApiResponse<IEnumerable<LeadResponseModel>>.ErrorResponse("Emails are required. Please fill email", HttpStatusCodes.BadRequest);
+                }
 
                 // Fetch existing emails from database
                 var existingEmails = await userRepository.GetEmailsAsync(emails);
