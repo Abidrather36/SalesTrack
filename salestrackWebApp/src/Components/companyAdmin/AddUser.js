@@ -272,14 +272,14 @@ const AddUser = () => {
     }
   };
 
-  // const filteredUsers = users?.filter((user) => user.userType === 2);
+  const filteredUsers = users?.filter((user) => user.userType === 2);
 
   return (
     <>
       <BreadcrumbComponent
         labels={{ module: "companyAdmin", currentRoute: "Register-New-User" }}
       />
-      <div className="row" style={{ height: "100vh", display: "flex" }}>
+      <div className="row" style={{ height: "100vh", display: "flex" ,marginBottom:"100px"}}>
         <div className="col-lg-6">
           <img
             src={image}
@@ -294,8 +294,8 @@ const AddUser = () => {
           />
         </div>
 
-        <div className="col-lg-6">
-          <div className="login-container">
+        <div className="col-lg-6" >
+          <div className="login-container" >
             <h2 className="form-title">Register New User</h2>
             <form
               className="login-form"
@@ -383,7 +383,12 @@ const AddUser = () => {
                    {/* <option value="c3188984-f7c5-4460-9d77-18d550740e57"> */}
                      Ram
                    </option>
+                   {filteredUsers?.map((user) => (
+                     <option key={user.id} value={user.id}>
+                       {user.name}
+                     </option>
              
+                   ))}
                  </InputField>
                  {errors.reportsTo && (
                    <span className="error-message">

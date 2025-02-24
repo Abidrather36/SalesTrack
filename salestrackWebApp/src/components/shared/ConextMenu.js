@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const ThreeDotMenu = ({ options, handleEdit, handleDelete,handleManageLead,handleFollowUpHistory,handleTodaysFollowUpDate,onAddFollowUpHistory,handleApprove,handleTimeSheet }) => {
+const ThreeDotMenu = ({ options, handleEdit, handleDelete,handleManageLead,handleFollowUpHistory,handleTodaysFollowUpDate,onAddFollowUpHistory,handleApprove,handleTimeSheet}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -59,6 +59,9 @@ const ThreeDotMenu = ({ options, handleEdit, handleDelete,handleManageLead,handl
       else if(option.title === "ViewTimeSheet"){
         handleTimeSheet();
       }
+      // else if(option.title === "followUp Of Dashboard"){
+      //   handleFollowUpOfDashboard();
+      // }
       
       handleClose();
     }}

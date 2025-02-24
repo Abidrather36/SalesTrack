@@ -1,1 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@media (max-width: 768px) {
+    .navbar-user {
+      justify-content: center;
+    }
+    .avatar-parent-child {
+      flex-direction: column;
+      text-align: center;
+    }
+    .dropdown-menu {
+      min-width: 100%;
+    }
+  }

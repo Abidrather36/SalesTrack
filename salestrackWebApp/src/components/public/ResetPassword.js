@@ -40,7 +40,6 @@ function ResetPassword() {
    
   };
 
-
   return (
     <>
       <div className="container mx-auto 4xl" style={{ justifyContent: "center",}}>

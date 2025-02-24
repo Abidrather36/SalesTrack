@@ -208,7 +208,7 @@ const ExcelToGrid = () => {
       <h2 style={{ textAlign: "center", color: "#333", marginBottom: "20px" }}>Excel File Upload</h2>
       <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
         <input
-         ref={fileInputRef} 
+          ref={fileInputRef} 
           type="file"
           accept=".xlsx, .xls"
           onChange={handleFileUpload}

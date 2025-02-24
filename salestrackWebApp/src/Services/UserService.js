@@ -25,7 +25,6 @@ export const addprocessStep=async (processStep)=>{
 export const getAllProcessSteps=async()=>{
     let res=await axiosObject.get(`${ApiUrl}CompanyAdmin/getAll-process-steps`).then(res=>res.data)
     return res;
-    
 }
 export const updateUser=async(updateUser)=>{
     let res=await axiosObject.post(`${ApiUrl}CompanyAdmin/Update-User`,updateUser).then(res=>res.data)

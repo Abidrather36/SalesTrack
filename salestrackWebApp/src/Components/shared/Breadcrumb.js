@@ -1,4 +1,3 @@
-
 import React from "react";
 import { FaHome } from "react-icons/fa";
 import { MDBBreadcrumb, MDBBreadcrumbItem } from "mdb-react-ui-kit";
@@ -46,60 +45,5 @@ function BreadcrumbComponent() {
 }
 
 export default BreadcrumbComponent;
-
-
-// function BreadcrumbComponent({ labels }) {
-//   // Get the current path and split it into parts
-//   const currentPath = window.location.pathname;
-//   const pathParts = currentPath.split("/").filter((part) => part); // Remove empty strings
-
-//   // Dynamically set the Home breadcrumb label and route
-//   const homeLabel = labels?.module?.charAt(0).toUpperCase() + labels?.module?.slice(1) || "Home";
-//   const homeRoute = `/${labels?.module || ""}`; // Construct the route to the module or fallback to "/home"
-
-//   return (
-//     <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
-//       {/* Dynamically generate the Home breadcrumb */}
-//       <MDBBreadcrumbItem>
-//         <Link to={homeRoute}>
-//           <FaHome /> {homeLabel}
-//         </Link>
-//       </MDBBreadcrumbItem>
-
-//       {/* Dynamically generate the "LeadList" breadcrumb */}
-//       {labels?.currentRoute && (
-//         <MDBBreadcrumbItem>
-//           <Link to={`/${labels?.module}/${labels?.currentRoute}`}>
-//             {labels?.currentRoute.charAt(0).toUpperCase() + labels?.currentRoute.slice(1)}
-//           </Link>
-//         </MDBBreadcrumbItem>
-//       )}
-
-//       {/* Optionally handle a case where a more complex path is needed */}
-//       {pathParts.slice(2).map((part, index) => {
-//         const isLast = index === pathParts.length - 3; // Check if this is the last part
-//         const routePath = `/${pathParts.slice(0, index + 3).join("/")}`; // Construct the route path
-
-//         return isLast ? (
-//           // Last breadcrumb is active and not clickable
-//           <MDBBreadcrumbItem key={index} active>
-//             {part.charAt(0).toUpperCase() + part.slice(1)}
-//           </MDBBreadcrumbItem>
-//         ) : (
-//           // Other breadcrumbs are clickable
-//           <MDBBreadcrumbItem key={index}>
-//             <Link to={routePath}>
-//               {part.charAt(0).toUpperCase() + part.slice(1)}
-//             </Link>
-//           </MDBBreadcrumbItem>
-//         );
-//       })}
-//     </MDBBreadcrumb>
-//   );
-// }
-
-// export default BreadcrumbComponent;
-
-
 
 

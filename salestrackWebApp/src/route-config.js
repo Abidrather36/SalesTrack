@@ -1,4 +1,3 @@
-
 import AdminDashboard from "./components/admin/adminDashboard"
 import UserList from "./components/companyAdmin/UserList"
 import CompanyAdminDashboard from "./components/companyAdmin/CompanyAdminDashboard" 
@@ -43,6 +42,8 @@ import LeadRegistration from "./components/salesExecutive/LeadBulkRegistration"
 import ExcelToGrid from "./components/salesExecutive/LeadBulkRegistration"
 import Projects from "./components/companyAdmin/Projects"
 import ProjectList from "./components/companyAdmin/ProjectList"
+import BasicModal from "./components/salesExecutive/AddfollowUpdate"
+import FollowUpHistory from "./components/salesExecutive/FollowUpHistory"
 
 export const routerConfiguration = {
   PublicRoutes: [
@@ -106,6 +107,7 @@ export const routerConfiguration = {
     { path : "/salesExecutive/changePassword",element:<ChangePassword/>},
     { path : "/salesExecutive/addBulkLeads",element:<AddMultipleLeads/>},
     { path : "/salesExecutive/ExcelToGrid", element:<ExcelToGrid/>},
+    { path : "/salesExecutive/followUphistory/:leadId", element:<FollowUpHistory/>},
 
     // { path:"/salesExecutive/followUpHistory", element:<LeadList />} 
   ]
@@ -126,6 +128,8 @@ export const routerConfiguration = {
     { path: "/salesManager/changePassword",element:<ChangePassword/>},
     { path : "/salesManager/ExcelToGrid", element:<ExcelToGrid/>},
     { path : "/salesManager/bulkInsert",element :<BulkInsert/>},
+    { path : "/salesManager/followUphistory/:leadId", element:<FollowUpHistory/>},
+
     // { path:"/salesManager/followUpHistory", element:<LeadList />},
   ]
 }

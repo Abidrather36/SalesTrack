@@ -718,19 +718,7 @@ class Toaster {
       accept: () => deleteLeadCompanyHandler(leadCompany.id),
     });
   };
-  primereactDeleteProject =(projectList,deleteSwalHandler)=>{
-    confirmDialog({
-      message: `Are you sure you want to delete the lead company "${projectList.projectName}"?`,
-      header: "Confirmation",
-      icon: "pi pi-exclamation-triangle",
-      acceptLabel: "Yes",
-      rejectLabel: "No",
-      acceptClassName: "p-button-secondary",
-      rejectClassName: "p-button-danger",
-      className: "custom-dialog",
-      accept: () => deleteSwalHandler(projectList.id),
-    });
-  }
+
 }
 
 const myToaster = new Toaster();

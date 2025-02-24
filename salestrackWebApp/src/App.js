@@ -30,6 +30,7 @@ const App = () => {
             <PrivateRoute>
               <ProtectedRoute allowedRoles={[UserRole.PortalAdmin]}>
                 <DashboardLayout labelList={PortalAdminsidebarLabels} />
+                
               </ProtectedRoute>
             </PrivateRoute>
           }

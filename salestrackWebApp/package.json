@@ -31,6 +31,7 @@
     "date-fns": "^2.29.3",
     "framer-motion": "^11.15.0",
     "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.475.0",
     "mdb-react-ui-kit": "^9.0.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.8.3",
