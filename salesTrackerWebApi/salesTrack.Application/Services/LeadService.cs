@@ -228,6 +228,7 @@ namespace salesTrack.Application.Services
                     user.ModifiedBy = salesExecutiveId;
                     user.ModifiedDate = DateTime.UtcNow;
                     user.PhoneNumber = string.IsNullOrEmpty(model.PhoneNumber) ? "N/A" : model.PhoneNumber;
+                    
 
                     var updatedUser = await userRepository.UpdateAsync(user);
 
@@ -252,6 +253,8 @@ namespace salesTrack.Application.Services
                     lead.IsActive = true;
                     lead.Designation = model.Designation;
                     lead.Department = model.Department;
+                    lead.LeadRank = model.LeadRank ?? lead.LeadRank;
+
 
                     var updatedLead = await leadRepository.UpdateAsync(lead);
                     var assignUserId = await userRepository.GetByIdAsync(lead.AssignTo);
@@ -573,7 +576,7 @@ namespace salesTrack.Application.Services
 
             return ApiResponse<IEnumerable<LeadFollowUpHistoryResponse>>.SuccessResponse(
                 sortedLeadHistory,
-                "Leads history fetched successfully.",
+                $"{sortedLeadHistory.Count() } Follow Ups found.",
                 HttpStatusCodes.OK
             );
         }

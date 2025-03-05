@@ -44,6 +44,8 @@ import Projects from "./components/companyAdmin/Projects"
 import ProjectList from "./components/companyAdmin/ProjectList"
 import BasicModal from "./components/salesExecutive/AddfollowUpdate"
 import FollowUpHistory from "./components/salesExecutive/FollowUpHistory"
+import SalesTern from "./components/HoemPage"
+import Carousel from "./components/salesExecutive/Carousel"
 
 export const routerConfiguration = {
   PublicRoutes: [
@@ -56,6 +58,7 @@ export const routerConfiguration = {
     { path: "testimonial", element:<TestimonialsComponent/>},
     { path: "forgetPassword",element :<ForgetPassword/>},
     { path: "reset-Password",element:<ResetPassword/>},
+    { path: "SalesTern",element:<SalesTern/>}
     
 
   ],
@@ -108,6 +111,7 @@ export const routerConfiguration = {
     { path : "/salesExecutive/addBulkLeads",element:<AddMultipleLeads/>},
     { path : "/salesExecutive/ExcelToGrid", element:<ExcelToGrid/>},
     { path : "/salesExecutive/followUphistory/:leadId", element:<FollowUpHistory/>},
+   
 
     // { path:"/salesExecutive/followUpHistory", element:<LeadList />} 
   ]
@@ -129,7 +133,8 @@ export const routerConfiguration = {
     { path : "/salesManager/ExcelToGrid", element:<ExcelToGrid/>},
     { path : "/salesManager/bulkInsert",element :<BulkInsert/>},
     { path : "/salesManager/followUphistory/:leadId", element:<FollowUpHistory/>},
-
+    { path : "/salesManager/Carousel",element:<Carousel/>},
+    { path: "/salesManager/SalesTern",element:<SalesTern/>}
     // { path:"/salesManager/followUpHistory", element:<LeadList />},
   ]
 }

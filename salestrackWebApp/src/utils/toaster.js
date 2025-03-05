@@ -29,81 +29,6 @@ class Toaster {
     toast.error(message);
   };
 
-  // editLeadSwal = async (lead = {}, userAssignTo, leadSources, fetchLeads) => {
-  //   Swal.fire({
-  //     title: "Edit Lead",
-  //     html: `
-  //       <div style="display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; width: 100%;">
-  //         <label for="swal-input-name" style="text-align:left">Lead Name</label>
-  //         <input id="swal-input-name" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Lead Company Name" value="${lead.leadCompanyName || ''}" />
-
-  //         <label for="swal-input-email" style="text-align:left">Email</label>
-  //         <input id="swal-input-email" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Email" value="${lead.email || ''}" />
-
-  //         <label for="swal-input-phone" style="text-align:left">Phone Number</label>
-  //         <input id="swal-input-phone" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Phone Number" value="${lead.phoneNumber || ''}" />
-
-  //         <label for="swal-input-contact-person" style="text-align:left">Contact Person</label>
-  //         <input id="swal-input-contact-person" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Contact Person" value="${lead.name || ''}" />
-
-  //         <label for="swal-input-comment" style="text-align:left">Comment</label>
-  //         <input id="swal-input-comment" class="swal2-input" style="width: 80%; margin-left:10px" placeholder="Comment" value="${lead.comment || ''}" />
-
-  //         <label for="swal-input-assign" style="text-align:left">Assign To</label>
-  //         <select id="swal-input-assign" class="swal2-input" style="width: 80%; margin-left:10px">
-  //           ${lead.assignTo ? `<option value="${lead.assignTo.id}">${lead.assignTo.name}</option>` : ""}
-  //           ${userAssignTo.map(user => `<option value="${user.id}">${user.name}</option>`).join("")}
-  //         </select>
-
-  //         <label for="swal-input-source" style="text-align:left">Lead Source</label>
-  //         <select id="swal-input-source" class="swal2-input" style="width: 80%; margin-left:10px">
-  //           ${lead.leadSourceId ? `<option value="${lead.leadSourceId}">${lead.leadSourceName}</option>` : ""}
-  //           ${leadSources.map(source => `<option value="${source.id}">${source.leadSourceName}</option>`).join("")}
-  //         </select>
-
-  //         <label for="swal-input-status" style="text-align:left">Final Status</label>
-  //         <select id="swal-input-status" class="swal2-input" style="width: 80%; margin-left:10px">
-  //           <option value="1" ${lead.finalStatus === 1 ? "selected" : ""}>Open</option>
-  //           <option value="2" ${lead.finalStatus === 2 ? "selected" : ""}>Close</option>
-  //           <option value="3" ${lead.finalStatus === 3 ? "selected" : ""}>Success</option>
-  //         </select>
-  //       </div>
-  //     `,
-  //     focusConfirm: false,
-  //     preConfirm: () => {
-  //       const name = document.getElementById("swal-input-name").value;
-  //       const email = document.getElementById("swal-input-email").value;
-  //       const phoneNumber = document.getElementById("swal-input-phone").value;
-  //       const contactPerson = document.getElementById("swal-input-contact-person").value;
-  //       const comment = document.getElementById("swal-input-comment").value;
-  //       const assignTo = document.getElementById("swal-input-assign").value;
-  //       const leadSourceId = document.getElementById("swal-input-source").value;
-  //       const finalStatus = Number(document.getElementById("swal-input-status").value);
-
-  //       return { name, email, phoneNumber, contactPerson, comment, assignTo, leadSourceId, finalStatus };
-  //     },
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Update",
-  //   }).then(async (result) => {
-  //     if (result.isConfirmed) {
-  //       const updatedLead = { ...result.value, id: lead.id };
-
-  //       try {
-  //         const res = await updateLead(updatedLead);
-  //         if (res.isSuccess) {
-  //           myToaster.showSuccessToast("Lead updated successfully");
-  //           fetchLeads();
-  //         } else {
-  //           myToaster.showErrorToast(res.message);
-  //         }
-  //       } catch (error) {
-  //         myToaster.showErrorToast("Failed to update lead");
-  //       }
-  //     }
-  //   });
-  // };
 
   editLeadSwal = async (
     lead = {},
@@ -178,6 +103,19 @@ class Toaster {
                 lead.finalStatus === 3 ? "selected" : ""
               }>Success</option>
             </select>
+        <label for="swal-input-rank" style="text-align:left">Lead Rank</label>
+        <select id="swal-input-rank" class="swal2-input" style="width: 80%; margin-left:10px">
+          ${
+            lead.leadRank
+              ? `<option value="${lead.leadRank}" selected>${lead.leadRank}</option>`
+              : ""
+          }
+          <option value="1" ${lead.leadRank === 1 ? "selected" : ""}>1</option>
+          <option value="2" ${lead.leadRank === 2 ? "selected" : ""}>2</option>
+          <option value="3" ${lead.leadRank === 3 ? "selected" : ""}>3</option>
+          <option value="4" ${lead.leadRank === 4 ? "selected" : ""}>4</option>
+          <option value="5" ${lead.leadRank === 5 ? "selected" : ""}>5</option>
+        </select>
           </div>
         `,
       focusConfirm: false,
@@ -190,6 +128,7 @@ class Toaster {
         const finalStatus = Number(
           document.getElementById("swal-input-status").value
         );
+        const leadRank = Number(document.getElementById("swal-input-rank").value);
 
         return {
           leadName,
@@ -198,6 +137,7 @@ class Toaster {
           assignTo,
           leadSourceId,
           finalStatus,
+          leadRank
         };
       },
       showCancelButton: true,

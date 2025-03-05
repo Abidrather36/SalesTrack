@@ -16,7 +16,6 @@ const AddTimeSheetStep = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
   const onSubmit = async (data) => {
     setLoading(true);
     try {

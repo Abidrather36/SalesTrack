@@ -270,7 +270,23 @@ function Grid({
           </tbody>
         </table>
       </div>
-
+      <div className="grid-footer">
+        {buttons.some((btn) => btn.key === "ApproveAll") && (
+          <div className="approve-all-btn">
+            {buttons
+              .filter((btn) => btn.key === "ApproveAll")
+              .map((btn, index) => (
+                <button
+                  key={index}
+                  className={btn.className}
+                  onClick={btn.onApproveHandler}
+                  disabled={loading}
+                >
+                  {btn.icon} {btn.title}
+                </button>
+              ))}
+          </div>
+        )}
       <TablePagination
         rowsPerPageOptions={[10, 15, 25]}
         component="div"
@@ -281,6 +297,8 @@ function Grid({
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </div>
+    </div>
+
   );
 }
 

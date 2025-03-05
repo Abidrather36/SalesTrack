@@ -32,7 +32,6 @@ const FollowUpHistory = () => {
 
   const fetchFollowUpHistory = async () => {
     setLoading(true);
-    try {
       console.log("Fetching follow-up history for leadId:", leadId);
       if (!leadId) {
         myToaster.showErrorToast("Invalid lead ID.");
@@ -45,10 +44,10 @@ const FollowUpHistory = () => {
 
       if (response.isSuccess) {
        
-
         if (user?.userRole === 3 || user?.userRole === 4) {
           setFollowUpHistory(response.result);
-          myToaster.showSuccessToast(response.message);
+          setShowSpinner(false)
+          setLoading(false)
         } else {
           myToaster.showErrorToast("You do not have permission to view this history.");
           setFollowUpHistory([]);
@@ -58,26 +57,16 @@ const FollowUpHistory = () => {
         myToaster.showErrorToast(response?.message);
         setFollowUpHistory([]);
         setShowSpinner(false);
-      }
-    } catch (error) {
-      console.error("Error fetching follow-up history:", error);
-      myToaster.showErrorToast("An error occurred while fetching follow-up history.");
-      setFollowUpHistory([]);
-    } finally {
       setLoading(false);
-    }
+
+      }
   };
 
   console.log("Current followUpHistory state:", followUpHistory);
 
   return (
     <div>
-      <BreadcrumbComponent
-        labels={{
-          module: user?.userRole === 3 ? "salesExecutive" : "salesManager",
-          currentRoute: "Lead-Follow-Up-History",
-        }}
-      />
+      
       {loading ? (
         <div
           style={{

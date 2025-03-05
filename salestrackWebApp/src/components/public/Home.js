@@ -31,7 +31,7 @@
 //                 flexDirection: "column",
 //                 justifyContent: "center",
 //                 padding: "20px",
-//                 color: "#333", 
+//                 color: "#333",
 //               }}
 //             >
 //               <h1
@@ -64,11 +64,11 @@
 //                   className="btn-get-started"
 //                   style={{
 //                     padding: "10px 20px",
-//                     backgroundColor: "#007bff", 
-//                     color: "#ffffff", 
+//                     backgroundColor: "#007bff",
+//                     color: "#ffffff",
 //                     textDecoration: "none",
-//                     borderRadius: "10px", 
-//                     marginRight: "20px", 
+//                     borderRadius: "10px",
+//                     marginRight: "20px",
 //                   }}
 //                 >
 //                   Get Started
@@ -78,10 +78,10 @@
 //                   className="glightbox btn-watch-video d-flex align-items-center"
 //                   style={{
 //                     padding: "10px 20px",
-//                     backgroundColor: "#28a745", 
-//                     color: "#ffffff", 
+//                     backgroundColor: "#28a745",
+//                     color: "#ffffff",
 //                     textDecoration: "none",
-//                     borderRadius: "10px", 
+//                     borderRadius: "10px",
 //                     display: "flex",
 //                     alignItems: "center",
 //                     gap: "8px",
@@ -128,7 +128,6 @@
 
 // export default HomePage;
 
-
 import React from "react";
 import { motion } from "framer-motion";
 import Contact from "./Contact";
@@ -169,6 +168,8 @@ const HomePage = () => {
                 style={{
                   fontSize: "3rem",
                   marginBottom: "20px",
+                  fontFamily: "'Roboto', sans-serif",
+                  fontWeight: "700",
                 }}
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -176,6 +177,26 @@ const HomePage = () => {
               >
                 Streamline Your Sales Tracking
               </motion.h1>
+              {/* <motion.h1
+  style={{
+    color:"blue",
+    fontSize: "3rem", // Large font size for emphasis
+    marginBottom: "20px", // Spacing below the heading
+    padding: "20px", // Padding inside the text container for better spacing
+    backgroundColor: "#0074D9", // Professional blue background (e.g., a shade of blue like #0074D9)
+    color: "#FFFFFF", // White text for high contrast against the blue background
+    borderRadius: "8px", // Rounded corners for a modern look
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+    fontFamily: "'Roboto', sans-serif", // Use a clean, professional font
+    fontWeight: "700", // Bold weight for emphasis
+    lineHeight: "1.2", // Tight line height for compactness
+  }}
+  initial={{ y: -20, opacity: 0 }} // Initial animation state
+  animate={{ y: 0, opacity: 1 }} // Animation to bring the text into view
+  transition={{ duration: 0.8, delay: 0.2 }} // Smooth transition
+>
+  Streamline Your Sales Tracking
+</motion.h1> */}
               <motion.p
                 style={{
                   fontSize: "1.2rem",
@@ -196,7 +217,7 @@ const HomePage = () => {
                 system.
               </motion.p>
               <motion.div
-                style={{ display: "flex", gap: "10px", marginLeft: "50px" }}
+                style={{ display: "flex", gap: "10px", }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1, delay: 0.7 }}
