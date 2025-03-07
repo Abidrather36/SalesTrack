@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logoImg from "../../utils/WhatsApp Image 2024-11-07 at 10.47.28_009bb6b7.jpg";
 import { confirmDialog, ConfirmDialog } from "primereact/confirmdialog";
+import webLogo from "../../utils/i need an Image logo for my website SalesteRn (1).jpg"
 
 const Header = () => {
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ const Header = () => {
                     >
                       <img
                         alt="User Avatar"
-                        src={logoImg}
+                        src={webLogo}
                         style={{
                           width: "50px",
                           height: "50px",
