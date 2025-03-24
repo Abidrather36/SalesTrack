@@ -16,12 +16,12 @@ import {
   todaysFollowUp,
 } from "../../Services/LeadService";
 import { leadSources as fetchLeadSources } from "../../Services/LeadSource";
-import InputField from "../public/InputField";
-import Spin from "../public/Spin";
+import InputField from "../../../src/Components/public/InputField";
+import Spin from "../../../src/Components/public/Spin"
 import myToaster from "../../utils/toaster";
-import Grid from "../shared/Grid";
+import Grid from "../../../src/Components/shared/Grid"
 import { CircularProgress } from "@mui/material";
-import BasicModal from "./AddfollowUpdate";
+import BasicModal from "../../../src/Components/salesExecutive/AddfollowUpdate"
 import { useNavigate } from "react-router-dom";
 
 export default function ExecutiveDashboard() {

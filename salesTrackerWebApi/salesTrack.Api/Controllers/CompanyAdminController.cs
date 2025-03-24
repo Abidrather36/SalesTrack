@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using salesTrack.Application.Abstraction.IService;
-using salesTrack.Application.Services;
 using salesTrack.Domain.Enums;
 using salesTrack.Domain.Models;
 using salesTrack.Domain.Models.Request;
 using salesTrack.Domain.Models.Response;
 using SalesTrack.Application.Common;
 using SalesTrack.Domain.Entities.Models.Request;
-using System.Reflection.Metadata.Ecma335;
 
 namespace salesTrack.Api.Controllers
 {

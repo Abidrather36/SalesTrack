@@ -3,8 +3,8 @@ import * as XLSX from "xlsx";
 import myToaster from "../../utils/toaster";
 import { addBulkLeads } from "../../Services/LeadService";
 import { CircularProgress } from "@mui/material";
-import Spin from "../public/Spin";
-import BreadcrumbComponent from "../shared/Breadcrumb";
+import Spin from "../../../src/Components/public/Spin"
+import BreadcrumbComponent from "../../../src/Components/shared/Breadcrumb";
 import { useNavigate } from "react-router-dom";
 
 const ExcelToGrid = () => {

@@ -980,7 +980,7 @@ import Button from "@mui/material/Button";
 import { FaCog } from "react-icons/fa";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import Grid from "../shared/Grid";
+import Grid from "../shared/Grid"
 import {
   TextField,
   FormControl,

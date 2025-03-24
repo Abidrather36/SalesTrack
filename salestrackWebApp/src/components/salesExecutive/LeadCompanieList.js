@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import BreadcrumbComponent from "../shared/Breadcrumb";
-import Grid from "../shared/Grid";
+import BreadcrumbComponent from "../../../src/Components/shared/Breadcrumb"
+import Grid from "../../../src/Components/shared/Grid"
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { CircularProgress } from "@mui/material";
 import myToaster from "../../utils/toaster";

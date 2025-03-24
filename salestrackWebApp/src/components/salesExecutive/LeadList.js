@@ -1,6 +1,6 @@
 // // original
 import React, { useState, useEffect } from "react";
-import Grid from "../shared/Grid";
+import Grid from "../../../src/Components/shared/Grid"
 import {
   FaEdit,
   FaPlus,
@@ -9,7 +9,7 @@ import {
   FaHistory,
   FaCalendarDay,
 } from "react-icons/fa";
-import BreadcrumbComponent from "../shared/Breadcrumb";
+import BreadcrumbComponent from "../../../src/Components/shared/Breadcrumb"
 import {
   addFollowUpdate,
   deleteLeadById,

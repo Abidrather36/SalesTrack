@@ -115,7 +115,7 @@
 
 
 import React, { useState, useEffect } from "react";
-import Grid from "../shared/Grid";
+import Grid from "../shared/Grid"
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import BreadcrumbComponent from "../shared/Breadcrumb";

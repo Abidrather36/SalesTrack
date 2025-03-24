@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Grid from "../shared/Grid"; // 
-import BreadcrumbComponent from "../shared/Breadcrumb";
+import Grid from "../../../src/Components/shared/Grid"
+import BreadcrumbComponent from "../../../src/Components/shared/Breadcrumb"
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getAllProcessSteps } from "../../Services/UserService";

@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import myToaster from "../../utils/toaster";
+import Spin from "../../../src/Components/public/Spin"
+import InputField from "../../../src/Components/public/InputField"
 import { addCompany as registerCompany } from "../../Services/CompanyService";
 import BreadcrumbComponent from "../shared/Breadcrumb";
-import InputField from "../public/InputField";
-import Spin from "../public/Spin";
 import storage from "../../utils/storages";
 const AddCompany = () => {
   const navigate = useNavigate();

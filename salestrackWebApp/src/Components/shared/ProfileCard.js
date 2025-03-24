@@ -340,7 +340,7 @@ import {
   MDBCardBody,
   MDBCardImage,
 } from "mdb-react-ui-kit";
-import BreadcrumbComponent from "./Breadcrumb";
+import BreadcrumbComponent from "../../../src/Components/shared/Breadcrumb"
 import {
   uploadProfilePicture,
   getProfilePath,

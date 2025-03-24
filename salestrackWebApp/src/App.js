@@ -1,15 +1,15 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import PublicLayout from "./components/shared/PublicLayout";
-import DashboardLayout from "./components/shared/DashboardLayout";
+import PublicLayout from "./Components/shared/PublicLayout"
+import DashboardLayout from "./Components/shared/DashboardLayout"
 import { routerConfiguration } from "./route-config";
-import { PortalAdminsidebarLabels, SalesManagersidebarLabels, CompanyAdminsidebarLabels, SalesExectivesidebarLabels } from "./components/shared/SidebarLabels";
-import PrivateRoute from "./components/auth/PrivateRoute";
+import { PortalAdminsidebarLabels, SalesManagersidebarLabels, CompanyAdminsidebarLabels, SalesExectivesidebarLabels } from "./Components/shared/SidebarLabels";
+import PrivateRoute from "./Components/auth/PrivateRoute";
 import { UserRole } from "./Models/Enums/userRole";
-import ProtectedRoute from "./components/auth/ProtectedRoute";
+import ProtectedRoute from "./Components/auth/ProtectedRoute";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import ChangePassword from "./components/shared/ChangePassword"; // Import ChangePassword component
+import ChangePassword from "./Components/shared/ChangePassword"; // Import ChangePassword component
 
 const App = () => {
   return (
@@ -17,7 +17,7 @@ const App = () => {
       <ToastContainer />
       <Routes>
         {/* Public routes */}
-        <Route path="/" element={<PublicLayout />}>
+        <Route path="/" element={< PublicLayout/>}>
           {routerConfiguration.PublicRoutes.map((route, index) => (
             <Route key={index} path={route.path} element={route.element} />
           ))}
