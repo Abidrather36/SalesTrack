@@ -128,6 +128,7 @@ export const routerConfiguration = {
     { path : "/salesManager/ExcelToGrid", element:<ExcelToGrid/>},
     { path : "/salesManager/bulkInsert",element :<BulkInsert/>},
     { path : "/salesManager/followUphistory/:leadId", element:<FollowUpHistory/>},
+    { path : "/salesManager/leadList/followUphistory/:leadId", element:<FollowUpHistory/>},
     // { path:"/salesManager/followUpHistory", element:<LeadList />},
   ]
 }

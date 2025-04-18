@@ -66,7 +66,9 @@ const FollowUpHistory = () => {
 
   return (
     <div>
-      
+      <BreadcrumbComponent
+              labels={{ module: "SalesExecutive", currentRoute: "leads" }}
+            />
       {loading ? (
         <div
           style={{

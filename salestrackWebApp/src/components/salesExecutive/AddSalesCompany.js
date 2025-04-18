@@ -7,7 +7,6 @@ import Spin from "../public/Spin"
 import { addLeadCompanyName } from "../../Services/LeadService"; // Adjust to your actual service
 import myToaster from "../../utils/toaster";
 import { useNavigate } from "react-router-dom";
-import companyImage from "../../utils/55991.jpg"; // Replace with an appropriate image path
 
 function AddSalesCompany() {
   const [loading, setLoading] = useState(false);
@@ -28,10 +27,10 @@ function AddSalesCompany() {
       console.log(data)
       if (response.isSuccess) {
         myToaster.showSuccessToast(response.message);
-        if(user.userRole==3){
+        if(user.userRole === 3){
           navigate("/salesExecutive/leadCompanyList"); 
         }
-        else if(user.userRole==4){
+        else if(user.userRole === 4){
           navigate("/salesManager/leadCompanyList"); 
         }
         else{
@@ -111,7 +110,7 @@ function AddSalesCompany() {
                   })}
                 />
                 {errors.leadCompanyName && (
-                  <span className="error-message">
+                  <span className="error-message" style={{color:"red"}}>
                     {errors.leadCompanyName.message}
                   </span>
                 )}

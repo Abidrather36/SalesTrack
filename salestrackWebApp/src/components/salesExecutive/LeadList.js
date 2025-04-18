@@ -138,6 +138,9 @@ function LeadList(props) {
   };
 
   const fetchFollowUpHistoryHandler = (lead) => {
+    console.log(lead)
+    navigate(`/salesManager/leadList/followUphistory/${lead.id}?hideId=true`)
+    
     setLeadData(lead);
     setShowGrid(false);
     setFollowUpdatePopup(false);

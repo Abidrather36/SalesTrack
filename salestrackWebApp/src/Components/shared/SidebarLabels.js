@@ -665,7 +665,7 @@ export const CompanyAdminsidebarLabels = [
     id: 1,
     label: "Dashboard",
     link: "/companyAdmin/dashboard",
-    icon: <AnalyticsIcon style={{marginLeft:"-3.5px"}} />,
+    icon: <AnalyticsIcon style={{marginLeft:"-4px"}} />,
   },
   {
     id: 2,

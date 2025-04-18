@@ -55,7 +55,7 @@ namespace salesTrack.Api.Controllers
             }
             catch (Exception ex)
             {
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         [HttpPost("Update-User")]
